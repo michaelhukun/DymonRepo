@@ -1,11 +1,11 @@
 //created by Hu Kun on 30 Nov 2012
-//class for standard IRS with fix to floating legs in one currency.
+//class for standard IRS with fix to floating legs in one Market.
 //rates for fixed and floating in private data members are all in terms of annual rates
 //rewrote again with cashflow constructs by Kun 16 Dec 2012
 
 #ifndef SWAP_H
 #define SWAP_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include "AbstractInstrument.h"
 #include <vector>
@@ -31,14 +31,14 @@ namespace instruments {
 	public:
 		Swap(){};
 		~Swap(){};
-		Swap(date tradeDate, date maturityDate, double notional, double couponRate, DiscountCurve* yc, currency fixLegCurr, currency floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
-		Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, currency fixLegCurr, currency floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates);
+		Swap(date tradeDate, date maturityDate, double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
+		Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates);
 
 		cashflowLeg* getCashflowLegFix();
 		cashflowLeg* getCashflowLegFloat();
 		DiscountCurve* getDiscountCurve();
-		currency getFixLegCurr();
-		currency getFloatLegCurr();
+		Market getFixLegCurr();
+		Market getFloatLegCurr();
 		int getPaymentFreqFixLeg();
 		int getPaymentFreqFloatingLeg();
 		int getTenor(){ return _tenorNumOfMonths;}
@@ -53,8 +53,8 @@ namespace instruments {
 		DiscountCurve* _yc;
 		date _tradeDate;
 		date _expiryDate;
-		currency _fixLegCurr;
-		currency _floatingLegCurr;
+		Market _fixLegCurr;
+		Market _floatingLegCurr;
 		int _paymentFreqFixLeg;
 		int _paymentFreqFloatingLeg;
 		int _tenorNumOfMonths;

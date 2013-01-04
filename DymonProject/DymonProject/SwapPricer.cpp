@@ -38,7 +38,7 @@ double SwapPricer::getMPVFloatLeg(cashflowLeg* floatCashflowLeg,DiscountCurve* a
 		date accrualStartDate=aCF.getAccuralStartDate();
 		//double FWDR=calFLiborRate(accrualStartDate,accrualEndDate,aCF.getAccuralFactor());
 
-		currency cashflowCurr=aCF.getCashFlowCurr();
+		Market cashflowCurr=aCF.getCashFlowCurr();
 		double FLiborRate=aDiscountCurve->getFLiborRate(accrualStartDate,accrualEndDate,cashflowCurr.getDayCountSwapConvention());
 		sum+=aCF.getNotional()*aCF.getAccuralFactor()*(FLiborRate)*(_pricingDiscountCurve->getDiscountFactor(aCF.getPaymentDate()));
 	}

@@ -2,7 +2,7 @@
 
 #ifndef SWAPTION_H
 #define SWAPTION_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include "AbstractInstrument.h"
 #include <vector>
@@ -32,15 +32,16 @@ namespace instruments {
 		
 		Swaption(){};
 		~Swaption(){};
-		Swaption(PayReceive PayReceiveInd, double T, double K, SwaptionVolCube* vs, date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, currency fixLegCurr, currency floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
-		Swaption(PayReceive PayReceiveInd, double T, double K, SwaptionVolCube* vs, DiscountCurve* yc, Swap* underlyingSwap);
+		Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double K, SwaptionVolCube* vs, date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
+		Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double K, SwaptionVolCube* vs, DiscountCurve* yc, Swap* underlyingSwap);
 		
 		Swap* getSwap(){ return _underlyingSwap; }
+
+		virtual double getMPV();
 
 	private:		
 
 		int _tenorInMonth;
-		date _expiryDate;
 		Swap* _underlyingSwap;
 
 	};

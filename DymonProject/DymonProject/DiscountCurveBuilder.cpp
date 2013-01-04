@@ -22,8 +22,8 @@ typedef tuple<date, double> point;
 void DiscountCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	
-	_market = currency(EnumHelper::getCcyEnum("USD"));
-	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
+	_market = Market(EnumHelper::getCcyEnum("USD"));
+	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getMarketEnum());
 	_floatFreqency = std::stoi(cfg->getProperty("swap.usd.floatfreq",false,"4"));
 	_fixFreqency = std::stoi(cfg->getProperty("swap.usd.fixfreq",false,"2"));
 	_timeLineBuildDirection = std::stoi(cfg->getProperty("timeline.usd.builddirection",false,"1"));
@@ -50,7 +50,7 @@ void DiscountCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 		double depositRate = (*it).second;
 		date startDate = _curveStartDate;
 		int numOfNights = (int) (*it).first;
-		date paymentDate = dateUtil::getBizDateOffSet(startDate,numOfNights,_market.getCurrencyEnum());
+		date paymentDate = dateUtil::getBizDateOffSet(startDate,numOfNights,_market.getMarketEnum());
 		//cout << "Overnight rate at date ["<<startDate.toString()<< "], maturity date ["<<paymentDate.toString()<<"], number of nights ["<<numOfNights<<"], rate ["<< depositRate<<"]"<< endl;
 
 		cashflow cf(depositRate,0, startDate, paymentDate,startDate, paymentDate, _market);

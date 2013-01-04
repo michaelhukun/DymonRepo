@@ -29,8 +29,8 @@ namespace utilities{
 		
 		void buildOvernightSection(DiscountCurve* yc);
 
-		currency getMarket(){return _market;}
-		void setMarket(currency market){_market = market;}
+		Market getMarket(){return _market;}
+		void setMarket(Market market){_market = market;}
 
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
 		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
@@ -58,7 +58,7 @@ namespace utilities{
 
 	private:
 
-		currency _market;
+		Market _market;
 		int _floatFreqency;
 		int _fixFreqency;
 		int _timeLineBuildDirection;

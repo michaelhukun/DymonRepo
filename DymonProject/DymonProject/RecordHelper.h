@@ -21,16 +21,16 @@ namespace Session {
 
 		void init(Configuration*);
 
-		typedef std::map<enums::CurrencyEnum, std::set<long>> HolidayMap;
+		typedef std::map<enums::MarketEnum, std::set<long>> HolidayMap;
 		
-		typedef std::map<enums::CurrencyEnum, std::map<long, double>> RateMap;
+		typedef std::map<enums::MarketEnum, std::map<long, double>> RateMap;
 		
-		typedef std::tuple<enums::DayCountEnum, enums::DayCountEnum, enums::DayRollEnum, enums::DayRollEnum, enums::DayRollEnum, enums::DayRollEnum, int> currencyTuple;
+		typedef std::tuple<enums::DayCountEnum, enums::DayCountEnum, enums::DayRollEnum, enums::DayRollEnum, enums::DayRollEnum, enums::DayRollEnum, int> MarketTuple;
 
-		typedef std::map<enums::CurrencyEnum, currencyTuple> currencyMap;
+		typedef std::map<enums::MarketEnum, MarketTuple> MarketMap;
 
 		//std::map<double,std::map<tuple<double fSwapTenorNumOfMonths,double optionTenorNumOfMonths>,double swaptionVol>> SwaptionVolMap
-		typedef std::map<double,std::map<tuple<double ,double >,double >> SwaptionVolMap;
+		typedef std::map<double,std::map<std::tuple<double ,double>,double >> SwaptionVolMap;
 		
 		HolidayMap getHolidayMap(){return _holidayMap;}
 		void setHolidayMap(HolidayMap map){_holidayMap=map;}
@@ -44,8 +44,8 @@ namespace Session {
 		RateMap getSwapRateMap(){return _swapRateMap;}
 		void setSwapRateMap(RateMap map){_swapRateMap=map;}
 
-		currencyMap getCurrencyMap(){return _currencyMap;}
-		void setCurrencyMap(currencyMap map){_currencyMap=map;}
+		MarketMap getMarketMap(){return _MarketMap;}
+		void setMarketMap(MarketMap map){_MarketMap=map;}
 
 		SwaptionVolMap getSwaptionVolMap(){return _swaptionVolMap;}
 		void setSwaptionVolMap(SwaptionVolMap map){_swaptionVolMap=map;}
@@ -65,7 +65,7 @@ namespace Session {
 
 		RateMap _swapRateMap;
 				
-		currencyMap _currencyMap;
+		MarketMap _MarketMap;
 
 		SwaptionVolMap _swaptionVolMap;
 
@@ -75,7 +75,7 @@ namespace Session {
 		void buildHolidayMap(Configuration*);
 		void buildSwapRateMap(Configuration*);
 		void buildDepositRateMap(Configuration*);
-		void buildCurrencyMap(Configuration*);
+		void buildMarketMap(Configuration*);
 		void buildSwaptionVolMap(Configuration*);
 
 	};

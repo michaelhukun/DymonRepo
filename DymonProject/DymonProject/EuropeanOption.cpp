@@ -5,5 +5,5 @@
 using namespace instruments;
 
 double EuropeanOption::getMPV(){
-	return blackScholesFormula(_callPutFlag,_S,_K,_vol,_r,_T);
+	return blackScholesFormula(_callPutFlag,_S,_K,_vol,_r,_expiryInMonth/12);
 }

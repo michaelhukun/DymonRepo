@@ -10,21 +10,22 @@ using namespace std;
 using namespace enums;
 using namespace instruments;
 
-Swaption::Swaption(PayReceive PayReceiveInd, double T, double K, SwaptionVolCube* vc,date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, currency fixLegCurr, currency floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection){
+Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double K, SwaptionVolCube* vc,date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection){
 	Swap* _underlyingSwap= new Swap(swapStartDate, tenorNumOfMonths, notional, couponRate, yc, fixLegCurr, floatingLegCurr, paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates, buildDirection);
-	Swaption(PayReceiveInd, T, K, vc, yc, _underlyingSwap);	
+	Swaption(market, PayReceiveInd, expiryInMonth, K, vc, yc, _underlyingSwap);	
 }
 
-Swaption::Swaption(PayReceive PayReceiveInd, double T, double K, SwaptionVolCube* vc,DiscountCurve* yc, Swap* underlyingSwap){
+Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double K, SwaptionVolCube* vc,DiscountCurve* dc, Swap* underlyingSwap){
 	_underlyingSwap = underlyingSwap;
-	double parRate=underlyingSwap->getParRate(underlyingSwap->getCashflowLegFloat(),underlyingSwap->getCashflowLegFix(),yc);
-	enum::DayCountEnum dc=underlyingSwap->getFixLegCurr().getDayCountSwapConvention();
-
 	_tenorInMonth = _underlyingSwap->getTenor();
-	double vol=vc->getVol(K,T,_tenorInMonth);
-	double r=yc->getValue(s;
+	double forwardParRate=underlyingSwap->getParRate(underlyingSwap->getCashflowLegFloat(),underlyingSwap->getCashflowLegFix(),dc);
+	date tradeDate = dateUtil::getToday();
+	double vol=vc->getVol(K,expiryInMonth,_tenorInMonth);
 
 	//PayReceiver Indictor with respect to the fixed leg
-	AbstractOption(dateUtil::getToday(), PayReceiveInd == Payer?Call:Put, parRate, K, vol, r, T);
+	AbstractOption(market, tradeDate, expiryInMonth, PayReceiveInd == Payer?Call:Put, forwardParRate, K, vol, dc);
 }
 		
+double Swaption::getMPV(){
+	return blackFormula(_callPutFlag, _S, _K, _vol, _discountFactor, _expiryInMonth/12);
+}

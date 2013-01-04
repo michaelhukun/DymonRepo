@@ -5,7 +5,7 @@
 #include "AbstractBootStrapper.h"
 #include "cashflow.h"
 #include "Enums.h"
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 
 using namespace instruments;
@@ -20,7 +20,7 @@ namespace utilities {
 		void init(Configuration* cfg);
 
 		OvernightRateBootStrapper(point startPoint, date endDate, cashflow cashFlow, enums::interpolAlgo interpolAlgo,
-			enums::NumericAlgo numericAlgo, currency market):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
+			enums::NumericAlgo numericAlgo, Market market):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
 			_depositRate = cashFlow.getCouponRate();
 			_cashFlow = cashFlow;
 			_market = market;
@@ -33,7 +33,7 @@ namespace utilities {
 	private:
 
 		double _depositRate;
-		currency _market;
+		Market _market;
 		cashflow _cashFlow;
 	};
 }

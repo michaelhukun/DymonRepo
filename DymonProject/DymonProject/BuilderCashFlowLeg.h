@@ -4,7 +4,7 @@
 #define BUILDERCASHFLOWLEG_H
 
 #include "cashflow.h"
-#include "currency.h"
+#include "Market.h"
 #include "cashflowLeg.h"
 #include "Enums.h"
 #include "date.h"
@@ -29,12 +29,12 @@ namespace instruments {
 		BuilderCashFlowLeg(){};
 		
 		//for Fixed Legs
-		BuilderCashFlowLeg(date startDate, date maturityDate,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection);
-		BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market);
+		BuilderCashFlowLeg(date startDate, date maturityDate,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
+		BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market);
 		
 		//for Floating Legs
-		BuilderCashFlowLeg(date startDate, date maturityDate,DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection);
-		BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market);
+		BuilderCashFlowLeg(date startDate, date maturityDate,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
+		BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market);
 
 		~BuilderCashFlowLeg(){};
 		cashflowLeg* getCashFlowLeg(){return &_cashflowLeg;};
@@ -47,7 +47,7 @@ namespace instruments {
 		double _couponRate;
 		double _notional;
 		int _paymentFreq;
-		currency _cashFlowLegCurr;
+		Market _cashFlowLegCurr;
 		bool _rollAccuralDates;
 		RecordHelper::HolidayMap _holidayMap;		
 	};

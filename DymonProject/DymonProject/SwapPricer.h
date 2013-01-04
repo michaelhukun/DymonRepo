@@ -1,7 +1,7 @@
 //created by Hu Kun on 16 Dec 2012
 #ifndef SWAPPRICER_H
 #define SWAPPRICER_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include "AbstractPricer.h"
 

@@ -4,7 +4,7 @@
 #include "AbstractTest.h"
 #include "AbstractSurface.h"
 #include "Enums.h"
-#include "currency.h"
+#include "Market.h"
 #include <string>
 
 using namespace std;

@@ -1,23 +1,23 @@
 //created by Hu Kun on 29 Nov 2012
 
-#ifndef CURRENCY_H
-#define CURRENCY_H
+#ifndef Market_H
+#define Market_H
 #include <tuple>
 #include "dateUtil.h"
 #include "Enums.h"
 
 namespace instruments {
 
-	class currency {
+	class Market {
 
 	public:
-		currency(){};
-		currency(enums::CurrencyEnum);
-		~currency(){};
+		Market(){};
+		Market(enums::MarketEnum);
+		~Market(){};
 
 		std::string getNameString();
 
-		enums::CurrencyEnum getCurrencyEnum(){return _marketName;}
+		enums::MarketEnum getMarketEnum(){return _marketName;}
 		enums::DayCountEnum getDayCountCashConvention(){return _dayCountCashConvention;}
 		enums::DayCountEnum getDayCountSwapConvention(){return _dayCountSwapConvention;}
 		enums::DayRollEnum getDayRollCashConvention(){return _dayRollCashConvention;}
@@ -26,7 +26,7 @@ namespace instruments {
 		enums::DayRollEnum getAccrualAdjustSwapConvention(){return _accrualAdjustSwapConvention;}
 		int getBusinessDaysAfterSpot(){return _businessDaysAfterSpot;}
 
-		void setCurrencyEnum(enums::CurrencyEnum marketName){_marketName = marketName;}
+		void setMarketEnum(enums::MarketEnum marketName){_marketName = marketName;}
 		void setDayCountCashConvention(enums::DayCountEnum dayCountCashConvention){_dayCountCashConvention = dayCountCashConvention;}
 		void setDayCountSwapConvention(enums::DayCountEnum dayCountSwapConvention){_dayCountSwapConvention = dayCountSwapConvention;}
 		void setDayRollCashConvention(enums::DayRollEnum dayRollCashConvention){_dayRollCashConvention = dayRollCashConvention;}
@@ -36,7 +36,7 @@ namespace instruments {
 		void setBusinessDaysAfterSpot(int businessDaysAfterSpot){_businessDaysAfterSpot =businessDaysAfterSpot;}
 
 	private:
-		enums::CurrencyEnum _marketName;
+		enums::MarketEnum _marketName;
 		enums::DayCountEnum _dayCountCashConvention;
 		enums::DayCountEnum _dayCountSwapConvention;
 		enums::DayRollEnum _dayRollCashConvention;

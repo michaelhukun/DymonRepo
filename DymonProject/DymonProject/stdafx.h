@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <tchar.h>
 
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include <vector>
 #include <iostream>

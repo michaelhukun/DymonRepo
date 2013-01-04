@@ -27,12 +27,12 @@ void TestDiscountCurve::discountCurveTestSuit(){
 	swapRateTest(enums::USD, enums::LOGLINEAR);
 }
 
-void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
+void TestDiscountCurve::swapRateTest(enums::MarketEnum market,enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurveBuilder* builder = new DiscountCurveBuilder();
 	//builder->init(Configuration::getInstance());
-	builder->setMarket(currency(market));
+	builder->setMarket(Market(market));
 	builder->setBizDaysAfterSpot(2);
 	builder->setFloatFrequency(4);
 	builder->setFixFreqency(2);
@@ -44,13 +44,13 @@ void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolA
 	cout<<yc->toString()<<endl;
 	
 
-	currency fixLegCurr=currency(market);
-	currency floatingLegCurr=currency(market);
+	Market fixLegCurr=Market(market);
+	Market floatingLegCurr=Market(market);
 
 	map<long, double> swapRateMap = RecordHelper::getInstance()->getSwapRateMap()[market];
 	for (map<long, double>::iterator it=swapRateMap.begin() ; it != swapRateMap.end(); it++ ){
 		date accuralEndDate = date((*it).first);
-		instruments::swap swap1(dateUtil::getToday(), accuralEndDate, 1000000, 0.01, yc, fixLegCurr, floatingLegCurr,builder->getFixFreqency(), builder->getFloatFrequency(), true,1);
+		Swap swap1(dateUtil::getToday(), accuralEndDate, 1000000, 0.01, yc, fixLegCurr, floatingLegCurr,builder->getFixFreqency(), builder->getFloatFrequency(), true,1);
 		cashflowLeg* fixLeg=swap1.getCashflowLegFix();
 		cashflowLeg* floatLeg=swap1.getCashflowLegFloat();
 		compareResult("Discount Curve", accuralEndDate, swap1.getParRate(fixLeg,floatLeg,yc),(*it).second);

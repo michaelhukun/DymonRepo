@@ -15,10 +15,10 @@ void TestBuildCashFlowLeg::BuildCashFlowLegTestSuit(){
 	buildCashFlowLegTest(dateUtil::getToday(),500,_EPSILON,USD);
 }
 
-void TestBuildCashFlowLeg::buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::CurrencyEnum market){
+void TestBuildCashFlowLeg::buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::MarketEnum market){
 	int paymentFreq = 4;
 	int buildDirection =1;
-	currency mkt(market);
+	Market mkt(market);
 	enums::DayCountEnum dayCountSwapConvention = mkt.getDayCountSwapConvention();
 	enums::DayRollEnum dayRollSwapConvention = mkt.getDayRollSwapConvention();
 	enums::DayRollEnum accrualAdjustSwapConvention = mkt.getAccrualAdjustSwapConvention();

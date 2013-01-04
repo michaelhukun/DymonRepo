@@ -4,6 +4,8 @@
 #include "AbstractInstrument.h"
 #include "OptionPricer.h"
 #include "Enums.h"
+#include "Market.h"
+#include "DiscountCurve.h"
 
 using namespace utilities;
 using namespace instruments;
@@ -15,28 +17,29 @@ namespace instruments {
 
 		AbstractOption(){};
 		~AbstractOption(){};
-		AbstractOption(date tradeDate, CallPut callPutFlag, double S, double K, double vol, double r, double T){
-			setTradeDate(tradeDate);
-			_callPutFlag = callPutFlag;
-			_S = S;
-			_K = K;
-			_vol = vol;
-			_r = r;
-			_T = T;
+		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc){
+			AbstractOption(market, tradeDate, callPutFlag, S, K, vol);
+			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));			
+			_expiryInMonth = expiryInMonth;
+			_dc = dc;
+			_discountFactor = dc->getValue(getMaturityDate())/dc->getValue(getTradeDate());
 		}
 
-		AbstractOption(date tradeDate, CallPut callPutFlag, double S, double K, double vol, double r, date expiryDate, enums::DayCountEnum dayCount) {
+		AbstractOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc) {
 
-			setTradeDate(tradeDate);
+			AbstractOption(market, tradeDate, callPutFlag, S, K, vol);
 			setMaturityDate(expiryDate);
-			_callPutFlag = callPutFlag;
-			_S = S;
-			_K = K;
-			_vol = vol;
-			_r = r;
-			_T = dateUtil::getAccrualFactor(tradeDate,expiryDate,dayCount);
-
+			_dc = dc;
+			_discountFactor = dc->getValue(getMaturityDate())/dc->getValue(getTradeDate());
 		}
+
+		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, double r) {
+			AbstractOption(market, tradeDate, callPutFlag, S, K, vol);
+			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));
+			_discountFactor = exp(-r*expiryInMonth/12);
+			_r=r;
+		}
+
 		virtual double getMPV(){return OptionPricer::getMPV();};
 
 	protected:
@@ -45,7 +48,20 @@ namespace instruments {
 		double _K;
 		double _vol;
 		double _r;
-		double _T;
+		double _expiryInMonth;
+		double _discountFactor;
+		DiscountCurve* _dc;
+		Market _market;
+
+	private:
+		AbstractOption(Market market, date tradeDate, CallPut callPutFlag, double S, double K, double vol) {
+			setTradeDate(tradeDate);
+			_callPutFlag = callPutFlag;
+			_S = S;
+			_K = K;
+			_vol = vol;
+			_market = market;
+		}
 	};
 }
 #endif

@@ -10,7 +10,7 @@
 #include "RecordHelper.h"
 #include <algorithm>
 #include "DiscountCurve.h"
-#include "currency.h"
+#include "Market.h"
 
 using namespace Session;
 using namespace utilities;
@@ -19,9 +19,9 @@ using namespace enums;
 
 using namespace instruments;
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, date maturityDate,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection){
+BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, date maturityDate,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection){
 	
-	currency mkt(market);
+	Market mkt(market);
 	enums::DayCountEnum dayCountSwapConvention = mkt.getDayCountSwapConvention();
 	enums::DayRollEnum dayRollSwapConvention = mkt.getDayRollSwapConvention();
 	enums::DayRollEnum accrualAdjustSwapConvention = mkt.getAccrualAdjustSwapConvention();
@@ -90,9 +90,9 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, date maturityDate,double 
 	}
 }
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market){
+BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market){
 
-	currency mkt(market);
+	Market mkt(market);
 	enums::DayCountEnum dayCountSwapConvention = mkt.getDayCountSwapConvention();
 	enums::DayRollEnum dayRollSwapConvention = mkt.getDayRollSwapConvention();
 	enums::DayRollEnum accrualAdjustSwapConvention = mkt.getAccrualAdjustSwapConvention();
@@ -128,9 +128,9 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,doub
 	_cashflowLeg=cashflowLeg(builtCashflowLeg).getCashFlowLeg();
 }
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, date maturityDate,DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection){
+BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, date maturityDate,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection){
 
-	currency mkt(market);
+	Market mkt(market);
 	enums::DayCountEnum dayCountSwapConvention = mkt.getDayCountSwapConvention();
 	enums::DayRollEnum dayRollSwapConvention = mkt.getDayRollSwapConvention();
 	enums::DayRollEnum accrualAdjustSwapConvention = mkt.getAccrualAdjustSwapConvention();
@@ -207,9 +207,9 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, date maturityDate,Discoun
 	}
 }
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market){
+BuilderCashFlowLeg::BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market){
 	
-	currency mkt(market);
+	Market mkt(market);
 	enums::DayCountEnum dayCountSwapConvention = mkt.getDayCountSwapConvention();
 	enums::DayRollEnum dayRollSwapConvention = mkt.getDayRollSwapConvention();
 	enums::DayRollEnum accrualAdjustSwapConvention = mkt.getAccrualAdjustSwapConvention();

@@ -6,7 +6,7 @@
 #include "dateUtil.h"
 #include "date.h"
 #include "RecordHelper.h"
-#include "currency.h"
+#include "Market.h"
 #include "EnumHelper.h"
 
 using namespace DAO;
@@ -33,14 +33,14 @@ void DepositFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 
 	string value;
-	enums::CurrencyEnum market;
+	enums::MarketEnum market;
 	RecordHelper::RateMap tempDepositMap;
 	RecordHelper::RateMap tempOvernightMap;
 	while (_inFile.good()){
 		_inFile>>value;
 		vector<string> vec = fileUtil::split(value,':');
 		market = EnumHelper::getCcyEnum(vec[0]);
-		currency mkt(market);
+		Market mkt(market);
 		enums::DayRollEnum accrualAdjust=mkt.getAccrualAdjustCashConvention();
 		vector<string> deposits = fileUtil::split(vec[1],',');
 		cout<<market<<" total deposits number:  "<<deposits.size()<<endl;
@@ -69,8 +69,8 @@ void DepositFileSource::retrieveRecord(){
 					<<accrualEndDate.toString() <<"], deposit rate["<< depositRate << "]"<<endl;
 			}
 		}
-		tempDepositMap.insert(pair<enums::CurrencyEnum, map<long, double>>(market,depositRateMap));
-		tempOvernightMap.insert(pair<enums::CurrencyEnum, map<long, double>>(market,overnightRateMap));
+		tempDepositMap.insert(pair<enums::MarketEnum, map<long, double>>(market,depositRateMap));
+		tempOvernightMap.insert(pair<enums::MarketEnum, map<long, double>>(market,overnightRateMap));
 	}
 	RecordHelper::getInstance()->setDepositRateMap(tempDepositMap);
 	RecordHelper::getInstance()->setOverNightRateMap(tempOvernightMap);

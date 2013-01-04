@@ -4,7 +4,7 @@
 #include "AbstractSurface.h"
 #include "SwaptionVolSurface.h"
 #include "AbstractCurve.h"
-#include "currency.h"
+#include "Market.h"
 #include "Enums.h"
 
 using namespace utilities;
@@ -19,23 +19,23 @@ namespace utilities{
 
 		SwaptionVolCube():AbstractDataStructure(){};
 
-		SwaptionVolCube(map<double,SwaptionVolSurface*>* cube, currency market, enums::interpolAlgo interpolAlgo){
+		SwaptionVolCube(map<double,SwaptionVolSurface*>* cube, Market market, enums::interpolAlgo interpolAlgo){
 			_cube=cube;
 			_market=market;
 			_interpolAlgo=interpolAlgo;
 		};
 
-		double getVol(double strike, double maturity, double tenor);
+		double getVol(double strike, double maturityInMonth, double tenorInMonth);
 
 		SwaptionVolSurface* getVolSurface(double strike);
 
-		AbstractCurve<double>* getVolCurveAlongStrike(double maturity, double tenor);
+		AbstractCurve<double>* getVolCurveAlongStrike(double maturityInMonth, double tenorInMonth);
 
 		map<double,SwaptionVolSurface*>* getCube(){return _cube;}
 		void setCube(map<double,SwaptionVolSurface*>* cube){_cube = cube;}
 
-		currency getMarket(){return _market;}
-		void setMarket(currency market){_market = market;}
+		Market getMarket(){return _market;}
+		void setMarket(Market market){_market = market;}
 
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
 		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
@@ -43,7 +43,7 @@ namespace utilities{
 
 	private:
 
-		currency _market;
+		Market _market;
 		enums::interpolAlgo _interpolAlgo;
 
 		map<double,SwaptionVolSurface*>* _cube;

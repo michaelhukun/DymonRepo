@@ -7,7 +7,7 @@
 #include "RecordHelper.h"
 #include "Enums.h"
 #include "EnumHelper.h"
-#include "currency.h"
+#include "Market.h"
 #include <tuple>
 
 using namespace DAO;
@@ -18,22 +18,22 @@ using namespace instruments;
 
 
 void SwaptionVolFileSource::init(Configuration* cfg){
-	_fileName = cfg->getProperty("swaptionPrice.file",true,"");
-	_persistDir = cfg->getProperty("swaptionPrice.path",false,"");
+	_fileName = cfg->getProperty("swaptionVolCube.usd.file",true,"");
+	_persistDir = cfg->getProperty("swaptionVolCube.usd.path",false,"");
 	AbstractFileSource::init(cfg);
 }
 
 void SwaptionVolFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
-	
-	
+
+
 	CSVDatabase db;
-    readCSV(_inFile, db);
+	readCSV(_inFile, db);
 
 	string value;
-	enums::CurrencyEnum market;
+	enums::MarketEnum market;
 	market = EnumHelper::getCcyEnum(db.at(0).at(0));
-	currency mkt(market);
+	Market mkt(market);
 	//std::map<strike,std::map<tuple<double fSwapTenorNumOfMonths,double optionTenorNumOfMonths>,double swaptionVol>> SwaptionVolMap
 
 	RecordHelper::SwaptionVolMap tempMap;
@@ -43,9 +43,9 @@ void SwaptionVolFileSource::retrieveRecord(){
 	for (int i=1;i<=numOfRows-1;i++) {
 		for (int j=1;j<=numOfCols-1;j++) {
 
-		 auto aTuple=std::make_tuple(std::stod(db.at(0).at(j)),std::stod(db.at(i).at(0)));
-		 tempMap.insert(pair<tuple<double,double>,double>(aTuple,std::stod(db.at(i).at(j))));
-		
+			auto aTuple=std::make_tuple(std::stod(db.at(0).at(j)),std::stod(db.at(i).at(0)));
+			tempMap.insert(pair<tuple<double,double>,double>(aTuple,std::stod(db.at(i).at(j))));
+
 		}
 
 	}
@@ -67,7 +67,7 @@ void SwaptionVolFileSource::readCSV(std::ifstream &input, CSVDatabase &db) {
 			csvRow.push_back(csvCol);
 		db.push_back(csvRow);
 	}
-	
+
 };
 
 void SwaptionVolFileSource::display(const CSVRow& row) {

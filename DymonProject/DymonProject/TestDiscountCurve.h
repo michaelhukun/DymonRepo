@@ -4,7 +4,7 @@
 #include "AbstractTest.h"
 #include "DiscountCurve.h"
 #include "Enums.h"
-#include "currency.h"
+#include "Market.h"
 #include <string>
 
 using namespace std;
@@ -22,7 +22,7 @@ namespace UnitTest{
 
 	private:
 
-		void swapRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo);
+		void swapRateTest(enums::MarketEnum market, enums::interpolAlgo interpolAlgo);
 
 		void compareResult(string testName, date accuralEndDate, double derivedVal, double expectedVal);
 	};

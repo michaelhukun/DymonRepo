@@ -18,18 +18,19 @@ void TestOption::runTest(){
 }
 
 void TestOption::europeanTestSuit(){
-	europeanTest(Call,12,10,0.3,0.01,1,2.61195476);
+	europeanTest(Call,12,10,0.3,0.01,12,2.61195476);
 }
 
 void TestOption::swaptionTestSuit(){
 }
 
-void TestOption::europeanTest(enums::CallPut callPutFlag, double S, double K, double vol, double r, double T, double expectedVal){
-	AbstractOption* option = new EuropeanOption(dateUtil::getToday(),callPutFlag,S,K,vol,r,T);
+void TestOption::europeanTest(enums::CallPut callPutFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal){
+	Market market(enums::USD);
+	AbstractOption* option = new EuropeanOption(market, dateUtil::getToday(),expiryInMonth,callPutFlag,S,K,vol,r);
 	compareResult("European Option", option->getMPV(), expectedVal);
 }
 
-void TestOption::swaptionTest(enums::CallPut callPutFlag, double S, double K, double vol, double r, double T, double expectedVal){
+void TestOption::swaptionTest(enums::CallPut callPutFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal){
 
 }
 

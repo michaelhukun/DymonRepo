@@ -1,7 +1,7 @@
 //created by Hu Kun on 29 Nov 2012
 #ifndef ABSTRACTINSTRUMENT_H
 #define ABSTRACTINSTRUMENT_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 
 using namespace utilities;
@@ -18,8 +18,8 @@ namespace instruments {
 		virtual void setMaturityDate(date maturityDate) {_maturityDate=maturityDate;};
 
 	protected: 
-		currency _domCurrency;
-		currency _forCurrency;
+		Market _domMarket;
+		Market _forMarket;
 		date _tradeDate;
 		date _maturityDate;
 

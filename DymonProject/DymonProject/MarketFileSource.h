@@ -1,6 +1,6 @@
 //created by Wang Jianwei on 01 Dec 2012
-#ifndef CURRENCYFILESOURCE_H
-#define CURRENCYFILESOURCE_H
+#ifndef MarketFILESOURCE_H
+#define MarketFILESOURCE_H
 #include <string>
 #include <fstream>
 #include "AbstractFileSource.h"
@@ -8,13 +8,13 @@
 #include <tuple>
 
 namespace DAO {
-	class CurrencyFileSource: public AbstractFileSource{
+	class MarketFileSource: public AbstractFileSource{
 		
 	public:
 		
-		CurrencyFileSource();
-		CurrencyFileSource(std::string persistDir, std::string fileName);
-		~CurrencyFileSource();
+		MarketFileSource();
+		MarketFileSource(std::string persistDir, std::string fileName);
+		~MarketFileSource();
 
 		void init(Configuration*);
 		

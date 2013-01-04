@@ -1,7 +1,7 @@
 //created by Hu Kun on 29 Nov 2012
 #ifndef MARKETDATA_H
 #define MARKETDATA_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include "AbstractInstrument.h"
 #include "instrumentValue.h"

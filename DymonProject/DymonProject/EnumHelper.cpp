@@ -5,7 +5,7 @@
 
 using namespace utilities;
 
-enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
+enums::MarketEnum EnumHelper::getCcyEnum(std::string ccyName){
 	if (ccyName =="EUR")
 		return EUR;
 	else if (ccyName == "USD")
@@ -18,7 +18,7 @@ enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
 		return SGD;
 	else if (ccyName == "JPY")
 		return JPY;
-	throw "Currency name not foud: "+ccyName;
+	throw "Market name not foud: "+ccyName;
 }
 
 enums::DayRollEnum EnumHelper::getDayRollEnum(std::string dayRoll){

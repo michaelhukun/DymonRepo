@@ -7,7 +7,7 @@
 #include "date.h"
 #include "AbstractTest.h"
 #include "cashflowLeg.h"
-#include "currency.h"
+#include "Market.h"
 #include "Enums.h"
 
 using namespace std;
@@ -28,7 +28,7 @@ namespace UnitTest{
 
 	private:
 
-		void buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::CurrencyEnum market);
+		void buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::MarketEnum market);
 
 		bool compareResult(cashflowLeg* cashflowFromMaturity, cashflowLeg* cashflowFromTenor);
 	};

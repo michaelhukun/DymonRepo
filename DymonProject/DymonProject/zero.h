@@ -1,9 +1,9 @@
 //created by Hu Kun on 30 Nov 2012
-//class for zero coup bonds in one currency.
+//class for zero coup bonds in one Market.
 
 #ifndef ZERO_H
 #define ZERO_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include "AbstractInstrument.h"
 #include <vector>

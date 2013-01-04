@@ -1,6 +1,6 @@
 //created by Wang Jianwei on 1 Dec 2012
 
-#include "CurrencyFileSource.h"
+#include "MarketFileSource.h"
 #include "AbstractFileSource.h"
 #include "fileUtil.h"
 #include "dateUtil.h"
@@ -14,33 +14,33 @@ using namespace std;
 using namespace utilities;
 using namespace Session;
 
-CurrencyFileSource::CurrencyFileSource():
+MarketFileSource::MarketFileSource():
 	AbstractFileSource(){}
 
-CurrencyFileSource::CurrencyFileSource(std::string persistDir, std::string fileName):
+MarketFileSource::MarketFileSource(std::string persistDir, std::string fileName):
 	AbstractFileSource(persistDir, fileName){}
 
-CurrencyFileSource::~CurrencyFileSource(){}
+MarketFileSource::~MarketFileSource(){}
 
-void CurrencyFileSource::init(Configuration* cfg){
-	_fileName = cfg->getProperty("currency.file",true,"");
-	_persistDir = cfg->getProperty("currency.path",false,"");
+void MarketFileSource::init(Configuration* cfg){
+	_fileName = cfg->getProperty("Market.file",true,"");
+	_persistDir = cfg->getProperty("Market.path",false,"");
 	AbstractFileSource::init(cfg);
 }
 
-void CurrencyFileSource::retrieveRecord(){
+void MarketFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 
 	string value;
 	string market;
-	RecordHelper::currencyMap currencyMap;
+	RecordHelper::MarketMap MarketMap;
 	while (_inFile.good()){
 		_inFile>>value;
 		vector<string> vec = fileUtil::split(value,':');
 		market = vec[0];
 		vector<string> properties = fileUtil::split(vec[1],',');
 
-		enums::CurrencyEnum currencyName = EnumHelper::getCcyEnum(market);
+		enums::MarketEnum MarketName = EnumHelper::getCcyEnum(market);
 		enums::DayCountEnum dayCountCash = EnumHelper::getDayCountEnum(properties[0]);
 		enums::DayCountEnum dayCountSwap = EnumHelper::getDayCountEnum(properties[1]);
 		enums::DayRollEnum dayRollCash = EnumHelper::getDayRollEnum(properties[2]);
@@ -49,7 +49,7 @@ void CurrencyFileSource::retrieveRecord(){
 		enums::DayRollEnum accrualAdjustSwap = EnumHelper::getDayRollEnum(properties[5]);
 		int businessDaysAfterSpot = std::stoi(properties[6]);
 
-		RecordHelper::currencyTuple ccyTuple(dayCountCash, dayCountSwap, dayRollCash, dayRollSwap, accrualAdjustCash, accrualAdjustSwap, businessDaysAfterSpot);
+		RecordHelper::MarketTuple ccyTuple(dayCountCash, dayCountSwap, dayRollCash, dayRollSwap, accrualAdjustCash, accrualAdjustSwap, businessDaysAfterSpot);
 
 		cout << market<< " -> "<< "DayCountCashConvention "<< dayCountCash<<endl;
 		cout << market<< " -> "<< "DayCountSwapConvention "<< dayCountSwap<<endl;
@@ -59,8 +59,8 @@ void CurrencyFileSource::retrieveRecord(){
 		cout << market<< " -> "<< "AccrualAdjustSwapConvention "<< accrualAdjustSwap<<endl;
 		cout << market<< " -> "<< "BusinessDaysAfterSpot "<< businessDaysAfterSpot<<endl;
 
-		currencyMap.insert(pair<enums::CurrencyEnum, RecordHelper::currencyTuple>(currencyName,ccyTuple));
+		MarketMap.insert(pair<enums::MarketEnum, RecordHelper::MarketTuple>(MarketName,ccyTuple));
 	}	
-	RecordHelper::getInstance()->setCurrencyMap(currencyMap);
+	RecordHelper::getInstance()->setMarketMap(MarketMap);
 	_inFile.close();
 }

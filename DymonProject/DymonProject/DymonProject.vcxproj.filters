@@ -57,9 +57,6 @@
     <ClInclude Include="date.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="currency.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="dateUtil.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -147,9 +144,6 @@
     <ClInclude Include="AbstractInstrument.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CurrencyFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EnumHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -228,8 +222,14 @@
     <ClInclude Include="SwaptionVolCubeBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Market.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketFileSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="SwaptionVolFileSource.h">
-      <Filter>Source Files</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -8,7 +8,7 @@
 #include "RecordHelper.h"
 #include "BuilderCashFlowLeg.h"
 #include <math.h>
-#include "currency.h"
+#include "Market.h"
 #include <vector>
 #include "Enums.h"
 #include "swap.h"
@@ -93,13 +93,13 @@ void forwardStartingSwap(DiscountCurve* yc){
 	int paymentFreqFloatingLeg=4;
     bool rollAccuralDates=true;
 
-	currency fixLegCurr=currency(enums::USD);
-	currency floatingLegCurr=currency(enums::USD);
+	Market fixLegCurr=Market(enums::USD);
+	Market floatingLegCurr=Market(enums::USD);
 
 	for(int i=12; i<240; i++){
 		date startDate =dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,enums::USD);	
 		date tradeDate = dateUtil::getEndDateMonthIncrement(startDate,i);
-		instruments::swap swap1(tradeDate, tenorNumOfMonths, notional, couponRate, yc, fixLegCurr, floatingLegCurr,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
+		Swap swap1(tradeDate, tenorNumOfMonths, notional, couponRate, yc, fixLegCurr, floatingLegCurr,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
 		cashflowLeg* fixLeg=swap1.getCashflowLegFix();
 		//fixLeg->printCashFlowLeg();
 		cashflowLeg* floatLeg=swap1.getCashflowLegFloat();
@@ -161,7 +161,7 @@ void CashFlowTest() {
 	double notional=1000000;
 	double couponRate=0.05;
 	int paymentFreq=4;
-	currency cashFlowCurr=currency(enums::USD);
+	Market cashFlowCurr=Market(enums::USD);
 	cashFlowCurr.setDayCountCashConvention(enums::ACT_360);
 	cashFlowCurr.setDayCountSwapConvention(enums::ACT_ACT);
 	cashFlowCurr.setDayRollCashConvention(enums::Mfollowing);
@@ -184,7 +184,7 @@ void CashFlowLegTest()  {
 	int buildDirection=1;
 	bool rollAccuralDates=false;
 
-	currency cashFlowLegCurr=currency(enums::USD);
+	Market cashFlowLegCurr=Market(enums::USD);
 	cashFlowLegCurr.setDayCountCashConvention(enums::ACT_360);
 	cashFlowLegCurr.setDayCountSwapConvention(enums::ACT_ACT);
 	cashFlowLegCurr.setDayRollCashConvention(enums::Mfollowing);
@@ -275,8 +275,8 @@ void SwapTest() {
 	 builder->init(Configuration::getInstance());
 	 DiscountCurve* yc = builder->build();
 
-	currency fixLegCurr=currency(enums::USD);
-	currency floatingLegCurr=currency(enums::USD);
+	Market fixLegCurr=Market(enums::USD);
+	Market floatingLegCurr=Market(enums::USD);
 	
 	fixLegCurr.setDayCountCashConvention(enums::ACT_360);
 	fixLegCurr.setDayCountSwapConvention(enums::ACT_ACT);
@@ -286,7 +286,7 @@ void SwapTest() {
 	floatingLegCurr.setDayCountSwapConvention(enums::ACT_ACT);
 	floatingLegCurr.setDayRollCashConvention(enums::Mfollowing);
 
-	instruments::swap swap1(tradeDate, maturityDate, notional, couponRate, yc, fixLegCurr, floatingLegCurr,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates,buildDirection);
+	Swap swap1(tradeDate, maturityDate, notional, couponRate, yc, fixLegCurr, floatingLegCurr,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates,buildDirection);
 
 	cout<<"tradeDate=";
 	tradeDate.printDate();

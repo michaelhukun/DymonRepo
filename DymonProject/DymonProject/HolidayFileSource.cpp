@@ -32,7 +32,7 @@ void HolidayFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 	
 	string value;
-	enums::CurrencyEnum market;
+	enums::MarketEnum market;
 	RecordHelper::HolidayMap tempMap;
 	while (_inFile.good()){
 		_inFile>>value;
@@ -41,7 +41,7 @@ void HolidayFileSource::retrieveRecord(){
 		vector<string> holidays = fileUtil::split(vec[1],',');
 		cout<<market<<" market has total holiday number:  "<<holidays.size()<<endl;
 		set<long> JDNSet = buildJDNSet(holidays);
-		tempMap.insert(pair<enums::CurrencyEnum,set<long>>(market,JDNSet));
+		tempMap.insert(pair<enums::MarketEnum,set<long>>(market,JDNSet));
 	}
 	RecordHelper::getInstance()->setHolidayMap(tempMap);
 	_inFile.close();

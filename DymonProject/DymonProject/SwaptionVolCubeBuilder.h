@@ -5,7 +5,7 @@
 #include "SwaptionVolSurface.h"
 #include "SwaptionVolCube.h"
 #include "AbstractBuilder.h"
-#include "currency.h"
+#include "Market.h"
 #include <vector>
 
 using namespace instruments;
@@ -21,8 +21,8 @@ namespace utilities{
 
 		SwaptionVolCube* build();
 
-		currency getMarket(){return _market;}
-		void setMarket(currency market){_market = market;}
+		Market getMarket(){return _market;}
+		void setMarket(Market market){_market = market;}
 
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
 		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
@@ -30,7 +30,7 @@ namespace utilities{
 
 	private:
 
-		currency _market;
+		Market _market;
 		enums::interpolAlgo _interpolAlgo;
 	};
 }

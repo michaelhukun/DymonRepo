@@ -1,7 +1,7 @@
 //created by Hu Kun on 30 Nov
 //updated by Hu Kun on 5 Dec
 
-#include "currency.h"
+#include "Market.h"
 #include "Enums.h"
 #include "EnumHelper.h"
 #include "RecordHelper.h"
@@ -10,10 +10,10 @@ using namespace instruments;
 using namespace utilities;
 using namespace Session;
 
-currency::currency(enums::CurrencyEnum market) {
+Market::Market(enums::MarketEnum market) {
 	_marketName = market;
-	RecordHelper::currencyMap ccyMap = RecordHelper::getInstance()->getCurrencyMap();
-	RecordHelper::currencyTuple ccyTuple =  ccyMap[market];
+	RecordHelper::MarketMap ccyMap = RecordHelper::getInstance()->getMarketMap();
+	RecordHelper::MarketTuple ccyTuple =  ccyMap[market];
 	setDayCountCashConvention(std::get<0>(ccyTuple));
 	setDayCountSwapConvention(std::get<1>(ccyTuple));
 	setDayRollCashConvention(std::get<2>(ccyTuple));
@@ -23,7 +23,7 @@ currency::currency(enums::CurrencyEnum market) {
 	setBusinessDaysAfterSpot(std::get<6>(ccyTuple));
 }
 
-std::string currency::getNameString(){
+std::string Market::getNameString(){
 	switch(_marketName){
 	case::USD:
 		return "USD";

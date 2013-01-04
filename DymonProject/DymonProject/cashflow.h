@@ -4,7 +4,7 @@
 #ifndef CASHFLOW_H
 #define CASHFLOW_H
 
-#include "currency.h"
+#include "Market.h"
 #include "Enums.h"
 #include "date.h"
 #include "dateUtil.h"
@@ -21,7 +21,7 @@ namespace instruments {
 
 	public:
 		cashflow(){};
-		cashflow(double couponRate,double notional,  date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, currency cashFlowCurr);
+		cashflow(double couponRate,double notional,  date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, Market cashFlowCurr);
 
 		~cashflow(){};
 
@@ -32,7 +32,7 @@ namespace instruments {
 		date getPaymentDate();
 		date getAccuralStartDate();
 		date getAccuralEndDate();
-		currency getCashFlowCurr();
+		Market getCashFlowCurr();
 		double getAccuralFactor();
 
 		void setCouponAmount();
@@ -42,7 +42,7 @@ namespace instruments {
 		void setPaymentDate(date paymentDate);
 		void setAccuralStartDate(date accuralStartDate);
 		void setAccuralEndDate(date accuralEndDate);
-		void setCashFlowCurr(currency cashFlowCurr);
+		void setCashFlowCurr(Market cashFlowCurr);
 		void setAccuralFactor();
 
 		bool isDateEqual(cashflow cf);
@@ -58,7 +58,7 @@ namespace instruments {
 		date _accuralStartDate;
 		date _accuralEndDate;
 		
-		currency _cashFlowCurr;
+		Market _cashFlowCurr;
 		double _accuralFactor;
 	};
 }

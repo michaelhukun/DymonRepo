@@ -7,8 +7,8 @@ typedef AbstractBuilder super;
 void SwaptionVolCubeBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	
-	_market = currency(EnumHelper::getCcyEnum("USD"));
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("swaptionvolsurface.usd.interpol",false,"LINEAR"));
+	_market = Market(EnumHelper::getCcyEnum("USD"));
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("swaptionVolCube.usd.interpol",false,"LINEAR"));
 }
 
 SwaptionVolCube* SwaptionVolCubeBuilder::build(){

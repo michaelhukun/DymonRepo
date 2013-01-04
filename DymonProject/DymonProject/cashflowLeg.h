@@ -3,7 +3,7 @@
 #define CASHFLOWLEG_H
 
 #include "cashflow.h"
-#include "currency.h"
+#include "Market.h"
 #include "Enums.h"
 #include "date.h"
 #include "dateUtil.h"

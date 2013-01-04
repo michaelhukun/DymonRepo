@@ -8,7 +8,7 @@
 #include "RecordHelper.h"
 #include "Enums.h"
 #include "EnumHelper.h"
-#include "currency.h"
+#include "Market.h"
 
 using namespace DAO;
 using namespace std;
@@ -34,13 +34,13 @@ void SwapRateFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 	
 	string value;
-	enums::CurrencyEnum market;
+	enums::MarketEnum market;
 	RecordHelper::RateMap tempMap;
 	while (_inFile.good()){
 		_inFile>>value;
 		vector<string> vec = fileUtil::split(value,':');
 		market = EnumHelper::getCcyEnum(vec[0]);
-		currency mkt(market);
+		Market mkt(market);
 		enums::DayRollEnum accrualAdjust=mkt.getAccrualAdjustSwapConvention();
 		int businessDaysAfterSpot = mkt.getBusinessDaysAfterSpot();
 		vector<string> deposits = fileUtil::split(vec[1],',');
@@ -63,7 +63,7 @@ void SwapRateFileSource::retrieveRecord(){
 			cout << mkt.getNameString()<< " -> tenor[" << tenureRate[0]<<"], accrual start["<<accrualStartDate.toString()<<"], accrual end["
 				<<accrualEndDate.toString() <<"], deposit rate["<< swapRate << "]"<<endl;
 		}
-		tempMap.insert(pair<enums::CurrencyEnum, map<long, double>>(market,rateMap));
+		tempMap.insert(pair<enums::MarketEnum, map<long, double>>(market,rateMap));
 	}
 	RecordHelper::getInstance()->setSwapRateMap(tempMap);
 	_inFile.close();

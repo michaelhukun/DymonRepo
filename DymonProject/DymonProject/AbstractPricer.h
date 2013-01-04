@@ -1,7 +1,7 @@
 //created by Hu Kun on 16 Dec 2012
 #ifndef ABSTRACTPRICER_H
 #define ABSTRACTPRICER_H
-#include "currency.h"
+#include "Market.h"
 #include "date.h"
 #include <vector>
 #include <tuple>

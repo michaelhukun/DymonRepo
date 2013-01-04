@@ -6,7 +6,7 @@
 #include "cashflow.h"
 #include "Enums.h"
 #include "date.h"
-#include "currency.h"
+#include "Market.h"
 
 using namespace instruments;
 
@@ -20,7 +20,7 @@ namespace utilities {
 		void init(Configuration* cfg);
 
 		DepositRateBootStrapper(point startPoint, date endDate, cashflow cashFlow, enums::interpolAlgo interpolAlgo,
-			enums::NumericAlgo numericAlgo, currency market, double bizDaysAfterSpotDF):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
+			enums::NumericAlgo numericAlgo, Market market, double bizDaysAfterSpotDF):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
 			_depositRate = cashFlow.getCouponRate();
 			_cashFlow = cashFlow;
 			_market = market;
@@ -35,7 +35,7 @@ namespace utilities {
 	private:
 
 		double _depositRate;
-		currency _market;
+		Market _market;
 		cashflow _cashFlow;
 		double _bizDaysAfterSpotDF;
 		enums::DayCountEnum _dayCountCash;

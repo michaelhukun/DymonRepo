@@ -22,7 +22,6 @@ namespace instruments {
 
 		double blackScholesFormula(enums::CallPut callPutFlag, double S, double K, double vol, double r, double T);
 		double blackFormula(enums::CallPut callPutFlag, double FwdS, double K, double vol, double discountFactor, double T);
-
 		
 		double getImpliedVolBlackATM(enums::CallPut callPutFlag, double K,  double optionPrice, double discountFactor, double T);
 

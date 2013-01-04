@@ -7,7 +7,7 @@
 #include "HolidayFileSource.h"
 #include "DepositFileSource.h"
 #include "ConfigurationFileSource.h"
-#include "CurrencyFileSource.h"
+#include "MarketFileSource.h"
 #include "SwaptionVolFileSource.h"
 
 
@@ -29,7 +29,7 @@ RecordHelper::RecordHelper(){
 
 void RecordHelper::init(Configuration* cfg){
 	buildConfiguration(cfg);
-	buildCurrencyMap(cfg);
+	buildMarketMap(cfg);
 	buildHolidayMap(cfg);
 	buildSwapRateMap(cfg);
 	buildDepositRateMap(cfg);
@@ -60,10 +60,10 @@ void RecordHelper::buildHolidayMap(Configuration* cfg){
 	holidayDataSource->retrieveRecord();
 }
 
-void RecordHelper::buildCurrencyMap(Configuration* cfg){
-	AbstractDAO* currencyDataSource= new CurrencyFileSource();
-	currencyDataSource->init(cfg);
-	currencyDataSource->retrieveRecord();
+void RecordHelper::buildMarketMap(Configuration* cfg){
+	AbstractDAO* MarketDataSource= new MarketFileSource();
+	MarketDataSource->init(cfg);
+	MarketDataSource->retrieveRecord();
 }
 
 void RecordHelper::buildConfiguration(Configuration* cfg){
