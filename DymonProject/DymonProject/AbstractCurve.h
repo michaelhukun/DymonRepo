@@ -27,6 +27,8 @@ namespace utilities{
 
 		virtual double getValue(T xVal);
 
+		virtual void insertPoint(point aPoint);
+
 		void setLineSectionVector(std::vector<AbstractInterpolator<T>*>* lineSectionVector){
 			_lineSectionVector = lineSectionVector;		
 		}
@@ -49,6 +51,10 @@ namespace utilities{
 			int vectorSize = _lineSectionVector->size();
 			_lineSectionVector->insert(_lineSectionVector->begin()+vectorSize,lineSection);
 		}
+	}
+
+	template<typename T>
+	void AbstractCurve<T>::insertPoint(point aPoint){
 	}
 
 	template<typename T>

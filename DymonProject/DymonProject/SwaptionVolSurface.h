@@ -6,7 +6,7 @@
 using namespace utilities;
 
 namespace utilities{
-	class SwaptionVolSurface: public AbstractSurface<double>{
+	class SwaptionVolSurface: public AbstractSurface<int>{
 
 	public:		
 

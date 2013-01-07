@@ -10,8 +10,8 @@
 #include "AbstractBootStrapper.h"
 #include "dateUtil.h"
 #include "RecordHelper.h"
+#include "Constants.h"
 
-#define NaN -9999999 
 using namespace utilities;
 
 typedef AbstractBootStrapper<date> super;

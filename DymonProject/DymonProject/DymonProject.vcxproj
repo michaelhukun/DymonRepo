@@ -103,6 +103,7 @@
     <ClInclude Include="cashflowLeg.h" />
     <ClInclude Include="configuration.h" />
     <ClInclude Include="ConfigurationFileSource.h" />
+    <ClInclude Include="Constants.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />

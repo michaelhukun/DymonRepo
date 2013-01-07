@@ -2,7 +2,6 @@
 #ifndef LOGLINEARINTERPOLATOR_H
 #define LOGLINEARINTERPOLATOR_H
 #include "AbstractInterpolator.h"
-#define NaN -999999
 
 namespace utilities{
 

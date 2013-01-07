@@ -10,8 +10,7 @@
 #include "Market.h"
 #include <tuple>
 #include <regex>
-
-#define NA -99999
+#include "Constants.h"
 
 using namespace DAO;
 using namespace std;
@@ -28,66 +27,68 @@ void SwaptionVolFileSource::init(Configuration* cfg){
 
 void SwaptionVolFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
-	
+
 	CSVDatabase db;
 	readCSV(_inFile, db);
 
-	RecordHelper::SwaptionVolMap tempMap;
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
+	int strikeDiffATM=0;
+	
+	RecordHelper::SwaptionCubeMap tempSwaptionCubeMap;
+	RecordHelper::SwaptionATMStrikeMap tempSwaptionATMStrikeMap;
+	RecordHelper::SwaptionSurfaceMap volSurfaceMap;
+	std::regex ATM ("ATM(.*)");
 
-	cout <<"numofRows="<<numOfRows<<endl;
-	cout <<"numOfCols="<<numOfCols<<endl;
 	for (int i=0;i<=numOfRows-1;i++) {
 
-		std::regex ATM ("ATM(.*)");
-		std::regex MO ("MO");
-		std::regex YR ("YR");
-		
-		
 		String aCell=db.at(i).at(0);
+
 		if (std::regex_match (aCell,ATM)) {
+			if (i!=0){				
+				tempSwaptionCubeMap.insert(std::make_pair(strikeDiffATM,volSurfaceMap));
+				//<double,std::map<tuple<double,double>,double>>
+				volSurfaceMap.clear();
+			}
+			strikeDiffATM = getStrikeDiffATM(aCell);
 			enums::MarketEnum market = EnumHelper::getCcyEnum(db.at(i).at(1));
 			Market mkt(market);
 			continue;
 		}
+
 		for (int j=2;j<=numOfCols-1;j++) {
 
 			String topRowCell=db.at(0).at(j);
 			String tagCell=db.at(i).at(1);
 
 			if (tagCell.compare("Vol")==0) {
-				int pos=aCell.find(" ");
-				double optionTenor=std::stod(aCell.substr(0,pos));
-				if (std::regex_match (aCell,YR)) {
-					optionTenor=std::stod(aCell.substr(0,pos))*12;
+				int optionExpiryInMonth=std::stoi(aCell.substr(0,aCell.find(" ")));
+				if (string::npos != aCell.find("YR")) {
+					optionExpiryInMonth=std::stoi(aCell.substr(0,aCell.find(" ")))*12;
 				}
 
-				double vol=db.at(i).at(j).compare("")==0?NA:std::stod(db.at(i).at(j));
-				double strike=db.at(i+1).at(j).compare("")==0?NA:std::stod(db.at(i+1).at(j));
+				double vol=db.at(i).at(j).compare("")==0?NaN:std::stod(db.at(i).at(j));
+				double strike=db.at(i+1).at(j).compare("")==0?NaN:std::stod(db.at(i+1).at(j));
+				int fSwapTenorInMonth=std::stoi(topRowCell.substr(0,topRowCell.find(" ")))*12;
 
-				double fSwapTenor=std::stod(topRowCell.substr(0,topRowCell.find(" ")))*12;
+				auto aTuple=std::make_tuple(fSwapTenorInMonth,optionExpiryInMonth);
+				insertPointVolSurfaceMap(volSurfaceMap,fSwapTenorInMonth,optionExpiryInMonth,vol);
+				if (strikeDiffATM==0)
+					tempSwaptionATMStrikeMap.insert(std::make_pair(aTuple,strike));
 
-				//std::map<strike,std::map<tuple<double fSwapTenorNumOfMonths,double optionTenorNumOfMonths>,double swaptionVol>> SwaptionVolMap
-
-				auto aTuple=std::make_tuple(fSwapTenor,optionTenor);
-				std::map<tuple<double,double>,double> aPair;
-				aPair.insert(std::make_pair(aTuple,vol));
-				//pair<tuple<double,double>,double>
-				tempMap.insert(std::make_pair(strike,aPair));
-				//<double,std::map<tuple<double,double>,double>>
-					
 			}
 			else {
 				continue;
 			}
-			
-
 		}
-
 	}
 
-	RecordHelper::getInstance()->setSwaptionVolMap(tempMap);
+	cout <<"numofRows="<<db.size()<<endl;
+	cout <<"numOfCols="<<db.at(0).size()<<endl;
+
+	tempSwaptionCubeMap.insert(std::make_pair(strikeDiffATM,volSurfaceMap));
+	RecordHelper::getInstance()->setSwaptionATMStrikeMap(tempSwaptionATMStrikeMap);
+	RecordHelper::getInstance()->setSwaptionVolMap(tempSwaptionCubeMap);
 	_inFile.close();
 	//DAO::SwaptionVolFileSource::swaptionTest();
 }
@@ -127,6 +128,17 @@ void SwaptionVolFileSource::display(const CSVDatabase& db) {
 	}	
 };
 
+
+int SwaptionVolFileSource::getStrikeDiffATM(string strikeStr){
+	std::regex bps ("(.*)bps");
+	if (std::regex_match (strikeStr,bps)) {
+		string strikeStrATMRemoved = strikeStr.erase(0,3);
+		int optionExpiryInMonth=std::stoi(strikeStrATMRemoved.substr(0,strikeStrATMRemoved.find("bps")));
+		return optionExpiryInMonth;
+	}
+	return 0;
+}
+
 void SwaptionVolFileSource::swaptionTest() {
 
 	std::fstream file("swaption_skew_USD.csv", std::ios::in);
@@ -139,5 +151,16 @@ void SwaptionVolFileSource::swaptionTest() {
 	display(db);
 
 };
+
+void SwaptionVolFileSource::insertPointVolSurfaceMap(RecordHelper::SwaptionSurfaceMap &map, int fSwapTenorInMonth, int optionExpiryInMonth, double vol){
+	if (map.find(fSwapTenorInMonth)==map.end()){
+		std::map<int,double> volCurveMap;
+		volCurveMap.insert(std::make_pair(optionExpiryInMonth, vol));
+		map.insert(std::make_pair(fSwapTenorInMonth, volCurveMap));
+	}else{
+		std::map<int,double>* volCurveMap = &map[fSwapTenorInMonth];
+		volCurveMap->insert(std::make_pair(optionExpiryInMonth, vol));
+	}
+}
 
 

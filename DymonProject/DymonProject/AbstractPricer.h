@@ -7,7 +7,7 @@
 #include <tuple>
 #include <map>
 #include "DiscountCurve.h"
-#define NaN -9999999 
+#include "Constants.h"
 
 using namespace std;
 using namespace instruments;

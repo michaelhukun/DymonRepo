@@ -24,6 +24,8 @@
 #include "AbstractSurface.h"
 #include "TestSurface.h"
 #include "SwaptionVolFileSource.h"
+#include "SwaptionVolCube.h"
+#include "SwaptionVolCubeBuilder.h"
 
 using namespace utilities;
 using namespace std;
@@ -40,6 +42,7 @@ void CashFlowLegTest();
 void CashFlowTest();
 void SwapTest();
 DiscountCurve* buildDiscountCurve();
+SwaptionVolCube* buildSwaptionVolCube();
 void unitTest();
 void forwardStartingSwap(DiscountCurve* yc);
 
@@ -54,6 +57,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//aSwaptionTest.swaptionTest();
 	//DiscountCurve* yc = buildDiscountCurve();
 	//forwardStartingSwap(yc);
+	SwaptionVolCube* svc = buildSwaptionVolCube();
 }		
 
 void unitTest(){	
@@ -74,9 +78,6 @@ void unitTest(){
 	//discountCurveTest.runTest();
 	TestSurface surfaceTest;
 	surfaceTest.runTest();
-
-	
-
 }
 	
 DiscountCurve* buildDiscountCurve(){
@@ -86,6 +87,14 @@ DiscountCurve* buildDiscountCurve(){
 	DiscountCurve* yc = builder->build();
 	cout<<yc->toString()<<endl;
 	return yc;
+}
+
+SwaptionVolCube* buildSwaptionVolCube(){
+		cout << "\n******** Build Yield Curve ********\n" << endl;
+	SwaptionVolCubeBuilder* builder = new SwaptionVolCubeBuilder();
+	builder->init(Configuration::getInstance());
+	SwaptionVolCube* svc = builder->build();
+	return svc;
 }
 
 void forwardStartingSwap(DiscountCurve* yc){

@@ -7,6 +7,7 @@
 #include <sstream>
 #include <vector>
 #include "AbstractFileSource.h"
+#include "RecordHelper.h"
 
 namespace DAO {
 
@@ -35,6 +36,9 @@ namespace DAO {
 
 		void display(const CSVDatabase& db);
 
+		int getStrikeDiffATM(std::string strikeStr);
+
+		void insertPointVolSurfaceMap(RecordHelper::SwaptionSurfaceMap &map, int fSwapTenorInMonth, int optionExpiryInMonth, double vol);
 	
 	};
 }

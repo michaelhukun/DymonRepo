@@ -12,8 +12,7 @@
 #include "DepositRateBootStrapper.h"
 #include "OvernightRateBootStrapper.h"
 #include "SwapRateBootStrapper.h"
-
-#define NaN -9999999 
+#include "Constants.h"
 
 using namespace utilities;
 typedef AbstractBuilder super;

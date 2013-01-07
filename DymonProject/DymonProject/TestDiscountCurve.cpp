@@ -10,8 +10,7 @@
 #include "dateUtil.h"
 #include "swap.h"
 #include "RecordHelper.h"
-
-#define NaN -9999999 
+#include "Constants.h"
 
 using namespace UnitTest;
 using namespace utilities;

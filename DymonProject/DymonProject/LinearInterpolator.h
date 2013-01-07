@@ -2,7 +2,7 @@
 #ifndef LINEARINTERPOLATOR_H
 #define LINEARINTERPOLATOR_H
 #include "AbstractInterpolator.h"
-#define NaN -999999
+#include "Constants.h"
 
 namespace utilities{	
 
