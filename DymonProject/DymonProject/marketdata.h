@@ -1,13 +1,15 @@
 //created by Hu Kun on 29 Nov 2012
-#ifndef MARKETDATA_H
-#define MARKETDATA_H
+#ifndef MarketData_H
+#define MarketData_H
 #include "Market.h"
 #include "date.h"
 #include "AbstractInstrument.h"
 #include "instrumentValue.h"
+#include "SwaptionVolCube.h"
 #include "AbstractInterpolator.h"
+#include "DiscountCurve.h"
+#include "Configuration.h"
 #include <map>
-#include <utility>
 #include <tuple>
 #include "Enums.h"
 
@@ -16,43 +18,31 @@ using namespace instruments;
 using namespace std;
 using namespace enums;
 
-namespace markets {
+namespace Markets {
 
-	// Singlton class for marketdata
-	class marketdata {
+	// Singlton class for MarketData
+	class MarketData {
 	public:
-		static marketdata* getInstance();
-		double getPrice();
-		void setPrice(double aPrice);
+		static MarketData* getInstance();
 
-		template <class T>
-		map<double,vector<T>> getDiscountCurve(vector<T> inputPoints, date startTenor, date endTenor, enums::interpolAlgo algo);
+		void buildAll();
+
+		void buildDiscountCurve();
+		void buildSwaptionVolCube();
+
+		DiscountCurve* getDiscountCurve(){return _discountCurve;}
+		SwaptionVolCube* getSwaptionVolCube(){return _swaptionVolCube;};
 		
-		template <class T>
-		map<double,tuple<T,T>> getVolSurface(double underlyingPrice, vector<double> delta, date tradeDate, vector<date> maturity);
-		
-		template <class T>
-		map<double,tuple<T,T,T>> swaptionVolSurface(double underlyingPrice, vector<double> delta, date tradeDate, vector<date> swapMaturity, vector<date> optionMaturity);
-
-		template <class T>
-		map<double,vector<T>> getBondCurve(vector<T> inputPoints, date startTenor, date endTenor, enums::interpolAlgo algo);
-
-		template <class T>
-		map<double,vector<T>> getFxForwardCurve(vector<T> inputPoints, date startTenor, date endTenor, enums::interpolAlgo algo);
-
-		template <class T>
-		map<double,vector<T>> getImpliedDiscountCurve(vector<T> inputPoints, date startTenor, date endTenor, enums::interpolAlgo algo);
-
 	protected:
 		//private copy constructor
-		marketdata();
-		~marketdata();
+		MarketData(){};
+		~MarketData();
 		
 	private:
 		static bool instanceFlag;
-		static marketdata *single;
-		double price;
-		
+		static MarketData *single;
+		DiscountCurve* _discountCurve;
+		SwaptionVolCube* _swaptionVolCube;
 	};
 }
 #endif

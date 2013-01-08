@@ -14,8 +14,14 @@ namespace instruments {
 		AbstractInstrument(){};
 		virtual date getTradeDate() {return _tradeDate;};
 		virtual date getMaturityDate() {return _maturityDate;};
-		virtual void setTradeDate(date tradeDate) {_tradeDate=tradeDate;};
-		virtual void setMaturityDate(date maturityDate) {_maturityDate=maturityDate;};
+
+		virtual void setTradeDate(date tradeDate) {
+			_tradeDate=tradeDate;
+		}
+
+		virtual void setMaturityDate(date maturityDate) {
+			_maturityDate=maturityDate;
+		}
 
 	protected: 
 		Market _domMarket;

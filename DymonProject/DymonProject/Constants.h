@@ -3,6 +3,7 @@
 #define CONSTANTS_H
 
 namespace utilities{
-		static const double NaN = -9999999;
+		static const double NaN = -99999999;
+
 }
 #endif

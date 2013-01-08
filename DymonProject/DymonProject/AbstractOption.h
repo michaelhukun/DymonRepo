@@ -18,7 +18,7 @@ namespace instruments {
 		AbstractOption(){};
 		~AbstractOption(){};
 		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc){
-			AbstractOption(market, tradeDate, callPutFlag, S, K, vol);
+			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
 			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));			
 			_expiryInMonth = expiryInMonth;
 			_dc = dc;
@@ -27,14 +27,14 @@ namespace instruments {
 
 		AbstractOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc) {
 
-			AbstractOption(market, tradeDate, callPutFlag, S, K, vol);
+			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
 			setMaturityDate(expiryDate);
 			_dc = dc;
 			_discountFactor = dc->getValue(getMaturityDate())/dc->getValue(getTradeDate());
 		}
 
 		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, double r) {
-			AbstractOption(market, tradeDate, callPutFlag, S, K, vol);
+			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
 			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));
 			_discountFactor = exp(-r*expiryInMonth/12);
 			_r=r;
@@ -54,7 +54,7 @@ namespace instruments {
 		Market _market;
 
 	private:
-		AbstractOption(Market market, date tradeDate, CallPut callPutFlag, double S, double K, double vol) {
+		void BaseOption(Market market, date tradeDate, CallPut callPutFlag, double S, double K, double vol) {
 			setTradeDate(tradeDate);
 			_callPutFlag = callPutFlag;
 			_S = S;

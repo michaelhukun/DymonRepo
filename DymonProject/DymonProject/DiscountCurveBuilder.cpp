@@ -33,7 +33,8 @@ void DiscountCurveBuilder::init(Configuration* cfg){
 	_bizDaysAfterSpotDF = NaN;
 }
 
-DiscountCurve* DiscountCurveBuilder::build(){
+DiscountCurve* DiscountCurveBuilder::build(Configuration* cfg){
+	if (cfg!=NULL) init(cfg);
 	DiscountCurve* yc = new DiscountCurve();
 	buildOvernightSection(yc);
 	buildDepositSection(yc);

@@ -39,7 +39,7 @@ void TestDiscountCurve::swapRateTest(enums::MarketEnum market,enums::interpolAlg
 	builder->setInterpolAlgo(interpolAlgo);
 	builder->setTimeLineBuildDirection(1);
 	builder->setBizDaysAfterSpotDF(NaN);
-	DiscountCurve* yc = builder->build();
+	DiscountCurve* yc = builder->build(NULL);
 	cout<<yc->toString()<<endl;
 	
 

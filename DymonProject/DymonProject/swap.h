@@ -51,8 +51,6 @@ namespace instruments {
 		cashflowLeg* _fixCashflowLeg;
 		cashflowLeg* _floatingCashflowLeg;
 		DiscountCurve* _yc;
-		date _tradeDate;
-		date _expiryDate;
 		Market _fixLegCurr;
 		Market _floatingLegCurr;
 		int _paymentFreqFixLeg;

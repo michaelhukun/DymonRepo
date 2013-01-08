@@ -21,7 +21,7 @@ namespace utilities{
 
 		void init(Configuration* cfg);
 
-		DiscountCurve* build();
+		DiscountCurve* build(Configuration* cfg);
 
 		void buildDepositSection(DiscountCurve* yc);
 

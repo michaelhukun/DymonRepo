@@ -21,11 +21,11 @@ Swap::Swap(date tradeDate, date maturityDate, double notional, double couponRate
 	setTradeDate(tradeDate);
 	setMaturityDate(maturityDate);
 
-	BuilderCashFlowLeg fixLegs(tradeDate, maturityDate,couponRate,notional, paymentFreqFixLeg, fixLegCurr.getMarketEnum(),buildDirection);
-	BuilderCashFlowLeg floatLegs(tradeDate, maturityDate,yc,notional, paymentFreqFloatingLeg, floatingLegCurr.getMarketEnum(), buildDirection);
+	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(tradeDate, maturityDate,couponRate,notional, paymentFreqFixLeg, fixLegCurr.getMarketEnum(),buildDirection);
+	BuilderCashFlowLeg* floatLegs = new BuilderCashFlowLeg(tradeDate, maturityDate,yc,notional, paymentFreqFloatingLeg, floatingLegCurr.getMarketEnum(), buildDirection);
 
-	_fixCashflowLeg=fixLegs.getCashFlowLeg();
-	_floatingCashflowLeg=floatLegs.getCashFlowLeg();
+	_fixCashflowLeg=fixLegs->getCashFlowLeg();
+	_floatingCashflowLeg=floatLegs->getCashFlowLeg();
 	_yc=yc;
 	_fixLegCurr=fixLegCurr;
 	_floatingLegCurr=floatingLegCurr;
@@ -38,11 +38,11 @@ Swap::Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponR
 	setTradeDate(tradeDate);
 	setMaturityDate(dateUtil::getEndDate(tradeDate,tenorNumOfMonths,fixLegCurr.getDayRollSwapConvention(),fixLegCurr.getMarketEnum(),dateUtil::MONTH));
 
-	BuilderCashFlowLeg fixLegs(tradeDate, tenorNumOfMonths,couponRate,notional, paymentFreqFixLeg, fixLegCurr.getMarketEnum());
-	BuilderCashFlowLeg floatLegs(tradeDate, tenorNumOfMonths,yc,notional, paymentFreqFloatingLeg, floatingLegCurr.getMarketEnum());
+	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(tradeDate, tenorNumOfMonths,couponRate,notional, paymentFreqFixLeg, fixLegCurr.getMarketEnum());
+	BuilderCashFlowLeg* floatLegs= new BuilderCashFlowLeg(tradeDate, tenorNumOfMonths,yc,notional, paymentFreqFloatingLeg, floatingLegCurr.getMarketEnum());
 
-	_fixCashflowLeg=fixLegs.getCashFlowLeg();
-	_floatingCashflowLeg=floatLegs.getCashFlowLeg();
+	_fixCashflowLeg=fixLegs->getCashFlowLeg();
+	_floatingCashflowLeg=floatLegs->getCashFlowLeg();
 	_yc=yc;
 	_fixLegCurr=fixLegCurr;
 	_floatingLegCurr=floatingLegCurr;

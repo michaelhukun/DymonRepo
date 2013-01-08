@@ -1,5 +1,3 @@
-// DymonProject.cpp : Defines the entry point for the console application.
-
 #include "stdafx.h"
 #include "date.h"
 #include "dateUtil.h"
@@ -23,9 +21,11 @@
 #include "TestDiscountCurve.h"
 #include "AbstractSurface.h"
 #include "TestSurface.h"
+#include "swaption.h"
 #include "SwaptionVolFileSource.h"
 #include "SwaptionVolCube.h"
 #include "SwaptionVolCubeBuilder.h"
+#include "marketdata.h"
 
 using namespace utilities;
 using namespace std;
@@ -33,23 +33,18 @@ using namespace instruments;
 using namespace Session;
 using namespace UnitTest;
 using namespace enums;
-
-
+using namespace Markets;
 
 void LoadInitialData();
 void DateUtilTest();
 void CashFlowLegTest();
 void CashFlowTest();
 void SwapTest();
-DiscountCurve* buildDiscountCurve();
-SwaptionVolCube* buildSwaptionVolCube();
 void unitTest();
 void forwardStartingSwap(DiscountCurve* yc);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-
-	
 	LoadInitialData();
 	//unitTest();
 
@@ -57,8 +52,18 @@ int _tmain(int argc, _TCHAR* argv[])
 	//aSwaptionTest.swaptionTest();
 	//DiscountCurve* yc = buildDiscountCurve();
 	//forwardStartingSwap(yc);
-	SwaptionVolCube* svc = buildSwaptionVolCube();
+	MarketData::getInstance()->buildAll();
+	SwaptionVolCube* svc = MarketData::getInstance()->getSwaptionVolCube();
 	cout<<svc->getVol(0,12,12)<<endl;
+	cout<<svc->getVol(0,120,12)<<endl;
+	cout<<svc->getVol(0,120,24)<<endl;
+	cout<<svc->getVol(0,120,36)<<endl;
+	cout<<svc->getVol(0,18,36)<<endl;
+	cout<<svc->getVol(10,12,36)<<endl;
+
+	Market swaptionMarket=Market(enums::USD);
+	Swaption swt1(swaptionMarket, enums::Payer,12,0,24);
+	cout<<"Swaption Premium ATM: "<<swt1.getMPV()<<endl;
 }		
 
 void unitTest(){	
@@ -79,23 +84,6 @@ void unitTest(){
 	//discountCurveTest.runTest();
 	TestSurface surfaceTest;
 	surfaceTest.runTest();
-}
-	
-DiscountCurve* buildDiscountCurve(){
-	cout << "\n******** Build Yield Curve ********\n" << endl;
-	DiscountCurveBuilder* builder = new DiscountCurveBuilder();
-	builder->init(Configuration::getInstance());
-	DiscountCurve* yc = builder->build();
-	cout<<yc->toString()<<endl;
-	return yc;
-}
-
-SwaptionVolCube* buildSwaptionVolCube(){
-		cout << "\n******** Build Yield Curve ********\n" << endl;
-	SwaptionVolCubeBuilder* builder = new SwaptionVolCubeBuilder();
-	builder->init(Configuration::getInstance());
-	SwaptionVolCube* svc = builder->build();
-	return svc;
 }
 
 void forwardStartingSwap(DiscountCurve* yc){
@@ -122,7 +110,6 @@ void forwardStartingSwap(DiscountCurve* yc){
 	}
 }
 
-
 void buildSampleCurve(){
 
 	typedef tuple<date, double> point;
@@ -138,7 +125,6 @@ void buildSampleCurve(){
 	yc->insertLineSection(li1);
 	yc->insertLineSection(li2);
 }
-
 
 void ZeroTest(){
 	cout << "******** Zero Test ********" << endl;
@@ -280,13 +266,13 @@ void SwapTest() {
 	int paymentFreqFloatingLeg=4;
 	//build from start to end (build forward)
 	int buildDirection=1;
-    bool rollAccuralDates=false;
-	
-	 typedef tuple<date, double> point;
-	 
-	 DiscountCurveBuilder* builder = new DiscountCurveBuilder();
-	 builder->init(Configuration::getInstance());
-	 DiscountCurve* yc = builder->build();
+	bool rollAccuralDates=false;
+
+	typedef tuple<date, double> point;
+
+	DiscountCurveBuilder* builder = new DiscountCurveBuilder();
+	builder->init(Configuration::getInstance());
+	DiscountCurve* yc = builder->build(NULL);
 
 	Market fixLegCurr=Market(enums::USD);
 	Market floatingLegCurr=Market(enums::USD);

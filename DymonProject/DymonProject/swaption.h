@@ -28,13 +28,16 @@ using namespace instruments;
 
 
 namespace instruments {
-	class Swaption:  public Swap, public AbstractOption {
+	class Swaption: public AbstractOption {
 		
+	public:
 		Swaption(){};
 		~Swaption(){};
-		Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double K, SwaptionVolCube* vs, date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
-		Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double K, SwaptionVolCube* vs, DiscountCurve* yc, Swap* underlyingSwap);
-		
+		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vs, date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates);
+		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vs, DiscountCurve* yc, Swap* underlyingSwap);
+		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, Swap* underlyingSwap);
+		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, int tenorInMonth);
+
 		Swap* getSwap(){ return _underlyingSwap; }
 
 		virtual double getMPV();

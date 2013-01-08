@@ -15,7 +15,7 @@ namespace utilities{
 		
 		virtual void init(Configuration* cfg){}
 		
-		virtual AbstractDataStructure* build()=0;
+		virtual AbstractDataStructure* build(Configuration* cfg)=0;
 
 	};
 }

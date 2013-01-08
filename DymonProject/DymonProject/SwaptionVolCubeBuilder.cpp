@@ -2,6 +2,7 @@
 #include "EnumHelper.h"
 #include "RecordHelper.h"
 #include "SwaptionVolSurface.h"
+#include "InterpolatorFactory.h"
 
 using namespace utilities;
 typedef AbstractBuilder super;
@@ -15,7 +16,8 @@ void SwaptionVolCubeBuilder::init(Configuration* cfg){
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("swaptionVolCube.usd.interpol",false,"LINEAR"));
 }
 
-SwaptionVolCube* SwaptionVolCubeBuilder::build(){
+SwaptionVolCube* SwaptionVolCubeBuilder::build(Configuration* cfg){
+	if (cfg!=NULL) init(cfg);
 	SwaptionVolCube* svc = new SwaptionVolCube();
 	RecordHelper::SwaptionCubeMap volCubeMap = RecordHelper::getInstance()->getSwaptionVolMap();
 	RecordHelper::SwaptionCubeMap::iterator cubeIt;
@@ -28,7 +30,7 @@ SwaptionVolCube* SwaptionVolCubeBuilder::build(){
 		for (surfaceIt=volSurfaceMap.begin();surfaceIt!=volSurfaceMap.end();surfaceIt++){
 			int tenor = surfaceIt->first;
 			map<int,double> curveMap = surfaceIt->second;
-			AbstractCurve<int>* volCurve = new AbstractCurve<int>();
+			AbstractCurve<double>* volCurve = new AbstractCurve<double>();
 
 			map<int,double>::iterator i;
 			map<int,double>::iterator j;
@@ -39,7 +41,7 @@ SwaptionVolCube* SwaptionVolCubeBuilder::build(){
 				double endVol =  (*j).second;
 				point startPoint(startExpiry, startVol);
 				point endPoint(endExpiry, endVol);
-				AbstractInterpolator<int>* ai = new AbstractInterpolator<int>(startPoint, endPoint,_interpolAlgo);
+				AbstractInterpolator<double>* ai = InterpolatorFactory<double>::getInstance()->getInterpolator(startPoint, endPoint,_interpolAlgo);
 				volCurve->insertLineSection(ai);
 			}
 			volSurface->insertcurve(tenor, volCurve);

@@ -19,7 +19,7 @@ namespace utilities{
 
 		void init(Configuration* cfg);
 
-		SwaptionVolCube* build();
+		SwaptionVolCube* build(Configuration* cfg);
 
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}
