@@ -58,6 +58,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//DiscountCurve* yc = buildDiscountCurve();
 	//forwardStartingSwap(yc);
 	SwaptionVolCube* svc = buildSwaptionVolCube();
+	cout<<svc->getVol(0,12,12)<<endl;
 }		
 
 void unitTest(){	

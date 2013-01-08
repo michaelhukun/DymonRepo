@@ -17,7 +17,7 @@ AbstractCurve<double>* SwaptionVolCube::getVolCurveAlongStrike(double expiryInMo
 	AbstractCurve<double>* curve = new AbstractCurve<double>();
 	map<int, SwaptionVolSurface*>::iterator i;
 	map<int, SwaptionVolSurface*>::iterator j;
-	for (i = _cube->begin(), j=_cube->begin()++; j!=_cube->end(); i++,j++){
+	for (i = _cube->begin(), j=++_cube->begin(); j!=_cube->end(); i++,j++){
 		SwaptionVolSurface* lowerStrikeSurface = (*i).second;
 		SwaptionVolSurface* upperStrikeSurface = (*j).second;
 		int startStrike =  (*i).first;
