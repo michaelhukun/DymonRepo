@@ -62,8 +62,12 @@ int _tmain(int argc, _TCHAR* argv[])
 	cout<<svc->getVol(10,12,36)<<endl;
 
 	Market swaptionMarket=Market(enums::USD);
-	Swaption swt1(swaptionMarket, enums::Payer,12,0,24);
-	cout<<"Swaption Premium ATM: "<<swt1.getMPV()<<endl;
+
+	for(int i=-200; i<=200; i=i+5)
+	{
+		Swaption swt1(swaptionMarket, enums::Payer,12,i,24);
+		cout<<"Swaption Premium ATM"<<i<<": "<<swt1.getMPV()<<" vol: "<<swt1.getVol()<<endl;
+	}
 }		
 
 void unitTest(){	

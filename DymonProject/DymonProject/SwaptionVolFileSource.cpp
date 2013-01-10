@@ -67,7 +67,7 @@ void SwaptionVolFileSource::retrieveRecord(){
 					optionExpiryInMonth=std::stoi(aCell.substr(0,aCell.find(" ")))*12;
 				}
 
-				double vol=db.at(i).at(j).compare("")==0?NaN:std::stod(db.at(i).at(j));
+				double vol=db.at(i).at(j).compare("")==0?NaN:std::stod(db.at(i).at(j))/100;
 				double strike=db.at(i+1).at(j).compare("")==0?NaN:std::stod(db.at(i+1).at(j));
 				int fSwapTenorInMonth=std::stoi(topRowCell.substr(0,topRowCell.find(" ")))*12;
 

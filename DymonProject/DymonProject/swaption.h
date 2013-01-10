@@ -33,8 +33,7 @@ namespace instruments {
 	public:
 		Swaption(){};
 		~Swaption(){};
-		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vs, date swapStartDate, int tenorNumOfMonths,double notional, double couponRate, DiscountCurve* yc, Market fixLegCurr, Market floatingLegCurr, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates);
-		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vs, DiscountCurve* yc, Swap* underlyingSwap);
+		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vc, DiscountCurve* dc, Swap* underlyingSwap);
 		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, Swap* underlyingSwap);
 		Swaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, int tenorInMonth);
 
@@ -47,6 +46,7 @@ namespace instruments {
 		int _tenorInMonth;
 		Swap* _underlyingSwap;
 
+		void BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vc, DiscountCurve* dc, Swap* underlyingSwap);
 	};
 }
 #endif
