@@ -11,32 +11,35 @@ namespace utilities {
 
 		public:
 			Matrix(int rows, int cols);
-			Matrix();
+			Matrix(){};
 			~Matrix();
 
-			Matrix MatrixProduct(Matrix m1, Matrix m2);
-			Matrix MatrixPlus(Matrix m1, Matrix m2);
-			Matrix MatrixMinus(Matrix m1, Matrix m2);
+			void setDimension(int rows, int cols);
+
+			Matrix MatrixProduct(Matrix m2);
+			Matrix MatrixPlus(Matrix m2);
+			Matrix MatrixMinus(Matrix m2);
+
+			Matrix operator+(Matrix &m2);
+			Matrix operator-(Matrix &m2);
+			Matrix operator*(Matrix &m2);
 			
-			double getMatrixElement(Matrix m, int row, int col);
-			void setMatrixElement(Matrix m, double value, int row, int col);
-			Matrix inverseMatrix(Matrix m);
-			Matrix transposeMatrix(Matrix m);
+			double getMatrixElement(int row, int col);
+			void setMatrixElement(double value, int row, int col);
+			Matrix inverse();
+			Matrix transpose();
 
-			int getMatrixNumOfRows();
-			int getMatrixNumOfCols();
-			void setMatrixNumOfRows(int rows);
-			void setMatrixNumOfCols(int cols);
+			int getNumOfRows();
+			int getNumOfCols();
+			void setNumOfRows(int rows);
+			void setNumOfCols(int cols);
 
-			Matrix regress(Matrix X, Matrix Y);
 			void printMatrix();
 
 		private:
 			int cols;
 			int rows;
-			double* matrixEntry;
-
-
+			double* _matrixEntry;
 	};
 }
 #endif

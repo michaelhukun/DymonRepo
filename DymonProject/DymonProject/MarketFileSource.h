@@ -6,15 +6,20 @@
 #include "AbstractFileSource.h"
 #include <set>
 #include <tuple>
+#include "Market.h"
+
+using namespace instruments;
 
 namespace DAO {
 	class MarketFileSource: public AbstractFileSource{
 		
 	public:
 		
-		MarketFileSource();
-		MarketFileSource(std::string persistDir, std::string fileName);
-		~MarketFileSource();
+		MarketFileSource():AbstractFileSource(){};
+		MarketFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){};
+		~MarketFileSource(){};
+
+		void updateMarketObjectField(std::string fieldName, std::string fieldVal, Market* market);
 
 		void init(Configuration*);
 		

@@ -23,10 +23,10 @@ void DiscountCurveBuilder::init(Configuration* cfg){
 	
 	_market = Market(EnumHelper::getCcyEnum("USD"));
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getMarketEnum());
-	_floatFreqency = std::stoi(cfg->getProperty("swap.usd.floatfreq",false,"4"));
-	_fixFreqency = std::stoi(cfg->getProperty("swap.usd.fixfreq",false,"2"));
-	_timeLineBuildDirection = std::stoi(cfg->getProperty("timeline.usd.builddirection",false,"1"));
-	_rollAccuralDates =  cfg->getProperty("timeline.usd.rollaccuraldates",false,"0")=="0"?false:true;
+	_floatFreqency = std::stoi(cfg->getProperty("convention.usd.swap.floatfreq",false,"4"));
+	_fixFreqency = std::stoi(cfg->getProperty("convention.usd.swap.fixfreq",false,"2"));
+	_timeLineBuildDirection = std::stoi(cfg->getProperty("DiscountCurve.usd.buildCashFlowDirection",false,"1"));
+	_rollAccuralDates =  cfg->getProperty("DiscountCurve.usd.rollAccuralDates",false,"0")=="0"?false:true;
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("DiscountCurve.usd.interpol",false,"LINEAR"));
 	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("DiscountCurve.usd.numerical",false,"BISECTION"));
 	_bizDaysAfterSpot = _market.getBusinessDaysAfterSpot();

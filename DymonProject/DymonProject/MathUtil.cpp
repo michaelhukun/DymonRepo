@@ -1,7 +1,8 @@
 //created by Jianwei 04 Dec 2012
 #include "MathUtil.h"
 #include <math.h>
-#define Pi 3.141592653589793238462643 
+#include "Matrix.h"
+#include "Constants.h"
 
 using namespace utilities;
 
@@ -80,3 +81,17 @@ double MathUtil::invCNF(double p){
 	return y;
 }
 
+Matrix MathUtil::leastSquare(Matrix X, Matrix Y){
+	Matrix tmp1=X.transpose()*Y;
+	Matrix tmp=(X.transpose()*X).inverse();
+	Matrix betas=tmp*tmp1;
+	return betas;
+}
+
+Matrix MathUtil::restrictedLeastSquare(Matrix X, Matrix Y, Matrix R){
+	Matrix beta = leastSquare(X, Y);
+	Matrix xTxInv = (X.transpose()*X).inverse();
+	Matrix r(1,R.getNumOfRows());
+	r.setMatrixElement(1,1,R.getNumOfRows());
+	return beta + ((xTxInv*R.inverse())*((R*xTxInv*R.transpose()).transpose()))*(r-R*beta);
+}

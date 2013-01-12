@@ -15,10 +15,6 @@ namespace utilities{
 
 		DiscountCurve(std::vector<AbstractInterpolator<date>*>* lineSectionVector):AbstractCurve(lineSectionVector){};
 
-		void insertLineSection(AbstractInterpolator<date>* lineSection);
-
-		double getValue(date date0);
-
 		double getDiscountFactor(date Date0);
 
 		double getFLiborRate(date forwardStartDate,date forwardEndDate,enums::DayCountEnum dayCount);

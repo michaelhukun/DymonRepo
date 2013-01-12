@@ -11,14 +11,6 @@ using namespace std;
 typedef tuple<date, double> point;
 typedef AbstractCurve<date> super;
 
-void DiscountCurve::insertLineSection(AbstractInterpolator<date>* lineSection){
-	super::insertLineSection(lineSection);
-}
-
-double DiscountCurve::getValue(date date0){
-	return super::getValue(date0);
-}
-
 double DiscountCurve::getDiscountFactor(date date0){
 	return getValue(date0);
 }

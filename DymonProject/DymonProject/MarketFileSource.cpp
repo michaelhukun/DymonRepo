@@ -14,53 +14,61 @@ using namespace std;
 using namespace utilities;
 using namespace Session;
 
-MarketFileSource::MarketFileSource():
-	AbstractFileSource(){}
-
-MarketFileSource::MarketFileSource(std::string persistDir, std::string fileName):
-	AbstractFileSource(persistDir, fileName){}
-
-MarketFileSource::~MarketFileSource(){}
-
 void MarketFileSource::init(Configuration* cfg){
-	_fileName = cfg->getProperty("Market.file",true,"");
-	_persistDir = cfg->getProperty("Market.path",false,"");
+	_fileName = cfg->getProperty("marketConvention.file",true,"");
+	_persistDir = cfg->getProperty("marketConvention.path",false,"");
 	AbstractFileSource::init(cfg);
 }
 
 void MarketFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 
-	string value;
-	string market;
-	RecordHelper::MarketMap MarketMap;
-	while (_inFile.good()){
-		_inFile>>value;
-		vector<string> vec = fileUtil::split(value,':');
-		market = vec[0];
-		vector<string> properties = fileUtil::split(vec[1],',');
+	CSVDatabase db;
+	readCSV(_inFile, db);
 
-		enums::MarketEnum MarketName = EnumHelper::getCcyEnum(market);
-		enums::DayCountEnum dayCountCash = EnumHelper::getDayCountEnum(properties[0]);
-		enums::DayCountEnum dayCountSwap = EnumHelper::getDayCountEnum(properties[1]);
-		enums::DayRollEnum dayRollCash = EnumHelper::getDayRollEnum(properties[2]);
-		enums::DayRollEnum dayRollSwap = EnumHelper::getDayRollEnum(properties[3]);
-		enums::DayRollEnum accrualAdjustCash = EnumHelper::getDayRollEnum(properties[4]);
-		enums::DayRollEnum accrualAdjustSwap = EnumHelper::getDayRollEnum(properties[5]);
-		int businessDaysAfterSpot = std::stoi(properties[6]);
+	int numOfRows=db.size();
+	int numOfCols=db.at(0).size();
+	RecordHelper::MarketMap marketMap;
 
-		RecordHelper::MarketTuple ccyTuple(dayCountCash, dayCountSwap, dayRollCash, dayRollSwap, accrualAdjustCash, accrualAdjustSwap, businessDaysAfterSpot);
+	for (int j=1;j<numOfCols;j++) {
 
-		cout << market<< " -> "<< "DayCountCashConvention "<< dayCountCash<<endl;
-		cout << market<< " -> "<< "DayCountSwapConvention "<< dayCountSwap<<endl;
-		cout << market<< " -> "<< "DayRollCashConvention "<< dayRollCash<<endl;
-		cout << market<< " -> "<< "DayRollSwapConvention "<< dayRollSwap<<endl;
-		cout << market<< " -> "<< "AccrualAdjustCashConvention "<< accrualAdjustCash<<endl;
-		cout << market<< " -> "<< "AccrualAdjustSwapConvention "<< accrualAdjustSwap<<endl;
-		cout << market<< " -> "<< "BusinessDaysAfterSpot "<< businessDaysAfterSpot<<endl;
+		String marketStr = db.at(0).at(j);
+		enums::MarketEnum marketEnum = EnumHelper::getCcyEnum(marketStr);
+		Market* market = new Market();
 
-		MarketMap.insert(pair<enums::MarketEnum, RecordHelper::MarketTuple>(MarketName,ccyTuple));
-	}	
-	RecordHelper::getInstance()->setMarketMap(MarketMap);
+		for (int i=0;i<numOfRows;i++){
+			String fieldName=db.at(i).at(0);
+			String fieldVal=db.at(i).at(j);
+			updateMarketObjectField(fieldName, fieldVal, market);
+		}
+		market->display();
+		marketMap.insert(std::make_pair(marketEnum,*market));
+	}
+	RecordHelper::getInstance()->setMarketMap(marketMap);
 	_inFile.close();
+}
+
+void MarketFileSource::updateMarketObjectField(std::string fieldName, std::string fieldVal, Market* market){
+
+	if (fieldName=="Market"){
+		market->setMarketEnum(EnumHelper::getCcyEnum(fieldVal));
+	}else if (fieldName=="DayCountCash"){
+		market->setDayCountCashConvention(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayCountSwap"){
+		market->setDayCountSwapConvention(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayRollCash") {
+		market->setDayRollCashConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="DayRollSwap"){
+		market->setDayRollSwapConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="AccrualAdjustCash"){
+		market->setAccrualAdjustCashConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="AccrualAdjustSwap"){
+		market->setAccrualAdjustSwapConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="BusinessDaysAfterSpot"){
+		market->setBusinessDaysAfterSpot(std::stoi(fieldVal));
+	}else if (fieldName=="DayCountBond"){
+		market->setDayCountBondConvention(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayRollBond")	{
+		market->setDayRollBondConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}
 }

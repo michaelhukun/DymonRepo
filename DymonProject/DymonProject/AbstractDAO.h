@@ -13,10 +13,15 @@ namespace DAO{
 
 	public:
 
-		virtual void init(Configuration*)=0;
+		virtual void init(Configuration* cfg){
+			_cfg=cfg;
+		}
 
-		virtual void retrieveRecord()=0;
+		virtual void retrieveRecord(){};
 
+	protected:
+
+		Configuration* _cfg;
 	};
 }
 #endif

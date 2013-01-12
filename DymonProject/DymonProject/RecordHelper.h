@@ -8,9 +8,11 @@
 #include <tuple>
 #include "AbstractSession.h"
 #include "Enums.h"
+#include "Market.h"
 
 using namespace utilities;
 using namespace enums;
+using namespace instruments;
 
 namespace Session {
 	class RecordHelper: public AbstractSession{
@@ -25,9 +27,7 @@ namespace Session {
 		
 		typedef std::map<enums::MarketEnum, std::map<long, double>> RateMap;
 		
-		typedef std::tuple<enums::DayCountEnum, enums::DayCountEnum, enums::DayRollEnum, enums::DayRollEnum, enums::DayRollEnum, enums::DayRollEnum, int> MarketTuple;
-
-		typedef std::map<enums::MarketEnum, MarketTuple> MarketMap;
+		typedef std::map<enums::MarketEnum, Market> MarketMap;
 
 		//std::map<BasisPoint,std::map<fSwapTenorNumOfMonths,map<optionTenorNumOfMonths,swaptionVol>>> SwaptionCubeMap
 		typedef std::map<int,std::map<int, std::map<int,double>>> SwaptionCubeMap;

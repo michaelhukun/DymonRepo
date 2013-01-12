@@ -75,10 +75,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="Market.txt" />
     <None Include="deposit.txt" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
+    <None Include="MarketConvention.csv" />
     <None Include="ReadMe.txt" />
     <None Include="swapRate.txt" />
     <None Include="swaption_skew_USD.csv" />
@@ -98,12 +98,16 @@
     <ClInclude Include="AbstractTest.h" />
     <ClInclude Include="Bisection.h" />
     <ClInclude Include="bond.h" />
+    <ClInclude Include="BondCurve.h" />
+    <ClInclude Include="BondCurveBuilder.h" />
+    <ClInclude Include="BondPriceFileSource.h" />
     <ClInclude Include="BuilderCashFlowLeg.h" />
     <ClInclude Include="cashflow.h" />
     <ClInclude Include="cashflowLeg.h" />
     <ClInclude Include="configuration.h" />
     <ClInclude Include="ConfigurationFileSource.h" />
     <ClInclude Include="Constants.h" />
+    <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -157,10 +161,11 @@
     <ClInclude Include="zero.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AbstractDao.cpp" />
     <ClCompile Include="AbstractFileSource.cpp" />
     <ClCompile Include="AbstractSession.cpp" />
     <ClCompile Include="AbstractTest.cpp" />
+    <ClCompile Include="BondPriceFileSource.cpp" />
+    <ClCompile Include="BondCurveBuilder.cpp" />
     <ClCompile Include="BuilderCashFlowLeg.cpp" />
     <ClCompile Include="cashflow.cpp" />
     <ClCompile Include="cashflowLeg.cpp" />

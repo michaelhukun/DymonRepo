@@ -3,25 +3,15 @@
 #include "AbstractFileSource.h"
 #include <iostream>
 #include <fstream>
+#include <sstream>
 
 using namespace DAO;
 using namespace std;
-
-
-AbstractFileSource::AbstractFileSource(){
-}
 
 AbstractFileSource::AbstractFileSource(std::string persistDir, std::string fileName){
 	_fileName = fileName;
 	_persistDir = persistDir;
 	retrieveRecord();
-}
-
-AbstractFileSource::~AbstractFileSource(){
-}
-
-void AbstractFileSource::init(Configuration* cfg){
-	AbstractDAO::init(cfg);
 }
 
 char* AbstractFileSource::readRecord(){
@@ -90,6 +80,42 @@ void AbstractFileSource::deleteDataSource(){
 		cout<<"File successfully deleted: "<<_fileName<<endl;
 
 }
+
+void AbstractFileSource::readCSV(std::ifstream &input, CSVDatabase &db) {
+	String csvLine;
+	// read every line from the stream
+	while( std::getline(input, csvLine) ){
+		std::istringstream csvStream(csvLine);
+		CSVRow csvRow;
+		String csvCol;
+		// read every element from the line that is seperated by commas
+		// and put it into the vector or strings
+		while( std::getline(csvStream, csvCol, ','))
+			csvRow.push_back(csvCol);
+		db.push_back(csvRow);
+	}
+
+};
+
+void AbstractFileSource::display(const CSVRow& row) {
+	if(!row.size())
+		return;
+	CSVRowCI i=row.begin();
+	std::cout<<*(i++);
+	for(;i != row.end();++i)
+		std::cout<<','<<*i;
+};
+
+void AbstractFileSource::display(const CSVDatabase& db) {
+	if(!db.size())
+		return;
+	CSVDatabaseCI i=db.begin();
+	for(; i != db.end(); ++i){
+		display(*i);
+		std::cout<<std::endl;
+	}	
+};
+
 
 
 

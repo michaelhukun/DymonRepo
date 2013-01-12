@@ -4,6 +4,6 @@
 
 namespace utilities{
 		static const double NaN = -99999999;
-
+		static const double Pi = 3.141592653589793238462643 ;
 }
 #endif

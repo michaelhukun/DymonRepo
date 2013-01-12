@@ -12,15 +12,8 @@ using namespace Session;
 
 Market::Market(enums::MarketEnum market) {
 	_marketName = market;
-	RecordHelper::MarketMap ccyMap = RecordHelper::getInstance()->getMarketMap();
-	RecordHelper::MarketTuple ccyTuple =  ccyMap[market];
-	setDayCountCashConvention(std::get<0>(ccyTuple));
-	setDayCountSwapConvention(std::get<1>(ccyTuple));
-	setDayRollCashConvention(std::get<2>(ccyTuple));
-	setDayRollSwapConvention(std::get<3>(ccyTuple));
-	setAccrualAdjustCashConvention(std::get<4>(ccyTuple));
-	setAccrualAdjustSwapConvention(std::get<5>(ccyTuple));
-	setBusinessDaysAfterSpot(std::get<6>(ccyTuple));
+	RecordHelper::MarketMap marketMap = RecordHelper::getInstance()->getMarketMap();
+	*this = marketMap[market];
 }
 
 std::string Market::getNameString(){
@@ -39,4 +32,17 @@ std::string Market::getNameString(){
 		return "JPY";
 	}
 	return NULL;
+}
+
+void Market::display(){
+	
+	cout << this->getNameString()<< " -> "<< "DayCountCashConvention "<< _dayCountCashConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "DayCountSwapConvention "<< _dayCountSwapConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "DayCountBondConvention "<< _dayCountBondConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "DayRollCashConvention "<< _dayRollCashConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "DayRollSwapConvention "<< _dayRollSwapConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "DayRollBondConvention "<< _dayRollBondConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "AccrualAdjustCashConvention "<< _accrualAdjustCashConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "AccrualAdjustSwapConvention "<< _accrualAdjustSwapConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "BusinessDaysAfterSpot "<< _businessDaysAfterSpot<<endl;
 }
