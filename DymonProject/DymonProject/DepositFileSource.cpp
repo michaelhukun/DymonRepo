@@ -32,47 +32,55 @@ void DepositFileSource::init(Configuration* cfg){
 void DepositFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 
-	string value;
-	enums::MarketEnum market;
+	enums::MarketEnum marketEnum;
+
+	CSVDatabase db;
+	readCSV(_inFile, db);
+
+	int numOfRows=db.size();
+	int numOfCols=db.at(0).size();
+
 	RecordHelper::RateMap tempDepositMap;
 	RecordHelper::RateMap tempOvernightMap;
-	while (_inFile.good()){
-		_inFile>>value;
-		vector<string> vec = fileUtil::split(value,':');
-		market = EnumHelper::getCcyEnum(vec[0]);
-		Market mkt(market);
-		enums::DayRollEnum accrualAdjust=mkt.getAccrualAdjustCashConvention();
-		vector<string> deposits = fileUtil::split(vec[1],',');
-		cout<<market<<" total deposits number:  "<<deposits.size()<<endl;
 
-		std::map<long, double> depositRateMap;
-		std::map<long, double> overnightRateMap;
-		for (unsigned int i = 0; i<deposits.size(); i++)
+	for (int i=1;i<numOfCols;i++) {
+
+		marketEnum=EnumHelper::getCcyEnum(db.at(0).at(i));
+		Market market = Market(marketEnum);
+
+		map<long, double>* depositRateMap = new map<long, double>;
+		map<long, double>* overnightRateMap = new map<long, double>;
+
+		for (int j = 1; j<numOfRows; j++)
 		{
-			// 2D-0.1		
-			vector<string> tenureRate = fileUtil::split(deposits[i],'=');
-			char letterDateUnit = *tenureRate[0].rbegin(); // 'D'
-			date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,market);	
-			if (letterDateUnit != 'D')
-				startDate = dateUtil::getBizDateOffSet(startDate,mkt.getBusinessDaysAfterSpot(),market); // day after spot adjust
-			int increment = std::stoi(tenureRate[0].substr(0,tenureRate[0].size()-1)); // 2
-			double depositRate = std::stod(tenureRate[1])/100.0; // 0.1
-			long JDN = dateUtil::getEndDate(startDate,increment, accrualAdjust, market, dateUtil::getDateUnit(letterDateUnit)).getJudianDayNumber();
-			if (letterDateUnit == 'D'){
-				overnightRateMap.insert(pair<long, double>(increment, depositRate));
-				cout << mkt.getNameString()<< " -> tenor[" << tenureRate[0]<<"], accrual start["<<startDate.toString()<<"], duration ["
-					<<increment <<"], deposit rate["<< depositRate << "]"<<endl;
-			}else{
-				date accrualEndDate(JDN);
-				depositRateMap.insert(pair<long, double>(JDN, depositRate));
-				cout << mkt.getNameString()<< " -> tenor[" << tenureRate[0]<<"], accrual start["<<startDate.toString()<<"], accrual end["
-					<<accrualEndDate.toString() <<"], deposit rate["<< depositRate << "]"<<endl;
-			}
+			string tenorStr = db.at(j).at(0);
+			double liborRate = std::stod(db.at(j).at(i))/100.0;
+			insertRateIntoMap(tenorStr, liborRate, market, depositRateMap, overnightRateMap);
 		}
-		tempDepositMap.insert(pair<enums::MarketEnum, map<long, double>>(market,depositRateMap));
-		tempOvernightMap.insert(pair<enums::MarketEnum, map<long, double>>(market,overnightRateMap));
+		tempDepositMap.insert(pair<enums::MarketEnum, map<long, double>>(marketEnum,*depositRateMap));
+		tempOvernightMap.insert(pair<enums::MarketEnum, map<long, double>>(marketEnum,*overnightRateMap));
 	}
 	RecordHelper::getInstance()->setDepositRateMap(tempDepositMap);
 	RecordHelper::getInstance()->setOverNightRateMap(tempOvernightMap);
 	_inFile.close();
+}
+
+void DepositFileSource::insertRateIntoMap(std::string tenorStr, double liborRate, Market market, map<long, double>* depositRateMap, map<long, double>* overnightRateMap){
+	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,market.getMarketEnum());	
+	char tenorUnit = *tenorStr.rbegin();
+	int tenorNum = std::stoi(tenorStr.substr(0,tenorStr.size()-1)); // 2
+	if (tenorUnit != 'D')
+		startDate = dateUtil::getBizDateOffSet(startDate,market.getBusinessDaysAfterSpot(enums::SWAP),market.getMarketEnum()); // day after spot adjust
+
+	long JDN = dateUtil::getEndDate(startDate,tenorNum, market.getDayRollCashConvention(), market.getMarketEnum(), dateUtil::getDateUnit(tenorUnit)).getJudianDayNumber();
+	if (tenorUnit == 'D'){
+		overnightRateMap->insert(pair<long, double>(tenorNum, liborRate));
+		cout << market.getNameString()<< " -> tenor[" << tenorStr <<"], accrual start["<<startDate.toString()<<"], duration ["
+			<<tenorNum <<"], deposit rate["<< liborRate << "]"<<endl;
+	}else{
+		date accrualEndDate(JDN);
+		depositRateMap->insert(pair<long, double>(JDN, liborRate));
+		cout << market.getNameString()<< " -> tenor[" << tenorStr<<"], accrual start["<<startDate.toString()<<"], accrual end["
+			<<accrualEndDate.toString() <<"], deposit rate["<< liborRate << "]"<<endl;
+	}
 }

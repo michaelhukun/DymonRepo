@@ -169,17 +169,7 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 		//cout<<"inside ACT_365"<<endl;
 		break;
 	case enums::ACT_ACT:
-		//To compute the number of days, the period first day is included and the last day is excluded.
-		if (startDate.getYear()==endDate.getYear()){
-			int numDays = endDate.getJudianDayNumber()-startDate.getJudianDayNumber();
-			accrualFactor = numDays/(isleapyear(startDate.getYear())?366.0:365.0);
-		}else{
-			int numStartYearDays = date(startDate.getYear(),12,31).getJudianDayNumber() - startDate.getJudianDayNumber() + 1;
-			double startYearFactor = numStartYearDays/(isleapyear(startDate.getYear())?366.0:365.0);
-			int numEndYearDays = endDate.getJudianDayNumber() - date(endDate.getYear(),1,1).getJudianDayNumber();
-			double endYearFactor = numEndYearDays/(isleapyear(endDate.getYear())?366.0:365.0);
-			accrualFactor = startYearFactor + endYearFactor +(endDate.getYear()-startDate.getYear()-1);
-		}
+		throw "Need reference start and end date!";
 		break;
 	case enums::BUS_252:
 		//Numerator is the number of business days (in a given calendar) from and including the start date up to and excluding the end date.
@@ -191,7 +181,24 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 		break;
 	default:
 		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/360.0;
-	
+
+	}
+	return accrualFactor;
+}
+
+double dateUtil::getAccrualFactor(date startDate,date endDate, date refStartDate,date refEndDate, enums::DayCountEnum dayCount){
+	double accrualFactor;
+	long numDaysAccrual;
+	long numDaysRef;
+	switch(dayCount){
+	case enums::ACT_ACT:
+		//To compute the number of days, the period first day is included and the last day is excluded.
+		numDaysAccrual = endDate - startDate;
+		numDaysRef = refEndDate - refStartDate;
+		accrualFactor = numDaysAccrual / (double)numDaysRef;
+		break;
+	default:
+		accrualFactor= getAccrualFactor(startDate, endDate, dayCount);
 	}
 	return accrualFactor;
 }
@@ -227,21 +234,14 @@ date dateUtil::dayRollAdjust(date aDate,DayRollEnum aDayRollConvention, enums::M
 }
 
 date dateUtil::getEndDateMonthIncrement(date startDate, int numMonth){
+	if (numMonth==0) return startDate;
 	short startMonth = startDate.getMonth();
-	short endMonth;
-
-	//modified to cater for negative month offset cases -Kun 15 Dec
-
-	short endYear;
-	if ((startMonth+numMonth)<0) {
-		int interim=(int) ceil(-(startMonth + numMonth)/12.0)*12;
-		endMonth= (startMonth + numMonth+interim)%12;
-		endYear= (short)( startDate.getYear()-ceil((double)-(startMonth + numMonth)/12));
-	} else {
-		endMonth = (startMonth + numMonth)%12;
-		endYear= startDate.getYear()+(startMonth + numMonth)/12 - (endMonth==0?1:0);
-	}
-	date endDate(endYear, endMonth==0?12:endMonth, startDate.getDay());		
+	short endMonth = (startMonth + numMonth)%12;
+	int yearIncrement = (startMonth + numMonth)/12;
+	yearIncrement = (startMonth + numMonth)<=0?yearIncrement-1:yearIncrement;
+	endMonth = endMonth<=0?endMonth+12:endMonth;
+	short endYear= startDate.getYear()+yearIncrement;	
+	date endDate(endYear, endMonth, startDate.getDay());		
 	return endDate;
 }
 

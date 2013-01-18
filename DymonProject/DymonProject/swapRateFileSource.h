@@ -6,6 +6,12 @@
 #include "AbstractFileSource.h"
 #include <set>
 #include <vector>
+#include "Market.h"
+#include "RecordHelper.h"
+#include <map>
+
+using namespace instruments;
+using namespace utilities;
 
 namespace DAO {
 	class SwapRateFileSource: public AbstractFileSource{
@@ -18,6 +24,10 @@ namespace DAO {
 		void init(Configuration*);
 		
 		void retrieveRecord();
+
+	private:
+		void insertRateIntoMap(std::string tenorStr, double swapRate, Market market, std::map<long, double>* rateMap);
+
 	};
 
 }

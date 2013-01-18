@@ -18,14 +18,14 @@ namespace instruments {
 	class cashflowLeg {
 
 	public:
-		cashflowLeg();
+		cashflowLeg(){};
 		cashflowLeg(vector<cashflow> cashflowLeg);
-		~cashflowLeg();
+		~cashflowLeg(){};
 		
-		vector<cashflow> getCashFlowVector();
-		cashflowLeg getCashFlowLeg();
-
+		cashflow getCashFlow(unsigned int index);
+		vector<cashflow> getCashFlowLeg();
 		void setCashFlowLeg(vector<cashflow> cashflowLeg);
+
 		vector<date> getAccuralDates();
 		
 		void printCashFlowLeg();

@@ -56,19 +56,23 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setDayCountCashConvention(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayCountSwap"){
 		market->setDayCountSwapConvention(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayCountBond"){
+		market->setDayCountBondConvention(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayRollCash") {
 		market->setDayRollCashConvention(EnumHelper::getDayRollEnum(fieldVal));
 	}else if (fieldName=="DayRollSwap"){
 		market->setDayRollSwapConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="DayRollBond")	{
+		market->setDayRollBondConvention(EnumHelper::getDayRollEnum(fieldVal));
 	}else if (fieldName=="AccrualAdjustCash"){
 		market->setAccrualAdjustCashConvention(EnumHelper::getDayRollEnum(fieldVal));
 	}else if (fieldName=="AccrualAdjustSwap"){
 		market->setAccrualAdjustSwapConvention(EnumHelper::getDayRollEnum(fieldVal));
-	}else if (fieldName=="BusinessDaysAfterSpot"){
-		market->setBusinessDaysAfterSpot(std::stoi(fieldVal));
-	}else if (fieldName=="DayCountBond"){
-		market->setDayCountBondConvention(EnumHelper::getDayCountEnum(fieldVal));
-	}else if (fieldName=="DayRollBond")	{
-		market->setDayRollBondConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="AccrualAdjustBond"){
+		market->setAccrualAdjustBondConvention(EnumHelper::getDayRollEnum(fieldVal));
+	}else if (fieldName=="BizDaysAfterSpotSwap"){
+		market->setBusinessDaysAfterSpotSwap(std::stoi(fieldVal));
+	}else if (fieldName=="BizDaysAfterSpotBond"){
+		market->setBusinessDaysAfterSpotBond(std::stoi(fieldVal));
 	}
 }

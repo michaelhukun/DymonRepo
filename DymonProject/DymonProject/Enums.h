@@ -11,6 +11,7 @@ namespace enums {
 	enum interpolAlgo{LINEAR,LOGLINEAR,CUBIC};
 	enum CallPut{Call, Put};
 	enum PayReceive {Payer, Receiver};
+	enum Instrument{SWAP,OPTION,BOND};
 }
 
 #endif

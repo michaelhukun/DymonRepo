@@ -39,6 +39,8 @@ namespace utilities{
 
 		virtual std::string toString();
 
+		virtual std::string toString(int interval);
+
 	private:
 
 		std::vector<AbstractInterpolator<T>*>* _lineSectionVector;
@@ -126,6 +128,21 @@ namespace utilities{
 		}
 		return ss.str();
 	}
+	
+	template<typename T>
+	string AbstractCurve<T>::toString(int interval){
+		std::stringstream ss (stringstream::in | stringstream::out);
+		ss << "Curve - Fixed interval ["<<interval<<"] \n";
+		T curveStartX = std::get<0>(getCurveStartPoint());
+		T curveEndX = std::get<0>(getCurveEndPoint());
+		while(curveStartX<curveEndX){
+			ss << "Point ["<<curveStartX << ", "<<getValue(curveStartX)<<"]; \n";
+			curveStartX = curveStartX + interval;
+		}
+			ss << "Point ["<<curveEndX << ", "<<getValue(curveStartX)<<"]; \n";
+		return ss.str();
+
+	}
 
 	template<>
 	inline bool AbstractCurve<date>::validateLineSections(){
@@ -143,6 +160,19 @@ namespace utilities{
 		return validationPass;
 	}
 
+	template<>
+	inline string AbstractCurve<date>::toString(int interval){
+		std::stringstream ss (stringstream::in | stringstream::out);
+		ss << "Curve - Fixed interval ["<<interval<<"] \n";
+		date curveStartX = std::get<0>(getCurveStartPoint());
+		date curveEndX = std::get<0>(getCurveEndPoint());
+		while(curveStartX<curveEndX){
+			ss << "Point ["<<curveStartX.toString() << ", "<<getValue(curveStartX)<<"]; \n";
+			curveStartX = curveStartX + interval;
+		}
+			ss << "Point ["<<curveEndX.toString() << ", "<<getValue(curveEndX)<<"]; \n";
+		return ss.str();
 
+	}
 }
 #endif

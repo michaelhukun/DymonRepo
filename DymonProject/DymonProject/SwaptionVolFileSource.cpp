@@ -20,8 +20,10 @@ using namespace instruments;
 
 
 void SwaptionVolFileSource::init(Configuration* cfg){
-	_fileName = cfg->getProperty("swaptionVolCube.usd.file",true,"");
-	_persistDir = cfg->getProperty("swaptionVolCube.usd.path",false,"");
+	
+	Market market(EnumHelper::getCcyEnum("USD"));
+	_fileName = cfg->getProperty("swaptionVolCube."+market.getNameString()+".file",true,"");
+	_persistDir = cfg->getProperty("swaptionVolCube."+market.getNameString()+".path",false,"");
 	AbstractFileSource::init(cfg);
 }
 

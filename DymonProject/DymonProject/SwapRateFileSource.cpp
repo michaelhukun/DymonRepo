@@ -33,38 +33,44 @@ void SwapRateFileSource::init(Configuration* cfg){
 void SwapRateFileSource::retrieveRecord(){
 	AbstractFileSource::retrieveRecord();
 	
-	string value;
-	enums::MarketEnum market;
-	RecordHelper::RateMap tempMap;
-	while (_inFile.good()){
-		_inFile>>value;
-		vector<string> vec = fileUtil::split(value,':');
-		market = EnumHelper::getCcyEnum(vec[0]);
-		Market mkt(market);
-		enums::DayRollEnum accrualAdjust=mkt.getAccrualAdjustSwapConvention();
-		int businessDaysAfterSpot = mkt.getBusinessDaysAfterSpot();
-		vector<string> deposits = fileUtil::split(vec[1],',');
-		cout<<market<<" market has total swap rate number:  "<<deposits.size()<<endl;
+	enums::MarketEnum marketEnum;
+	RecordHelper::RateMap swapRateMap;
 
-		std::map<long, double> rateMap;
-		for (unsigned int i = 0; i<deposits.size(); i++)
+	CSVDatabase db;
+	readCSV(_inFile, db);
+
+	int numOfRows=db.size();
+	int numOfCols=db.at(0).size();
+
+	for (int i=1;i<numOfCols;i++) {
+
+		marketEnum=EnumHelper::getCcyEnum(db.at(0).at(i));
+		Market market = Market(marketEnum);
+
+		map<long, double>* tempMap = new map<long, double>;
+
+		for (int j = 1; j<numOfRows; j++)
 		{
-			// 2Y-3.134
-			date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,market);	
-			date accrualStartDate = dateUtil::getBizDateOffSet(startDate,mkt.getBusinessDaysAfterSpot(),market); // day after spot adjust
-			vector<string> tenureRate = fileUtil::split(deposits[i],'=');
-			char letterDateUnit = *tenureRate[0].rbegin(); // 'Y'
-			int increment = std::stoi(tenureRate[0].substr(0,tenureRate[0].size()-1)); // 2
-			double swapRate = std::stod(tenureRate[1])/100.0; // 3.134
-			long accrualEndJDN = dateUtil::getEndDate(accrualStartDate,increment, accrualAdjust, market, dateUtil::getDateUnit(letterDateUnit)).getJudianDayNumber();
-			rateMap.insert(pair<long, double>(accrualEndJDN, swapRate));
-			
-			date accrualEndDate(accrualEndJDN);
-			cout << mkt.getNameString()<< " -> tenor[" << tenureRate[0]<<"], accrual start["<<accrualStartDate.toString()<<"], accrual end["
-				<<accrualEndDate.toString() <<"], deposit rate["<< swapRate << "]"<<endl;
+			string tenorStr = db.at(j).at(0);
+			double liborRate = std::stod(db.at(j).at(i))/100.0;
+			insertRateIntoMap(tenorStr, liborRate, market, tempMap);
 		}
-		tempMap.insert(pair<enums::MarketEnum, map<long, double>>(market,rateMap));
+		swapRateMap.insert(pair<enums::MarketEnum, map<long, double>>(marketEnum,*tempMap));
 	}
-	RecordHelper::getInstance()->setSwapRateMap(tempMap);
+
+	RecordHelper::getInstance()->setSwapRateMap(swapRateMap);
 	_inFile.close();
+}
+
+void SwapRateFileSource::insertRateIntoMap(std::string tenorStr, double swapRate, Market market, std::map<long, double>* rateMap){
+	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, market.getMarketEnum());	
+	date accrualStartDate = dateUtil::getBizDateOffSet(startDate,market.getBusinessDaysAfterSpot(enums::SWAP), market.getMarketEnum()); // day after spot adjust
+	char tenorUnit = *tenorStr.rbegin(); // 'Y'
+	int tenorNum = std::stoi(tenorStr.substr(0,tenorStr.size()-1)); // 2
+	long accrualEndJDN = dateUtil::getEndDate(accrualStartDate,tenorNum, market.getDayRollSwapConvention(), market.getMarketEnum(), dateUtil::getDateUnit(tenorUnit)).getJudianDayNumber();
+	rateMap->insert(pair<long, double>(accrualEndJDN, swapRate));
+
+	date accrualEndDate(accrualEndJDN);
+	cout << market.getNameString()<< " -> tenor[" << tenorStr<<"], accrual start["<<accrualStartDate.toString()<<"], accrual end["
+		<<accrualEndDate.toString() <<"], deposit rate["<< swapRate << "]"<<endl;
 }

@@ -24,25 +24,25 @@ namespace instruments {
 	class BuilderCashFlowLeg {
 		
 	public:
-		// buildDirection: 1=build from startDate towards maturityDate
-		// buildDirection: -1=build from maturityDate towards startDate
+		// buildDirection: 1=build from accrualStartDate towards accrualEndDate
+		// buildDirection: -1=build from accrualEndDate towards accrualStartDate
 		BuilderCashFlowLeg(){};
 		
 		//for Fixed Legs
-		BuilderCashFlowLeg(date startDate, date maturityDate,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
-		BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market);
+		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
+		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market);
 		
 		//for Floating Legs
-		BuilderCashFlowLeg(date startDate, date maturityDate,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
-		BuilderCashFlowLeg(date startDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market);
+		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
+		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market);
 
 		~BuilderCashFlowLeg(){};
 		cashflowLeg* getCashFlowLeg(){return &_cashflowLeg;};
 		
 	private:
 		cashflowLeg _cashflowLeg;
-		date _startDate;
-		date _maturityDate;
+		date _accrualStartDate;
+		date _accrualEndDate;
 		int _tenorNumOfMonths;
 		double _couponRate;
 		double _notional;

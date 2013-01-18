@@ -1,7 +1,7 @@
 //created by Wang Jianwei on 01 Dec 2012
 //Added cashflowleg creating - Kun
-#ifndef DiscountCurveBuilder_H
-#define DiscountCurveBuilder_H
+#ifndef SwapCurveBuilder_H
+#define SwapCurveBuilder_H
 #include "AbstractCurve.h"
 #include "DiscountCurve.h"
 #include "AbstractBuilder.h"
@@ -13,11 +13,11 @@ using namespace instruments;
 typedef tuple<date, double> point;
 
 namespace utilities{
-	class DiscountCurveBuilder: public AbstractBuilder{
+	class SwapCurveBuilder: public AbstractBuilder{
 		
 	public:
 		
-		DiscountCurveBuilder():AbstractBuilder(){}
+		SwapCurveBuilder():AbstractBuilder(){}
 
 		void init(Configuration* cfg);
 

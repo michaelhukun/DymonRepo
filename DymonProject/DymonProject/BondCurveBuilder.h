@@ -6,7 +6,7 @@
 #include "AbstractBuilder.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"
-#include "BondCurve.h"
+#include "DiscountCurve.h"
 #include <vector>
 
 using namespace instruments;
@@ -21,7 +21,9 @@ namespace utilities{
 
 		void init(Configuration* cfg);
 
-		BondCurve* build(Configuration* cfg);
+		DiscountCurve* build(Configuration* cfg);
+
+		void buildSection(DiscountCurve* yc);
 
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}

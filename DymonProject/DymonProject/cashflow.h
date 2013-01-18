@@ -25,7 +25,6 @@ namespace instruments {
 
 		~cashflow(){};
 
-		double getCouponAmount();
 		double getCouponRate();
 		double getNotional();
 		date getFixingDate();
@@ -35,7 +34,6 @@ namespace instruments {
 		Market getCashFlowCurr();
 		double getAccuralFactor();
 
-		void setCouponAmount();
 		void setNotional(double notional);
 		void setCouponRate(double couponRate);
 		void setFixingDate(date fixingDate);
@@ -51,7 +49,6 @@ namespace instruments {
 	private:
 		double _couponRate;
 		double _notional;
-		double _couponAmount;
 
 		date _fixingDate;
 		date _paymentDate; 

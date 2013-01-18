@@ -1,8 +1,8 @@
 //created by Wang Jianwei on 1 Dec 2012
 #include "BondCurveBuilder.h"
 #include <iostream>
-#include "BondCurve.h"
 #include "BuilderCashFlowLeg.h"
+#include "BondRateBootStrapper.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"
 #include "EnumHelper.h"
@@ -19,15 +19,31 @@ void BondCurveBuilder::init(Configuration* cfg){
 	
 	_market = Market(EnumHelper::getCcyEnum("USD"));
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getMarketEnum());
-	_couponFreqency = std::stoi(cfg->getProperty("convention.usd.bond.couponfreq",false,"2"));
-	_timeLineBuildDirection = std::stoi(cfg->getProperty("BondCurve.usd.buildCashFlowDirection",false,"1"));
-	_rollAccuralDates =  cfg->getProperty("BondCurve.usd.rollAccuralDates",false,"0")=="0"?false:true;
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondCurve.usd.interpol",false,"CUBIC"));
-	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondCurve.usd.numerical",false,"BISECTION"));
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".interpol",false,"LINEAR"));
+	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".numerical",false,"BISECTION"));
 }
 
-BondCurve* BondCurveBuilder::build(Configuration* cfg){
+DiscountCurve* BondCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
-	BondCurve* bc = new BondCurve();
+	DiscountCurve* bc = new DiscountCurve();
+	buildSection(bc);
 	return bc;
+}
+
+
+void BondCurveBuilder::buildSection(DiscountCurve* dc){
+	point lineStartPoint(_curveStartDate,1);
+	_curvePointer = lineStartPoint;
+	map<long,Bond> rateMap = RecordHelper::getInstance()->getBondRateMap()[enums::USD];
+	for (map<long,Bond>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
+		Bond bond = (*it).second;
+		int numOfNights = (int) (*it).first;
+		vector<cashflow> couponLeg = bond.getCouponLeg()->getCashFlowLeg();
+		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();
+		BondRateBootStrapper bondBS(_curvePointer, lastPaymentDate, bond, dc, _interpolAlgo, _numericalAlgo, _market);
+		bondBS.init(Configuration::getInstance());
+		AbstractInterpolator<date>* lineSection = bondBS.bootStrap();
+		dc->insertLineSection(lineSection);
+		_curvePointer = lineSection->getEndPoint();
+	}
 }

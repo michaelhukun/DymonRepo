@@ -34,8 +34,52 @@ std::string Market::getNameString(){
 	return NULL;
 }
 
+enums::DayCountEnum Market::getDayCountConvention(enums::Instrument instrument){
+	switch (instrument){
+	case enums::BOND:
+		return getDayCountBondConvention();
+	case enums::SWAP:
+		return getDayCountSwapConvention();
+	default:
+		return getDayCountSwapConvention();
+	}
+}
+
+enums::DayRollEnum Market::getDayRollConvention(enums::Instrument instrument){
+	switch (instrument){
+	case enums::BOND:
+		return getDayRollBondConvention();
+	case enums::SWAP:
+		return getDayRollSwapConvention();
+	default:
+		return getDayRollSwapConvention();
+	}
+}
+
+enums::DayRollEnum Market::getAccrualAdjustConvention(enums::Instrument instrument){
+	switch (instrument){
+	case enums::BOND:
+		return getAccrualAdjustBondConvention();
+	case enums::SWAP:
+		return getAccrualAdjustSwapConvention();
+	default:
+		return getAccrualAdjustSwapConvention();
+	}
+}
+
+int Market::getBusinessDaysAfterSpot(enums::Instrument instrument){
+	switch (instrument){
+	case enums::BOND:
+		return getBusinessDaysAfterSpotBond();
+	case enums::SWAP:
+		return getBusinessDaysAfterSpotSwap();
+	default:
+		return getBusinessDaysAfterSpotSwap();
+	}
+}
+
 void Market::display(){
-	
+
 	cout << this->getNameString()<< " -> "<< "DayCountCashConvention "<< _dayCountCashConvention<<endl;
 	cout << this->getNameString()<< " -> "<< "DayCountSwapConvention "<< _dayCountSwapConvention<<endl;
 	cout << this->getNameString()<< " -> "<< "DayCountBondConvention "<< _dayCountBondConvention<<endl;
@@ -44,5 +88,7 @@ void Market::display(){
 	cout << this->getNameString()<< " -> "<< "DayRollBondConvention "<< _dayRollBondConvention<<endl;
 	cout << this->getNameString()<< " -> "<< "AccrualAdjustCashConvention "<< _accrualAdjustCashConvention<<endl;
 	cout << this->getNameString()<< " -> "<< "AccrualAdjustSwapConvention "<< _accrualAdjustSwapConvention<<endl;
-	cout << this->getNameString()<< " -> "<< "BusinessDaysAfterSpot "<< _businessDaysAfterSpot<<endl;
+	cout << this->getNameString()<< " -> "<< "AccrualAdjustBondConvention "<< _accrualAdjustBondConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "BusinessDaysAfterSpotSwap"<< _businessDaysAfterSpotSwap<<endl;
+	cout << this->getNameString()<< " -> "<< "BusinessDaysAfterSpotBond"<< _businessDaysAfterSpotBond<<endl;
 }

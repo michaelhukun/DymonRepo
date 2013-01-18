@@ -20,6 +20,8 @@ namespace utilities{
 		double getFLiborRate(date forwardStartDate,date forwardEndDate,enums::DayCountEnum dayCount);
 
 		std::string toString();
+		
+		std::string toString(int interval);
 	};
 }
 #endif

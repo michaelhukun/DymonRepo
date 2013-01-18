@@ -27,10 +27,12 @@ namespace Markets {
 
 		void buildAll();
 
-		void buildDiscountCurve();
+		void buildBondDiscountCurve();
+		void buildSwapDiscountCurve();
 		void buildSwaptionVolCube();
 
-		DiscountCurve* getDiscountCurve(){return _discountCurve;}
+		DiscountCurve* getSwapDiscountCurve(){return _SwapDiscountCurve;}
+		DiscountCurve* getBondDiscountCurve(){return _BondDiscountCurve;}
 		SwaptionVolCube* getSwaptionVolCube(){return _swaptionVolCube;};
 		
 	protected:
@@ -41,7 +43,8 @@ namespace Markets {
 	private:
 		static bool instanceFlag;
 		static MarketData *single;
-		DiscountCurve* _discountCurve;
+		DiscountCurve* _SwapDiscountCurve;
+		DiscountCurve* _BondDiscountCurve;
 		SwaptionVolCube* _swaptionVolCube;
 	};
 }

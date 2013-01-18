@@ -13,7 +13,7 @@ void SwaptionVolCubeBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	
 	_market = Market(EnumHelper::getCcyEnum("USD"));
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("swaptionVolCube.usd.interpol",false,"LINEAR"));
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("swaptionVolCube"+_market.getNameString()+"interpol",false,"LINEAR"));
 }
 
 SwaptionVolCube* SwaptionVolCubeBuilder::build(Configuration* cfg){

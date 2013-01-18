@@ -22,12 +22,6 @@ cashflow::cashflow(double couponRate,double notional,  date fixingDate, date pay
 	setAccuralEndDate(accuralEndDate);
 	setCashFlowCurr(cashFlowCurr);
 	setAccuralFactor();
-	setCouponAmount();
-}
-
-//get methods:
-double cashflow::getCouponAmount() {
-	return _couponAmount;
 }
 
 double cashflow::getCouponRate() {
@@ -60,11 +54,6 @@ double cashflow::getAccuralFactor() {
 
 double cashflow::getNotional() {
 	return _notional;
-}
-
-//set methods:
-void cashflow::setCouponAmount() {
-	_couponAmount=_couponRate*_notional*_accuralFactor;
 }
 
 void cashflow::setCouponRate(double couponRate) {
@@ -109,5 +98,5 @@ bool cashflow::isDateEqual(cashflow cf){
 void cashflow::printCashFlow() {
 	cout<<"fixingDate ["<< _fixingDate.toString()<<"], accuralStartDate ["<< _accuralStartDate.toString()<<"], "<<
 		"accuralEndDate ["<<_accuralEndDate.toString()<<"] paymentDate["<< _paymentDate.toString()<<"]"<<endl;
-	 cout<<"accuralFactor ["<<_accuralFactor<<"], couponRate["<<_couponRate<<"], couponAmonunt["<<_couponAmount<<"] notional["<<_notional<<"]"<<endl;
+	 cout<<"accuralFactor ["<<_accuralFactor<<"], couponRate["<<_couponRate<<"], notional["<<_notional<<"]"<<endl;
 }

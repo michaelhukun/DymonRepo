@@ -42,11 +42,11 @@ enums::DayCountEnum EnumHelper::getDayCountEnum(std::string dayCount){
 		return thirty_360US;
 	else if (dayCount == "thirthE_360")
 		return thirthE_360;
-	else if (dayCount == "ACT_360")
+	else if (dayCount == "ACT_360" || dayCount == "ACT/360")
 		return ACT_360;
-	else if (dayCount == "ACT_365")
+	else if (dayCount == "ACT_365" || dayCount == "ACT/365")
 		return ACT_365;
-	else if (dayCount == "ACT_ACT")
+	else if (dayCount == "ACT_ACT" || dayCount == "ACT/ACT")
 		return ACT_ACT;
 	else if (dayCount == "BUS_252")
 		return BUS_252;

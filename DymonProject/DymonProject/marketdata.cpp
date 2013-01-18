@@ -1,10 +1,12 @@
 //created by Hu Kun 30 Nov 2012
 #include "MarketData.h"
 #include "Configuration.h"
-#include "DiscountCurveBuilder.h"
+#include "SwapCurveBuilder.h"
 #include "SwaptionVolCubeBuilder.h"
+#include "BondCurveBuilder.h"
 
 using namespace Markets;
+using namespace utilities;
 bool MarketData::instanceFlag = false;
 MarketData* MarketData::single = NULL;
 
@@ -28,15 +30,23 @@ MarketData::~MarketData() {
 }
 
 void MarketData::buildAll(){
-	buildDiscountCurve();
+	buildSwapDiscountCurve();
+	buildBondDiscountCurve();
 	buildSwaptionVolCube();
 }
 
-void MarketData::buildDiscountCurve(){
-	cout << "\n******** Build Discount Curve ********\n" << endl;
-	DiscountCurveBuilder* builder = new DiscountCurveBuilder();
-	_discountCurve = builder->build(Configuration::getInstance());
-	cout<<_discountCurve->toString()<<endl;
+void MarketData::buildSwapDiscountCurve(){
+	cout << "\n******** Build Swap Discount Curve ********\n" << endl;
+	SwapCurveBuilder* builder = new SwapCurveBuilder();
+	_SwapDiscountCurve = builder->build(Configuration::getInstance());
+	cout<<_SwapDiscountCurve->toString()<<endl;
+}
+
+void MarketData::buildBondDiscountCurve(){
+	cout << "\n******** Build Bond Discount Curve ********\n" << endl;
+	BondCurveBuilder* builder = new BondCurveBuilder();
+	_BondDiscountCurve = builder->build(Configuration::getInstance());
+	cout<<_BondDiscountCurve->toString()<<endl;
 }
 
 void MarketData::buildSwaptionVolCube(){

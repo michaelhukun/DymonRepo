@@ -9,6 +9,7 @@
 #include "AbstractSession.h"
 #include "Enums.h"
 #include "Market.h"
+#include "bond.h"
 
 using namespace utilities;
 using namespace enums;
@@ -27,7 +28,7 @@ namespace Session {
 		
 		typedef std::map<enums::MarketEnum, std::map<long, double>> RateMap;
 		
-		typedef std::map<enums::MarketEnum, std::map<int, double>> BondRateMap;
+		typedef std::map<enums::MarketEnum, std::map<long, Bond>> BondRateMap;
 
 		typedef std::map<enums::MarketEnum, Market> MarketMap;
 
@@ -92,6 +93,7 @@ namespace Session {
 		void buildDepositRateMap(Configuration*);
 		void buildMarketMap(Configuration*);
 		void buildSwaptionVolMap(Configuration*);
+		void buildBondRateMap(Configuration*);
 
 	};
 }

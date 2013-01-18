@@ -35,6 +35,7 @@ namespace utilities {
 		static date getEndDate(date refDate, int increment, enums::DayRollEnum dayRoll, enums::MarketEnum market, DateUnit dateUnit);
 		static date dayRollAdjust(date aDate,enums::DayRollEnum aDayRollConvention, enums::MarketEnum market);
 		static double getAccrualFactor(date startDate,date endDate, enums::DayCountEnum dayCount);
+		static double getAccrualFactor(date startDate,date endDate, date refStartDate,date refEndDate, enums::DayCountEnum dayCount);
 		static DateUnit getDateUnit(char letterDateUnit);
 		static date getEndDateMonthIncrement(date refDate, int numMonth);
 

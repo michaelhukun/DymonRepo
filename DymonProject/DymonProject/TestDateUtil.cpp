@@ -17,6 +17,7 @@ void TestDateUtil::runTest(){
 	dayRollAdjustTestSuit();
 	getEndDateTestSuit();
 	DayCountTestSuit();
+
 }
 
 void TestDateUtil::bizDateAdjustSuit(){
@@ -88,6 +89,31 @@ void TestDateUtil::getEndDateTestSuit(){
 		date date1 = dateUtil::getEndDate(date0, 4, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2013,2,28);
 		compareResult("GetEndDate-4", date1,date2);}
+	{
+		date date0(2012,10,31);
+		date date1 = dateUtil::getEndDate(date0, -1, Mfollowing,USD,dateUtil::MONTH);
+		date date2(2012,9,28);
+		compareResult("GetEndDate-5", date1,date2);}
+	{
+		date date0(2012,10,31);
+		date date1 = dateUtil::getEndDate(date0, -10, Mfollowing,USD,dateUtil::MONTH);
+		date date2(2011,12,30);
+		compareResult("GetEndDate-6", date1,date2);}
+	{
+		date date0(2012,10,31);
+		date date1 = dateUtil::getEndDate(date0, -11, Mfollowing,USD,dateUtil::MONTH);
+		date date2(2011,11,30);
+		compareResult("GetEndDate-7", date1,date2);}
+	{
+		date date0(2012,10,31);
+		date date1 = dateUtil::getEndDate(date0, -12, Mfollowing,USD,dateUtil::MONTH);
+		date date2(2011,10,31);
+		compareResult("GetEndDate-8", date1,date2);}
+	{
+		date date0(2012,10,31);
+		date date1 = dateUtil::getEndDate(date0, -24, Mfollowing,USD,dateUtil::MONTH);
+		date date2(2010,10,29);
+		compareResult("GetEndDate-9", date1,date2);}
 }
 
 void TestDateUtil::DayCountTestSuit(){
@@ -105,17 +131,21 @@ void TestDateUtil::DayCountTestSuit(){
 		date ed(2012,8,31);
 		cout<<(dateUtil::getAccrualFactor(sd,ed,thirthE_360)==30/360.0)<<endl;}
 	{
-		date sd(2010,12,30);
-		date ed(2011,1,2);
-		cout<<(dateUtil::getAccrualFactor(sd,ed,ACT_ACT)-3/365.0<pow(10.0,-12))<<endl;}
+		date sd(2011,3,1);
+		date ed(2011,7,3);
+		date rsd(2011,3,1);
+		date red(2011,9,1);
+		cout<<(dateUtil::getAccrualFactor(sd, ed, rsd, red, ACT_ACT)-124/184.0<pow(10.0,-12))<<endl;}
 	{
-		date sd(2011,12,30);
-		date ed(2012,1,2);
-		cout<<(dateUtil::getAccrualFactor(sd,ed,ACT_ACT)-(2/365.0+1/366.0)<pow(10.0,-12))<<endl;}
-	{
-		date sd(2011,12,30);
-		date ed(2013,1,2);
-		cout<<(dateUtil::getAccrualFactor(sd,ed,ACT_ACT)-(367/365.0+1+1/365.0)<pow(10.0,-12))<<endl;}
+		date sd(2002,8,15);
+		date ed(2002,11,4);
+		date rsd(2002,8,15);
+		date red(2003,2,15);
+		cout<<(dateUtil::getAccrualFactor(sd, ed, rsd, red, ACT_ACT)-83/184.0<pow(10.0,-12))<<endl;}
+	//{
+	//	date sd(2011,12,30);
+	//	date ed(2013,1,2);
+	//	cout<<(dateUtil::getAccrualFactor(sd,ed,ACT_ACT)-(367/365.0+1+1/365.0)<pow(10.0,-12))<<endl;}
 	{
 		date sd(2012,12,7);
 		date ed(2012,12,17);

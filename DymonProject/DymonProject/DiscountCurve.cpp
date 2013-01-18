@@ -22,5 +22,9 @@ double DiscountCurve::getFLiborRate(date forwardStartDate,date forwardEndDate,en
 }
 
 std::string DiscountCurve::toString(){
-	return "\nYield "+AbstractCurve::toString();
+	return "\nDiscount "+AbstractCurve::toString();
+}
+
+std::string DiscountCurve::toString(int interval){
+	return "\nDiscount "+AbstractCurve::toString(interval);
 }

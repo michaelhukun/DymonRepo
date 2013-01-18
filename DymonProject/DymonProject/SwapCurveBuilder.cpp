@@ -1,6 +1,6 @@
 //created by Wang Jianwei on 1 Dec 2012
 //Added cashflowleg creating and swap section - Kun
-#include "DiscountCurveBuilder.h"
+#include "SwapCurveBuilder.h"
 #include <iostream>
 #include "DiscountCurve.h"
 #include "BuilderCashFlowLeg.h"
@@ -18,22 +18,22 @@ using namespace utilities;
 typedef AbstractBuilder super;
 typedef tuple<date, double> point;
 
-void DiscountCurveBuilder::init(Configuration* cfg){
+void SwapCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	
 	_market = Market(EnumHelper::getCcyEnum("USD"));
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getMarketEnum());
-	_floatFreqency = std::stoi(cfg->getProperty("convention.usd.swap.floatfreq",false,"4"));
-	_fixFreqency = std::stoi(cfg->getProperty("convention.usd.swap.fixfreq",false,"2"));
-	_timeLineBuildDirection = std::stoi(cfg->getProperty("DiscountCurve.usd.buildCashFlowDirection",false,"1"));
-	_rollAccuralDates =  cfg->getProperty("DiscountCurve.usd.rollAccuralDates",false,"0")=="0"?false:true;
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("DiscountCurve.usd.interpol",false,"LINEAR"));
-	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("DiscountCurve.usd.numerical",false,"BISECTION"));
-	_bizDaysAfterSpot = _market.getBusinessDaysAfterSpot();
+	_floatFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.floatfreq",false,"4"));
+	_fixFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.fixfreq",false,"2"));
+	_timeLineBuildDirection = std::stoi(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"1"));
+	_rollAccuralDates =  cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".rollAccuralDates",false,"0")=="0"?false:true;
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".interpol",false,"LINEAR"));
+	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".numerical",false,"BISECTION"));
+	_bizDaysAfterSpot = _market.getBusinessDaysAfterSpot(enums::SWAP);
 	_bizDaysAfterSpotDF = NaN;
 }
 
-DiscountCurve* DiscountCurveBuilder::build(Configuration* cfg){
+DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	DiscountCurve* yc = new DiscountCurve();
 	buildOvernightSection(yc);
@@ -42,7 +42,7 @@ DiscountCurve* DiscountCurveBuilder::build(Configuration* cfg){
 	return yc;
 }
 
-void DiscountCurveBuilder::buildOvernightSection(DiscountCurve* yc){
+void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 	point lineStartPoint(_curveStartDate,1);
 	_curvePointer = lineStartPoint;
 	map<long,double> rateMap = RecordHelper::getInstance()->getOverNightRateMap()[enums::USD];
@@ -64,14 +64,14 @@ void DiscountCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 	}
 }
 
-void DiscountCurveBuilder::buildDepositSection(DiscountCurve* yc){
-	date accrualStartDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpot(),enums::USD);
+void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
+	date accrualStartDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpot(enums::SWAP),enums::USD);
 	map<long,double> rateMap = RecordHelper::getInstance()->getDepositRateMap()[enums::USD];
 
 	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 
 		date fixingDate = _curveStartDate;
-		date accrualEndDate((*it).first);
+		date accrualEndDate = ((*it).first);
 		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollCashConvention(),enums::USD);
 		double depositRate = (*it).second;
 		//cout << "Deposit rate at fixing date ["<<fixingDate.toString()<<"], accrual start date ["<<accrualStartDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< depositRate<<"]"<< endl;
@@ -89,8 +89,8 @@ void DiscountCurveBuilder::buildDepositSection(DiscountCurve* yc){
 	}
 }
 
-void DiscountCurveBuilder::buildSwapSection(DiscountCurve* yc){
-	BuilderCashFlowLeg builtCashflowLeg(_curveStartDate,600,1,1, _floatFreqency, enums::USD);
+void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
+	BuilderCashFlowLeg builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, enums::USD);
 	cashflowLeg* _cashflowLeg=builtCashflowLeg.getCashFlowLeg();
 	//_cashflowLeg.printTimeLine();
 

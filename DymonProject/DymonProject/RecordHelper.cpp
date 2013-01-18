@@ -9,6 +9,7 @@
 #include "ConfigurationFileSource.h"
 #include "MarketFileSource.h"
 #include "SwaptionVolFileSource.h"
+#include "BondPriceFileSource.h"
 
 
 using namespace Session;
@@ -34,6 +35,7 @@ void RecordHelper::init(Configuration* cfg){
 	buildSwapRateMap(cfg);
 	buildDepositRateMap(cfg);	
 	buildSwaptionVolMap(cfg);
+	buildBondRateMap(cfg);
 }
 
 void RecordHelper::buildSwaptionVolMap(Configuration* cfg){
@@ -70,4 +72,10 @@ void RecordHelper::buildConfiguration(Configuration* cfg){
 	AbstractDAO* configDataSource= new ConfigurationFileSource();
 	configDataSource->init(cfg);
 	configDataSource->retrieveRecord();
+}
+
+void RecordHelper::buildBondRateMap(Configuration* cfg){
+	AbstractDAO* MarketDataSource= new BondPriceFileSource();
+	MarketDataSource->init(cfg);
+	MarketDataSource->retrieveRecord();
 }
