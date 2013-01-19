@@ -39,8 +39,8 @@ Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, do
 void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vc, DiscountCurve* dc, Swap* underlyingSwap){
 	_underlyingSwap = underlyingSwap;
 	_tenorInMonth = _underlyingSwap->getTenor();
-	cashflowLeg* floatCashflowLeg = underlyingSwap->getCashflowLegFloat();
-	cashflowLeg* fixCashflowLeg = underlyingSwap->getCashflowLegFix();
+	cashflowLeg* floatCashflowLeg = underlyingSwap->getCashFlowVectorFloat();
+	cashflowLeg* fixCashflowLeg = underlyingSwap->getCashFlowVectorFix();
 	double forwardParRate=underlyingSwap->getParRate(floatCashflowLeg,fixCashflowLeg,dc);
 	date tradeDate = dateUtil::getToday();
 	double vol=vc->getVol(strikeInBps,expiryInMonth,_tenorInMonth);

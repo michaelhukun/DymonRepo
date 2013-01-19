@@ -12,24 +12,18 @@ namespace instruments {
 	public:
 		//base class for all other instruments to be derived from
 		AbstractInstrument(){};
-		virtual date getTradeDate() {return _tradeDate;};
-		virtual date getMaturityDate() {return _maturityDate;};
+		virtual date getTradeDate() { return _tradeDate; }
+		virtual date getIssueDate() { return _issueDate; }
+		virtual date getMaturityDate() { return _maturityDate; }
 
-		virtual void setTradeDate(date tradeDate) {
-			_tradeDate=tradeDate;
-		}
-
-		virtual void setMaturityDate(date maturityDate) {
-			_maturityDate=maturityDate;
-		}
+		virtual void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
+		virtual void setIssueDate(date issueDate) { _issueDate=issueDate; }
+		virtual void setMaturityDate(date maturityDate) { _maturityDate=maturityDate; }
 
 	protected: 
-		Market _domMarket;
-		Market _forMarket;
 		date _tradeDate;
-		date _maturityDate;
-
-		
+		date _issueDate;
+		date _maturityDate;		
 	};
 }
 #endif

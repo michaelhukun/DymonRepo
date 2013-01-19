@@ -24,7 +24,7 @@ namespace utilities {
 			enums::NumericAlgo numericAlgo, enums::DayCountEnum dayCount):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
 			_curve = curve;
 			_swapRate = swapRate;
-			_cashflowVector = cashflows->getCashFlowLeg();
+			_cashflowVector = cashflows->getCashFlowVector();
 			_dayCount = dayCount;
 		}
 				

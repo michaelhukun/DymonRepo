@@ -53,7 +53,7 @@ void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 		date paymentDate = dateUtil::getBizDateOffSet(startDate,numOfNights,_market.getMarketEnum());
 		//cout << "Overnight rate at date ["<<startDate.toString()<< "], maturity date ["<<paymentDate.toString()<<"], number of nights ["<<numOfNights<<"], rate ["<< depositRate<<"]"<< endl;
 
-		cashflow cf(depositRate,0, startDate, paymentDate,startDate, paymentDate, _market);
+		cashflow cf(depositRate, 0, startDate, paymentDate,startDate, paymentDate, _market, true);
 		OvernightRateBootStrapper overnightBS(_curvePointer, paymentDate, cf, _interpolAlgo, _numericalAlgo, _market);
 		overnightBS.init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = overnightBS.bootStrap();
@@ -76,7 +76,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		double depositRate = (*it).second;
 		//cout << "Deposit rate at fixing date ["<<fixingDate.toString()<<"], accrual start date ["<<accrualStartDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< depositRate<<"]"<< endl;
 
-		cashflow cf(depositRate,0, fixingDate, paymentDate,accrualStartDate, accrualEndDate, _market);
+		cashflow cf(depositRate,0, fixingDate, paymentDate,accrualStartDate, accrualEndDate, _market, true);
 
 		AbstractInterpolator<date>* lineSection;
 		DepositRateBootStrapper depositBS(_curvePointer, paymentDate, cf, _interpolAlgo, _numericalAlgo, _market, _bizDaysAfterSpotDF);

@@ -13,7 +13,7 @@ using namespace std;
 using namespace enums;
 using namespace instruments;
 
-cashflow::cashflow(double couponRate,double notional,  date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, Market cashFlowCurr) {
+cashflow::cashflow(double couponRate,double notional,  date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, Market cashFlowCurr, bool isValid) {
 	setCouponRate(couponRate);
 	setNotional(notional);
 	setFixingDate(fixingDate);
@@ -22,6 +22,7 @@ cashflow::cashflow(double couponRate,double notional,  date fixingDate, date pay
 	setAccuralEndDate(accuralEndDate);
 	setCashFlowCurr(cashFlowCurr);
 	setAccuralFactor();
+	setIsValid(isValid);
 }
 
 double cashflow::getCouponRate() {
@@ -85,6 +86,14 @@ void cashflow::setCashFlowCurr(Market cashFlowCurr) {
 
 void cashflow::setAccuralFactor() {
 	_accuralFactor=dateUtil::getAccrualFactor(_accuralStartDate,_accuralEndDate,_cashFlowCurr.getDayCountCashConvention());
+}
+
+bool cashflow::getIsValid(){
+	return _isValid;
+}
+
+void cashflow::setIsValid(bool isValid){
+	_isValid = isValid;
 }
 
 bool cashflow::isDateEqual(cashflow cf){

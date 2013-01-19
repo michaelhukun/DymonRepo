@@ -24,32 +24,25 @@ namespace instruments {
 	class BuilderCashFlowLeg {
 		
 	public:
-		// buildDirection: 1=build from accrualStartDate towards accrualEndDate
-		// buildDirection: -1=build from accrualEndDate towards accrualStartDate
+		// buildDirection: 1=build from issueDate towards maturityDate
+		// buildDirection: -1=build from maturityDate towards issueDate
 		BuilderCashFlowLeg(){};
+		~BuilderCashFlowLeg(){};
 		
 		//for Fixed Legs
-		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
-		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDatee, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market);
 		
 		//for Floating Legs
-		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
-		BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDatee, int tenorNumOfMonths, DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market);
 
-		~BuilderCashFlowLeg(){};
-		cashflowLeg* getCashFlowLeg(){return &_cashflowLeg;};
+		cashflowLeg* getCashFlowLeg(){
+			return _cashflowLeg;
+		}
 		
 	private:
-		cashflowLeg _cashflowLeg;
-		date _accrualStartDate;
-		date _accrualEndDate;
-		int _tenorNumOfMonths;
-		double _couponRate;
-		double _notional;
-		int _paymentFreq;
-		Market _cashFlowLegCurr;
-		bool _rollAccuralDates;
-		RecordHelper::HolidayMap _holidayMap;		
+		cashflowLeg* _cashflowLeg;		
 	};
 }
 #endif

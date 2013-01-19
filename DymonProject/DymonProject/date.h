@@ -19,7 +19,7 @@ namespace utilities {
 		date(unsigned short year, unsigned short month, unsigned short day);
 		date::date(std::string dateStr);
 		date(long JDN);
-		~date();
+		~date(){};
 		int getYear();
 		int getMonth();
 		int getDay();
@@ -64,6 +64,7 @@ namespace utilities {
 		int _year;
 		int _month;
 		int _day;
+		bool _isNull;
 		long _judianDayNumber;
 		void setJudianDayNumber();
 		

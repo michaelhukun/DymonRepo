@@ -38,7 +38,7 @@ void BondCurveBuilder::buildSection(DiscountCurve* dc){
 	for (map<long,Bond>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 		Bond bond = (*it).second;
 		int numOfNights = (int) (*it).first;
-		vector<cashflow> couponLeg = bond.getCouponLeg()->getCashFlowLeg();
+		vector<cashflow> couponLeg = bond.getCouponLeg()->getCashFlowVector();
 		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();
 		BondRateBootStrapper bondBS(_curvePointer, lastPaymentDate, bond, dc, _interpolAlgo, _numericalAlgo, _market);
 		bondBS.init(Configuration::getInstance());

@@ -12,7 +12,7 @@ using namespace instruments;
 double SwapPricer::getMPVFixLeg(cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve) {
 	_fixCashflowLeg=fixCashflowLeg;
 	_pricingDiscountCurve=aDiscountCurve;
-	vector<cashflow> cfVector=fixCashflowLeg->getCashFlowLeg();
+	vector<cashflow> cfVector=fixCashflowLeg->getCashFlowVector();
 	vector<cashflow>::iterator it=cfVector.begin();
 	double sum=0.0;
 	int count=0;
@@ -28,7 +28,7 @@ double SwapPricer::getMPVFixLeg(cashflowLeg* fixCashflowLeg,DiscountCurve* aDisc
 double SwapPricer::getMPVFloatLeg(cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve) {
 	_floatCashflowLeg=floatCashflowLeg;
 	_pricingDiscountCurve=aDiscountCurve;
-	vector<cashflow> cfVector=floatCashflowLeg->getCashFlowLeg();
+	vector<cashflow> cfVector=floatCashflowLeg->getCashFlowVector();
 	vector<cashflow>::iterator it=cfVector.begin();
 	double sum=0.0;
 	int count=0;
@@ -61,7 +61,7 @@ double SwapPricer::getParRate(cashflowLeg* floatCashflowLeg,cashflowLeg* fixCash
 	_floatCashflowLeg=floatCashflowLeg;
 	_fixCashflowLeg=fixCashflowLeg;
 	_pricingDiscountCurve=aDiscountCurve;
-	vector<cashflow> cfVector=fixCashflowLeg->getCashFlowLeg();
+	vector<cashflow> cfVector=fixCashflowLeg->getCashFlowVector();
 	vector<cashflow>::iterator it=cfVector.begin();
 	double denom=0.0;
 

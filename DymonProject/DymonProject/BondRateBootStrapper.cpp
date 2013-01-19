@@ -33,7 +33,7 @@ AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 double BondRateBootStrapper::numericalFunc(double x){	
 	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
 
-	vector<cashflow> couponLeg = _bond.getCouponLeg()->getCashFlowLeg();
+	vector<cashflow> couponLeg = _bond.getCouponLeg()->getCashFlowVector();
 	double derivedBondPrice = 0;
 
 	for( unsigned int i=0; i<couponLeg.size(); i++){

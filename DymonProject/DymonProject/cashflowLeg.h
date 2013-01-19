@@ -23,11 +23,13 @@ namespace instruments {
 		~cashflowLeg(){};
 		
 		cashflow getCashFlow(unsigned int index);
-		vector<cashflow> getCashFlowLeg();
-		void setCashFlowLeg(vector<cashflow> cashflowLeg);
-
+		int getFirstValidCashFlowIndex();
+		vector<cashflow> getCashFlowVector();
+		void setCashFlowVector(vector<cashflow> cashflowLeg);
 		vector<date> getAccuralDates();
-		
+		void markCashFlowValidity(date tradeDate);
+		int getCashFlowIndexForAccrualEnd(date accuralEndDate);
+
 		void printCashFlowLeg();
 		void printTimeLine();
 
@@ -35,9 +37,5 @@ namespace instruments {
 		vector<cashflow> _cashflowLeg;
 
 	};
-
 }
-
-
-
 #endif

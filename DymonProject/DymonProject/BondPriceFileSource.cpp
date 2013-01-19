@@ -60,16 +60,15 @@ void BondPriceFileSource::retrieveRecord(){
 			bondTenorNumOfMonths=std::stoi(aCell.substr(0,aCell.find("M")));
 		}
 
-		string maturityStr = db.at(i).at(1);
-		date maturityDate(maturityStr);
-		date tradeDate=dateUtil::getToday();
-		int couponFreq=db.at(i).at(3)=="NaN"?NaN:std::stoi(db.at(i).at(3));
-		double couponRate = std::stod(db.at(i).at(2))/(couponFreq==NaN?1:couponFreq)/100;
-		double cleanPrice = std::stod(db.at(i).at(4));
-		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(db.at(i).at(5));
-		double YTM = std::stod(db.at(i).at(6));
-
-		Bond tempBond(market,tradeDate,maturityDate,bondTenorNumOfMonths,couponRate,couponFreq,Configuration::getInstance(),cleanPrice,YTM,dayCount);
+		date issueDate(db.at(i).at(1));
+		date maturityDate(db.at(i).at(2));
+		date firstCouponDate = db.at(i).at(3)=="NaN"?maturityDate:date(db.at(i).at(3));
+		date tradeDate=dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, market);	
+		int couponFreq=db.at(i).at(4)=="NaN"?(int)NaN:std::stoi(db.at(i).at(4));
+		double couponRate = std::stod(db.at(i).at(5))/(couponFreq==NaN?1:couponFreq)/100;
+		double cleanPrice = std::stod(db.at(i).at(6));
+		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(db.at(i).at(7));
+		Bond tempBond(market, tradeDate,issueDate, maturityDate,firstCouponDate, bondTenorNumOfMonths,couponRate,couponFreq,Configuration::getInstance(),cleanPrice,dayCount);
 		temp.insert(std::make_pair(maturityDate.getJudianDayNumber(),tempBond));	
 	}
 	bondRateMap.insert(std::make_pair(market,temp));

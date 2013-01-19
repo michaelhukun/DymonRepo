@@ -264,7 +264,7 @@ date dateUtil::getEndDate(date startDate, int increment, enums::DayRollEnum dayR
 		endDate = getBizDateOffSet(startDate,increment, market);
 		break;
 	}
-	endDate = dayRollAdjust(endDate,dayRoll, market);
+	endDate = dayRollAdjust(adjustInvalidateDate(endDate,false),dayRoll, market);
 	return endDate;
 }
 
@@ -301,8 +301,8 @@ bool dateUtil::isleapyear(unsigned short year){
 }
 
 long dateUtil::getPrecedingJDN(date refDate, enums::MarketEnum market){
-	date adjustedDate = adjustInvalidateDate(refDate,false);
-	long JDN = adjustedDate.getJudianDayNumber();
+	//date adjustedDate = adjustInvalidateDate(refDate,false);
+	long JDN = refDate.getJudianDayNumber();
 	while(!isBizDay(JDN) || isHoliday(JDN,market)){
 		JDN--;
 	}
@@ -310,8 +310,8 @@ long dateUtil::getPrecedingJDN(date refDate, enums::MarketEnum market){
 }
 
 long dateUtil::getFolloingJDN(date refDate, enums::MarketEnum market){
-	date adjustedDate = adjustInvalidateDate(refDate,true);
-	long JDN = adjustedDate.getJudianDayNumber();
+	//date adjustedDate = adjustInvalidateDate(refDate,true);
+	long JDN = refDate.getJudianDayNumber();
 	while(!isBizDay(JDN) || isHoliday(JDN,market)){
 		JDN++;
 	}

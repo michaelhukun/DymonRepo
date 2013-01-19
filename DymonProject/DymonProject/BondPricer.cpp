@@ -4,7 +4,7 @@ using namespace instruments;
 
 double BondPricer::getMPV(cashflowLeg* couponLeg,DiscountCurve* discountCurve){
 	double MPV = 0;
-	vector<cashflow> couponLegVec = couponLeg->getCashFlowLeg();
+	vector<cashflow> couponLegVec = couponLeg->getCashFlowVector();
 	for (unsigned int i=0; i<couponLegVec.size();i++){
 		cashflow coupon = couponLegVec[i];
 		date paymentDate = coupon.getPaymentDate();

@@ -21,7 +21,7 @@ namespace instruments {
 
 	public:
 		cashflow(){};
-		cashflow(double couponRate,double notional,  date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, Market cashFlowCurr);
+		cashflow(double couponRate,double notional, date fixingDate, date paymentDate, date accuralStartDate, date accuralEndDate, Market cashFlowCurr, bool isValid);
 
 		~cashflow(){};
 
@@ -33,6 +33,7 @@ namespace instruments {
 		date getAccuralEndDate();
 		Market getCashFlowCurr();
 		double getAccuralFactor();
+		bool getIsValid();
 
 		void setNotional(double notional);
 		void setCouponRate(double couponRate);
@@ -42,6 +43,7 @@ namespace instruments {
 		void setAccuralEndDate(date accuralEndDate);
 		void setCashFlowCurr(Market cashFlowCurr);
 		void setAccuralFactor();
+		void setIsValid(bool isValid);
 
 		bool isDateEqual(cashflow cf);
 		void printCashFlow();
@@ -57,6 +59,7 @@ namespace instruments {
 		
 		Market _cashFlowCurr;
 		double _accuralFactor;
+		bool _isValid;
 	};
 }
 #endif
