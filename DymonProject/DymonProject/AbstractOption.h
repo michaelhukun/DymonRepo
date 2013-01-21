@@ -17,21 +17,24 @@ namespace instruments {
 
 		AbstractOption(){};
 		~AbstractOption(){};
-		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc){
-			BaseOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol, dc);
+		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol){
+			BaseOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol);
 		}
 
-		AbstractOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc) {
-			BaseOption(market, tradeDate, expiryDate, callPutFlag, S, K, vol, dc);
+		AbstractOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol) {
+			BaseOption(market, tradeDate, expiryDate, callPutFlag, S, K, vol);
 		}
 
 		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, double r) {
-			BaseOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol, r);
+			BaseOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol);
+			_discountFactor = exp(-r*expiryInMonth/12);
+			_r=r;
 		}
 
 		virtual double getMPV(){return OptionPricer::getMPV();};
-
 		double getVol(){return _vol;}
+
+		void setDiscountFactor(double discountFactor){	_discountFactor = discountFactor;}
 
 	protected:
 		CallPut _callPutFlag;
@@ -41,29 +44,17 @@ namespace instruments {
 		double _r;
 		double _expiryInMonth;
 		double _discountFactor;
-		DiscountCurve* _dc;
 		Market _market;
 
-		void BaseOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc){
+		void BaseOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol){
 			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
 			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));			
 			_expiryInMonth = expiryInMonth;
-			_dc = dc;
-			_discountFactor = dc->getValue(getMaturityDate())/dc->getValue(getTradeDate());
 		}
 
-		void BaseOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol, DiscountCurve* dc) {
+		void BaseOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol) {
 			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
 			setMaturityDate(expiryDate);
-			_dc = dc;
-			_discountFactor = dc->getValue(getMaturityDate())/dc->getValue(getTradeDate());
-		}
-
-		void BaseOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, double r) {
-			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
-			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));
-			_discountFactor = exp(-r*expiryInMonth/12);
-			_r=r;
 		}
 
 		void BaseOption(Market market, date tradeDate, CallPut callPutFlag, double S, double K, double vol) {
