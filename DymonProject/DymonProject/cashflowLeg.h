@@ -26,7 +26,8 @@ namespace instruments {
 		int getFirstValidCashFlowIndex();
 		vector<cashflow> getCashFlowVector();
 		void setCashFlowVector(vector<cashflow> cashflowLeg);
-		vector<date> getAccuralDates();
+		vector<date> getAccuralStartDates();
+		vector<date> getAccuralEndDates();
 		void markCashFlowValidity(date tradeDate);
 		int getCashFlowIndexForAccrualEnd(date accuralEndDate);
 

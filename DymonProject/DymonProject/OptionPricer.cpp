@@ -3,7 +3,6 @@
 #include "OptionPricer.h"
 #include "Enums.h"
 #include "MathUtil.h"
-#define Pi 3.141592653589793238462643 
 
 using namespace utilities;
 using namespace instruments;

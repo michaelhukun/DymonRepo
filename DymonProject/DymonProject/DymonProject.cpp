@@ -48,13 +48,13 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	LoadInitialData();
 	MarketData::getInstance()->buildAll();
-	unitTest();
+	//unitTest();
 
 	//DAO::SwaptionATMVolMatrixFileSource aSwaptionTest;
 	//aSwaptionTest.swaptionTest();
 	//DiscountCurve* yc = buildDiscountCurve();
 	//forwardStartingSwap(yc);
-	//SwaptionTest();
+	SwaptionTest();
 }		
 
 void unitTest(){	
