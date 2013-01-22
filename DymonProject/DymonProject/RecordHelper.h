@@ -10,6 +10,7 @@
 #include "Enums.h"
 #include "Market.h"
 #include "bond.h"
+#include "BondFuture.h"
 
 using namespace utilities;
 using namespace enums;
@@ -29,6 +30,8 @@ namespace Session {
 		typedef std::map<enums::MarketEnum, std::map<long, double>> RateMap;
 		
 		typedef std::map<enums::MarketEnum, std::map<long, Bond>> BondRateMap;
+		
+		typedef std::map<enums::MarketEnum, std::map<long, BondFuture>> BondFutureMap;
 
 		typedef std::map<enums::MarketEnum, Market> MarketMap;
 
@@ -51,6 +54,9 @@ namespace Session {
 
 		BondRateMap* getBondRateMap(){return &_bondRateMap;}
 		void setBondRateMap(BondRateMap map){_bondRateMap=map;}
+
+		BondFutureMap* getBondFutureMap(){return &_bondFutureMap;}
+		void setBondFutureMap(BondFutureMap map){_bondFutureMap=map;}
 
 		RateMap getSwapRateMap(){return _swapRateMap;}
 		void setSwapRateMap(RateMap map){_swapRateMap=map;}
@@ -80,6 +86,8 @@ namespace Session {
 		RateMap _swapRateMap;
 
 		BondRateMap _bondRateMap;
+
+		BondFutureMap _bondFutureMap;
 				
 		MarketMap _MarketMap;
 
@@ -94,7 +102,7 @@ namespace Session {
 		void buildMarketMap(Configuration*);
 		void buildSwaptionVolMap(Configuration*);
 		void buildBondRateMap(Configuration*);
-
+		void buildBondFutureMap(Configuration*);
 	};
 }
 

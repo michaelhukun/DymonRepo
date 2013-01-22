@@ -1,4 +1,5 @@
 //implemented by Kun from bloomberg market data sources on 13 Jan 2013
+//Revamped by Jianwei
 #include "BondPriceFileSource.h"
 #include "AbstractFileSource.h"
 #include "fileUtil.h"
