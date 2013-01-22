@@ -49,7 +49,7 @@ namespace Session {
 		RateMap getOverNightRateMap(){return _overNightRateMap;}
 		void setOverNightRateMap(RateMap map){_overNightRateMap=map;}
 
-		BondRateMap getBondRateMap(){return _bondRateMap;}
+		BondRateMap* getBondRateMap(){return &_bondRateMap;}
 		void setBondRateMap(BondRateMap map){_bondRateMap=map;}
 
 		RateMap getSwapRateMap(){return _swapRateMap;}

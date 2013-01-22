@@ -17,9 +17,11 @@ namespace utilities {
 		
 		date();
 		date(unsigned short year, unsigned short month, unsigned short day);
-		date::date(std::string dateStr);
+		date(std::string dateStr, bool monthBeforeDay);
 		date(long JDN);
 		~date(){};
+
+		// Getters and Setters
 		int getYear();
 		int getMonth();
 		int getDay();
@@ -28,6 +30,9 @@ namespace utilities {
 		void setJudianDayNumber(long JDN);
 		long getJudianDayNumber();
 		bool isEqual(date date0);
+		bool isNull(){ return _isNull; }
+
+		// Methods
 		void printDate();
 		std::string toString();
 				

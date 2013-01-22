@@ -14,11 +14,8 @@ using namespace instruments;
 using namespace utilities;
 
 namespace instruments {
-	//tuple<date,double>
-	typedef tuple<date,double> PV;
-	//typedef map<tuple<date,date>,double> FWDR;
 
-	//map<tuple<tenorNumofMonths,delta>, volatility>
+	typedef tuple<date,double> PV;
 	typedef map<tuple<double,double>,double> volSurfacePoint;
 	
 	class AbstractPricer {
