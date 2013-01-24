@@ -11,6 +11,7 @@
 #include "SwaptionVolFileSource.h"
 #include "BondPriceFileSource.h"
 #include "BondFutureFileSource.h"
+#include <vector>
 
 using namespace Session;
 using namespace DAO;
@@ -25,64 +26,33 @@ RecordHelper* RecordHelper::getInstance()
 	return single;
 }
 
-RecordHelper::RecordHelper(){
-}
-
 void RecordHelper::init(Configuration* cfg){
-	buildConfiguration(cfg);
-	buildMarketMap(cfg);
-	buildHolidayMap(cfg);
-	buildSwapRateMap(cfg);
-	buildDepositRateMap(cfg);	
-	buildSwaptionVolMap(cfg);
-	buildBondRateMap(cfg);
-	buildBondFutureMap(cfg);
+	dataSourceVector.push_back(new ConfigurationFileSource());
+	dataSourceVector.push_back(new MarketFileSource());
+	dataSourceVector.push_back(new HolidayFileSource());
+	dataSourceVector.push_back(new SwapRateFileSource());
+	dataSourceVector.push_back(new DepositFileSource());
+	dataSourceVector.push_back(new SwaptionVolFileSource());
+	dataSourceVector.push_back(new BondPriceFileSource());
+	dataSourceVector.push_back(new BondFutureFileSource());
+	
+	for(unsigned int i = 0; i<dataSourceVector.size(); i++){
+		AbstractDAO* dao = dataSourceVector[i];
+		dao->init(cfg);
+		dao->retrieveRecord();
+	}
 }
 
-void RecordHelper::buildSwaptionVolMap(Configuration* cfg){
-	AbstractDAO* SwaptionVolDataSource = new SwaptionVolFileSource();
-	SwaptionVolDataSource->init(cfg);
-	SwaptionVolDataSource->retrieveRecord();
-}
-
-void RecordHelper::buildSwapRateMap(Configuration* cfg){
-	AbstractDAO* SwapRateDataSource = new SwapRateFileSource();
-	SwapRateDataSource->init(cfg);
-	SwapRateDataSource->retrieveRecord();
-}
-
-void RecordHelper::buildDepositRateMap(Configuration* cfg){
-	AbstractDAO* depositRateDataSource = new DepositFileSource();
-	depositRateDataSource->init(cfg);
-	depositRateDataSource->retrieveRecord();
-}
-
-void RecordHelper::buildHolidayMap(Configuration* cfg){
-	AbstractDAO* holidayDataSource = new HolidayFileSource();
-	holidayDataSource->init(cfg);
-	holidayDataSource->retrieveRecord();
-}
-
-void RecordHelper::buildMarketMap(Configuration* cfg){
-	AbstractDAO* MarketDataSource= new MarketFileSource();
-	MarketDataSource->init(cfg);
-	MarketDataSource->retrieveRecord();
-}
-
-void RecordHelper::buildConfiguration(Configuration* cfg){
-	AbstractDAO* configDataSource= new ConfigurationFileSource();
-	configDataSource->init(cfg);
-	configDataSource->retrieveRecord();
-}
-
-void RecordHelper::buildBondRateMap(Configuration* cfg){
-	AbstractDAO* bondDataSource= new BondPriceFileSource();
-	bondDataSource->init(cfg);
-	bondDataSource->retrieveRecord();
-}
-		
-void RecordHelper::buildBondFutureMap(Configuration* cfg){
-	AbstractDAO* bondFutureDataSource= new BondFutureFileSource();
-	bondFutureDataSource->init(cfg);
-	bondFutureDataSource->retrieveRecord();
+Bond* RecordHelper::findCTDinBondMap(std::string CUSIP){
+	BondRateMap::iterator bondMapIt;
+	 for (bondMapIt=_bondRateMap.begin(); bondMapIt!=_bondRateMap.end(); ++bondMapIt){
+		 map<long, Bond>* innerBondMap = &(bondMapIt->second);
+		 map<long, Bond>::iterator innerBondMapIt;
+		 for (innerBondMapIt=innerBondMap->begin(); innerBondMapIt!=innerBondMap->end(); ++innerBondMapIt){
+			 Bond* tempBond = &(innerBondMapIt->second);
+			 if (tempBond->getCUSIP() == CUSIP)
+				 return tempBond;
+		 }
+	 }
+	 return NULL;
 }
