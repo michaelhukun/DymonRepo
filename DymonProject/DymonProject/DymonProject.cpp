@@ -19,6 +19,7 @@
 #include "TestBuildCashFlowLeg.h"
 #include "TestOption.h"
 #include "TestDiscountCurve.h"
+#include "TestBond.h"
 #include "AbstractSurface.h"
 #include "TestSurface.h"
 #include "swaption.h"
@@ -48,7 +49,7 @@ int _tmain(int argc, _TCHAR* argv[])
 {
 	LoadInitialData();
 	MarketData::getInstance()->buildAll();
-	//unitTest();
+	unitTest();
 
 	//DAO::SwaptionATMVolMatrixFileSource aSwaptionTest;
 	//aSwaptionTest.swaptionTest();
@@ -71,10 +72,12 @@ void unitTest(){
 	//buildCashFlowLegTest.runTest();
 	//TestOption optionTest;
 	//optionTest.runTest();
-	TestDiscountCurve discountCurveTest;
-	discountCurveTest.runTest();
+	//TestDiscountCurve discountCurveTest;
+	//discountCurveTest.runTest();
 	//TestSurface surfaceTest;
 	//surfaceTest.runTest();
+	TestBond bondTest;
+	bondTest.runTest();
 }
 
 void SwaptionTest(){

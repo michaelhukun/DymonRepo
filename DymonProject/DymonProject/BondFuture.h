@@ -26,6 +26,7 @@ namespace instruments {
 		std::string getCTDCUSIP(){ return _CTDCUSIP; }
 		int getNotionalBondTerm(){ return _notionalBondTerm; }
 		double getNotionalBondCouponRate(){ return _notionalBondCouponRate; }
+		double getCTDConvertionFactor(){ return _CTDConvertionFactor; }
 		int getContractSize(){ return _contractSize; }
 		date getFirstTradeDate(){ return _firstTradeDate;}
 		date getLastTradeDate(){ return _lastTradeDate;}
@@ -37,6 +38,7 @@ namespace instruments {
 		void setCTDCUSIP(std::string CTDCUSIP){ _CTDCUSIP = CTDCUSIP;}
 		void setNotionalBondTerm(int notionalBondTerm){ _notionalBondTerm = notionalBondTerm; }
 		void setNotionalBondCouponRate(double notionalBondCouponRate){  _notionalBondCouponRate = notionalBondCouponRate; }
+		void setCTDConversionFactor(double CTDConvertionFactor){  _CTDConvertionFactor = CTDConvertionFactor; }
 		void setContractSize(int contractSize){  _contractSize = contractSize; }
 		void setFirstTradeDate(date firstTradeDate){  _firstTradeDate = firstTradeDate;	}
 		void setLastTradeDate(date lastTradeDate){  _lastTradeDate = lastTradeDate;	}
@@ -45,11 +47,17 @@ namespace instruments {
 		void setCTDBond(Bond* CTDBond){  _CTDBond = CTDBond; }
 
 		// Methods
-		double getMPV(DiscountCurve* dc){return 0;};
+		double getMPV(double costOfCarryRate);
+
+		double getImpliedBondPrice();
 
 	private:
 
+		double getPVCouponBeforeExpiry(vector<cashflow> couponVector, double costOfCarryRate);
+		double getAccuredInterestOnExpiry(vector<cashflow> couponVector);
+
 		std::string _CTDCUSIP;
+		double _CTDConvertionFactor;
 		int _contractSize;
 		int _notionalBondTerm;
 		double _notionalBondCouponRate;

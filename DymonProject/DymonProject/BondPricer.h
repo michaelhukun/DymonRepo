@@ -19,7 +19,7 @@ namespace instruments {
 	public:
 		
 		BondPricer(){};
-		BondPricer(Bond* bond){ _bond = bond; }
+		BondPricer(Bond* bond);
 		~BondPricer(){};
 
 		void init(Configuration* cfg);

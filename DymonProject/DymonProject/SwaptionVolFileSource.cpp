@@ -23,7 +23,7 @@ void SwaptionVolFileSource::init(Configuration* cfg){
 	
 	Market market(EnumHelper::getCcyEnum("USD"));
 	_fileName = cfg->getProperty("swaptionVolCube."+market.getNameString()+".file",true,"");
-	_enabled = cfg->getProperty("swaptionVolCube.enabled",true,"")=="True"?true:false;
+	_enabled = (cfg->getProperty("swaptionVolCube.enabled",true,"")=="True")?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -85,9 +85,6 @@ void SwaptionVolFileSource::retrieveRecord(){
 			}
 		}
 	}
-
-	/*cout <<"numofRows="<<db.size()<<endl;
-	cout <<"numOfCols="<<db.at(0).size()<<endl;*/
 
 	tempSwaptionCubeMap.insert(std::make_pair(strikeDiffATM,volSurfaceMap));
 	RecordHelper::getInstance()->setSwaptionATMStrikeMap(tempSwaptionATMStrikeMap);

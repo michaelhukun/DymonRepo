@@ -83,6 +83,8 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		bond->setMarket(market);
 	}else if(fieldName=="NAME"){
 		bond->setName(fieldVal);
+	}else if(fieldName=="ID"){
+		bond->setID(fieldVal);
 	}else if (fieldName=="ID_CUSIP"){
 		bond->setCUSIP(fieldVal);
 	}else if (fieldName=="SECURITY_TYP2"){
@@ -115,7 +117,13 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	}else if (fieldName=="PX_MID"){
 		double cleanPrice = std::stod(fieldVal);
 		bond->setCleanPrice(cleanPrice);
-		}else if (fieldName=="YLD_YTM_MID"){
+	}else if (fieldName=="YAS_ISPREAD_TO_GOVT"){
+		if (std::string::npos != fieldVal.find("N/A"))	{
+			bond->setQuotedGSpread(NaN);
+		}else{
+			bond->setQuotedGSpread(std::stod(fieldVal));
+		}
+	}else if (fieldName=="YLD_YTM_MID"){
 		double quotedYTM = std::stod(fieldVal);
 		bond->setQuotedYTM(quotedYTM);
 	}else if (fieldName=="DAY_CNT_DES"){

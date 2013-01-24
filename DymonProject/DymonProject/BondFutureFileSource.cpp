@@ -86,6 +86,8 @@ void BondFutureFileSource::updateBondFutureField(std::string fieldName, std::str
 		bondFuture->setNotionalBondCouponRate(std::stod(fieldVal)/100);
 	}else if (fieldName=="FUT_CTD_CUSIP"){
 		bondFuture->setCTDCUSIP(fieldVal);
+	}else if (fieldName=="FUT_CTD_CONVERTION"){
+		bondFuture->setCTDConversionFactor(std::stod(fieldVal));
 	}else if (fieldName=="FUT_FIRST_TRADE_DT"){
 		date firstTradeDate(fieldVal,true);
 		bondFuture->setIssueDate(firstTradeDate);

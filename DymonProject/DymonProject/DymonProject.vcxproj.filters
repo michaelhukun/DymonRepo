@@ -256,6 +256,12 @@
     <ClInclude Include="BondFuture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FuturePricer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestBond.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -409,6 +415,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BondFutureFileSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FuturePricer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BondFuture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Future.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestBond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

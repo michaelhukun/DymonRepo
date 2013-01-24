@@ -35,6 +35,7 @@ namespace instruments {
 		double getDirtyPrice(){ return _dirtyPrice; }
 		double getCleanPrice(){ return _cleanPrice; }
 		double getQuotedYTM(){ return _quotedYTM; }
+		double getQuotedGSpread(){ return _quotedGSpread; }		
 		double getFractionFirstCouponAccrued(){ return _fractionFirstCouponAccrued; }
 		enums::DayCountEnum getDayCount(){ return _dayCount; }
 		bool getIsGeneric(){ return _isGeneric; }
@@ -53,13 +54,14 @@ namespace instruments {
 		void setDirtyPrice(double dirtyPrice){ _dirtyPrice = dirtyPrice;}
 		void setCleanPrice(double cleanPrice){ _cleanPrice = cleanPrice;}
 		void setQuotedYTM(double quotedYTM){ _quotedYTM = quotedYTM;}
+		void setQuotedGSpread(double quotedGSpread){ _quotedGSpread = quotedGSpread;}
 		void setFractionFirstCouponAccrued(double fractionFirstCouponAccrued){ _fractionFirstCouponAccrued = fractionFirstCouponAccrued; }
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 		void setIsGeneric(bool isGeneric){ _isGeneric = isGeneric; }
 
 		// Methods
-		virtual double getMPV(DiscountCurve* bc);
-		double getGspread(DiscountCurve* bc);
+		virtual double getMPV(DiscountCurve* dc);
+		double getGspread(DiscountCurve* dc);
 		double getYield();
 		void deriveDirtyPrice();
 		void generateCouponLeg();
@@ -83,6 +85,7 @@ namespace instruments {
 		double _dirtyPrice;
 		double _cleanPrice;
 		double _quotedYTM;
+		double _quotedGSpread;
 		double _fractionFirstCouponAccrued;
 		enums::DayCountEnum _dayCount;
 	};

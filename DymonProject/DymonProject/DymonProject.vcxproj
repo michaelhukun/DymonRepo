@@ -113,6 +113,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Future.h" />
+    <ClInclude Include="FuturePricer.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -131,6 +132,7 @@
     <ClInclude Include="SwaptionVolFileSource.h" />
     <ClInclude Include="SwaptionVolSurface.h" />
     <ClInclude Include="SwaptionVolCubeBuilder.h" />
+    <ClInclude Include="TestBond.h" />
     <ClInclude Include="TestBuildCashFlowLeg.h" />
     <ClInclude Include="TestDateUtil.h" />
     <ClInclude Include="TestDiscountCurve.h" />
@@ -168,6 +170,7 @@
     <ClCompile Include="AbstractSession.cpp" />
     <ClCompile Include="AbstractTest.cpp" />
     <ClCompile Include="Bond.cpp" />
+    <ClCompile Include="BondFuture.cpp" />
     <ClCompile Include="BondFutureFileSource.cpp" />
     <ClCompile Include="BondPriceFileSource.cpp" />
     <ClCompile Include="BondCurveBuilder.cpp" />
@@ -178,6 +181,8 @@
     <ClCompile Include="cashflowLeg.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
+    <ClCompile Include="Future.cpp" />
+    <ClCompile Include="FuturePricer.cpp" />
     <ClCompile Include="Market.cpp" />
     <ClCompile Include="MarketFileSource.cpp" />
     <ClCompile Include="date.cpp" />
@@ -206,6 +211,7 @@
     <ClCompile Include="SwaptionVolCube.cpp" />
     <ClCompile Include="SwaptionVolCubeBuilder.cpp" />
     <ClCompile Include="SwaptionVolFileSource.cpp" />
+    <ClCompile Include="TestBond.cpp" />
     <ClCompile Include="TestBuildCashFlowLeg.cpp" />
     <ClCompile Include="TestDateUtil.cpp" />
     <ClCompile Include="TestDiscountCurve.cpp" />

@@ -11,6 +11,7 @@
 #include "AbstractPricer.h"
 #include "Configuration.h"
 #include "BondPricer.h"
+#include <sstream>
 
 using namespace instruments;
 using namespace utilities;
@@ -61,7 +62,7 @@ double Bond::getMPV(DiscountCurve* bc){
 double Bond::getYield(){
 	BondPricer pricer(this);
 	double yield = NaN;
-	if (_securityType=="Bills"){
+	if (_securityType=="Bill"){
 		yield = pricer.getYieldByZeroRate(_cleanPrice);
 	}else{
 		yield = pricer.getYieldByDirtyPrice(_dirtyPrice);
@@ -72,20 +73,22 @@ double Bond::getYield(){
 double Bond::getGspread(DiscountCurve* bc){
 	BondPricer pricer(this);
 	double gSpread = NaN;
-	double yiledByBondCurve;
+	double yieldByBondCurve;
 	double yieldByQuotedPrice = getYield();
-	if (_securityType=="Bills"){
+	if (_securityType=="Bill"){
 		date paymentDate = _couponLeg->getCashFlow(_couponLeg->getSize()-1).getPaymentDate();
 		double discountFactor = bc->getDiscountFactor(paymentDate);
-		yiledByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);
+		yieldByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);
 	}else{
 		double MPV = pricer.getMPV(bc);
-		yiledByBondCurve = pricer.getYieldByDirtyPrice(MPV);
+		yieldByBondCurve = pricer.getYieldByDirtyPrice(MPV);
 	}
-		gSpread =  yieldByQuotedPrice - yiledByBondCurve;
+		gSpread =  yieldByQuotedPrice - yieldByBondCurve;
 	return gSpread;
 }
 
 string Bond::toString(){	
-	return "BondID ["+_CUSIP+"], BondName ["+_name+"], Maturity ["+_maturityDate.toString()+"]";
+	std::stringstream ss (stringstream::in | stringstream::out);
+	ss<<"BondID ["+_CUSIP+"], BondName ["+_name+"], Maturity ["+_maturityDate.toString()+"], quotedPrice ["<<_cleanPrice<<"], quotedYTM ["<<_quotedYTM<<"]";
+	return ss.str();
 }
