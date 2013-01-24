@@ -17,16 +17,17 @@ using namespace utilities;
 using namespace Session;
 using namespace instruments;
 
-using namespace DAO;
 void BondFutureFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("bondFuture.file",true,"");
 	_persistDir = cfg->getProperty("bondFuture.path",false,"");
+	_enabled = cfg->getProperty("bondFuture.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void BondFutureFileSource::retrieveRecord(){
+	if (!_enabled) return;
+	
 	AbstractFileSource::retrieveRecord();
-
 	CSVDatabase db;
 	readCSV(_inFile, db);
 	int numOfRows=db.size();
@@ -42,14 +43,13 @@ void BondFutureFileSource::retrieveRecord(){
 
 void BondFutureFileSource::insertBondFutureIntoCache(BondFuture* bondFuture, RecordHelper::BondFutureMap* bondFutureMap){
 	MarketEnum market = bondFuture->getMarket().getMarketEnum();
-	long maturityDateJDN = bondFuture->getMaturityDate().getJudianDayNumber();
 	if (bondFutureMap->find(market) == bondFutureMap->end()){
 		std::map<long, BondFuture> tempMap = std::map<long, BondFuture>();
-		tempMap.insert(std::make_pair(maturityDateJDN, *bondFuture));
+		tempMap.insert(std::make_pair(bondFuture->getNotionalBondTerm(), *bondFuture));
 		bondFutureMap->insert(std::make_pair(market, tempMap));
 	}else{
 		std::map<long, BondFuture>* tempMap = &(bondFutureMap->find(market)->second);
-		tempMap->insert(std::make_pair(maturityDateJDN, *bondFuture));
+		tempMap->insert(std::make_pair(bondFuture->getNotionalBondTerm(), *bondFuture));
 	}
 	cout<<bondFuture->getName()<<endl;
 }
@@ -64,6 +64,7 @@ BondFuture* BondFutureFileSource::createBondFutureObject(CSVDatabase db, int row
 		updateBondFutureField(fieldName, fieldVal, tempBondFuture);
 	}		
 	tempBondFuture->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBondFuture->getMarket().getMarketEnum()));	
+	tempBondFuture->setCTDBond(RecordHelper::getInstance()->findCTDinBondMap(tempBondFuture->getCTDCUSIP()));
 	return tempBondFuture;
 }
 
@@ -71,31 +72,33 @@ void BondFutureFileSource::updateBondFutureField(std::string fieldName, std::str
 	if (fieldName=="COUNTRY") {		
 		Market market(EnumHelper::getCcyEnum(fieldVal));
 		bondFuture->setMarket(market);
+	}else if(fieldName=="ID"){
+		bondFuture->setID(fieldVal);
 	}else if(fieldName=="NAME"){
 		bondFuture->setName(fieldVal);
 	}else if (fieldName=="FUT_CONT_SIZE"){
 		bondFuture->setContractSize(std::stoi(fieldVal));
 	}else if (fieldName=="PX_MID"){
-		bondFuture->setQuotedPrice(std::stoi(fieldVal));
+		bondFuture->setQuotedPrice(std::stod(fieldVal));
 	}else if (fieldName=="NOTIONAL_ISSUE_TERM_NUMBER"){
 		bondFuture->setNotionalBondTerm(std::stoi(fieldVal));
 	}else if (fieldName=="NOTIONAL_ISSUE_COUPON"){
-		bondFuture->setNotionalBondCouponRate(std::stod(fieldVal));
+		bondFuture->setNotionalBondCouponRate(std::stod(fieldVal)/100);
 	}else if (fieldName=="FUT_CTD_CUSIP"){
 		bondFuture->setCTDCUSIP(fieldVal);
 	}else if (fieldName=="FUT_FIRST_TRADE_DT"){
-		date firstTradeDate(fieldVal,false);
+		date firstTradeDate(fieldVal,true);
 		bondFuture->setIssueDate(firstTradeDate);
 		bondFuture->setFirstTradeDate(firstTradeDate);
 	}else if (fieldName=="LAST_TRADEABLE_DT"){
-		date lastTradeDate(fieldVal,false);
+		date lastTradeDate(fieldVal,true);
 		bondFuture->setMaturityDate(lastTradeDate);
 		bondFuture->setLastTradeDate(lastTradeDate);
 	}else if (fieldName=="FUT_DLV_DT_FIRST"){
-		date firstDeliveryDate(fieldVal,false);
+		date firstDeliveryDate(fieldVal,true);
 		bondFuture->setFirstDeliverDate(firstDeliveryDate);
 	}else if (fieldName=="FUT_DLV_DT_LAST"){
-		date lastDeliveryDate(fieldVal,false);
+		date lastDeliveryDate(fieldVal,true);
 		bondFuture->setLastDeliverDate(lastDeliveryDate);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);

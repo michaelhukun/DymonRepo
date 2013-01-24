@@ -22,9 +22,7 @@ namespace instruments {
 		~Bond(){};
 
 		// Getters
-		Market getMarket(){ return _market; }
 		cashflowLeg* getCouponLeg(){ return _couponLeg;}
-		std::string getName(){ return _name; }
 		std::string getCUSIP(){ return _CUSIP; }
 		std::string getSecurityType(){ return _securityType; }
 		date getFirstCouponDate(){ return _firstCouponDate; }
@@ -42,9 +40,7 @@ namespace instruments {
 		bool getIsGeneric(){ return _isGeneric; }
 
 		// Setters
-		void setMarket(Market market){ _market = market; }
 		void setCouponLeg(cashflowLeg* couponLeg){ _couponLeg = couponLeg; }
-		void setName(std::string name){ _name = name; }
 		void setCUSIP(std::string CUSIP){ _CUSIP = CUSIP; }
 		void setSecurityType(std::string securityType){ _securityType = securityType; }
 		void setFirstCouponDate(date firstCouponDate){ _firstCouponDate=firstCouponDate; }
@@ -77,8 +73,6 @@ namespace instruments {
 		date _firstCouponDate;
 		date _nextCouponDate;
 		date _prevCouponDate;
-		Market _market;
-		std::string _name;
 		std::string _CUSIP;
 		std::string _securityType;
 		bool _isGeneric;

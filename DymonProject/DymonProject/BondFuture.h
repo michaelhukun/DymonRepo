@@ -23,7 +23,6 @@ namespace instruments {
 		~BondFuture(){};
 
 		// Getters
-		std::string getID(){ return _ID; }
 		std::string getCTDCUSIP(){ return _CTDCUSIP; }
 		int getNotionalBondTerm(){ return _notionalBondTerm; }
 		double getNotionalBondCouponRate(){ return _notionalBondCouponRate; }
@@ -35,15 +34,14 @@ namespace instruments {
 		Bond* getCTDBond(){ return _CTDBond; }
 
 		// Setters
-		void setID(std::string ID){ _ID = ID;}
 		void setCTDCUSIP(std::string CTDCUSIP){ _CTDCUSIP = CTDCUSIP;}
 		void setNotionalBondTerm(int notionalBondTerm){ _notionalBondTerm = notionalBondTerm; }
 		void setNotionalBondCouponRate(double notionalBondCouponRate){  _notionalBondCouponRate = notionalBondCouponRate; }
 		void setContractSize(int contractSize){  _contractSize = contractSize; }
-		void setFirstTradeDate(date firstTradeDate){  _firstTradeDate = firstTradeDate;}
-		void setLastTradeDate(date lastTradeDate){  _lastTradeDate = lastTradeDate;}
-		void setFirstDeliverDate(date firstDeliverDate){  _firstDeliverDate = firstDeliverDate;}
-		void setLastDeliverDate(date lastDeliverDate){  _lastDeliverDate = _lastDeliverDate;}
+		void setFirstTradeDate(date firstTradeDate){  _firstTradeDate = firstTradeDate;	}
+		void setLastTradeDate(date lastTradeDate){  _lastTradeDate = lastTradeDate;	}
+		void setFirstDeliverDate(date firstDeliverDate){  _firstDeliverDate = firstDeliverDate;	}
+		void setLastDeliverDate(date lastDeliverDate){  _lastDeliverDate = lastDeliverDate;	}
 		void setCTDBond(Bond* CTDBond){  _CTDBond = CTDBond; }
 
 		// Methods
@@ -51,12 +49,10 @@ namespace instruments {
 
 	private:
 
-		std::string _ID;
 		std::string _CTDCUSIP;
 		int _contractSize;
 		int _notionalBondTerm;
 		double _notionalBondCouponRate;
-		double _quotedPrice;
 		date _firstTradeDate;
 		date _lastTradeDate;
 		date _firstDeliverDate;

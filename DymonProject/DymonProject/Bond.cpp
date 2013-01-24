@@ -61,7 +61,7 @@ double Bond::getMPV(DiscountCurve* bc){
 double Bond::getYield(){
 	BondPricer pricer(this);
 	double yield = NaN;
-	if (_securityType=="BILLS"){
+	if (_securityType=="Bills"){
 		yield = pricer.getYieldByZeroRate(_cleanPrice);
 	}else{
 		yield = pricer.getYieldByDirtyPrice(_dirtyPrice);
@@ -74,7 +74,7 @@ double Bond::getGspread(DiscountCurve* bc){
 	double gSpread = NaN;
 	double yiledByBondCurve;
 	double yieldByQuotedPrice = getYield();
-	if (_securityType=="BILLS"){
+	if (_securityType=="Bills"){
 		date paymentDate = _couponLeg->getCashFlow(_couponLeg->getSize()-1).getPaymentDate();
 		double discountFactor = bc->getDiscountFactor(paymentDate);
 		yiledByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);

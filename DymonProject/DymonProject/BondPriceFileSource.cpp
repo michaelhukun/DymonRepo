@@ -23,12 +23,14 @@ using namespace DAO;
 void BondPriceFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("bondPrice.file",true,"");
 	_persistDir = cfg->getProperty("bondPrice.path",false,"");
+	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void BondPriceFileSource::retrieveRecord(){
+	if (!_enabled) return;
+	
 	AbstractFileSource::retrieveRecord();
-
 	CSVDatabase db;
 	readCSV(_inFile, db);
 

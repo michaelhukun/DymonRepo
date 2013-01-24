@@ -27,12 +27,14 @@ SwapRateFileSource::~SwapRateFileSource(){}
 void SwapRateFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("swapRate.file",true,"");
 	_persistDir = cfg->getProperty("swapRate.path",false,"");
+	_enabled = cfg->getProperty("swapRate.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void SwapRateFileSource::retrieveRecord(){
-	AbstractFileSource::retrieveRecord();
+	if (!_enabled) return;
 	
+	AbstractFileSource::retrieveRecord();
 	enums::MarketEnum marketEnum;
 	RecordHelper::RateMap swapRateMap;
 

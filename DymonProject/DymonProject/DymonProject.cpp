@@ -54,7 +54,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	//aSwaptionTest.swaptionTest();
 	//DiscountCurve* yc = buildDiscountCurve();
 	//forwardStartingSwap(yc);
-	SwaptionTest();
+	//SwaptionTest();
 }		
 
 void unitTest(){	
