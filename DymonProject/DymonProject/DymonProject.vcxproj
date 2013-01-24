@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
@@ -99,6 +100,8 @@
     <ClInclude Include="Bisection.h" />
     <ClInclude Include="Bond.h" />
     <ClInclude Include="BondCurveBuilder.h" />
+    <ClInclude Include="BondFuture.h" />
+    <ClInclude Include="BondFutureFileSource.h" />
     <ClInclude Include="BondPriceFileSource.h" />
     <ClInclude Include="bondpricer.h" />
     <ClInclude Include="BondRateBootStrapper.h" />
@@ -109,6 +112,7 @@
     <ClInclude Include="ConfigurationFileSource.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="CubicSplineInterpolator.h" />
+    <ClInclude Include="Future.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -164,6 +168,7 @@
     <ClCompile Include="AbstractSession.cpp" />
     <ClCompile Include="AbstractTest.cpp" />
     <ClCompile Include="Bond.cpp" />
+    <ClCompile Include="BondFutureFileSource.cpp" />
     <ClCompile Include="BondPriceFileSource.cpp" />
     <ClCompile Include="BondCurveBuilder.cpp" />
     <ClCompile Include="BondPricer.cpp" />

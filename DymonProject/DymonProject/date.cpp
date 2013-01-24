@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include "Constants.h"
+#include <regex>
 
 using namespace std;
 using namespace utilities;
@@ -26,16 +27,17 @@ namespace utilities {
 	}
 
 	date::date(std::string dateStr, bool monthBeforeDay){
-		if (dateStr==""){
-			_isNull = true;
-			return;
-		}else{
+		std::regex dateRegex ("[0-9]*/[0-9]*/[0-9]{4}");
+		if (std::regex_match (dateStr,dateRegex)){
 			vector<std::string> dayMonthYear = fileUtil::split(dateStr, '/');
 			_year=(unsigned short) std::stoul(dayMonthYear[2],NULL,0);
 			_month=(unsigned short) std::stoul(dayMonthYear[monthBeforeDay?0:1],NULL,0);
 			_day=(unsigned short) std::stoul(dayMonthYear[monthBeforeDay?1:0],NULL,0);
 			_isNull=false;
 			setJudianDayNumber();
+		}else{
+			_isNull = true;
+			return;
 		}
 	}
 
@@ -85,6 +87,13 @@ namespace utilities {
 		if (_isNull) return;
 		_month = month;
 		setJudianDayNumber();
+	}
+
+	bool date::isMonthEnd(){
+		int monthEndDay = dateUtil::getMonthLastDay(_year,_month);
+		if (_day==monthEndDay)
+			return true;
+		return false;
 	}
 
 	void date::printDate() {

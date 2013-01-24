@@ -23,38 +23,45 @@ namespace instruments {
 		~BondFuture(){};
 
 		// Getters
-		int getNotionalBondTenor(){ return _notionalBondTenor; }
+		std::string getID(){ return _ID; }
+		std::string getCTDCUSIP(){ return _CTDCUSIP; }
+		int getNotionalBondTerm(){ return _notionalBondTerm; }
 		double getNotionalBondCouponRate(){ return _notionalBondCouponRate; }
 		int getContractSize(){ return _contractSize; }
 		date getFirstTradeDate(){ return _firstTradeDate;}
 		date getLastTradeDate(){ return _lastTradeDate;}
 		date getFirstDeliverDate(){ return _firstDeliverDate;}
 		date getLastDeliverDate(){ return _lastDeliverDate;}
-		Bond* getMostLikelyBond(){ return &_mostLikelyBond; }
+		Bond* getCTDBond(){ return _CTDBond; }
 
 		// Setters
-		void setNotionalBondTenor(int notionalBondTenor){ _notionalBondTenor = notionalBondTenor; }
+		void setID(std::string ID){ _ID = ID;}
+		void setCTDCUSIP(std::string CTDCUSIP){ _CTDCUSIP = CTDCUSIP;}
+		void setNotionalBondTerm(int notionalBondTerm){ _notionalBondTerm = notionalBondTerm; }
 		void setNotionalBondCouponRate(double notionalBondCouponRate){  _notionalBondCouponRate = notionalBondCouponRate; }
 		void setContractSize(int contractSize){  _contractSize = contractSize; }
 		void setFirstTradeDate(date firstTradeDate){  _firstTradeDate = firstTradeDate;}
 		void setLastTradeDate(date lastTradeDate){  _lastTradeDate = lastTradeDate;}
 		void setFirstDeliverDate(date firstDeliverDate){  _firstDeliverDate = firstDeliverDate;}
 		void setLastDeliverDate(date lastDeliverDate){  _lastDeliverDate = _lastDeliverDate;}
-		void setMostLikelyBond(Bond mostLikelyBond){  _mostLikelyBond = mostLikelyBond; }
+		void setCTDBond(Bond* CTDBond){  _CTDBond = CTDBond; }
 
 		// Methods
-		double getMPV(DiscountCurve* dc);
+		double getMPV(DiscountCurve* dc){return 0;};
 
 	private:
 
-		int _notionalBondTenor;
-		double _notionalBondCouponRate;
+		std::string _ID;
+		std::string _CTDCUSIP;
 		int _contractSize;
+		int _notionalBondTerm;
+		double _notionalBondCouponRate;
+		double _quotedPrice;
 		date _firstTradeDate;
 		date _lastTradeDate;
 		date _firstDeliverDate;
 		date _lastDeliverDate;
-		Bond _mostLikelyBond;
+		Bond* _CTDBond;
 	};
 
 }

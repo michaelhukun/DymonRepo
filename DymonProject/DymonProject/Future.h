@@ -35,7 +35,7 @@ namespace instruments {
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 
 		// Methods
-		virtual double getMPV(DiscountCurve* dc);
+		virtual double getMPV(DiscountCurve* dc){return 0;};
 
 	private:
 
@@ -44,7 +44,7 @@ namespace instruments {
 		int _tenorInMonths;
 		double _quotedPrice;
 		enums::DayCountEnum _dayCount;
-		Bond most
+		Bond* _CTDBond;
 	};
 
 }

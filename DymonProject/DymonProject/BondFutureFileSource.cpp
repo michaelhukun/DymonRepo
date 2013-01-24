@@ -68,31 +68,21 @@ BondFuture* BondFutureFileSource::createBondFutureObject(CSVDatabase db, int row
 }
 
 void BondFutureFileSource::updateBondFutureField(std::string fieldName, std::string fieldVal, BondFuture* bondFuture){
-	if (fieldName=="Cntry") {		
+	if (fieldName=="COUNTRY") {		
 		Market market(EnumHelper::getCcyEnum(fieldVal));
 		bondFuture->setMarket(market);
-	}else if(fieldName=="Name"){
+	}else if(fieldName=="NAME"){
 		bondFuture->setName(fieldVal);
 	}else if (fieldName=="FUT_CONT_SIZE"){
-		bondFuture->setContractSize:(std:stoi(fieldVal));
-	}else if (fieldName=="NotionalTenor?????"){
-		if (fieldVal.find("Y")!=fieldVal.npos) {
-			bondFuture->setTenor(std::stoi(fieldVal.substr(0,fieldVal.find("Y")))*12);
-		} else if (fieldVal.find("M")!=fieldVal.npos){
-			bondFuture->setTenor(std::stoi(fieldVal.substr(0,fieldVal.find("M"))));
-		} else {
-			bondFuture->setTenor(NaN);
-		}
-	}else if (fieldName=="NotionalBondCouponRate"){
+		bondFuture->setContractSize(std::stoi(fieldVal));
+	}else if (fieldName=="PX_MID"){
+		bondFuture->setQuotedPrice(std::stoi(fieldVal));
+	}else if (fieldName=="NOTIONAL_ISSUE_TERM_NUMBER"){
+		bondFuture->setNotionalBondTerm(std::stoi(fieldVal));
+	}else if (fieldName=="NOTIONAL_ISSUE_COUPON"){
 		bondFuture->setNotionalBondCouponRate(std::stod(fieldVal));
-	}else if (fieldName=="Bmk"){
-		if (fieldVal.find("Y")!=fieldVal.npos) {
-			bondFuture->setTenor(std::stoi(fieldVal.substr(0,fieldVal.find("Y")))*12);
-		} else if (fieldVal.find("M")!=fieldVal.npos){
-			bondFuture->setTenor(std::stoi(fieldVal.substr(0,fieldVal.find("M"))));
-		} else {
-			bondFuture->setTenor(NaN);
-		}
+	}else if (fieldName=="FUT_CTD_CUSIP"){
+		bondFuture->setCTDCUSIP(fieldVal);
 	}else if (fieldName=="FUT_FIRST_TRADE_DT"){
 		date firstTradeDate(fieldVal,false);
 		bondFuture->setIssueDate(firstTradeDate);

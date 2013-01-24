@@ -35,6 +35,7 @@ namespace utilities {
 		// Methods
 		void printDate();
 		std::string toString();
+		bool isMonthEnd();
 				
 		int compare (date d) {
 			if (_judianDayNumber<d.getJudianDayNumber())

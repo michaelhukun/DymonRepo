@@ -241,7 +241,11 @@ date dateUtil::getEndDateMonthIncrement(date startDate, int numMonth){
 	yearIncrement = (startMonth + numMonth)<=0?yearIncrement-1:yearIncrement;
 	endMonth = endMonth<=0?endMonth+12:endMonth;
 	short endYear= startDate.getYear()+yearIncrement;	
-	date endDate(endYear, endMonth, startDate.getDay());		
+	date endDate(endYear, endMonth, startDate.getDay());
+
+	// Adjust the return day to the end of month if the start date is also start of month
+	if (startDate.getDay() == getMonthLastDay(startDate.getYear(), startDate.getMonth()))
+		endDate.setDay(getMonthLastDay(endDate.getYear(), endDate.getMonth()));
 	return endDate;
 }
 
@@ -280,18 +284,25 @@ date dateUtil::getBizDateOffSet(date refDate, long offset, enums::MarketEnum mar
 	date offsetDate(JDN);
 	return offsetDate; 
 }
+		
+int dateUtil::getMonthLastDay(int year, int month){
+	unsigned short monthlen[]={31,28,31,30,31,30,31,31,30,31,30,31};
+	if (isleapyear(year) && month==2)
+		monthlen[1]++;
+
+	int lastDay = monthlen[month-1];
+	return lastDay;
+}
 
 date dateUtil::adjustInvalidateDate(date aDate, bool forwardAdjust){
-	unsigned short monthlen[]={31,28,31,30,31,30,31,31,30,31,30,31};
-	if (isleapyear(aDate.getYear()) && aDate.getMonth()==2)
-		monthlen[1]++;
-	if (aDate.getDay()>monthlen[aDate.getMonth()-1]){
+	int monthLastDay = getMonthLastDay(aDate.getYear(), aDate.getMonth());
+	if (aDate.getDay()>monthLastDay){
 		if (forwardAdjust){
 			aDate.setMonth(aDate.getMonth()%12+1);
 			aDate.setDay(1);
+		}	else{
+			aDate.setDay(monthLastDay);
 		}
-		else
-			aDate.setDay(monthlen[aDate.getMonth()-1]);
 	}
 	return aDate;
 }

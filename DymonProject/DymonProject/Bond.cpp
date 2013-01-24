@@ -22,13 +22,13 @@ void Bond::generateCouponLeg(){
 	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"-1"));
 	BuilderCashFlowLeg* couponLegBuilder = new BuilderCashFlowLeg(enums::BOND, _issueDate, _maturityDate, _tenorNumOfMonths, _couponRate, 100, _couponFreq, _market.getMarketEnum(), buildDirection);
 	_couponLeg=couponLegBuilder->getCashFlowLeg();
-	_firstCouponDate = findFirstCouponDate();
-	_firstCouponIndex = _couponLeg->getCashFlowIndexForAccrualEnd(_firstCouponDate);
+	_nextCouponDate = findNextCouponDate();
+	_nextCouponIndex = _couponLeg->getCashFlowIndexForAccrualEnd(_nextCouponDate);
 }
 
-date Bond::findFirstCouponDate(){
-	if (!_firstCouponDate.isNull()) 
-		return _firstCouponDate;
+date Bond::findNextCouponDate(){
+	if (!_nextCouponDate.isNull()) 
+		return _nextCouponDate;
 
 	vector<cashflow> couponVector = _couponLeg->getCashFlowVector();
 	for (unsigned int i = 0; i< couponVector.size(); i++){
@@ -36,25 +36,20 @@ date Bond::findFirstCouponDate(){
 		if (_tradeDate>=coupon.getAccuralStartDate() && _tradeDate<coupon.getAccuralEndDate())
 			return coupon.getAccuralEndDate();
 	}
-	throw "First coupon date not found!";
+	throw "Next coupon date not found!";
 }
 
 void Bond::deriveDirtyPrice(){
 	if (_couponFreq==NaN ){
 		_dirtyPrice = NaN;
 	}else{
-		cashflow firstCashFlow = _couponLeg->getCashFlowVector()[_firstCouponIndex];
+		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";
+		cashflow firstCashFlow = _couponLeg->getCashFlowVector()[_nextCouponIndex];
 		date refStartDate = firstCashFlow.getAccuralStartDate();
 		date refEndDate = firstCashFlow.getAccuralEndDate();
 		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _tradeDate, refStartDate, refEndDate, _market.getDayCountBondConvention());
 		_dirtyPrice = _cleanPrice + _couponRate/_couponFreq*_fractionFirstCouponAccrued;
 	}
-}
-
-bool Bond::isGeneric(){
-	if (_type=="Gen")
-		return true;
-	return false;
 }
 
 double Bond::getMPV(DiscountCurve* bc){
@@ -66,7 +61,7 @@ double Bond::getMPV(DiscountCurve* bc){
 double Bond::getYield(){
 	BondPricer pricer(this);
 	double yield = NaN;
-	if (_collateralType=="BILLS"){
+	if (_securityType=="BILLS"){
 		yield = pricer.getYieldByZeroRate(_cleanPrice);
 	}else{
 		yield = pricer.getYieldByDirtyPrice(_dirtyPrice);
@@ -79,7 +74,7 @@ double Bond::getGspread(DiscountCurve* bc){
 	double gSpread = NaN;
 	double yiledByBondCurve;
 	double yieldByQuotedPrice = getYield();
-	if (_collateralType=="BILLS"){
+	if (_securityType=="BILLS"){
 		date paymentDate = _couponLeg->getCashFlow(_couponLeg->getSize()-1).getPaymentDate();
 		double discountFactor = bc->getDiscountFactor(paymentDate);
 		yiledByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);
@@ -89,4 +84,8 @@ double Bond::getGspread(DiscountCurve* bc){
 	}
 		gSpread =  yieldByQuotedPrice - yiledByBondCurve;
 	return gSpread;
+}
+
+string Bond::toString(){	
+	return "BondID ["+_CUSIP+"], BondName ["+_name+"], Maturity ["+_maturityDate.toString()+"]";
 }

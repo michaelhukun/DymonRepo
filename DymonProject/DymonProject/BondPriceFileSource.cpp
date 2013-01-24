@@ -55,14 +55,9 @@ void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRate
 		bondRateMap->insert(std::make_pair(market, tempMap));
 	}else{
 		std::map<long, Bond>* tempMap = &(bondRateMap->find(market)->second);
-		if (tempMap->find(maturityDateJDN) == tempMap->end()){
-			tempMap->insert(std::make_pair(maturityDateJDN, *bond));
-		}else{
-			 Bond* duplicateBondInMap = &(tempMap->find(maturityDateJDN)->second);
-			 duplicateBondInMap->setType("Gen");
-		}
+		tempMap->insert(std::make_pair(maturityDateJDN, *bond));
 	}
-	cout<<bond->getShortCut()<<endl;
+	cout<<bond->toString()<<endl;
 }
 
 Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
@@ -81,47 +76,51 @@ Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
 }
 
 void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::string fieldVal, Bond* bond){
-	if (fieldName=="Cntry") {		
+	if (fieldName=="COUNTRY") {		
 		Market market(EnumHelper::getCcyEnum(fieldVal));
 		bond->setMarket(market);
-	}else if(fieldName=="Name"){
+	}else if(fieldName=="NAME"){
 		bond->setName(fieldVal);
-	}else if (fieldName=="Type"){
-		bond->setType(fieldVal);
-	}else if (fieldName=="Shortcut"){
-		bond->setShortCut(fieldVal);
-	}else if (fieldName=="Collateral Type"){
-		bond->setCollateralType(fieldVal);
-	}else if (fieldName=="Bmk"){
-		std::regex YR("[0-9]+Y");
-		if (fieldVal.find("Y")!=fieldVal.npos) {
-			bond->setTenor(std::stoi(fieldVal.substr(0,fieldVal.find("Y")))*12);
-		} else if (fieldVal.find("M")!=fieldVal.npos){
-			bond->setTenor(std::stoi(fieldVal.substr(0,fieldVal.find("M"))));
-		} else {
-			bond->setTenor(NaN);
-		}
+	}else if (fieldName=="ID_CUSIP"){
+		bond->setCUSIP(fieldVal);
+	}else if (fieldName=="SECURITY_TYP2"){
+		bond->setSecurityType(fieldVal);
+	}else if (fieldName=="YRS_TO_MTY_ISSUE"){
+		int issueToMaturity = ((int)(std::stod(fieldVal)+0.01))*12;
+		bond->setTenor(issueToMaturity);
 	}else if (fieldName=="CPN"){
 		double couponRate = NaN;
-		if (fieldVal!="n/a") couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
+		if (fieldVal!="#N/A Field Not Applicable") couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
 		bond->setCouponRate(couponRate);
 	}else if (fieldName=="CPN_FREQ"){
-		int couponFreq=(fieldVal=="n/a")?(int)NaN:std::stoi(fieldVal);
+		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?(int)NaN:std::stoi(fieldVal);
 		bond->setCouponFreq(couponFreq);
-	}else if (fieldName=="Maturity"){
+	}else if (fieldName=="MATURITY"){
 		date maturityDate(fieldVal,true);
 		bond->setMaturityDate(maturityDate);
-	}else if (fieldName=="first_cpn_DT"){
+	}else if (fieldName=="FIRST_CPN_DT"){
 		date firstCouponDate(fieldVal,true);
 		bond->setFirstCouponDate(firstCouponDate);
+	}else if (fieldName=="PREV_CPN_DT"){
+		date prevCouponDate(fieldVal,true);
+		bond->setPrevCouponDate(prevCouponDate);
+	}else if (fieldName=="NXT_CPN_DT"){
+		date nextCouponDate(fieldVal,true);
+		bond->setNextCouponDate(nextCouponDate);
 	}else if (fieldName=="ISSUE_DT"){
 		date issueDate(fieldVal,true);
 		bond->setIssueDate(issueDate);
 	}else if (fieldName=="PX_MID"){
 		double cleanPrice = std::stod(fieldVal);
 		bond->setCleanPrice(cleanPrice);
+		}else if (fieldName=="YLD_YTM_MID"){
+		double quotedYTM = std::stod(fieldVal);
+		bond->setQuotedYTM(quotedYTM);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		bond->setDayCount(dayCount);
+	}else if (fieldName=="IS_US_ON_THE_RUN"){
+		bool isGeneric = (fieldVal=="Y")?true:false;
+		bond->setIsGeneric(isGeneric);
 	}
 }

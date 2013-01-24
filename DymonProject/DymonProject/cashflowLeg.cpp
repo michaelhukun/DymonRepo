@@ -66,8 +66,8 @@ namespace instruments {
 	vector<date> cashflowLeg::getAccuralEndDates() {
 		vector<date> aDates;
 
-		std::vector<cashflow>::iterator itT=_cashflowLeg.begin();
-		for (;itT!=_cashflowLeg.end();itT++) {
+		std::vector<cashflow>::iterator itT=_cashflowVector.begin();
+		for (;itT!=_cashflowVector.end();itT++) {
 			cashflow aCF=*itT;
 			aDates.push_back(aCF.getAccuralEndDate());
 		}

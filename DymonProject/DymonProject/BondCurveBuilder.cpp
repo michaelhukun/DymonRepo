@@ -38,7 +38,7 @@ void BondCurveBuilder::buildSection(DiscountCurve* dc){
 	for (map<long,Bond>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 		Bond bond = (*it).second;
 		int numOfNights = (int) (*it).first;
-		if (bond.isGeneric()==false) 
+		if (bond.getIsGeneric()==false) 
 			continue;
 
 		vector<cashflow> couponLeg = bond.getCouponLeg()->getCashFlowVector();

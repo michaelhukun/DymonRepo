@@ -51,7 +51,7 @@ double BondPricer::yieldSolverFunc(double yield){
 	vector<cashflow> couponLegVec = _bond->getCouponLeg()->getCashFlowVector();
 	double fullPrice = 0;
 	int couponFreq = _bond->getCouponFreq();
-	for (unsigned int i=_bond->getFirstCouponIndex(); i< couponLegVec.size();i++){
+	for (unsigned int i=_bond->getNextCouponIndex(); i< couponLegVec.size();i++){
 		cashflow cf = couponLegVec[i];
 		int remainingCouponNum = couponLegVec.size() - i;
 		double dcf = pow(1 + yield / couponFreq, - remainingCouponNum + _bond->getFractionFirstCouponAccrued());
