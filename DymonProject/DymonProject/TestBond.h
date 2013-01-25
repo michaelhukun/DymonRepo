@@ -20,12 +20,16 @@ namespace UnitTest{
 		void yieldTestSuit();
 
 		void gSpreadTestSuit();
+		
+		void zeroRateSpreadTestSuit();
 
 	private:
 
 		void yieldTest(Bond* bond, DiscountCurve* dc);
 
 		void gSpreadTest(Bond* bond, DiscountCurve* dc);
+		
+		void zeroRateSpreadTest(Bond* bond, DiscountCurve* dc);
 
 		void compareResult(string testName, Bond* bond, double derivedVal, double expectedVal);
 	};

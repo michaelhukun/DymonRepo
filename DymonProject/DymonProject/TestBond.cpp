@@ -10,9 +10,11 @@ using namespace Markets;
 void TestBond::runTest(){
 	yieldTestSuit();
 	gSpreadTestSuit();
+	zeroRateSpreadTestSuit();
 }
 
 void TestBond::yieldTestSuit(){
+	cout<<endl<<"*********** Bond Yield Test ************"<<endl<<endl;
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
 	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
 	RecordHelper::BondRateMap::iterator bondMapIt;
@@ -27,6 +29,7 @@ void TestBond::yieldTestSuit(){
 }
 
 void TestBond::gSpreadTestSuit(){
+	cout<<endl<<"*********** Bond G-Spread Test ************"<<endl<<endl;
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
 	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
 	RecordHelper::BondRateMap::iterator bondMapIt;
@@ -36,6 +39,22 @@ void TestBond::gSpreadTestSuit(){
 		for (innerBondMapIt=innerBondMap->begin(); innerBondMapIt!=innerBondMap->end(); ++innerBondMapIt){
 			Bond* tempBond = &(innerBondMapIt->second);
 			gSpreadTest(tempBond, dc);
+		}
+	}
+}
+
+
+void TestBond::zeroRateSpreadTestSuit(){
+	cout<<endl<<"*********** Bond Zero Rate Spread Test ************"<<endl<<endl;
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
+	RecordHelper::BondRateMap::iterator bondMapIt;
+	for (bondMapIt=bondRateMap->begin(); bondMapIt!=bondRateMap->end(); ++bondMapIt){
+		map<long, Bond>* innerBondMap = &(bondMapIt->second);
+		map<long, Bond>::iterator innerBondMapIt;
+		for (innerBondMapIt=innerBondMap->begin(); innerBondMapIt!=innerBondMap->end(); ++innerBondMapIt){
+			Bond* tempBond = &(innerBondMapIt->second);
+			zeroRateSpreadTest(tempBond, dc);
 		}
 	}
 }
@@ -54,6 +73,11 @@ void TestBond::gSpreadTest(Bond* bond, DiscountCurve* dc){
 	}else{
 		compareResult("G-Spread", bond, derivedGSpread, quotedGSpread);
 	}
+}
+
+void TestBond::zeroRateSpreadTest(Bond* bond, DiscountCurve* dc){
+	double zeroRateSpread = bond->getZeroRateSpread(dc);
+	cout<< "bond ID ["<<bond->getID()<<"], isGeneric ["<<bond->getIsGeneric()<<"], zero rate spread ["<<zeroRateSpread<<"]"<<endl;
 }
 
 void TestBond::compareResult(string testName, Bond* bond, double derivedVal, double expectedVal){

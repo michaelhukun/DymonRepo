@@ -63,7 +63,7 @@ double Bond::getYield(){
 	BondPricer pricer(this);
 	double yield = NaN;
 	if (_securityType=="Bill"){
-		yield = pricer.getYieldByZeroRate(_cleanPrice);
+		yield = pricer.getYieldByZeroRate(_cleanPrice/100);
 	}else{
 		yield = pricer.getYieldByDirtyPrice(_dirtyPrice);
 	}
@@ -83,8 +83,19 @@ double Bond::getGspread(DiscountCurve* bc){
 		double MPV = pricer.getMPV(bc);
 		yieldByBondCurve = pricer.getYieldByDirtyPrice(MPV);
 	}
-		gSpread =  yieldByQuotedPrice - yieldByBondCurve;
+	gSpread =  yieldByQuotedPrice - yieldByBondCurve;
 	return gSpread;
+}
+
+double Bond::getZeroRateSpread(DiscountCurve* dc){
+	BondPricer pricer(this);
+	double zeroRateSpread;
+	if (_securityType=="Bill"){
+		zeroRateSpread = _cleanPrice/100 - dc->getZeroRate(_maturityDate, _dayCount);
+	}else{
+		zeroRateSpread = pricer.getZeroRateSpread(_dirtyPrice);
+	}
+	return zeroRateSpread;
 }
 
 string Bond::toString(){	

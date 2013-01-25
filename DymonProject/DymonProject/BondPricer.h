@@ -24,15 +24,19 @@ namespace instruments {
 
 		void init(Configuration* cfg);
 						
-		virtual double getMPV(DiscountCurve* discountCurve);
+		virtual double getMPV(DiscountCurve* discountCurve);	
+
+		double getZeroRateSpread(double dirtyPrice);
 		
-		virtual double getYieldByDirtyPrice(double dirtyPrice);
+		double getYieldByDirtyPrice(double dirtyPrice);
 		
-		virtual double getYieldByZeroRate(double zeroRate);
+		double getYieldByZeroRate(double zeroRate);
 		
-		virtual double getYieldByDiscountFactor(double discountFactor);
+		double getYieldByDiscountFactor(double discountFactor);
 
 		double yieldSolverFunc(double yield);
+
+		double curveBumpSolverFunc(double zeroRateSpread);
 
 	private:
 

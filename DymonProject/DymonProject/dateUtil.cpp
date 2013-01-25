@@ -169,7 +169,16 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 		//cout<<"inside ACT_365"<<endl;
 		break;
 	case enums::ACT_ACT:
-		throw "Need reference start and end date!";
+		if (startDate.getYear()==endDate.getYear()){
+			int numDays = endDate.getJudianDayNumber()-startDate.getJudianDayNumber();
+			accrualFactor = numDays/(isleapyear(startDate.getYear())?366.0:365.0);
+		}else{
+			int numStartYearDays = date(startDate.getYear(),12,31).getJudianDayNumber() - startDate.getJudianDayNumber() + 1;
+			double startYearFactor = numStartYearDays/(isleapyear(startDate.getYear())?366.0:365.0);
+			int numEndYearDays = endDate.getJudianDayNumber() - date(endDate.getYear(),1,1).getJudianDayNumber();
+			double endYearFactor = numEndYearDays/(isleapyear(endDate.getYear())?366.0:365.0);
+			accrualFactor = startYearFactor + endYearFactor +(endDate.getYear()-startDate.getYear()-1);
+		}
 		break;
 	case enums::BUS_252:
 		//Numerator is the number of business days (in a given calendar) from and including the start date up to and excluding the end date.

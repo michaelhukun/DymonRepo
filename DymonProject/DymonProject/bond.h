@@ -63,6 +63,7 @@ namespace instruments {
 		virtual double getMPV(DiscountCurve* dc);
 		double getGspread(DiscountCurve* dc);
 		double getYield();
+		double getZeroRateSpread(DiscountCurve* dc);
 		void deriveDirtyPrice();
 		void generateCouponLeg();
 		date findNextCouponDate();
