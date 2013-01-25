@@ -15,9 +15,23 @@ double DiscountCurve::getDiscountFactor(date date0){
 	return getValue(date0);
 }
 
+double DiscountCurve::getZeroRate(date aDate, enums::DayCountEnum dayCount){
+	double discountFactor = getDiscountFactor(aDate);
+	double dayCountFraction = dateUtil::getAccrualFactor(dateUtil::getToday(),aDate,dayCount);
+	double zeroRate = log(1/discountFactor)/dayCountFraction;
+	return zeroRate;
+}
+
+double DiscountCurve::getDFChangingZeroRate(date aDate, double zeroRateDiff, enums::DayCountEnum dayCount){
+	double zeroRate = getZeroRate(aDate, dayCount);
+	double modifiedZeroRate = zeroRate + zeroRateDiff;
+	double dayCountFraction = dateUtil::getAccrualFactor(dateUtil::getToday(),aDate,dayCount);
+	double discountFactor = exp(-modifiedZeroRate*dayCountFraction);
+	return discountFactor;
+}
+
 double DiscountCurve::getFLiborRate(date forwardStartDate,date forwardEndDate,enums::DayCountEnum dayCount) {
 	double cal=getDiscountFactor(forwardStartDate)/getDiscountFactor(forwardEndDate);
-
 	return (cal-1)/dateUtil::getAccrualFactor(forwardStartDate,forwardEndDate,dayCount);
 }
 

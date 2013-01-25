@@ -2,6 +2,7 @@
 
 #ifndef _Market_H
 #define _Market_H
+
 namespace enums {
 		
 	enum MarketEnum{EUR,USD,THB,KRW,SGD,JPY};

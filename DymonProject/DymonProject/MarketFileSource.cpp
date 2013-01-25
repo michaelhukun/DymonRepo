@@ -17,12 +17,14 @@ using namespace Session;
 void MarketFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("marketConvention.file",true,"");
 	_persistDir = cfg->getProperty("marketConvention.path",false,"");
+	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void MarketFileSource::retrieveRecord(){
-	AbstractFileSource::retrieveRecord();
+	if (!_enabled) return;
 
+	AbstractFileSource::retrieveRecord();
 	CSVDatabase db;
 	readCSV(_inFile, db);
 

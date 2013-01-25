@@ -19,7 +19,7 @@ namespace instruments {
 
 	public:
 		cashflowLeg(){};
-		cashflowLeg(vector<cashflow> cashflowLeg);
+		cashflowLeg(vector<cashflow> cashflowLeg, int couponFreq);
 		~cashflowLeg(){};
 		
 		cashflow getCashFlow(unsigned int index);
@@ -30,13 +30,15 @@ namespace instruments {
 		vector<date> getAccuralEndDates();
 		void markCashFlowValidity(date tradeDate);
 		int getCashFlowIndexForAccrualEnd(date accuralEndDate);
+		int getCouponFreq(){return _couponFreq;}
+		int getSize(){return _cashflowVector.size();}
 
 		void printCashFlowLeg();
 		void printTimeLine();
 
 	private:
-		vector<cashflow> _cashflowLeg;
-
+		vector<cashflow> _cashflowVector;
+		int _couponFreq;
 	};
 }
 #endif

@@ -29,6 +29,7 @@ namespace utilities {
 		static int getTodayMonth();
 		static int getTodayDay();
 		static unsigned short* getYearMonthDay(long JDN);
+		static int getMonthLastDay(int year, int month);
 
 		//to be used by instruments namespaces to calc dates
 		static date getBizDateOffSet(date refDate, long bias, enums::MarketEnum market);

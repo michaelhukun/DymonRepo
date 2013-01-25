@@ -26,12 +26,14 @@ DepositFileSource::~DepositFileSource(){}
 void DepositFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("depositRate.file",true,"");
 	_persistDir = cfg->getProperty("depositRate.path",false,"");
+	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void DepositFileSource::retrieveRecord(){
+	if (!_enabled) return;
+	
 	AbstractFileSource::retrieveRecord();
-
 	enums::MarketEnum marketEnum;
 
 	CSVDatabase db;

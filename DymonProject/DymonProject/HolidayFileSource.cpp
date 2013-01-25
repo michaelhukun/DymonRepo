@@ -25,15 +25,18 @@ HolidayFileSource::~HolidayFileSource(){}
 void HolidayFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("holiday.file",true,"");
 	_persistDir = cfg->getProperty("holiday.path",false,"");
+	_enabled = cfg->getProperty("holiday.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void HolidayFileSource::retrieveRecord(){
-	AbstractFileSource::retrieveRecord();
+	if (!_enabled) return;
 	
+	AbstractFileSource::retrieveRecord();
 	string value;
 	enums::MarketEnum market;
 	RecordHelper::HolidayMap tempMap;
+
 	while (_inFile.good()){
 		_inFile>>value;
 		vector<string> vec = fileUtil::split(value,':');
