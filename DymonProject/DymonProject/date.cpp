@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include "Constants.h"
+#include <regex>
 
 using namespace std;
 using namespace utilities;
@@ -25,13 +26,19 @@ namespace utilities {
 		setJudianDayNumber();
 	}
 
-	date::date(std::string dateStr){
-		vector<std::string> dayMonthYear = fileUtil::split(dateStr, '/');
-		_year=(unsigned short) std::stoul(dayMonthYear[2],NULL,0);
-		_month=(unsigned short) std::stoul(dayMonthYear[1],NULL,0);
-		_day=(unsigned short) std::stoul(dayMonthYear[0],NULL,0);
-		_isNull=false;
-		setJudianDayNumber();
+	date::date(std::string dateStr, bool monthBeforeDay){
+		std::regex dateRegex ("[0-9]*/[0-9]*/[0-9]{4}");
+		if (std::regex_match (dateStr,dateRegex)){
+			vector<std::string> dayMonthYear = fileUtil::split(dateStr, '/');
+			_year=(unsigned short) std::stoul(dayMonthYear[2],NULL,0);
+			_month=(unsigned short) std::stoul(dayMonthYear[monthBeforeDay?0:1],NULL,0);
+			_day=(unsigned short) std::stoul(dayMonthYear[monthBeforeDay?1:0],NULL,0);
+			_isNull=false;
+			setJudianDayNumber();
+		}else{
+			_isNull = true;
+			return;
+		}
 	}
 
 	date::date(long JDN){
@@ -39,11 +46,12 @@ namespace utilities {
 		_year = yearMonthDay[0];
 		_month = yearMonthDay[1];
 		_day = yearMonthDay[2];
-		_judianDayNumber = JDN;
 		_isNull=false;
+		_judianDayNumber = JDN;
 	}
 
 	void date::setJudianDayNumber(){
+		if (_isNull) return;
 		_judianDayNumber = dateUtil::getJudianDayNumber(_year, _month, _day);
 	}
 
@@ -70,22 +78,39 @@ namespace utilities {
 	}
 
 	void date::setDay(unsigned short day){
+		if (_isNull) return;
 		_day=day;
 		setJudianDayNumber();
 	}
 
 	void date::setMonth(unsigned short month){
+		if (_isNull) return;
 		_month = month;
 		setJudianDayNumber();
 	}
 
+	bool date::isMonthEnd(){
+		int monthEndDay = dateUtil::getMonthLastDay(_year,_month);
+		if (_day==monthEndDay)
+			return true;
+		return false;
+	}
+
 	void date::printDate() {
-		cout <<_year<<"-"<<_month<<"-"<<_day<<endl;
+		if (_isNull){
+			cout <<"Date is Null!"<<endl;
+		}else{
+			cout <<_year<<"-"<<_month<<"-"<<_day<<endl;
+		}
 	}
 
 	string date::toString(){
 		std::stringstream ss (stringstream::in | stringstream::out);
-		ss<<getDay()<<"/"<<getMonth()<<"/"<<getYear();//"-"<<_judianDayNumber;
+		if (_isNull){
+			ss <<"NullDate"<<endl;
+		}else{
+			ss<<getDay()<<"/"<<getMonth()<<"/"<<getYear();//"-"<<_judianDayNumber;
+		}
 		return ss.str();
 	}
 }

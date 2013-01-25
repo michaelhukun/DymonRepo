@@ -6,6 +6,9 @@
 #include "AbstractPricer.h"
 #include "DiscountCurve.h"
 #include "cashflowLeg.h"
+#include "Configuration.h"
+#include "Bond.h"
+
 
 using namespace std;
 using namespace instruments;
@@ -16,13 +19,40 @@ namespace instruments {
 	public:
 		
 		BondPricer(){};
+		BondPricer(Bond* bond);
 		~BondPricer(){};
-						
-		virtual double getMPV(){return 0;}
 
-		virtual double getMPV(cashflowLeg* couponLeg,DiscountCurve* discountCurve);
+		void init(Configuration* cfg);
+						
+		virtual double getMPV(DiscountCurve* discountCurve);	
+
+		double getZeroRateSpread(double dirtyPrice);
 		
-		virtual double getParYield(cashflowLeg* couponLeg,DiscountCurve* discountCurve);
+		double getYieldByDirtyPrice(double dirtyPrice);
+		
+		double getYieldByZeroRate(double zeroRate);
+		
+		double getYieldByDiscountFactor(double discountFactor);
+
+		double yieldSolverFunc(double yield);
+
+		double curveBumpSolverFunc(double zeroRateSpread);
+
+	private:
+
+		double _tempTargetBondPrice;
+
+		enums::NumericAlgo _numericAlgo; 
+
+		double _tolerance;
+
+		int _iterateCount;
+
+		double _lowerBound;
+		
+		double _upperBound;
+
+		Bond* _bond;
 	};
 }
 #endif

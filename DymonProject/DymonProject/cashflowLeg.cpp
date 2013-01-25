@@ -15,45 +15,47 @@ using namespace enums;
 
 namespace instruments {
 
-	cashflowLeg::cashflowLeg(vector<cashflow> cashflowLeg) {
+	cashflowLeg::cashflowLeg(vector<cashflow> cashflowLeg, int couponFreq) {
 		setCashFlowVector(cashflowLeg);
+		_couponFreq = couponFreq;
 	}
 
 	cashflow cashflowLeg::getCashFlow(unsigned int index){
-		if (index<0||index>=_cashflowLeg.size())
+		if (index<0||index>=_cashflowVector.size())
 			throw "Index out of range!";
 
-		return _cashflowLeg[index];
+		return _cashflowVector[index];
 	}
 
 	int cashflowLeg::getFirstValidCashFlowIndex(){
-		for (unsigned int i=0;i<_cashflowLeg.size();i++){
-			if (_cashflowLeg[i].getIsValid())
+		for (unsigned int i=0;i<_cashflowVector.size();i++){
+			if (_cashflowVector[i].getIsValid())
 				return i;
 		}
+		return (int) NaN;
 	}
 
 	int cashflowLeg::getCashFlowIndexForAccrualEnd(date accuralEndDate){
-		for (unsigned int i=0;i<_cashflowLeg.size();i++){
-			if (_cashflowLeg[i].getAccuralEndDate() == accuralEndDate)
+		for (unsigned int i=0;i<_cashflowVector.size();i++){
+			if (_cashflowVector[i].getAccuralEndDate() == accuralEndDate)
 				return i;
 		}
 		return (int) NaN;
 	}
 
 	vector<cashflow> cashflowLeg::getCashFlowVector() {
-		return _cashflowLeg;
+		return _cashflowVector;
 	}
 
-	void cashflowLeg::setCashFlowVector(vector<cashflow> cashflowLeg) {
-		_cashflowLeg=cashflowLeg;
+	void cashflowLeg::setCashFlowVector(vector<cashflow> cashflowVector) {
+		_cashflowVector=cashflowVector;
 	}
 
 	vector<date> cashflowLeg::getAccuralStartDates() {
 		vector<date> aDates;
 
-		std::vector<cashflow>::iterator itT=_cashflowLeg.begin();
-		for (;itT!=_cashflowLeg.end();itT++) {
+		std::vector<cashflow>::iterator itT=_cashflowVector.begin();
+		for (;itT!=_cashflowVector.end();itT++) {
 			cashflow aCF=*itT;
 			aDates.push_back(aCF.getAccuralStartDate());
 		}
@@ -64,8 +66,8 @@ namespace instruments {
 	vector<date> cashflowLeg::getAccuralEndDates() {
 		vector<date> aDates;
 
-		std::vector<cashflow>::iterator itT=_cashflowLeg.begin();
-		for (;itT!=_cashflowLeg.end();itT++) {
+		std::vector<cashflow>::iterator itT=_cashflowVector.begin();
+		for (;itT!=_cashflowVector.end();itT++) {
 			cashflow aCF=*itT;
 			aDates.push_back(aCF.getAccuralEndDate());
 		}
@@ -74,8 +76,8 @@ namespace instruments {
 	}
 
 	void cashflowLeg::markCashFlowValidity(date tradeDate){
-		for (unsigned int i=0;i<_cashflowLeg.size();i++){
-			cashflow cf = _cashflowLeg[i];
+		for (unsigned int i=0;i<_cashflowVector.size();i++){
+			cashflow cf = _cashflowVector[i];
 			if (cf.getPaymentDate()>tradeDate)
 				cf.setIsValid(true);
 			else
@@ -84,9 +86,9 @@ namespace instruments {
 	}
 
 	void cashflowLeg::printCashFlowLeg() {
-		std::vector<cashflow>::iterator itT=_cashflowLeg.begin();
+		std::vector<cashflow>::iterator itT=_cashflowVector.begin();
 
-		for (;itT!=_cashflowLeg.end();itT++) {
+		for (;itT!=_cashflowVector.end();itT++) {
 			cashflow aCF=*itT;
 
 			aCF.printCashFlow();
@@ -97,8 +99,8 @@ namespace instruments {
 	void cashflowLeg::printTimeLine() {
 		std::stringstream ss (stringstream::in | stringstream::out);
 		ss<<"Accrual Time Line: \n";
-		std::vector<cashflow>::iterator itT=_cashflowLeg.begin();
-		for (;itT!=_cashflowLeg.end();itT++) {
+		std::vector<cashflow>::iterator itT=_cashflowVector.begin();
+		for (;itT!=_cashflowVector.end();itT++) {
 			cashflow aCF=*itT;
 			ss<<aCF.getAccuralStartDate().toString()<<"\n";
 		}

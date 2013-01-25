@@ -57,14 +57,13 @@ void TestDiscountCurve::BondRateTest(enums::MarketEnum market, enums::interpolAl
 
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
 
-	map<long, Bond> bondRateMap = RecordHelper::getInstance()->getBondRateMap()[market];
+	map<long, Bond> bondRateMap = RecordHelper::getInstance()->getBondRateMap()->at(market);
 	for (map<long, Bond>::iterator it=bondRateMap.begin(); it != bondRateMap.end(); it++ ){
 		date accuralEndDate = (*it).first;
 		Bond bond = (*it).second;
-		bond.setDiscountCurve(dc);
 		if (bond.getCouponFreq()!=NaN){
 			double expectedVal = bond.getDirtyPrice();
-			double derivedVal = bond.getMPV();
+			double derivedVal = bond.getMPV(dc);
 			compareResult("Bond Discount Curve", accuralEndDate, derivedVal,expectedVal);
 		}
 	}

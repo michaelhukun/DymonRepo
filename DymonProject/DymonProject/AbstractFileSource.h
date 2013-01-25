@@ -59,6 +59,7 @@ namespace DAO {
 		std::string _persistDir;
 		char* _journal;
 		std::ifstream _inFile;
+		bool _enabled;
 	};
 }
 #endif

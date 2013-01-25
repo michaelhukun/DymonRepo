@@ -10,6 +10,7 @@
 #include "RecordHelper.h"
 #include <algorithm>
 #include "DiscountCurve.h"
+#include "Constants.h"
 #include "Market.h"
 
 using namespace Session;
@@ -70,7 +71,7 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date issueD
 		}
 	}
 
-	_cashflowLeg = new cashflowLeg(cashflowVector);
+	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
 
 BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market){
@@ -107,7 +108,7 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrua
 
 		cashflowVector.push_back(aCashflow);
 	}
-	_cashflowLeg = new cashflowLeg(cashflowVector);
+	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
 
 BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate, int tenorNumOfMonths, DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection){
@@ -165,7 +166,7 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrua
 			cashflowVector.insert(cashflowVector.begin(),aCashflow);
 		}
 	}
-	_cashflowLeg = new cashflowLeg(cashflowVector);
+	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
 
 BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market){
@@ -203,5 +204,5 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrua
 		cashflow aCashflow(FLiborRate, notional, calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, market, true);
 		cashflowVector.push_back(aCashflow);
 	}
-	_cashflowLeg = new cashflowLeg(cashflowVector);
+	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
