@@ -61,7 +61,7 @@ namespace instruments {
 
 		// Methods
 		virtual double getMPV(DiscountCurve* dc);
-		double getGspread(DiscountCurve* dc);
+		double getYieldSpread(DiscountCurve* dc);
 		double getYield();
 		double getZeroRateSpread(DiscountCurve* dc);
 		void deriveDirtyPrice();

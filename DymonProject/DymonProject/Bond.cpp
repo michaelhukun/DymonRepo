@@ -70,7 +70,7 @@ double Bond::getYield(){
 	return yield;
 }
 
-double Bond::getGspread(DiscountCurve* bc){
+double Bond::getYieldSpread(DiscountCurve* bc){
 	BondPricer pricer(this);
 	double gSpread = NaN;
 	double yieldByBondCurve;

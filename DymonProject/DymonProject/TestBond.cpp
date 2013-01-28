@@ -9,7 +9,7 @@ using namespace Markets;
 
 void TestBond::runTest(){
 	yieldTestSuit();
-	gSpreadTestSuit();
+	yieldSpreadTestSuit();
 	zeroRateSpreadTestSuit();
 }
 
@@ -28,8 +28,8 @@ void TestBond::yieldTestSuit(){
 	}
 }
 
-void TestBond::gSpreadTestSuit(){
-	cout<<endl<<"*********** Bond G-Spread Test ************"<<endl<<endl;
+void TestBond::yieldSpreadTestSuit(){
+	cout<<endl<<"*********** Bond Yield Spread Test ************"<<endl<<endl;
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
 	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
 	RecordHelper::BondRateMap::iterator bondMapIt;
@@ -38,7 +38,7 @@ void TestBond::gSpreadTestSuit(){
 		map<long, Bond>::iterator innerBondMapIt;
 		for (innerBondMapIt=innerBondMap->begin(); innerBondMapIt!=innerBondMap->end(); ++innerBondMapIt){
 			Bond* tempBond = &(innerBondMapIt->second);
-			gSpreadTest(tempBond, dc);
+			yieldSpreadTest(tempBond, dc);
 		}
 	}
 }
@@ -65,14 +65,9 @@ void TestBond::yieldTest(Bond* bond, DiscountCurve* dc){
 	compareResult("Yield", bond, derivedYield, quotedYield);
 }
 
-void TestBond::gSpreadTest(Bond* bond, DiscountCurve* dc){
-	double derivedGSpread = bond->getGspread(dc);
-	double quotedGSpread = bond->getQuotedGSpread();
-	if (quotedGSpread==NaN){
-		cout<< "bond ID ["<<bond->getID()<<"], derived G-Spread ["<<derivedGSpread<<"], quoted G-Spread [N/A]"<<endl;
-	}else{
-		compareResult("G-Spread", bond, derivedGSpread, quotedGSpread);
-	}
+void TestBond::yieldSpreadTest(Bond* bond, DiscountCurve* dc){
+	double derivedYieldSpread = bond->getYieldSpread(dc);
+	cout<< "bond ID ["<<bond->getID()<<"], isGeneric ["<<bond->getIsGeneric()<<"], yield spread ["<<derivedYieldSpread<<"]"<<endl;
 }
 
 void TestBond::zeroRateSpreadTest(Bond* bond, DiscountCurve* dc){
