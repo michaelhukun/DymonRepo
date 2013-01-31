@@ -28,16 +28,17 @@ namespace Session {
 		void init(Configuration*);
 
 		// Type Definition
-		typedef std::map<enums::MarketEnum, std::set<long>> HolidayMap;		
-		typedef std::map<enums::MarketEnum, std::map<long, double>> RateMap;		
-		typedef std::map<enums::MarketEnum, std::map<long, Bond>> BondRateMap;		
-		typedef std::map<enums::MarketEnum, std::map<long, BondFuture>> BondFutureMap;
-		typedef std::map<enums::MarketEnum, Market> MarketMap;
+		typedef std::map<enums::CurrencyEnum, std::set<long>> HolidayMap;		
+		typedef std::map<enums::CurrencyEnum, std::map<long, double>> RateMap;		
+		typedef std::map<enums::CurrencyEnum, std::map<long, Bond>> BondRateMap;		
+		typedef std::map<enums::CurrencyEnum, std::map<long, BondFuture>> BondFutureMap;
+		typedef std::map<enums::CurrencyEnum, Market> MarketMap;
 		//std::map<BasisPoint,std::map<fSwapTenorNumOfMonths,map<optionTenorNumOfMonths,swaptionVol>>> SwaptionCubeMap
 		typedef std::map<int,std::map<int, std::map<int,double>>> SwaptionCubeMap;
 		typedef std::map<int, std::map<int,double>> SwaptionSurfaceMap;
 		//std::map<tuple<fSwapTenorNumOfMonths,optionTenorNumOfMonths>,ATM Strike> SwaptionATMStrikeMap
 		typedef std::map<std::tuple<int,int>,double> SwaptionATMStrikeMap;
+		typedef std::map<enums::CurrencyEnum, map<std::tuple<int,int>,double>> FXVolSkewMap;
 		
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}
@@ -49,6 +50,7 @@ namespace Session {
 		MarketMap getMarketMap(){return _MarketMap;}
 		SwaptionCubeMap getSwaptionVolMap(){return _swaptionCubeMap;}
 		SwaptionATMStrikeMap getSwaptionATMStrikeMap(){return _swaptionATMStrikeMap;}
+		FXVolSkewMap* getFXVolSkewMap(){ return &_FXVolSkewMap; }
 
 		// Setters
 		void setHolidayMap(HolidayMap map){_holidayMap=map;}
@@ -60,7 +62,8 @@ namespace Session {
 		void setMarketMap(MarketMap map){_MarketMap=map;}
 		void setSwaptionVolMap(SwaptionCubeMap map){_swaptionCubeMap=map;}
 		void setSwaptionATMStrikeMap(SwaptionATMStrikeMap map){_swaptionATMStrikeMap=map;}
-		
+		void setFXVolSkewMap(FXVolSkewMap map){_FXVolSkewMap=map;}
+
 		// Methods
 		Bond* findCTDinBondMap(std::string CUSIP);
 
@@ -81,6 +84,7 @@ namespace Session {
 		MarketMap _MarketMap;
 		SwaptionCubeMap _swaptionCubeMap;
 		SwaptionATMStrikeMap _swaptionATMStrikeMap;
+		FXVolSkewMap _FXVolSkewMap;
 	};
 }
 

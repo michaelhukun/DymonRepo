@@ -5,7 +5,7 @@
 
 using namespace utilities;
 
-enums::MarketEnum EnumHelper::getCcyEnum(std::string ccyName){
+enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
 	if (ccyName =="EUR")
 		return EUR;
 	else if (ccyName == "USD" || ccyName == "US")

@@ -31,7 +31,7 @@ void TestDiscountCurve::discountCurveTestSuit(){
 	BondRateTest(enums::USD, enums::LOGLINEAR);
 }
 
-void TestDiscountCurve::swapRateTest(enums::MarketEnum market,enums::interpolAlgo interpolAlgo){
+void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve();
@@ -52,7 +52,7 @@ void TestDiscountCurve::swapRateTest(enums::MarketEnum market,enums::interpolAlg
 }
 
 
-void TestDiscountCurve::BondRateTest(enums::MarketEnum market, enums::interpolAlgo interpolAlgo){
+void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Bond Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();

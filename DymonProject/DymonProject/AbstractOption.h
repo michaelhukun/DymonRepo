@@ -48,7 +48,7 @@ namespace instruments {
 
 		void BaseOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol){
 			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
-			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getMarketEnum(),dateUtil::MONTH));			
+			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
 			_expiryInMonth = expiryInMonth;
 		}
 

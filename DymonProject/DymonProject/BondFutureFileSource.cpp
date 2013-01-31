@@ -42,7 +42,7 @@ void BondFutureFileSource::retrieveRecord(){
 }
 
 void BondFutureFileSource::insertBondFutureIntoCache(BondFuture* bondFuture, RecordHelper::BondFutureMap* bondFutureMap){
-	MarketEnum market = bondFuture->getMarket().getMarketEnum();
+	CurrencyEnum market = bondFuture->getMarket().getCurrencyEnum();
 	if (bondFutureMap->find(market) == bondFutureMap->end()){
 		std::map<long, BondFuture> tempMap = std::map<long, BondFuture>();
 		tempMap.insert(std::make_pair(bondFuture->getNotionalBondTerm(), *bondFuture));
@@ -63,7 +63,7 @@ BondFuture* BondFutureFileSource::createBondFutureObject(CSVDatabase db, int row
 		String fieldVal = db.at(row).at(i);
 		updateBondFutureField(fieldName, fieldVal, tempBondFuture);
 	}		
-	tempBondFuture->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBondFuture->getMarket().getMarketEnum()));	
+	tempBondFuture->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBondFuture->getMarket().getCurrencyEnum()));	
 	tempBondFuture->setCTDBond(RecordHelper::getInstance()->findCTDinBondMap(tempBondFuture->getCTDCUSIP()));
 	return tempBondFuture;
 }

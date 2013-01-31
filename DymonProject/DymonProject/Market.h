@@ -12,13 +12,13 @@ namespace instruments {
 
 	public:
 		Market(){};
-		Market(enums::MarketEnum);
+		Market(enums::CurrencyEnum);
 		~Market(){};
 
 		std::string getNameString();
 		void display();
 
-		enums::MarketEnum getMarketEnum(){return _marketName;}
+		enums::CurrencyEnum getCurrencyEnum(){return _marketName;}
 		enums::DayCountEnum getDayCountCashConvention(){return _dayCountCashConvention;}
 		enums::DayCountEnum getDayCountSwapConvention(){return _dayCountSwapConvention;}
 		enums::DayCountEnum getDayCountBondConvention(){return _dayCountBondConvention;}
@@ -31,7 +31,7 @@ namespace instruments {
 		int getBusinessDaysAfterSpotSwap(){return _businessDaysAfterSpotSwap;}
 		int getBusinessDaysAfterSpotBond(){return _businessDaysAfterSpotBond;}
 
-		void setMarketEnum(enums::MarketEnum marketName){_marketName = marketName;}
+		void setCurrencyEnum(enums::CurrencyEnum marketName){_marketName = marketName;}
 		void setDayCountCashConvention(enums::DayCountEnum dayCountCashConvention){_dayCountCashConvention = dayCountCashConvention;}
 		void setDayCountSwapConvention(enums::DayCountEnum dayCountSwapConvention){_dayCountSwapConvention = dayCountSwapConvention;}
 		void setDayCountBondConvention(enums::DayCountEnum dayCountBondConvention){_dayCountBondConvention = dayCountBondConvention;}
@@ -50,7 +50,7 @@ namespace instruments {
 		int getBusinessDaysAfterSpot(enums::Instrument instrument);
 
 	private:
-		enums::MarketEnum _marketName;
+		enums::CurrencyEnum _marketName;
 		enums::DayCountEnum _dayCountCashConvention;
 		enums::DayCountEnum _dayCountSwapConvention;
 		enums::DayCountEnum _dayCountBondConvention;

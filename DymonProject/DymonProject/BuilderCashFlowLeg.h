@@ -30,12 +30,12 @@ namespace instruments {
 		~BuilderCashFlowLeg(){};
 		
 		//for Fixed Legs
-		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDatee, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
-		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDatee, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market);
 		
 		//for Floating Legs
-		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDatee, int tenorNumOfMonths, DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection);
-		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDatee, int tenorNumOfMonths, DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection);
+		BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market);
 
 		cashflowLeg* getCashFlowLeg(){
 			return _cashflowLeg;

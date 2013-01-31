@@ -23,15 +23,13 @@
     <None Include="SwapRate.csv" />
     <None Include="BondRate.csv" />
     <None Include="BondFuturePrice.csv" />
+    <None Include="FXSkew.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="instrumentValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="marketdata.h">
@@ -53,9 +51,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dateUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="zero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AbstractFileSource.h">
@@ -262,6 +257,9 @@
     <ClInclude Include="TestBond.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FXVolSkewFileSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -277,9 +275,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="date.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="zero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AbstractFileSource.cpp">
@@ -427,6 +422,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestBond.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXVolSkewFileSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurrencyPair.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CurrencyPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

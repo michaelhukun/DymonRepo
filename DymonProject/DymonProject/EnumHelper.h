@@ -14,7 +14,7 @@ namespace utilities{
 
 		EnumHelper(){};
 		
-		static enums::MarketEnum getCcyEnum(std::string ccyName);
+		static enums::CurrencyEnum getCcyEnum(std::string ccyName);
 
 		static enums::DayRollEnum getDayRollEnum(std::string dayRoll);
 

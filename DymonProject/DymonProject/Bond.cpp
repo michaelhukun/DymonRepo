@@ -21,7 +21,7 @@ using namespace enums;
 void Bond::generateCouponLeg(){
 	Configuration* cfg = Configuration::getInstance();
 	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"-1"));
-	BuilderCashFlowLeg* couponLegBuilder = new BuilderCashFlowLeg(enums::BOND, _issueDate, _maturityDate, _tenorNumOfMonths, _couponRate, 100, _couponFreq, _market.getMarketEnum(), buildDirection);
+	BuilderCashFlowLeg* couponLegBuilder = new BuilderCashFlowLeg(enums::BOND, _issueDate, _maturityDate, _tenorNumOfMonths, _couponRate, 100, _couponFreq, _market.getCurrencyEnum(), buildDirection);
 	_couponLeg=couponLegBuilder->getCashFlowLeg();
 	_nextCouponDate = findNextCouponDate();
 	_nextCouponIndex = _couponLeg->getCashFlowIndexForAccrualEnd(_nextCouponDate);

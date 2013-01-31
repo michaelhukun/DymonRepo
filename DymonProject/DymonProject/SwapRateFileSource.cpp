@@ -35,7 +35,7 @@ void SwapRateFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
 	AbstractFileSource::retrieveRecord();
-	enums::MarketEnum marketEnum;
+	enums::CurrencyEnum CurrencyEnum;
 	RecordHelper::RateMap swapRateMap;
 
 	CSVDatabase db;
@@ -46,8 +46,8 @@ void SwapRateFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfCols;i++) {
 
-		marketEnum=EnumHelper::getCcyEnum(db.at(0).at(i));
-		Market market = Market(marketEnum);
+		CurrencyEnum=EnumHelper::getCcyEnum(db.at(0).at(i));
+		Market market = Market(CurrencyEnum);
 
 		map<long, double>* tempMap = new map<long, double>;
 
@@ -57,7 +57,7 @@ void SwapRateFileSource::retrieveRecord(){
 			double liborRate = std::stod(db.at(j).at(i))/100.0;
 			insertRateIntoMap(tenorStr, liborRate, market, tempMap);
 		}
-		swapRateMap.insert(pair<enums::MarketEnum, map<long, double>>(marketEnum,*tempMap));
+		swapRateMap.insert(pair<enums::CurrencyEnum, map<long, double>>(CurrencyEnum,*tempMap));
 	}
 
 	RecordHelper::getInstance()->setSwapRateMap(swapRateMap);
@@ -65,11 +65,11 @@ void SwapRateFileSource::retrieveRecord(){
 }
 
 void SwapRateFileSource::insertRateIntoMap(std::string tenorStr, double swapRate, Market market, std::map<long, double>* rateMap){
-	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, market.getMarketEnum());	
-	date accrualStartDate = dateUtil::getBizDateOffSet(startDate,market.getBusinessDaysAfterSpot(enums::SWAP), market.getMarketEnum()); // day after spot adjust
+	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, market.getCurrencyEnum());	
+	date accrualStartDate = dateUtil::getBizDateOffSet(startDate,market.getBusinessDaysAfterSpot(enums::SWAP), market.getCurrencyEnum()); // day after spot adjust
 	char tenorUnit = *tenorStr.rbegin(); // 'Y'
 	int tenorNum = std::stoi(tenorStr.substr(0,tenorStr.size()-1)); // 2
-	long accrualEndJDN = dateUtil::getEndDate(accrualStartDate,tenorNum, market.getDayRollSwapConvention(), market.getMarketEnum(), dateUtil::getDateUnit(tenorUnit)).getJudianDayNumber();
+	long accrualEndJDN = dateUtil::getEndDate(accrualStartDate,tenorNum, market.getDayRollSwapConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit)).getJudianDayNumber();
 	rateMap->insert(pair<long, double>(accrualEndJDN, swapRate));
 
 	date accrualEndDate(accrualEndJDN);

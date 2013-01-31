@@ -49,7 +49,7 @@ void BondPriceFileSource::retrieveRecord(){
 }
 
 void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRateMap* bondRateMap){
-	MarketEnum market = bond->getMarket().getMarketEnum();
+	CurrencyEnum market = bond->getMarket().getCurrencyEnum();
 	long maturityDateJDN = bond->getMaturityDate().getJudianDayNumber();
 	if (bondRateMap->find(market) == bondRateMap->end()){
 		std::map<long, Bond> tempMap = std::map<long, Bond>();
@@ -71,7 +71,7 @@ Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
 		String fieldVal = db.at(row).at(i);
 		updateMarketObjectField(fieldName, fieldVal, tempBond);
 	}		
-	tempBond->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBond->getMarket().getMarketEnum()));	
+	tempBond->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBond->getMarket().getCurrencyEnum()));	
 	tempBond->generateCouponLeg();
 	tempBond->deriveDirtyPrice();
 	return tempBond;

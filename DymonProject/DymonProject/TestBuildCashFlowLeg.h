@@ -28,7 +28,7 @@ namespace UnitTest{
 
 	private:
 
-		void buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::MarketEnum market);
+		void buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::CurrencyEnum market);
 
 		bool compareResult(cashflowLeg* cashflowFromMaturity, cashflowLeg* cashflowFromTenor);
 	};

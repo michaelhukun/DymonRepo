@@ -22,9 +22,9 @@ namespace UnitTest{
 
 	private:
 
-		void swapRateTest(enums::MarketEnum market, enums::interpolAlgo interpolAlgo);
+		void swapRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo);
 
-		void BondRateTest(enums::MarketEnum market, enums::interpolAlgo interpolAlgo);
+		void BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo);
 
 		void compareResult(string testName, date accuralEndDate, double derivedVal, double expectedVal);
 	};
