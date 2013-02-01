@@ -22,7 +22,7 @@ void SwapCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	
 	_market = Market(EnumHelper::getCcyEnum("USD"));
-	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getMarketEnum());
+	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
 	_floatFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.floatfreq",false,"4"));
 	_fixFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.fixfreq",false,"2"));
 	_timeLineBuildDirection = std::stoi(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"1"));
@@ -50,7 +50,7 @@ void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 		double depositRate = (*it).second;
 		date startDate = _curveStartDate;
 		int numOfNights = (int) (*it).first;
-		date paymentDate = dateUtil::getBizDateOffSet(startDate,numOfNights,_market.getMarketEnum());
+		date paymentDate = dateUtil::getBizDateOffSet(startDate,numOfNights,_market.getCurrencyEnum());
 		//cout << "Overnight rate at date ["<<startDate.toString()<< "], maturity date ["<<paymentDate.toString()<<"], number of nights ["<<numOfNights<<"], rate ["<< depositRate<<"]"<< endl;
 
 		cashflow cf(depositRate, 0, startDate, paymentDate,startDate, paymentDate, _market, true);

@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "date.h"
 #include "dateUtil.h"
-#include "zero.h"
 #include "cashflow.h"
 #include "RecordHelper.h"
 #include "BuilderCashFlowLeg.h"
@@ -136,24 +135,6 @@ void buildSampleCurve(){
 	LinearInterpolator<date>* li2 = new LinearInterpolator<date>(point2, point3);
 	yc->insertLineSection(li1);
 	yc->insertLineSection(li2);
-}
-
-void ZeroTest(){
-	cout << "******** Zero Test ********" << endl;
-	date date0(2012,12,1);
-	//cout<<date0.getJudianDayNumber()<<" "<<date0.isBusinessDay()<<endl;
-	date date1(2012,12,8);
-	date date2(2013,12,1);
-	date date3(2012,1,1);
-
-	zero zero1(0.001,1,date2,date0);
-
-	//cout<<date1.getJudianDayNumber()<<" "<<date1.isBusinessDay()<<endl;
-	//cout<<"Days inbetween: "<<dateUtil::getDaysBetween(date0, date1)<<endl;
-	//cout<<"Business days inbetween: "<<dateUtil::getBizDaysBetween(date1, date2)<<endl;
-	//cout<<"Today is "<<dateUtil::getTodayYear()<<" "<<dateUtil::getTodayMonth()<<" "<<dateUtil::getTodayDay()<<endl;
-	cout<<"zero1 price is "<<zero1.getPrice()<<endl;
-	cout<<"zero2 implied spot rate is "<<zero1.getImpliedSpotRate()<<endl;
 }
 
 void LoadInitialData(){

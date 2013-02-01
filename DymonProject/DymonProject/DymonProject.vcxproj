@@ -77,6 +77,7 @@
   <ItemGroup>
     <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
+    <None Include="FXSkew.csv" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
     <None Include="LiborRate.csv" />
@@ -114,6 +115,7 @@
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
+    <ClInclude Include="FXVolSkewFileSource.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -153,7 +155,6 @@
     <ClInclude Include="fileUtil.h" />
     <ClInclude Include="HolidayFileSource.h" />
     <ClInclude Include="AbstractInstrument.h" />
-    <ClInclude Include="instrumentValue.h" />
     <ClInclude Include="marketdata.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="swap.h" />
@@ -163,7 +164,6 @@
     <ClInclude Include="SwapRateBootStrapper.h" />
     <ClInclude Include="DiscountCurve.h" />
     <ClInclude Include="TestSurface.h" />
-    <ClInclude Include="zero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFileSource.cpp" />
@@ -181,8 +181,11 @@
     <ClCompile Include="cashflowLeg.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
+    <ClCompile Include="CurrencyPair.cpp" />
+    <ClCompile Include="CurrencyPair.h" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
+    <ClCompile Include="FXVolSkewFileSource.cpp" />
     <ClCompile Include="Market.cpp" />
     <ClCompile Include="MarketFileSource.cpp" />
     <ClCompile Include="date.cpp" />
@@ -223,7 +226,6 @@
     <ClCompile Include="SwapRateBootStrapper.cpp" />
     <ClCompile Include="SwapCurveBuilder.cpp" />
     <ClCompile Include="TestSurface.cpp" />
-    <ClCompile Include="zero.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />

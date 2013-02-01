@@ -19,7 +19,7 @@ using namespace std;
 using namespace enums;
 using namespace instruments;
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDate, int tenorNumOfMonths, double couponRate, double notional, int paymentFreq, enums::MarketEnum market, int buildDirection){
+BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date issueDate, date maturityDate, int tenorNumOfMonths, double couponRate, double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection){
 	
 	Market mkt(market);
 	enums::DayRollEnum dayRollConvention = mkt.getDayRollConvention(instrument);
@@ -74,7 +74,7 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date issueD
 	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::MarketEnum market){
+BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,double couponRate,double notional, int paymentFreq, enums::CurrencyEnum market){
 
 	Market mkt(market);
 	enums::DayRollEnum dayRollConvention = mkt.getDayRollConvention(instrument);
@@ -111,7 +111,7 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrua
 	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate, int tenorNumOfMonths, DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market, int buildDirection){
+BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, date accrualEndDate, int tenorNumOfMonths, DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market, int buildDirection){
 
 	Market mkt(market);
 	enums::DayRollEnum dayRollConvention = mkt.getDayRollConvention(instrument);
@@ -169,7 +169,7 @@ BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrua
 	_cashflowLeg = new cashflowLeg(cashflowVector, paymentFreq);
 }
 
-BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::MarketEnum market){
+BuilderCashFlowLeg::BuilderCashFlowLeg(enums::Instrument instrument, date accrualStartDate, int tenorNumOfMonths,DiscountCurve* yc,double notional, int paymentFreq, enums::CurrencyEnum market){
 	
 	Market mkt(market);
 	enums::DayRollEnum dayRollConvention = mkt.getDayRollConvention(instrument);

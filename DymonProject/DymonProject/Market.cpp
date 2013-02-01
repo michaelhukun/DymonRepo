@@ -10,7 +10,7 @@ using namespace instruments;
 using namespace utilities;
 using namespace Session;
 
-Market::Market(enums::MarketEnum market) {
+Market::Market(enums::CurrencyEnum market) {
 	_marketName = market;
 	RecordHelper::MarketMap marketMap = RecordHelper::getInstance()->getMarketMap();
 	*this = marketMap[market];

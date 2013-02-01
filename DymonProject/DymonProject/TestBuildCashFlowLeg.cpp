@@ -15,7 +15,7 @@ void TestBuildCashFlowLeg::BuildCashFlowLegTestSuit(){
 	buildCashFlowLegTest(dateUtil::getToday(),500,_EPSILON,USD);
 }
 
-void TestBuildCashFlowLeg::buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::MarketEnum market){
+void TestBuildCashFlowLeg::buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::CurrencyEnum market){
 	int paymentFreq = 4;
 	int buildDirection =1;
 	Market mkt(market);

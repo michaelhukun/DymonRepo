@@ -19,7 +19,7 @@ namespace UnitTest{
 
 		void yieldTestSuit();
 
-		void gSpreadTestSuit();
+		void yieldSpreadTestSuit();
 		
 		void zeroRateSpreadTestSuit();
 
@@ -27,7 +27,7 @@ namespace UnitTest{
 
 		void yieldTest(Bond* bond, DiscountCurve* dc);
 
-		void gSpreadTest(Bond* bond, DiscountCurve* dc);
+		void yieldSpreadTest(Bond* bond, DiscountCurve* dc);
 		
 		void zeroRateSpreadTest(Bond* bond, DiscountCurve* dc);
 

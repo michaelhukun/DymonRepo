@@ -23,7 +23,7 @@ Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, do
 }
 
 Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, int tenorInMonth){
-	date swapStartDate = dateUtil::getEndDate(dateUtil::getToday(),expiryInMonth,enums::Mfollowing, market.getMarketEnum(), dateUtil::MONTH);
+	date swapStartDate = dateUtil::getEndDate(dateUtil::getToday(),expiryInMonth,enums::Mfollowing, market.getCurrencyEnum(), dateUtil::MONTH);
 	double notional=1000000;
 	double couponRate=0.03;
 	int paymentFreqFixLeg=2;
