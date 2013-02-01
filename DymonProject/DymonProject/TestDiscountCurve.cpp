@@ -34,7 +34,7 @@ void TestDiscountCurve::discountCurveTestSuit(){
 void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
-	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve();
+	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(USD);
 
 	Market fixLegCurr=Market(market);
 	Market floatingLegCurr=Market(market);
@@ -55,7 +55,7 @@ void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolA
 void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Bond Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
 
 	map<long, Bond> bondRateMap = RecordHelper::getInstance()->getBondRateMap()->at(market);
 	for (map<long, Bond>::iterator it=bondRateMap.begin(); it != bondRateMap.end(); it++ ){

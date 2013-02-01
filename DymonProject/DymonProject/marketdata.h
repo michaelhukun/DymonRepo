@@ -8,6 +8,7 @@
 #include "AbstractInterpolator.h"
 #include "DiscountCurve.h"
 #include "Configuration.h"
+#include "FXSkewSurface.h"
 #include <map>
 #include <tuple>
 #include "Enums.h"
@@ -29,10 +30,12 @@ namespace Markets {
 		void buildBondDiscountCurve();
 		void buildSwapDiscountCurve();
 		void buildSwaptionVolCube();
+		void buildFXSkewSurface();
 
-		DiscountCurve* getSwapDiscountCurve(){return _SwapDiscountCurve;}
-		DiscountCurve* getBondDiscountCurve(){return _BondDiscountCurve;}
-		SwaptionVolCube* getSwaptionVolCube(){return _swaptionVolCube;};
+		DiscountCurve* getSwapDiscountCurve(enums::CurrencyEnum market);
+		DiscountCurve* getBondDiscountCurve(enums::CurrencyEnum market);
+		SwaptionVolCube* getSwaptionVolCube(enums::CurrencyEnum market);
+		FXSkewSurface* getFXSkewSurface(enums::CurrencyEnum market);
 		
 	protected:
 		//private copy constructor
@@ -42,9 +45,10 @@ namespace Markets {
 	private:
 		static bool instanceFlag;
 		static MarketData *single;
-		DiscountCurve* _SwapDiscountCurve;
-		DiscountCurve* _BondDiscountCurve;
-		SwaptionVolCube* _swaptionVolCube;
+		std::map<enums::CurrencyEnum, DiscountCurve> _SwapDiscountCurveMap;
+		std::map<enums::CurrencyEnum, DiscountCurve> _BondDiscountCurveMap;
+		std::map<enums::CurrencyEnum, SwaptionVolCube> _SwaptionVolCubeMap;
+		std::map<enums::CurrencyEnum, FXSkewSurface> _FXSkewSurfaceMap;
 	};
 }
 #endif

@@ -1,15 +1,15 @@
-#include "FXVolSkewFileSource.h"
+#include "FXSkewFileSource.h"
 
 using namespace DAO;
 
-void FXVolSkewFileSource::init(Configuration* cfg){
+void FXSkewFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("FXSkew.file",true,"");
 	_persistDir = cfg->getProperty("FXSkew.path",false,"");
 	_enabled = cfg->getProperty("FXSkew.enabled",true,"")=="True"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
-void FXVolSkewFileSource::retrieveRecord(){
+void FXSkewFileSource::retrieveRecord(){
 	if (!_enabled) return;
 
 	AbstractFileSource::retrieveRecord();
@@ -31,12 +31,12 @@ void FXVolSkewFileSource::retrieveRecord(){
 	_inFile.close();
 }
 
-void FXVolSkewFileSource::parseRow(std::string securityID, double vol){
+void FXSkewFileSource::parseRow(std::string securityID, double vol){
 	
 
 }
 
-void FXVolSkewFileSource::insertFXVolIntoCache(CurrencyEnum CurrencyEnum, int expiry, int delta, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap){
+void FXSkewFileSource::insertFXVolIntoCache(CurrencyEnum CurrencyEnum, int expiry, int delta, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap){
 	
 	//if (FXVolSkewMap->find(CurrencyEnum) == FXVolSkewMap->end()){
 	//	map<std::tuple<int,int>,double> tempMap = map<std::tuple<int,int>,double>();

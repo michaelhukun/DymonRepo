@@ -1,18 +1,18 @@
 //created by Wang Jianwei on 01 Dec 2012
-#ifndef FXVOLSKEWFILESOURCE_H
-#define FXVOLSKEWFILESOURCE_H
+#ifndef FXSKEWFILESOURCE_H
+#define FXSKEWFILESOURCE_H
 #include "AbstractFileSource.h"
 #include "RecordHelper.h"
 
 using namespace utilities;
 
 namespace DAO {
-	class FXVolSkewFileSource: public AbstractFileSource{
+	class FXSkewFileSource: public AbstractFileSource{
 	
 	public:
-		FXVolSkewFileSource():AbstractFileSource(){};
-		FXVolSkewFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){};
-		~FXVolSkewFileSource(){};
+		FXSkewFileSource():AbstractFileSource(){};
+		FXSkewFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){};
+		~FXSkewFileSource(){};
 
 		void init(Configuration*);
 

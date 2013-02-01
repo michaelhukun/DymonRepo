@@ -20,8 +20,6 @@ typedef tuple<date, double> point;
 
 void SwapCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
-	
-	_market = Market(EnumHelper::getCcyEnum("USD"));
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
 	_floatFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.floatfreq",false,"4"));
 	_fixFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.fixfreq",false,"2"));
@@ -45,7 +43,7 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 	point lineStartPoint(_curveStartDate,1);
 	_curvePointer = lineStartPoint;
-	map<long,double> rateMap = RecordHelper::getInstance()->getOverNightRateMap()[enums::USD];
+	map<long,double> rateMap = RecordHelper::getInstance()->getOverNightRateMap()[_market.getCurrencyEnum()];
 	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 		double depositRate = (*it).second;
 		date startDate = _curveStartDate;
@@ -65,14 +63,14 @@ void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
-	date accrualStartDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpot(enums::SWAP),enums::USD);
-	map<long,double> rateMap = RecordHelper::getInstance()->getDepositRateMap()[enums::USD];
+	date accrualStartDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpot(enums::SWAP),_market.getCurrencyEnum());
+	map<long,double> rateMap = RecordHelper::getInstance()->getDepositRateMap()[_market.getCurrencyEnum()];
 
 	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 
 		date fixingDate = _curveStartDate;
 		date accrualEndDate = ((*it).first);
-		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollCashConvention(),enums::USD);
+		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollCashConvention(),_market.getCurrencyEnum());
 		double depositRate = (*it).second;
 		//cout << "Deposit rate at fixing date ["<<fixingDate.toString()<<"], accrual start date ["<<accrualStartDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< depositRate<<"]"<< endl;
 
@@ -90,18 +88,18 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
-	BuilderCashFlowLeg builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, enums::USD);
+	BuilderCashFlowLeg builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, _market.getCurrencyEnum());
 	cashflowLeg* _cashflowLeg=builtCashflowLeg.getCashFlowLeg();
 	//_cashflowLeg.printTimeLine();
 
-	map<long,double> rateMap = RecordHelper::getInstance()->getSwapRateMap()[enums::USD];
+	map<long,double> rateMap = RecordHelper::getInstance()->getSwapRateMap()[_market.getCurrencyEnum()];
 
 	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 
 		date fixingDate = _curveStartDate;
 		date accrualEndDate=((*it).first);	
 		double swapRate=(*it).second;
-		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollSwapConvention(),enums::USD);
+		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollSwapConvention(),_market.getCurrencyEnum());
 
 		//cout << "Swap rate at fixing date ["<<fixingDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< swapRate<<"]"<< endl;
 

@@ -17,7 +17,7 @@ namespace utilities{
 		
 	public:
 		
-		BondCurveBuilder():AbstractBuilder(){}
+		BondCurveBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
 
 		void init(Configuration* cfg);
 

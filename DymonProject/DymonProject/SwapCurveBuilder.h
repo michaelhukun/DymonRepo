@@ -17,7 +17,7 @@ namespace utilities{
 		
 	public:
 		
-		SwapCurveBuilder():AbstractBuilder(){}
+		SwapCurveBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
 
 		void init(Configuration* cfg);
 

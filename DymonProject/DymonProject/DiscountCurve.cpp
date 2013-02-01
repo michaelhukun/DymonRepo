@@ -12,7 +12,8 @@ typedef tuple<date, double> point;
 typedef AbstractCurve<date> super;
 
 double DiscountCurve::getDiscountFactor(date date0){
-	return getValue(date0);
+	double dcf = getValue(date0);
+	return dcf;
 }
 
 double DiscountCurve::getZeroRate(date aDate, enums::DayCountEnum dayCount){

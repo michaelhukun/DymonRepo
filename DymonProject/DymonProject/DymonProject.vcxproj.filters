@@ -13,6 +13,42 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\dymon.bootstrapper">
+      <UniqueIdentifier>{6d3f2060-8ea9-41fa-93cf-c82a49674271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.builder">
+      <UniqueIdentifier>{46a0823b-2cbf-4e9e-8fe5-1f381bfb1b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.numerical">
+      <UniqueIdentifier>{953fd321-d10b-4695-9dd0-cda898afda78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.test">
+      <UniqueIdentifier>{4f6b159c-ef1c-48fe-96ba-ccc797df10b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.datastructure">
+      <UniqueIdentifier>{d69cba0e-3e76-4bdb-8dc0-207310e3e253}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.pricer">
+      <UniqueIdentifier>{fb167943-99ec-429d-b910-23a8b54f5bfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.instrument">
+      <UniqueIdentifier>{49f8e7e4-87d1-4c57-af63-48cfc9b7ca7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.persistence">
+      <UniqueIdentifier>{61dec5ac-0d29-4671-a9b1-c7849c3d5341}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.util">
+      <UniqueIdentifier>{4ff1ba35-602e-4844-b098-87908177478b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.interpolant">
+      <UniqueIdentifier>{34ff7012-ef6b-4e8e-bcc3-e660fb5a087b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.object">
+      <UniqueIdentifier>{ce338da2-66fa-46de-934f-96d0c5e68da1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.session">
+      <UniqueIdentifier>{e7dbfc52-e5ca-4dac-9cca-491c0405db3e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="holiday.txt" />
@@ -32,233 +68,236 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="marketdata.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="swap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="deposit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bond.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="swaption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="date.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="dateUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HolidayFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractSession.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractDao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="fileUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DepositFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="swapRateFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfigurationFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="configuration.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cashflow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractNumerical.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractInterpolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RecordHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LinearInterpolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractCurve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="LogLinearInterpolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Bisection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="cashflowLeg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BuilderCashFlowLeg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="InterpolatorFactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractDataStructure.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="AbstractBootStrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwapRateBootStrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DepositRateBootStrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractInstrument.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnumHelper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractPricer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Secant.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ridder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FalsePosition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestNumerical.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestInterpolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwapPricer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractTest.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestDateUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OvernightRateBootStrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestBuildCashFlowLeg.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OptionPricer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractOption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestOption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EuropeanOption.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestDiscountCurve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DiscountCurve.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MathUtil.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwaptionVolSurface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AbstractSurface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="numericalfactory.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TestSurface.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwaptionVolCube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwaptionVolCubeBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Market.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MarketFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SwaptionVolFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BondPriceFileSource.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="CubicSplineInterpolator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="bondpricer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.bootstrapper</Filter>
     </ClInclude>
     <ClInclude Include="BondRateBootStrapper.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.bootstrapper</Filter>
     </ClInclude>
-    <ClInclude Include="SwapCurveBuilder.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="AbstractBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
     </ClInclude>
     <ClInclude Include="BondCurveBuilder.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.builder</Filter>
     </ClInclude>
-    <ClInclude Include="BondFutureFileSource.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="AbstractNumerical.h">
+      <Filter>Header Files\dymon.numerical</Filter>
     </ClInclude>
-    <ClInclude Include="Future.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="AbstractTest.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractCurve.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractDataStructure.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractPricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Bisection.h">
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="Bond.h">
+      <Filter>Header Files\dymon.instrument</Filter>
     </ClInclude>
     <ClInclude Include="BondFuture.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
+    <ClInclude Include="bondpricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractOption.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractInstrument.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractDao.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="BuilderCashFlowLeg.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="Constants.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="configuration.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="dateUtil.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="DiscountCurve.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="fileUtil.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="EnumHelper.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="BondFutureFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="BondPriceFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractSurface.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="DepositFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="DepositRateBootStrapper.h">
+      <Filter>Header Files\dymon.bootstrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="ConfigurationFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="EuropeanOption.h">
+      <Filter>Header Files\dymon.instrument</Filter>
     </ClInclude>
     <ClInclude Include="FuturePricer.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="Future.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
+    <ClInclude Include="FalsePosition.h">
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="FXSkewFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="FXSkewSurface.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="FXSkewSurfaceBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="HolidayFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractInterpolator.h">
+      <Filter>Header Files\dymon.interpolant</Filter>
+    </ClInclude>
+    <ClInclude Include="InterpolatorFactory.h">
+      <Filter>Header Files\dymon.interpolant</Filter>
+    </ClInclude>
+    <ClInclude Include="LinearInterpolator.h">
+      <Filter>Header Files\dymon.interpolant</Filter>
+    </ClInclude>
+    <ClInclude Include="LogLinearInterpolator.h">
+      <Filter>Header Files\dymon.interpolant</Filter>
+    </ClInclude>
+    <ClInclude Include="MarketFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="MathUtil.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="Ridder.h">
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="swap.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
+    <ClInclude Include="numericalfactory.h">
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionPricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="Secant.h">
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClInclude>
+    <ClInclude Include="RecordHelper.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapPricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="OvernightRateBootStrapper.h">
+      <Filter>Header Files\dymon.bootstrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapRateBootStrapper.h">
+      <Filter>Header Files\dymon.bootstrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapCurveBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="swapRateFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="SwaptionVolCube.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
+    </ClInclude>
+    <ClInclude Include="SwaptionVolCubeBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="SwaptionVolFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="CubicSplineInterpolator.h">
+      <Filter>Header Files\dymon.interpolant</Filter>
+    </ClInclude>
+    <ClInclude Include="SwaptionVolSurface.h">
+      <Filter>Header Files\dymon.datastructure</Filter>
     </ClInclude>
     <ClInclude Include="TestBond.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.test</Filter>
     </ClInclude>
-    <ClInclude Include="FXVolSkewFileSource.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TestSurface.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestBuildCashFlowLeg.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDateUtil.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestDiscountCurve.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestInterpolator.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestNumerical.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="TestOption.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="swaption.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
+    <ClInclude Include="cashflow.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
+    <ClInclude Include="cashflowLeg.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
+    <ClInclude Include="date.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
+    <ClInclude Include="Market.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractSession.h">
+      <Filter>Header Files\dymon.session</Filter>
+    </ClInclude>
+    <ClInclude Include="marketdata.h">
+      <Filter>Header Files\dymon.util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -309,9 +348,6 @@
     </ClCompile>
     <ClCompile Include="RecordHelper.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Newton.h">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="cashflowLeg.cpp">
       <Filter>Source Files</Filter>
@@ -424,14 +460,23 @@
     <ClCompile Include="TestBond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="FXVolSkewFileSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CurrencyPair.h">
-      <Filter>Header Files</Filter>
-    </ClCompile>
     <ClCompile Include="CurrencyPair.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXSkewSurface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXSkewFileSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXSkewSurfaceBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Newton.h">
+      <Filter>Header Files\dymon.numerical</Filter>
+    </ClCompile>
+    <ClCompile Include="CurrencyPair.h">
+      <Filter>Header Files\dymon.object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

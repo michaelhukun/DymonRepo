@@ -80,7 +80,7 @@ void unitTest(){
 }
 
 void SwaptionTest(){
-	SwaptionVolCube* svc = MarketData::getInstance()->getSwaptionVolCube();
+	SwaptionVolCube* svc = MarketData::getInstance()->getSwaptionVolCube(USD);
 	cout<<svc->getVol(0,12,12)<<endl;
 	cout<<svc->getVol(0,120,12)<<endl;
 	cout<<svc->getVol(0,120,24)<<endl;
@@ -90,8 +90,7 @@ void SwaptionTest(){
 
 	Market swaptionMarket=Market(enums::USD);
 
-	for(int i=-200; i<=200; i=i+5)
-	{
+	for(int i=-200; i<=200; i=i+5){
 		Swaption swt1(swaptionMarket, enums::Payer,12,i,24);
 		cout<<"Swaption Premium ATM"<<i<<": "<<swt1.getMPV()<<" vol: "<<swt1.getVol()<<endl;
 	}
@@ -264,7 +263,7 @@ void SwapTest() {
 
 	typedef tuple<date, double> point;
 
-	SwapCurveBuilder* builder = new SwapCurveBuilder();
+	SwapCurveBuilder* builder = new SwapCurveBuilder(USD);
 	builder->init(Configuration::getInstance());
 	DiscountCurve* yc = builder->build(NULL);
 

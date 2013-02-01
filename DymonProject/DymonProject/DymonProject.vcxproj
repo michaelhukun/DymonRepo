@@ -115,7 +115,9 @@
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
-    <ClInclude Include="FXVolSkewFileSource.h" />
+    <ClInclude Include="FXSkewFileSource.h" />
+    <ClInclude Include="FXSkewSurface.h" />
+    <ClInclude Include="FXSkewSurfaceBuilder.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -145,7 +147,6 @@
     <ClInclude Include="SwapCurveBuilder.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="dateUtil.h" />
-    <ClInclude Include="deposit.h" />
     <ClInclude Include="DepositFileSource.h" />
     <ClInclude Include="InterpolatorFactory.h" />
     <ClInclude Include="LinearInterpolator.h" />
@@ -185,7 +186,9 @@
     <ClCompile Include="CurrencyPair.h" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
-    <ClCompile Include="FXVolSkewFileSource.cpp" />
+    <ClCompile Include="FXSkewFileSource.cpp" />
+    <ClCompile Include="FXSkewSurface.cpp" />
+    <ClCompile Include="FXSkewSurfaceBuilder.cpp" />
     <ClCompile Include="Market.cpp" />
     <ClCompile Include="MarketFileSource.cpp" />
     <ClCompile Include="date.cpp" />

@@ -15,7 +15,7 @@ void TestBond::runTest(){
 
 void TestBond::yieldTestSuit(){
 	cout<<endl<<"*********** Bond Yield Test ************"<<endl<<endl;
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
 	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
 	RecordHelper::BondRateMap::iterator bondMapIt;
 	for (bondMapIt=bondRateMap->begin(); bondMapIt!=bondRateMap->end(); ++bondMapIt){
@@ -30,7 +30,7 @@ void TestBond::yieldTestSuit(){
 
 void TestBond::yieldSpreadTestSuit(){
 	cout<<endl<<"*********** Bond Yield Spread Test ************"<<endl<<endl;
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
 	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
 	RecordHelper::BondRateMap::iterator bondMapIt;
 	for (bondMapIt=bondRateMap->begin(); bondMapIt!=bondRateMap->end(); ++bondMapIt){
@@ -46,7 +46,7 @@ void TestBond::yieldSpreadTestSuit(){
 
 void TestBond::zeroRateSpreadTestSuit(){
 	cout<<endl<<"*********** Bond Zero Rate Spread Test ************"<<endl<<endl;
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
 	RecordHelper::BondRateMap* bondRateMap = RecordHelper::getInstance()->getBondRateMap();
 	RecordHelper::BondRateMap::iterator bondMapIt;
 	for (bondMapIt=bondRateMap->begin(); bondMapIt!=bondRateMap->end(); ++bondMapIt){

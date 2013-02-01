@@ -17,8 +17,8 @@ Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, do
 }
 
 Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, Swap* underlyingSwap){
-	SwaptionVolCube* vc = MarketData::getInstance()->getSwaptionVolCube();
-	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve();
+	SwaptionVolCube* vc = MarketData::getInstance()->getSwaptionVolCube(market.getCurrencyEnum());
+	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(market.getCurrencyEnum());
 	BaseSwaption(market,PayReceiveInd, expiryInMonth, strikeInBps, vc, dc, underlyingSwap);
 }
 
@@ -29,8 +29,8 @@ Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, do
 	int paymentFreqFixLeg=2;
 	int paymentFreqFloatingLeg=4;
     bool rollAccuralDates=true;
-	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve();
-	SwaptionVolCube* vc = MarketData::getInstance()->getSwaptionVolCube();
+	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(market.getCurrencyEnum());
+	SwaptionVolCube* vc = MarketData::getInstance()->getSwaptionVolCube(market.getCurrencyEnum());
 	Swap* underlyingSwap= new Swap(swapStartDate, tenorInMonth, notional, couponRate, dc, market, market, paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
 	
 	BaseSwaption(market, PayReceiveInd, expiryInMonth, strikeInBps, vc, dc, underlyingSwap);
@@ -66,7 +66,7 @@ double Swaption::getAnnuityMonetizer( DiscountCurve* dc) {
 }
 
 double Swaption::getMPV(){
-	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(_market.getCurrencyEnum());
 	return blackFormula(_callPutFlag, _S, _K, _vol, _discountFactor, _expiryInMonth/12);
 }
 

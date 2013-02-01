@@ -1,9 +1,7 @@
 //created by Wang Jianwei on 01 Dec 2012
-//Added cashflowleg creating - Kun
-#ifndef SWAPTIONVOLSCUBEBUILDER_H
-#define SWAPTIONVOLCUBEBUILDER_H
-#include "SwaptionVolSurface.h"
-#include "SwaptionVolCube.h"
+#ifndef FXSKEWSURFACEBUILDER_H
+#define FXSKEWSURFACEBUILDER_H
+#include "FXSkewSurface.h"
 #include "AbstractBuilder.h"
 #include "RecordHelper.h"
 #include "Market.h"
@@ -13,15 +11,15 @@ using namespace instruments;
 using namespace utilities;
 
 namespace utilities{
-	class SwaptionVolCubeBuilder: public AbstractBuilder{
+	class FXSkewSurfaceBuilder: public AbstractBuilder{
 		
 	public:
 		
-		SwaptionVolCubeBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
+		FXSkewSurfaceBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
 
 		void init(Configuration* cfg);
 
-		SwaptionVolCube* build(Configuration* cfg);
+		FXSkewSurface* build(Configuration* cfg);
 
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}
@@ -34,9 +32,6 @@ namespace utilities{
 
 		Market _market;
 		enums::interpolAlgo _interpolAlgo;
-
-		SwaptionVolSurface* buildVolSurface(RecordHelper::SwaptionSurfaceMap volSurfaceMap);
-		AbstractCurve<double>* buildVolCurve(map<int,double> curveMap);
 	};
 }
 #endif

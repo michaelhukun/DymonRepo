@@ -80,7 +80,7 @@ double BondPricer::yieldSolverFunc(double yield){
 }
 
 double BondPricer::curveBumpSolverFunc(double zeroRateSpread){
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(_bond->getMarket().getCurrencyEnum());
 	vector<cashflow> couponLegVec = _bond->getCouponLeg()->getCashFlowVector();
 	double fullPrice = 0;
 	int couponFreq = _bond->getCouponFreq();

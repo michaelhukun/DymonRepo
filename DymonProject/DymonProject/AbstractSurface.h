@@ -8,27 +8,27 @@
 #include <sstream>
 
 namespace utilities{
-	template<typename T> class AbstractSurface: public AbstractDataStructure{
+	template<typename U, typename T> class AbstractSurface: public AbstractDataStructure{
 		
 	public:		
 
 		AbstractSurface():AbstractDataStructure(){
-			_curves = new std::map<double, AbstractCurve<T>*>;
+			_curves = new std::map<U, AbstractCurve<T>*>;
 		};
 
-		AbstractSurface(std::map<double, AbstractCurve<T>*> curves){
+		AbstractSurface(std::map<U, AbstractCurve<T>*> curves){
 			setcurves(curves);
 		}
 
-		void setcurves(std::map<double, AbstractCurve<T>*> curves){
+		void setcurves(std::map<U, AbstractCurve<T>*> curves){
 			_curves=curves;
 		}
 
-		virtual void insertcurve(double majorAxisVal, AbstractCurve<T>* curve);
+		virtual void insertcurve(U majorAxisVal, AbstractCurve<T>* curve);
 
-		virtual AbstractCurve<T>* getcurve(double majorAxisVal);
+		virtual AbstractCurve<T>* getcurve(U majorAxisVal);
 
-		virtual double getValue(double majorAxisVal, T minorAxisVal);
+		virtual double getValue(U majorAxisVal, T minorAxisVal);
 
 		bool validateSurface();
 
@@ -36,40 +36,40 @@ namespace utilities{
 
 	private:
 
-		std::map<double, AbstractCurve<T>*>* _curves;
+		std::map<U, AbstractCurve<T>*>* _curves;
 	};
 
-	template<typename T>
-	void AbstractSurface<T>::insertcurve(double majorAxisVal, AbstractCurve<T>* curve){
-		_curves->insert(pair<double, AbstractCurve<T>*>(majorAxisVal,curve));
+	template<typename U, typename T>
+	void AbstractSurface<U, T>::insertcurve(U majorAxisVal, AbstractCurve<T>* curve){
+		_curves->insert(pair<U, AbstractCurve<T>*>(majorAxisVal,curve));
 	}
 	
-	template<typename T>
-	AbstractCurve<T>* AbstractSurface<T>::getcurve(double majorAxisVal){
+	template<typename U, typename T>
+	AbstractCurve<T>* AbstractSurface<U, T>::getcurve(U majorAxisVal){
 		if (_curves->find(majorAxisVal) == _curves->end())
 			throw "Major axis value not found on surface";
 		return _curves->find(majorAxisVal)->second;
 	}
 
-	template<typename T>
-	double AbstractSurface<T>::getValue(double majorAxisVal, T minorAxisVal){
+	template<typename U, typename T>
+	double AbstractSurface<U, T>::getValue(U majorAxisVal, T minorAxisVal){
 		AbstractCurve<T>* curve=getcurve(majorAxisVal);
 		return curve->getValue(minorAxisVal);
 	}
 
-	template<typename T>
-	bool AbstractSurface<T>::validateSurface(){
+	template<typename U, typename T>
+	bool AbstractSurface<U, T>::validateSurface(){
 		bool validationPass = true;
-		for (map<double, AbstractCurve<T>*>::iterator it = _curves->begin(); it!=_curves->end(); it++)
+		for (map<U, AbstractCurve<T>*>::iterator it = _curves->begin(); it!=_curves->end(); it++)
 			if (!(*it).second->validateLineSections())
 				validationPass = false;
 		return validationPass;
 	}
 
-	template<typename T>
-	std::string  AbstractSurface<T>::toString(){
+	template<typename U, typename T>
+	std::string  AbstractSurface<U, T>::toString(){
 		std::stringstream ss (stringstream::in | stringstream::out);
-		for (map<double, AbstractCurve<T>*>::iterator it = _curves->begin(); it!=_curves->end(); it++){
+		for (map<U, AbstractCurve<T>*>::iterator it = _curves->begin(); it!=_curves->end(); it++){
 			ss<<"Major axis value ["<<(*it).first<<"] has ";
 			ss<<(*it).second->toString();
 		}
