@@ -9,7 +9,6 @@
 #include "date.h"
 #include "AbstractInstrument.h"
 #include <vector>
-#include "zero.h"
 #include <tuple>
 #include <iterator>
 #include "cashflow.h"

@@ -54,7 +54,7 @@ void SwaptionVolFileSource::retrieveRecord(){
 				volSurfaceMap.clear();
 			}
 			strikeDiffATM = getStrikeDiffATM(aCell);
-			enums::MarketEnum market = EnumHelper::getCcyEnum(db.at(i).at(1));
+			enums::CurrencyEnum market = EnumHelper::getCcyEnum(db.at(i).at(1));
 			Market mkt(market);
 			continue;
 		}

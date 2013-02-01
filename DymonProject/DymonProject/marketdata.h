@@ -4,7 +4,6 @@
 #include "Market.h"
 #include "date.h"
 #include "AbstractInstrument.h"
-#include "instrumentValue.h"
 #include "SwaptionVolCube.h"
 #include "AbstractInterpolator.h"
 #include "DiscountCurve.h"

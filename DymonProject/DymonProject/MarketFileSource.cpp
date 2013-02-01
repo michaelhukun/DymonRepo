@@ -35,7 +35,7 @@ void MarketFileSource::retrieveRecord(){
 	for (int j=1;j<numOfCols;j++) {
 
 		String marketStr = db.at(0).at(j);
-		enums::MarketEnum marketEnum = EnumHelper::getCcyEnum(marketStr);
+		enums::CurrencyEnum CurrencyEnum = EnumHelper::getCcyEnum(marketStr);
 		Market* market = new Market();
 
 		for (int i=0;i<numOfRows;i++){
@@ -44,7 +44,7 @@ void MarketFileSource::retrieveRecord(){
 			updateMarketObjectField(fieldName, fieldVal, market);
 		}
 		market->display();
-		marketMap.insert(std::make_pair(marketEnum,*market));
+		marketMap.insert(std::make_pair(CurrencyEnum,*market));
 	}
 	RecordHelper::getInstance()->setMarketMap(marketMap);
 	_inFile.close();
@@ -53,7 +53,7 @@ void MarketFileSource::retrieveRecord(){
 void MarketFileSource::updateMarketObjectField(std::string fieldName, std::string fieldVal, Market* market){
 
 	if (fieldName=="Market"){
-		market->setMarketEnum(EnumHelper::getCcyEnum(fieldVal));
+		market->setCurrencyEnum(EnumHelper::getCcyEnum(fieldVal));
 	}else if (fieldName=="DayCountCash"){
 		market->setDayCountCashConvention(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayCountSwap"){
