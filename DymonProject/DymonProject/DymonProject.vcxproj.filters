@@ -164,9 +164,6 @@
     <ClInclude Include="EuropeanOption.h">
       <Filter>Header Files\dymon.instrument</Filter>
     </ClInclude>
-    <ClInclude Include="FuturePricer.h">
-      <Filter>Header Files\dymon.numerical</Filter>
-    </ClInclude>
     <ClInclude Include="Future.h">
       <Filter>Header Files\dymon.instrument</Filter>
     </ClInclude>
@@ -298,6 +295,9 @@
     </ClInclude>
     <ClInclude Include="marketdata.h">
       <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="FuturePricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
