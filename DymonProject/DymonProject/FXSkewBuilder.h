@@ -44,12 +44,21 @@ namespace utilities{
 		void deriveATMDelta(vector<DeltaVol>* deltaVector);
 		double getForeignRate(CcyPair ccyPair);
 		void buildCutOffSection(AbstractCurve<double>* ac);
+		void buildQuadraticSection(AbstractCurve<double>* ac);
+		double numericalFunc(double b1);
+		double b1tob2(double b1);
+		double getVolFromVector(enums::OptionType optionType, double delta);
 
 		double _cutOff;
 		Market _market;
 		CcyPair _ccyPair;
 		double _tenorInYear;
 		enums::interpolAlgo _interpolAlgo;
+		enums::NumericAlgo _numericAlgo;
+		vector<DeltaVol>* _deltaVector;
+		int _iterateCount;
+		double _tolerance;
+
 	};
 }
 #endif
