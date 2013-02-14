@@ -75,8 +75,8 @@ void unitTest(){
 	//discountCurveTest.runTest();
 	//TestSurface surfaceTest;
 	//surfaceTest.runTest();
-	TestBond bondTest;
-	bondTest.runTest();
+	//TestBond bondTest;
+	//bondTest.runTest();
 }
 
 void SwaptionTest(){

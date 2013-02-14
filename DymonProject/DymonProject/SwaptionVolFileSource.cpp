@@ -23,7 +23,7 @@ void SwaptionVolFileSource::init(Configuration* cfg){
 	
 	Market market(EnumHelper::getCcyEnum("USD"));
 	_fileName = cfg->getProperty("swaptionVolCube."+market.getNameString()+".file",true,"");
-	_enabled = (cfg->getProperty("swaptionVolCube.enabled",true,"")=="True")?true:false;
+	_enabled = (cfg->getProperty("swaptionVolCube.enabled",true,"")=="true")?true:false;
 	AbstractFileSource::init(cfg);
 }
 

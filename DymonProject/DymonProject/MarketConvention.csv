@@ -10,3 +10,4 @@ AccrualAdjustSwap,Null,Null,
 AccrualAdjustBond,Null,Null,
 BizDaysAfterSpotSwap,2,2,
 BizDaysAfterSpotBond,0,0,
+BizDaysAfterExpiryFXOption,2,2

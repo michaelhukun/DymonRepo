@@ -25,7 +25,7 @@ HolidayFileSource::~HolidayFileSource(){}
 void HolidayFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("holiday.file",true,"");
 	_persistDir = cfg->getProperty("holiday.path",false,"");
-	_enabled = cfg->getProperty("holiday.enabled",true,"")=="True"?true:false;
+	_enabled = cfg->getProperty("holiday.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 

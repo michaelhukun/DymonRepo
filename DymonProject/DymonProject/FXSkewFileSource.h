@@ -21,15 +21,17 @@ namespace DAO {
 
 	private:
 
-		void parseRow(std::string securityID, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap);
+		void parseRow(std::string securityID, double vol);
 
 		int getTenorIndex(std::string deltaTenorStr);
 
-		int getDelta(std::string deltaStr);
+		double getDelta(std::string deltaStr);
 
-		int getDaysToExpiry(std::string deltaTenorStr, int tenorIndex, enums::CurrencyEnum market);
+		double getTenorExpiry(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum);
+		
+		double getTenorDiscount(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum);
 
-		void insertFXVolIntoCache(std::string currencyPairStr, int daysToExpiry, int delta, enums::OptionType optionType, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap);
+		void insertFXVolIntoCache(std::string ccyPairStr, double tenorExpiry, double tenorDiscount, double delta, OptionType optionType, double vol);
 
 	};
 }

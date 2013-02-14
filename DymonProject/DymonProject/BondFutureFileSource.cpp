@@ -20,7 +20,7 @@ using namespace instruments;
 void BondFutureFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("bondFuture.file",true,"");
 	_persistDir = cfg->getProperty("bondFuture.path",false,"");
-	_enabled = cfg->getProperty("bondFuture.enabled",true,"")=="True"?true:false;
+	_enabled = cfg->getProperty("bondFuture.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 

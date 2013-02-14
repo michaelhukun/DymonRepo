@@ -26,7 +26,7 @@ DepositFileSource::~DepositFileSource(){}
 void DepositFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("depositRate.file",true,"");
 	_persistDir = cfg->getProperty("depositRate.path",false,"");
-	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="True"?true:false;
+	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 

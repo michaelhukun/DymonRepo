@@ -109,10 +109,12 @@
     <ClInclude Include="BuilderCashFlowLeg.h" />
     <ClInclude Include="cashflow.h" />
     <ClInclude Include="cashflowLeg.h" />
+    <ClInclude Include="CcyPair.h" />
     <ClInclude Include="configuration.h" />
     <ClInclude Include="ConfigurationFileSource.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="CubicSplineInterpolator.h" />
+    <ClInclude Include="DeltaVol.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
     <ClInclude Include="FXSkewBuilder.h" />
@@ -181,10 +183,9 @@
     <ClCompile Include="BuilderCashFlowLeg.cpp" />
     <ClCompile Include="cashflow.cpp" />
     <ClCompile Include="cashflowLeg.cpp" />
+    <ClCompile Include="CcyPair.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
-    <ClCompile Include="CurrencyPair.cpp" />
-    <ClCompile Include="CurrencyPair.h" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
     <ClCompile Include="FXSkewBuilder.cpp" />

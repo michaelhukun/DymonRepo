@@ -6,6 +6,7 @@
 #include "FXSkewSurfaceBuilder.h"
 #include "BondCurveBuilder.h"
 #include "RecordHelper.h"
+#include "Configuration.h"
 
 using namespace Markets;
 using namespace utilities;
@@ -40,6 +41,9 @@ void MarketData::buildAll(){
 }
 
 void MarketData::buildSwapDiscountCurve(){
+	bool enabled = Configuration::getInstance()->getProperty("swapCurve.build.enabled",true,"")=="True"?true:false;
+	if (!enabled) return;
+
 	cout << "\n******** Build Swap Discount Curve ********\n" << endl;
 	RecordHelper::RateMap::iterator it;
 	RecordHelper::RateMap rateMap = RecordHelper::getInstance()->getDepositRateMap();
@@ -53,6 +57,9 @@ void MarketData::buildSwapDiscountCurve(){
 }
 
 void MarketData::buildBondDiscountCurve(){
+	bool enabled = Configuration::getInstance()->getProperty("bondCurve.build.enabled",true,"")=="True"?true:false;
+	if (!enabled) return;
+
 	cout << "\n******** Build Bond Discount Curve ********\n" << endl;
 	RecordHelper::BondRateMap::iterator it;
 	RecordHelper::BondRateMap* rateMap = RecordHelper::getInstance()->getBondRateMap();
@@ -66,6 +73,9 @@ void MarketData::buildBondDiscountCurve(){
 }
 
 void MarketData::buildSwaptionVolCube(){
+	bool enabled = Configuration::getInstance()->getProperty("swaptionVolCube.build.enabled",true,"")=="True"?true:false;
+	if (!enabled) return;
+
 	cout << "\n******** Build Swaption Vol Cube ********\n" << endl;
 	SwaptionVolCubeBuilder* builder = new SwaptionVolCubeBuilder(USD);
 	SwaptionVolCube* cube = builder->build(Configuration::getInstance());
@@ -73,14 +83,17 @@ void MarketData::buildSwaptionVolCube(){
 }
 
 void MarketData::buildFXSkewSurface(){
+	bool enabled = Configuration::getInstance()->getProperty("FXSkew.build.enabled",true,"")=="true"?true:false;
+	if (!enabled) return;
+
 	cout << "\n******** Build FX Skew Surface ********\n" << endl;
 	RecordHelper::FXVolSkewMap::iterator it;
 	RecordHelper::FXVolSkewMap* rateMap = RecordHelper::getInstance()->getFXVolSkewMap();
 	for (it = rateMap->begin(); it!= rateMap->end(); ++it){
-		string currencyPairStr = it->first;
-		FXSkewSurfaceBuilder* builder = new FXSkewSurfaceBuilder(currencyPairStr);
+		string ccyPairStr = it->first;
+		FXSkewSurfaceBuilder* builder = new FXSkewSurfaceBuilder(ccyPairStr);
 		FXSkewSurface* surface = builder->build(Configuration::getInstance());
-		_FXSkewSurfaceMap.insert(pair<string, FXSkewSurface>(currencyPairStr, *surface));
+		_FXSkewSurfaceMap.insert(pair<string, FXSkewSurface>(ccyPairStr, *surface));
 		cout<<surface->toString()<<endl;
 	}
 }
@@ -110,11 +123,11 @@ SwaptionVolCube* MarketData::getSwaptionVolCube(enums::CurrencyEnum market){
 	}
 }
 
-FXSkewSurface* MarketData::getFXSkewSurface(std::string currencyPairStr){
-	if ( _FXSkewSurfaceMap.find(currencyPairStr) == _FXSkewSurfaceMap.end()) {
+FXSkewSurface* MarketData::getFXSkewSurface(std::string ccyPairStr){
+	if ( _FXSkewSurfaceMap.find(ccyPairStr) == _FXSkewSurfaceMap.end()) {
 		throw "FX skew not found in map!";
 	} else {
-		return &_FXSkewSurfaceMap.find(currencyPairStr)->second;
+		return &_FXSkewSurfaceMap.find(ccyPairStr)->second;
 	}
 }
 

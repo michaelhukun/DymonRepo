@@ -4,10 +4,11 @@
 #define FXSkewBuilder_H
 #include "AbstractCurve.h"
 #include "AbstractBuilder.h"
+#include "CcyPair.h"
 #include "Market.h"
+#include "DeltaVol.h"
 #include <vector>
 
-typedef tuple<date, double> point;
 using namespace instruments;
 
 namespace utilities{
@@ -15,28 +16,40 @@ namespace utilities{
 		
 	public:
 		
-		FXSkewBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
+		FXSkewBuilder():AbstractBuilder(){};
+		FXSkewBuilder(std::string ccyPair, double tenorInYear):AbstractBuilder(){
+			_ccyPair = CcyPair(ccyPair);
+			_tenorInYear = tenorInYear;
+		}
 
 		void init(Configuration* cfg);
 
 		AbstractCurve<double>* build(Configuration* cfg);
 
-		void buildQuadratic(AbstractCurve<double>* dc);
-
 		// Getters and Setters
 		Market getMarket(){return _market;}
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
-		CurrencyPair getCurrencyPair(){ return _currencyPair;}
+		CcyPair getCcyPair(){ return _ccyPair;}
+		double getCutOff(){ return _cutOff; }
 
 		void setMarket(Market market){_market = market;}
 		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
-		void setCurrencyPair(CurrencyPair currencyPair){_currencyPair = currencyPair;}
+		void setCcyPair(CcyPair ccyPair){_ccyPair = ccyPair;}
+		void setCutOff(double cutOff){ _cutOff = cutOff; }
 
 	private:
 
+		void buildQuadratic(AbstractCurve<double>* ac);
+		vector<DeltaVol>* getDeltaVector(std::string ccyPairStr, double tenorInYear);
+		void deriveATMDelta(vector<DeltaVol>* deltaVector);
+		double getForeignRate(CcyPair ccyPair);
+		void buildCutOffSection(AbstractCurve<double>* ac);
+
+		double _cutOff;
 		Market _market;
+		CcyPair _ccyPair;
+		double _tenorInYear;
 		enums::interpolAlgo _interpolAlgo;
-		date _curveStartDate;
 	};
 }
 #endif

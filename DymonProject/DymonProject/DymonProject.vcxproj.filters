@@ -302,6 +302,12 @@
     <ClInclude Include="FXSkewBuilder.h">
       <Filter>Header Files\dymon.builder</Filter>
     </ClInclude>
+    <ClInclude Include="DeltaVol.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
+    <ClInclude Include="CcyPair.h">
+      <Filter>Header Files\dymon.object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -463,9 +469,6 @@
     <ClCompile Include="TestBond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CurrencyPair.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FXSkewSurface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -478,10 +481,10 @@
     <ClCompile Include="Newton.h">
       <Filter>Header Files\dymon.numerical</Filter>
     </ClCompile>
-    <ClCompile Include="CurrencyPair.h">
-      <Filter>Header Files\dymon.object</Filter>
-    </ClCompile>
     <ClCompile Include="FXSkewBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CcyPair.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

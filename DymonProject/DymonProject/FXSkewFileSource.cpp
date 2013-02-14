@@ -2,20 +2,16 @@
 #include <regex>
 #include "Constants.h"
 #include "EnumHelper.h"
+#include "DeltaVol.h"
+#include "Constants.h"
 
 using namespace DAO;
 using namespace utilities;
 
-std::regex overnightRegex ("[A-Z]{6}0N BGN Curncy");
-std::regex weekRegex ("[A-Z]{6}V[0-9]*W BGN Curncy");
-std::regex monthRegex ("[A-Z]{6}V[0-9]*M BGN Curncy");
-std::regex yearRegex ("[A-Z]{6}V[0-9]*Y BGN Curncy");
-
-
 void FXSkewFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("FXSkew.file",true,"");
 	_persistDir = cfg->getProperty("FXSkew.path",false,"");
-	_enabled = cfg->getProperty("FXSkew.enabled",true,"")=="True"?true:false;
+	_enabled = cfg->getProperty("FXSkew.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -30,34 +26,37 @@ void FXSkewFileSource::retrieveRecord(){
 	int numOfCols=db.at(0).size();
 	int bondTenorNumOfMonths=0;
 
-	RecordHelper::FXVolSkewMap* FXSkewMap = RecordHelper::getInstance()->getFXVolSkewMap();
-
 	for (int i=1;i<numOfRows;i++) {
 		string securityID = db.at(i).at(0);
 		double vol = std::stod(db.at(i).at(1));
-		parseRow(securityID, vol, FXSkewMap);
+		parseRow(securityID, vol);
 	}
+
+	RecordHelper::FXVolSkewMap* FXVolSkewMap = RecordHelper::getInstance()->getFXVolSkewMap();
 
 	_inFile.close();
 }
 
-void FXSkewFileSource::parseRow(std::string securityID, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap){
+void FXSkewFileSource::parseRow(std::string securityID, double vol){
 	string ccyPairStr = securityID.substr(0,6);
 	unsigned found = securityID.find(" BGN Curncy");
 	if (found==std::string::npos)
 		throw "Security ID not recognized.";
 	string deltaTenorStr = securityID.erase(found).substr(6);
 	int tenorIndex = getTenorIndex(deltaTenorStr);
-	int delta = getDelta(deltaTenorStr.substr(0,tenorIndex-1));
+	double delta = getDelta(deltaTenorStr.substr(0,tenorIndex-1));
 	enums::OptionType optionType = EnumHelper::getOptionType(deltaTenorStr.substr(tenorIndex-1,1));
-	int daysToExpiry = getDaysToExpiry(deltaTenorStr, tenorIndex, USD);
-	insertFXVolIntoCache(ccyPairStr, daysToExpiry, delta,optionType, vol, FXVolSkewMap);
+	string tenorStr = deltaTenorStr.substr(tenorIndex, deltaTenorStr.length()-tenorIndex-1);
+	char tenorUnit = *deltaTenorStr.rbegin();
+	double tenorExpiry = getTenorExpiry(tenorStr, tenorUnit, USD);
+	double tenorDiscount = getTenorDiscount(tenorStr, tenorUnit, USD);
+	insertFXVolIntoCache(ccyPairStr, tenorExpiry, tenorDiscount, delta,optionType, vol);
 }
 
-int FXSkewFileSource::getDelta(std::string deltaStr){
+double FXSkewFileSource::getDelta(std::string deltaStr){
 	if (deltaStr.length()==0)
-		return 0;
-	else return stoi(deltaStr);
+		return NaN;
+	else return stod(deltaStr);
 }
 
 int FXSkewFileSource::getTenorIndex(std::string deltaTenorStr){
@@ -75,33 +74,47 @@ int FXSkewFileSource::getTenorIndex(std::string deltaTenorStr){
 }
 
 
-int FXSkewFileSource::getDaysToExpiry(std::string deltaTenorStr, int tenorIndex, enums::CurrencyEnum marketEnum){
-	string tenorStr = deltaTenorStr.substr(tenorIndex, deltaTenorStr.length()-tenorIndex-1);
-	int tenor = (deltaTenorStr.find("N")!=string::npos)?1:stoi(tenorStr);
-	char tenorUnit = *deltaTenorStr.rbegin();
+double FXSkewFileSource::getTenorExpiry(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum){
+	int tenor = (tenorUnit=='N')?1:stoi(tenorStr);
+	if (tenorUnit!='Y'){
+		Market market(marketEnum);
+		date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, marketEnum);
+		date expiryDate  = dateUtil::getEndDate(startDate,tenor, market.getDayRollCashConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit));
+		int daysToExpiry = dateUtil::getDaysBetween(startDate, expiryDate);
+		return daysToExpiry / numDaysInYear;
+	}
+	return tenor;
+}
+
+double FXSkewFileSource::getTenorDiscount(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum){
+	int tenor = (tenorUnit=='N')?1:stoi(tenorStr);
 	Market market(marketEnum);
 	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, marketEnum);
 	date endDate  = dateUtil::getEndDate(startDate,tenor, market.getDayRollCashConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit));
-	int daysToExpiry = dateUtil::getDaysBetween(startDate, endDate);
-	return daysToExpiry;
+	date deliveryDate = dateUtil::getBizDateOffSet(endDate,market.getBusinessDaysAfterSpot(enums::SWAP), market.getCurrencyEnum());
+	int daysToDiscount = dateUtil::getDaysBetween(startDate, deliveryDate);
+	double tenorDiscount = daysToDiscount / numDaysInYear;
+	return tenorDiscount;
 }
 
-void FXSkewFileSource::insertFXVolIntoCache(std::string currencyPairStr, int daysToExpiry, int delta, OptionType optionType, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap){
+void FXSkewFileSource::insertFXVolIntoCache(std::string ccyPairStr, double tenorExpiry, double tenorDiscount, double delta, OptionType optionType, double vol){
+	
+	RecordHelper::FXVolSkewMap* FXVolSkewMap = RecordHelper::getInstance()->getFXVolSkewMap();
 
-	if (FXVolSkewMap->find(currencyPairStr) == FXVolSkewMap->end()){
-		map<int, vector<tuple<OptionType, int, double>>> tempMap = map<int, vector<tuple<OptionType, int, double>>>();
-		FXVolSkewMap->insert(std::make_pair(currencyPairStr, tempMap));
+	if (FXVolSkewMap->find(ccyPairStr) == FXVolSkewMap->end()){
+		map<double, vector<DeltaVol>> tempMap = map<double, vector<DeltaVol>>();
+		FXVolSkewMap->insert(std::make_pair(ccyPairStr, tempMap));
 	}
 	
-	map<int, vector<tuple<OptionType, int, double>>>* tempMap = &(FXVolSkewMap->find(currencyPairStr)->second);
+	map<double, vector<DeltaVol>>* tempMap = &(FXVolSkewMap->find(ccyPairStr)->second);
 
-	if (tempMap->find(daysToExpiry) == tempMap->end()){
-		vector<tuple<OptionType, int, double>> tempVector = vector<tuple<OptionType, int, double>>();
-		tempMap->insert(std::make_pair(daysToExpiry, tempVector));
+	if (tempMap->find(tenorExpiry) == tempMap->end()){
+		vector<DeltaVol> tempVector = vector<DeltaVol>();
+		tempMap->insert(std::make_pair(tenorExpiry, tempVector));
 	}
 	
-	vector<tuple<OptionType, int, double>>* tempVector = &(tempMap->find(daysToExpiry)->second);
-	tuple<OptionType, int, double> tempTuple = std::make_tuple (optionType, delta, vol);
+	vector<DeltaVol>* tempVector = &(tempMap->find(tenorExpiry)->second);
+	DeltaVol deltaVol = DeltaVol(optionType, delta, tenorExpiry, tenorDiscount, vol);
 
-	tempVector->push_back(tempTuple);
+	tempVector->push_back(deltaVol);
 }

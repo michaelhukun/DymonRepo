@@ -30,6 +30,7 @@ namespace instruments {
 		enums::DayRollEnum getAccrualAdjustBondConvention(){return _accrualAdjustBondConvention;}
 		int getBusinessDaysAfterSpotSwap(){return _businessDaysAfterSpotSwap;}
 		int getBusinessDaysAfterSpotBond(){return _businessDaysAfterSpotBond;}
+		int getBusinessDaysAfterExpiryFXOption(){return _businessDaysAfterExpiryFXOption;}
 
 		void setCurrencyEnum(enums::CurrencyEnum marketName){_marketName = marketName;}
 		void setDayCountCashConvention(enums::DayCountEnum dayCountCashConvention){_dayCountCashConvention = dayCountCashConvention;}
@@ -43,11 +44,13 @@ namespace instruments {
 		void setAccrualAdjustBondConvention(enums::DayRollEnum accrualAdjustBondConvention){_accrualAdjustBondConvention = accrualAdjustBondConvention;}
 		void setBusinessDaysAfterSpotSwap(int businessDaysAfterSpotSwap){_businessDaysAfterSpotSwap =businessDaysAfterSpotSwap;}
 		void setBusinessDaysAfterSpotBond(int businessDaysAfterSpotBond){_businessDaysAfterSpotBond =businessDaysAfterSpotBond;}
+		void setBusinessDaysAfterExpiryFXOption(int businessDaysAfterExpiryFXOption){_businessDaysAfterExpiryFXOption =businessDaysAfterExpiryFXOption;}
 		
 		enums::DayCountEnum getDayCountConvention(enums::Instrument instrument);
 		enums::DayRollEnum getDayRollConvention(enums::Instrument instrument);
 		enums::DayRollEnum getAccrualAdjustConvention(enums::Instrument instrument);
 		int getBusinessDaysAfterSpot(enums::Instrument instrument);
+		int getBusinessDaysAfterExpiry(enums::Instrument instrument);
 
 	private:
 		enums::CurrencyEnum _marketName;
@@ -62,6 +65,7 @@ namespace instruments {
 		enums::DayRollEnum _accrualAdjustBondConvention;
 		int _businessDaysAfterSpotSwap;
 		int _businessDaysAfterSpotBond;
+		int _businessDaysAfterExpiryFXOption;
 	};
 
 }

@@ -12,7 +12,7 @@ namespace enums {
 	enum interpolAlgo{LINEAR,LOGLINEAR,CUBIC,QUADRATIC};
 	enum OptionType{Call, Put, RR, STR, ATM};
 	enum PayReceive {Payer, Receiver};
-	enum Instrument{SWAP,OPTION,BOND};
+	enum Instrument{SWAP,OPTION,BOND,FXOPTION};
 }
 
 #endif

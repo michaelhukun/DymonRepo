@@ -17,7 +17,7 @@ using namespace Session;
 void MarketFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("marketConvention.file",true,"");
 	_persistDir = cfg->getProperty("marketConvention.path",false,"");
-	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="True"?true:false;
+	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -76,5 +76,7 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setBusinessDaysAfterSpotSwap(std::stoi(fieldVal));
 	}else if (fieldName=="BizDaysAfterSpotBond"){
 		market->setBusinessDaysAfterSpotBond(std::stoi(fieldVal));
+	}else if (fieldName=="BizDaysAfterExpiryFXOption"){
+		market->setBusinessDaysAfterExpiryFXOption(std::stoi(fieldVal));
 	}
 }

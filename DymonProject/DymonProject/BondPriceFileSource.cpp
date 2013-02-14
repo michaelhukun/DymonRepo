@@ -23,7 +23,7 @@ using namespace DAO;
 void BondPriceFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("bondPrice.file",true,"");
 	_persistDir = cfg->getProperty("bondPrice.path",false,"");
-	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="True"?true:false;
+	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 

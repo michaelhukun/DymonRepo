@@ -12,6 +12,7 @@
 #include "Market.h"
 #include "bond.h"
 #include "BondFuture.h"
+#include "DeltaVol.h"
 
 using namespace utilities;
 using namespace DAO;
@@ -38,7 +39,7 @@ namespace Session {
 		typedef std::map<int, std::map<int,double>> SwaptionSurfaceMap;
 		//std::map<tuple<fSwapTenorNumOfMonths,optionTenorNumOfMonths>,ATM Strike> SwaptionATMStrikeMap
 		typedef std::map<std::tuple<int,int>,double> SwaptionATMStrikeMap;
-		typedef map<string, map<int, vector<tuple<OptionType, int, double>>>> FXVolSkewMap;
+		typedef map<string, map<double, vector<DeltaVol>>> FXVolSkewMap;
 		
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}

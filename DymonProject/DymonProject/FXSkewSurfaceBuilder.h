@@ -5,7 +5,7 @@
 #include "AbstractBuilder.h"
 #include "RecordHelper.h"
 #include "Market.h"
-#include "CurrencyPair.h"
+#include "CcyPair.h"
 #include <vector>
 
 using namespace instruments;
@@ -16,7 +16,9 @@ namespace utilities{
 		
 	public:
 		
-		FXSkewSurfaceBuilder(std::string currencyPairStr):AbstractBuilder(){}
+		FXSkewSurfaceBuilder():AbstractBuilder(){};
+		FXSkewSurfaceBuilder(std::string ccyPairStr):AbstractBuilder(){_ccyPair = CcyPair(ccyPairStr);}
+		~FXSkewSurfaceBuilder(){}
 
 		void init(Configuration* cfg);
 
@@ -24,19 +26,20 @@ namespace utilities{
 
 		//Getters and Setters
 		Market getMarket(){return _market;}
-		CurrencyPair getCurrencyPair(){ return _currencyPair;}
+		CcyPair getCcyPair(){ return _ccyPair;}
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
 
 		void setMarket(Market market){_market = market;}
-		void setCurrencyPair(CurrencyPair currencyPair){_currencyPair = currencyPair;}
+		void setCcyPair(CcyPair ccyPair){_ccyPair = ccyPair;}
 		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
 
 
 	private:
 
-		CurrencyPair _currencyPair;
+		CcyPair _ccyPair;
 		Market _market;
 		enums::interpolAlgo _interpolAlgo;
+
 	};
 }
 #endif

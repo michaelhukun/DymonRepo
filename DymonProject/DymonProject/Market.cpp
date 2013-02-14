@@ -78,6 +78,15 @@ int Market::getBusinessDaysAfterSpot(enums::Instrument instrument){
 	}
 }
 
+int Market::getBusinessDaysAfterExpiry(enums::Instrument instrument){
+	switch (instrument){
+	case enums::FXOPTION:
+		return getBusinessDaysAfterExpiryFXOption();
+	default:
+		return getBusinessDaysAfterExpiryFXOption();
+	}
+}
+
 void Market::display(){
 
 	cout << this->getNameString()<< " -> "<< "DayCountCashConvention "<< _dayCountCashConvention<<endl;
