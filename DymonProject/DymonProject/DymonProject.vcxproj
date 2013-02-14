@@ -115,6 +115,7 @@
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
+    <ClInclude Include="FXSkewBuilder.h" />
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
     <ClInclude Include="FXSkewSurfaceBuilder.h" />
@@ -186,6 +187,7 @@
     <ClCompile Include="CurrencyPair.h" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
+    <ClCompile Include="FXSkewBuilder.cpp" />
     <ClCompile Include="FXSkewFileSource.cpp" />
     <ClCompile Include="FXSkewSurface.cpp" />
     <ClCompile Include="FXSkewSurfaceBuilder.cpp" />

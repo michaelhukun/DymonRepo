@@ -87,22 +87,21 @@ int FXSkewFileSource::getDaysToExpiry(std::string deltaTenorStr, int tenorIndex,
 }
 
 void FXSkewFileSource::insertFXVolIntoCache(std::string currencyPairStr, int daysToExpiry, int delta, OptionType optionType, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap){
-/*
+
 	if (FXVolSkewMap->find(currencyPairStr) == FXVolSkewMap->end()){
-		map<int, map<tuple<OptionType, int>, double>> tempMap = map<int, map<tuple<OptionType, int>, double>>();
+		map<int, vector<tuple<OptionType, int, double>>> tempMap = map<int, vector<tuple<OptionType, int, double>>>();
 		FXVolSkewMap->insert(std::make_pair(currencyPairStr, tempMap));
 	}
 	
-	map<int, map<tuple<OptionType, int>, double>>* tempMap = &(FXVolSkewMap->find(currencyPairStr)->second);
+	map<int, vector<tuple<OptionType, int, double>>>* tempMap = &(FXVolSkewMap->find(currencyPairStr)->second);
 
 	if (tempMap->find(daysToExpiry) == tempMap->end()){
-		map<tuple<OptionType, int>, double> tempVector = map<tuple<OptionType, int>, double>();
+		vector<tuple<OptionType, int, double>> tempVector = vector<tuple<OptionType, int, double>>();
 		tempMap->insert(std::make_pair(daysToExpiry, tempVector));
 	}
 	
-	map<tuple<OptionType, int>, double>* tempVector = &(tempMap->find(daysToExpiry)->second);
-	tuple<OptionType, int> tempTuple = std::make_tuple (optionType, delta);
+	vector<tuple<OptionType, int, double>>* tempVector = &(tempMap->find(daysToExpiry)->second);
+	tuple<OptionType, int, double> tempTuple = std::make_tuple (optionType, delta, vol);
 
-	tempVector->insert(make_pair(tempTuple,vol));
-*/
+	tempVector->push_back(tempTuple);
 }

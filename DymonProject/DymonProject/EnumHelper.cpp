@@ -58,6 +58,8 @@ enums::interpolAlgo EnumHelper::getInterpolAlgo(std::string interpolAlgo){
 		return LINEAR;
 	else if ( interpolAlgo == "LOGLINEAR")
 		return LOGLINEAR;
+	else if (interpolAlgo == "QUADRATIC")
+		return QUADRATIC;
 	throw "Interpolation algo not foud: "+interpolAlgo;
 }
 

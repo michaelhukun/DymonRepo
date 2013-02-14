@@ -1,11 +1,12 @@
 #include "FXSkewSurfaceBuilder.h"
 
 using namespace utilities;
+typedef AbstractBuilder super;
 
 void FXSkewSurfaceBuilder::init(Configuration* cfg){
-
+	super::init(cfg);
 }
 
 FXSkewSurface* FXSkewSurfaceBuilder::build(Configuration* cfg){
-	return 0;
+	if (cfg!=NULL) init(cfg);
 }

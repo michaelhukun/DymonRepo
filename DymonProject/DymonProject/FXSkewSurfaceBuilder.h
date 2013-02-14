@@ -22,13 +22,13 @@ namespace utilities{
 
 		FXSkewSurface* build(Configuration* cfg);
 
+		//Getters and Setters
 		Market getMarket(){return _market;}
-		void setMarket(Market market){_market = market;}
-
 		CurrencyPair getCurrencyPair(){ return _currencyPair;}
-		void setCurrencyPair(CurrencyPair currencyPair){_currencyPair = currencyPair;}
-
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
+
+		void setMarket(Market market){_market = market;}
+		void setCurrencyPair(CurrencyPair currencyPair){_currencyPair = currencyPair;}
 		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
 
 

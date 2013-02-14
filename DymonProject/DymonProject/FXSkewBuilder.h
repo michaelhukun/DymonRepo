@@ -4,10 +4,11 @@
 #define FXSkewBuilder_H
 #include "AbstractCurve.h"
 #include "AbstractBuilder.h"
+#include "Market.h"
 #include <vector>
 
-using namespace instruments;
 typedef tuple<date, double> point;
+using namespace instruments;
 
 namespace utilities{
 	class FXSkewBuilder: public AbstractBuilder{
@@ -18,14 +19,18 @@ namespace utilities{
 
 		void init(Configuration* cfg);
 
-		AbstractCurve* build(Configuration* cfg);
+		AbstractCurve<double>* build(Configuration* cfg);
 
+		void buildQuadratic(AbstractCurve<double>* dc);
+
+		// Getters and Setters
 		Market getMarket(){return _market;}
-		void setMarket(Market market){_market = market;}
-
 		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
-		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
+		CurrencyPair getCurrencyPair(){ return _currencyPair;}
 
+		void setMarket(Market market){_market = market;}
+		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
+		void setCurrencyPair(CurrencyPair currencyPair){_currencyPair = currencyPair;}
 
 	private:
 
