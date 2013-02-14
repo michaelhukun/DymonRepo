@@ -77,10 +77,10 @@ void MarketData::buildFXSkewSurface(){
 	RecordHelper::FXVolSkewMap::iterator it;
 	RecordHelper::FXVolSkewMap* rateMap = RecordHelper::getInstance()->getFXVolSkewMap();
 	for (it = rateMap->begin(); it!= rateMap->end(); ++it){
-		CurrencyEnum ccyEnum = it->first;
-		FXSkewSurfaceBuilder* builder = new FXSkewSurfaceBuilder(ccyEnum);
+		string currencyPairStr = it->first;
+		FXSkewSurfaceBuilder* builder = new FXSkewSurfaceBuilder(currencyPairStr);
 		FXSkewSurface* surface = builder->build(Configuration::getInstance());
-		_FXSkewSurfaceMap.insert(pair<CurrencyEnum, FXSkewSurface>(ccyEnum, *surface));
+		_FXSkewSurfaceMap.insert(pair<string, FXSkewSurface>(currencyPairStr, *surface));
 		cout<<surface->toString()<<endl;
 	}
 }
@@ -97,8 +97,7 @@ DiscountCurve* MarketData::getSwapDiscountCurve(enums::CurrencyEnum market){
 DiscountCurve* MarketData::getBondDiscountCurve(enums::CurrencyEnum market){
 	if ( _BondDiscountCurveMap.find(market) == _BondDiscountCurveMap.end()) {
 		throw "Bond curve not found in map!";
-	}
-	else {
+	} else {
 		return &_BondDiscountCurveMap.find(market)->second;
 	}
 }
@@ -106,18 +105,16 @@ DiscountCurve* MarketData::getBondDiscountCurve(enums::CurrencyEnum market){
 SwaptionVolCube* MarketData::getSwaptionVolCube(enums::CurrencyEnum market){
 	if ( _SwaptionVolCubeMap.find(market) == _SwaptionVolCubeMap.end()) {
 		throw "Swaption vol cube not found in map!";
-	}
-	else {
+	} else {
 		return &_SwaptionVolCubeMap.find(market)->second;
 	}
 }
 
-FXSkewSurface* MarketData::getFXSkewSurface(enums::CurrencyEnum market){
-	if ( _FXSkewSurfaceMap.find(market) == _FXSkewSurfaceMap.end()) {
+FXSkewSurface* MarketData::getFXSkewSurface(std::string currencyPairStr){
+	if ( _FXSkewSurfaceMap.find(currencyPairStr) == _FXSkewSurfaceMap.end()) {
 		throw "FX skew not found in map!";
-	}
-	else {
-		return &_FXSkewSurfaceMap.find(market)->second;
+	} else {
+		return &_FXSkewSurfaceMap.find(currencyPairStr)->second;
 	}
 }
 

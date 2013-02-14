@@ -20,10 +20,10 @@ namespace instruments {
 		
 	protected:
 
-		double blackScholesFormula(enums::CallPut callPutFlag, double S, double K, double vol, double r, double T);
-		double blackFormula(enums::CallPut callPutFlag, double FwdS, double K, double vol, double discountFactor, double T);
+		double blackScholesFormula(enums::OptionType OptionTypeFlag, double S, double K, double vol, double r, double T);
+		double blackFormula(enums::OptionType OptionTypeFlag, double FwdS, double K, double vol, double discountFactor, double T);
 		
-		double getImpliedVolBlackATM(enums::CallPut callPutFlag, double K,  double optionPrice, double discountFactor, double T);
+		double getImpliedVolBlackATM(enums::OptionType OptionTypeFlag, double K,  double optionPrice, double discountFactor, double T);
 
 	};
 }

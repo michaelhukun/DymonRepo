@@ -351,6 +351,8 @@ dateUtil::DateUnit dateUtil::getDateUnit(char letterDateUnit){
 		return BIZDAY;
 	case 'D':
 		return DAY;
+	case 'N':
+		return DAY;
 	case 'M':
 		return MONTH;
 	case 'W':

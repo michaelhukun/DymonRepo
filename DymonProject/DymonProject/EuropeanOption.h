@@ -13,8 +13,8 @@ namespace instruments {
 	public:
 		EuropeanOption():AbstractOption(){};
 		~EuropeanOption(){};
-		EuropeanOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, double r):
-		AbstractOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol, r){}
+		EuropeanOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol, double r):
+		AbstractOption(market, tradeDate, expiryInMonth, OptionTypeFlag, S, K, vol, r){}
 
 		virtual double getMPV();
 	};

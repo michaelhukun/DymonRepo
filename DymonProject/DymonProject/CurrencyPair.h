@@ -14,12 +14,13 @@ namespace utilities {
 	public:
 		CurrencyPair(){}
 		~CurrencyPair(){}
-		CurrencyPair(std::string currencyPair);
+		CurrencyPair(std::string currencyPairStr);
 
 		void setCCY1(enums::CurrencyEnum ccy1){_ccy1 = ccy1;}
 		void setCCY2(enums::CurrencyEnum ccy2){_ccy2 = ccy2;}
 		enums::CurrencyEnum getCCY1(){return _ccy1;}
 		enums::CurrencyEnum getCCY2(){return _ccy2;}
+		std::string toString(){return _currencyPairStr;}
 
 		bool operator != (CurrencyPair ccyPair){ !isEqual(ccyPair);}
 		bool operator == (CurrencyPair ccyPair){ isEqual(ccyPair);}
@@ -29,6 +30,7 @@ namespace utilities {
 
 		enums::CurrencyEnum _ccy1;
 		enums::CurrencyEnum _ccy2;
+		std::string _currencyPairStr;
 	};
 }
 #endif

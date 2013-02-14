@@ -3,6 +3,7 @@
 #define FXSKEWFILESOURCE_H
 #include "AbstractFileSource.h"
 #include "RecordHelper.h"
+#include "Enums.h"
 
 using namespace utilities;
 
@@ -20,9 +21,15 @@ namespace DAO {
 
 	private:
 
-		void parseRow(std::string securityID, double vol);
+		void parseRow(std::string securityID, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap);
 
-		void insertFXVolIntoCache(CurrencyEnum CurrencyEnum, int expiry, int delta, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap);
+		int getTenorIndex(std::string deltaTenorStr);
+
+		int getDelta(std::string deltaStr);
+
+		int getDaysToExpiry(std::string deltaTenorStr, int tenorIndex, enums::CurrencyEnum market);
+
+		void insertFXVolIntoCache(std::string currencyPairStr, int daysToExpiry, int delta, enums::OptionType optionType, double vol, RecordHelper::FXVolSkewMap* FXVolSkewMap);
 
 	};
 }

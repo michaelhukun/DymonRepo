@@ -38,7 +38,7 @@ namespace Session {
 		typedef std::map<int, std::map<int,double>> SwaptionSurfaceMap;
 		//std::map<tuple<fSwapTenorNumOfMonths,optionTenorNumOfMonths>,ATM Strike> SwaptionATMStrikeMap
 		typedef std::map<std::tuple<int,int>,double> SwaptionATMStrikeMap;
-		typedef std::map<enums::CurrencyEnum, map<std::tuple<int,int>,double>> FXVolSkewMap;
+		typedef std::map<std::string, std::map<int, std::map<std::tuple<enums::OptionType, int>, double>>> FXVolSkewMap;
 		
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}

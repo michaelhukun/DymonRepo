@@ -67,6 +67,6 @@ double Swaption::getAnnuityMonetizer( DiscountCurve* dc) {
 
 double Swaption::getMPV(){
 	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(_market.getCurrencyEnum());
-	return blackFormula(_callPutFlag, _S, _K, _vol, _discountFactor, _expiryInMonth/12);
+	return blackFormula(_OptionTypeFlag, _S, _K, _vol, _discountFactor, _expiryInMonth/12);
 }
 

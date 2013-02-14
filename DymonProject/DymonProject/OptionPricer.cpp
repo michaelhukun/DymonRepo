@@ -7,32 +7,32 @@
 using namespace utilities;
 using namespace instruments;
 
-double OptionPricer::blackScholesFormula(enums::CallPut callPutFlag, double S, double K, double vol, double r, double T){
+double OptionPricer::blackScholesFormula(enums::OptionType OptionTypeFlag, double S, double K, double vol, double r, double T){
 	double d1, d2;
 	
 	d1=(log(S/K)+(r+vol*vol/2)*T)/(vol*sqrt(T));
 	d2=d1-vol*sqrt(T);
 
-	if (callPutFlag == enums::Call)
+	if (OptionTypeFlag == enums::Call)
 		return S *MathUtil::CNF(d1)-K * exp(-r*T)*MathUtil::CNF(d2);
 	return K * exp(-r * T) * MathUtil::CNF(-d2) - S * MathUtil::CNF(-d1);
 	
 }
 
-double OptionPricer::blackFormula(enums::CallPut callPutFlag, double FwdS, double K, double vol, double discountFactor, double T){
+double OptionPricer::blackFormula(enums::OptionType OptionTypeFlag, double FwdS, double K, double vol, double discountFactor, double T){
 	double d1, d2;
 
 	d1=(log(FwdS/K)+vol*vol/2*T)/(vol*sqrt(T));
 	d2=d1-vol*sqrt(T);
 
-	if (callPutFlag == enums::Call)
+	if (OptionTypeFlag == enums::Call)
 		return discountFactor*(FwdS *MathUtil::CNF(d1)-K * MathUtil::CNF(d2));
 	return discountFactor*(K * MathUtil::CNF(-d2) - FwdS * MathUtil::CNF(-d1));
 }
 
 
-double OptionPricer::getImpliedVolBlackATM(enums::CallPut callPutFlag, double K,  double optionPrice, double discountFactor, double T) {
-	int sig=(callPutFlag == enums::Call)? 1: -1;
+double OptionPricer::getImpliedVolBlackATM(enums::OptionType OptionTypeFlag, double K,  double optionPrice, double discountFactor, double T) {
+	int sig=(OptionTypeFlag == enums::Call)? 1: -1;
 	double n=optionPrice/2/discountFactor/K/sig+1/2;	
 	return 2*MathUtil::invCNF(n)/sig;
 }

@@ -17,16 +17,16 @@ namespace instruments {
 
 		AbstractOption(){};
 		~AbstractOption(){};
-		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol){
-			BaseOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol);
+		AbstractOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol){
+			BaseOption(market, tradeDate, expiryInMonth, OptionTypeFlag, S, K, vol);
 		}
 
-		AbstractOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol) {
-			BaseOption(market, tradeDate, expiryDate, callPutFlag, S, K, vol);
+		AbstractOption(Market market, date tradeDate, date expiryDate, OptionType OptionTypeFlag, double S, double K, double vol) {
+			BaseOption(market, tradeDate, expiryDate, OptionTypeFlag, S, K, vol);
 		}
 
-		AbstractOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol, double r) {
-			BaseOption(market, tradeDate, expiryInMonth, callPutFlag, S, K, vol);
+		AbstractOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol, double r) {
+			BaseOption(market, tradeDate, expiryInMonth, OptionTypeFlag, S, K, vol);
 			_discountFactor = exp(-r*expiryInMonth/12);
 			_r=r;
 		}
@@ -37,7 +37,7 @@ namespace instruments {
 		void setDiscountFactor(double discountFactor){	_discountFactor = discountFactor;}
 
 	protected:
-		CallPut _callPutFlag;
+		OptionType _OptionTypeFlag;
 		double _S;
 		double _K;
 		double _vol;
@@ -46,20 +46,20 @@ namespace instruments {
 		double _discountFactor;
 		Market _market;
 
-		void BaseOption(Market market, date tradeDate, int expiryInMonth, CallPut callPutFlag, double S, double K, double vol){
-			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
+		void BaseOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol){
+			BaseOption(market, tradeDate, OptionTypeFlag, S, K, vol);
 			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
 			_expiryInMonth = expiryInMonth;
 		}
 
-		void BaseOption(Market market, date tradeDate, date expiryDate, CallPut callPutFlag, double S, double K, double vol) {
-			BaseOption(market, tradeDate, callPutFlag, S, K, vol);
+		void BaseOption(Market market, date tradeDate, date expiryDate, OptionType OptionTypeFlag, double S, double K, double vol) {
+			BaseOption(market, tradeDate, OptionTypeFlag, S, K, vol);
 			setMaturityDate(expiryDate);
 		}
 
-		void BaseOption(Market market, date tradeDate, CallPut callPutFlag, double S, double K, double vol) {
+		void BaseOption(Market market, date tradeDate, OptionType OptionTypeFlag, double S, double K, double vol) {
 			setTradeDate(tradeDate);
-			_callPutFlag = callPutFlag;
+			_OptionTypeFlag = OptionTypeFlag;
 			_S = S;
 			_K = K;
 			_vol = vol;

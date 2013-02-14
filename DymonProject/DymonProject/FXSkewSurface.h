@@ -7,7 +7,7 @@
 using namespace utilities;
 
 namespace utilities{
-	class FXSkewSurface: public AbstractSurface<long, double>{
+	class FXSkewSurface: public AbstractSurface<double, double>{
 
 	public:		
 

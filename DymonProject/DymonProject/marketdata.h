@@ -35,7 +35,7 @@ namespace Markets {
 		DiscountCurve* getSwapDiscountCurve(enums::CurrencyEnum market);
 		DiscountCurve* getBondDiscountCurve(enums::CurrencyEnum market);
 		SwaptionVolCube* getSwaptionVolCube(enums::CurrencyEnum market);
-		FXSkewSurface* getFXSkewSurface(enums::CurrencyEnum market);
+		FXSkewSurface* getFXSkewSurface(std::string currencyPairStr);
 		
 	protected:
 		//private copy constructor
@@ -48,7 +48,7 @@ namespace Markets {
 		std::map<enums::CurrencyEnum, DiscountCurve> _SwapDiscountCurveMap;
 		std::map<enums::CurrencyEnum, DiscountCurve> _BondDiscountCurveMap;
 		std::map<enums::CurrencyEnum, SwaptionVolCube> _SwaptionVolCubeMap;
-		std::map<enums::CurrencyEnum, FXSkewSurface> _FXSkewSurfaceMap;
+		std::map<std::string, FXSkewSurface> _FXSkewSurfaceMap;
 	};
 }
 #endif
