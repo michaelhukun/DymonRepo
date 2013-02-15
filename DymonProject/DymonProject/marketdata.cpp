@@ -94,7 +94,7 @@ void MarketData::buildFXSkewSurface(){
 		FXSkewSurfaceBuilder* builder = new FXSkewSurfaceBuilder(ccyPairStr);
 		FXSkewSurface* surface = builder->build(Configuration::getInstance());
 		_FXSkewSurfaceMap.insert(pair<string, FXSkewSurface>(ccyPairStr, *surface));
-		cout<<surface->toString()<<endl;
+		cout<<surface->dumpSruface(10)<<endl;
 	}
 }
 

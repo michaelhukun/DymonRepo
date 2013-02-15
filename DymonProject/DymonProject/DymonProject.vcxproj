@@ -132,6 +132,7 @@
     <ClInclude Include="numericalfactory.h" />
     <ClInclude Include="OptionPricer.h" />
     <ClInclude Include="OvernightRateBootStrapper.h" />
+    <ClInclude Include="QuadraticInterpolator.h" />
     <ClInclude Include="Ridder.h" />
     <ClInclude Include="Secant.h" />
     <ClInclude Include="SwapPricer.h" />

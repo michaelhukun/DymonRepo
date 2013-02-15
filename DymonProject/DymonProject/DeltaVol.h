@@ -11,7 +11,7 @@ namespace utilities {
 
 	public:
 		DeltaVol(){};
-		DeltaVol(enums::OptionType optionType, int delta, double tenorExpiry, double tenorDiscount, double vol){
+		DeltaVol(enums::OptionType optionType, double delta, double tenorExpiry, double tenorDiscount, double vol){
 			setOptionType(optionType);
 			setDelta(delta);
 			setTenorExpiry(tenorExpiry);

@@ -34,7 +34,9 @@ namespace utilities{
 
 		virtual std::string toString();
 
-	private:
+		virtual std::string toString(double majorAxisInterval);
+
+	protected:
 
 		std::map<U, AbstractCurve<T>*>* _curves;
 	};
@@ -76,5 +78,14 @@ namespace utilities{
 		return ss.str();
 	}
 
+	template<typename U, typename T>
+	std::string  AbstractSurface<U, T>::toString(double majorAxisInterval){
+		std::stringstream ss (stringstream::in | stringstream::out);
+		for (map<U, AbstractCurve<T>*>::iterator it = _curves->begin(); it!=_curves->end(); it++){
+			ss<<"Major axis value ["<<(*it).first<<"] has ";
+			ss<<(*it).second->toString(majorAxisInterval);
+		}
+		return ss.str();
+	}
 }
 #endif

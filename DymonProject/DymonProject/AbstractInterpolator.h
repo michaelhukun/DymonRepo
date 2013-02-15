@@ -16,6 +16,8 @@ namespace utilities{
 
 		typedef tuple<T, double> point;
 
+		AbstractInterpolator(){}
+
 		AbstractInterpolator(point startPoint, point endPoint){
 			_startPoint = startPoint;
 			_endPoint = endPoint;
@@ -30,13 +32,13 @@ namespace utilities{
 		virtual point interpolate(T xVal){return point(NULL,0);}
 
 		point getStartPoint(){return _startPoint;}
-
 		point getEndPoint(){return _endPoint;}
-
 		T getStartingX(){
 			return std::get<0>(_startPoint);
 		}
 
+		void setStartPoint(point startPoint){_startPoint=startPoint;}
+		void setEndPoint(point endPoint){_endPoint=endPoint;}
 		T getEndingX(){
 			return std::get<0>(_endPoint);
 		}

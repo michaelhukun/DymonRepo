@@ -56,7 +56,8 @@ void FXSkewFileSource::parseRow(std::string securityID, double vol){
 double FXSkewFileSource::getDelta(std::string deltaStr){
 	if (deltaStr.length()==0)
 		return NaN;
-	else return stod(deltaStr);
+	else 
+		return stod(deltaStr)/100.0;
 }
 
 int FXSkewFileSource::getTenorIndex(std::string deltaTenorStr){

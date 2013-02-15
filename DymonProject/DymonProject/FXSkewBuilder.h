@@ -28,12 +28,10 @@ namespace utilities{
 
 		// Getters and Setters
 		Market getMarket(){return _market;}
-		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
 		CcyPair getCcyPair(){ return _ccyPair;}
 		double getCutOff(){ return _cutOff; }
 
 		void setMarket(Market market){_market = market;}
-		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
 		void setCcyPair(CcyPair ccyPair){_ccyPair = ccyPair;}
 		void setCutOff(double cutOff){ _cutOff = cutOff; }
 
@@ -41,7 +39,7 @@ namespace utilities{
 
 		void buildQuadratic(AbstractCurve<double>* ac);
 		vector<DeltaVol>* getDeltaVector(std::string ccyPairStr, double tenorInYear);
-		void deriveATMDelta(vector<DeltaVol>* deltaVector);
+		double deriveATMDelta(vector<DeltaVol>* deltaVector);
 		double getForeignRate(CcyPair ccyPair);
 		void buildCutOffSection(AbstractCurve<double>* ac);
 		void buildQuadraticSection(AbstractCurve<double>* ac);
@@ -58,7 +56,10 @@ namespace utilities{
 		vector<DeltaVol>* _deltaVector;
 		int _iterateCount;
 		double _tolerance;
-
+		double _volSTR25;
+		double _volRR25;
+		double _volATM;
+		double _deltaATM;
 	};
 }
 #endif

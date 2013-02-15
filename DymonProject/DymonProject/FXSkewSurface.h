@@ -14,6 +14,8 @@ namespace utilities{
 		FXSkewSurface():AbstractSurface(){};
 
 		double getValue(long majorAxisVal, double minorAxisVal);
+	
+		std::string dumpSruface(int deltaAxisPointNum);
 	};
 }
 #endif
