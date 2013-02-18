@@ -94,7 +94,7 @@ void BondFutureFileSource::updateBondFutureField(std::string fieldName, std::str
 		bondFuture->setFirstTradeDate(firstTradeDate);
 	}else if (fieldName=="LAST_TRADEABLE_DT"){
 		date lastTradeDate(fieldVal,true);
-		bondFuture->setMaturityDate(lastTradeDate);
+		bondFuture->setDeliveryDate(lastTradeDate);
 		bondFuture->setLastTradeDate(lastTradeDate);
 	}else if (fieldName=="FUT_DLV_DT_FIRST"){
 		date firstDeliveryDate(fieldVal,true);

@@ -60,6 +60,7 @@
     <None Include="BondRate.csv" />
     <None Include="BondFuturePrice.csv" />
     <None Include="FXSkew.csv" />
+    <None Include="FXForward.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -311,6 +312,9 @@
     <ClInclude Include="QuadraticInterpolator.h">
       <Filter>Header Files\dymon.interpolant</Filter>
     </ClInclude>
+    <ClInclude Include="FXForward.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -489,6 +493,9 @@
     </ClCompile>
     <ClCompile Include="CcyPair.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractForward.h">
+      <Filter>Header Files\dymon.instrument</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

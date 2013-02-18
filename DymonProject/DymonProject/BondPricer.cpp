@@ -51,13 +51,13 @@ double BondPricer::getZeroRateSpread(double dirtyPrice){
 }
 
 double BondPricer::getYieldByZeroRate(double zerRate){
-	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getMaturityDate(),_bond->getDayCount());
+	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getDeliveryDate(),_bond->getDayCount());
 	double yield = (exp(dayCountFraction*zerRate)-1)/dayCountFraction;
 	return yield;
 }
 
 double BondPricer::getYieldByDiscountFactor(double discountFactor){
-	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getMaturityDate(),_bond->getDayCount());
+	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getDeliveryDate(),_bond->getDayCount());
 	double yield = (1/discountFactor-1)/dayCountFraction;
 	return yield;
 }

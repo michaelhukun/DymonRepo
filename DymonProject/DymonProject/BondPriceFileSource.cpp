@@ -50,7 +50,7 @@ void BondPriceFileSource::retrieveRecord(){
 
 void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRateMap* bondRateMap){
 	CurrencyEnum market = bond->getMarket().getCurrencyEnum();
-	long maturityDateJDN = bond->getMaturityDate().getJudianDayNumber();
+	long maturityDateJDN = bond->getDeliveryDate().getJudianDayNumber();
 	if (bondRateMap->find(market) == bondRateMap->end()){
 		std::map<long, Bond> tempMap = std::map<long, Bond>();
 		tempMap.insert(std::make_pair(maturityDateJDN, *bond));
@@ -101,7 +101,7 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
 		date maturityDate(fieldVal,true);
-		bond->setMaturityDate(maturityDate);
+		bond->setDeliveryDate(maturityDate);
 	}else if (fieldName=="FIRST_CPN_DT"){
 		date firstCouponDate(fieldVal,true);
 		bond->setFirstCouponDate(firstCouponDate);

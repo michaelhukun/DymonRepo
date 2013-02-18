@@ -9,7 +9,7 @@ void FuturePricer::init(Configuration* cfg){
 }
 
 double FuturePricer::getMPV(double costOfCarryRate){
-	int daysToMaturity = dateUtil::getDaysBetween(_future->getTradeDate(), _future->getMaturityDate());
+	int daysToMaturity = dateUtil::getDaysBetween(_future->getTradeDate(), _future->getDeliveryDate());
 	double discountFactor = exp(-costOfCarryRate*daysToMaturity/360);
 	double MPV = _future->getSpotPrice()/discountFactor;
 	return MPV;

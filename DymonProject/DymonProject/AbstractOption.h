@@ -48,13 +48,13 @@ namespace instruments {
 
 		void BaseOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol){
 			BaseOption(market, tradeDate, OptionTypeFlag, S, K, vol);
-			setMaturityDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
+			setDeliveryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
 			_expiryInMonth = expiryInMonth;
 		}
 
 		void BaseOption(Market market, date tradeDate, date expiryDate, OptionType OptionTypeFlag, double S, double K, double vol) {
 			BaseOption(market, tradeDate, OptionTypeFlag, S, K, vol);
-			setMaturityDate(expiryDate);
+			setDeliveryDate(expiryDate);
 		}
 
 		void BaseOption(Market market, date tradeDate, OptionType OptionTypeFlag, double S, double K, double vol) {

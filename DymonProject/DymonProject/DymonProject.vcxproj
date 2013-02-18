@@ -77,6 +77,7 @@
   <ItemGroup>
     <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
+    <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
@@ -117,6 +118,7 @@
     <ClInclude Include="DeltaVol.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
+    <ClInclude Include="FXForward.h" />
     <ClInclude Include="FXSkewBuilder.h" />
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
@@ -187,6 +189,7 @@
     <ClCompile Include="CcyPair.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
+    <ClCompile Include="AbstractForward.h" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
     <ClCompile Include="FXSkewBuilder.cpp" />

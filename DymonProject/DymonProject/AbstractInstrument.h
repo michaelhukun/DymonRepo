@@ -17,25 +17,31 @@ namespace instruments {
 		
 		// Getters
 		Market getMarket(){ return _market; }
-		date getTradeDate() { return _tradeDate; }
 		date getIssueDate() { return _issueDate; }
-		date getMaturityDate() { return _maturityDate; }
+		date getTradeDate() { return _tradeDate; }
+		date getSpotDate() { return _spotDate; }
+		date getExpiryDate() { return _expiryDate; }
+		date getDeliveryDate() { return _deliveryDate; }
 		std::string getID(){ return _ID; }
 		std::string getName(){ return _name; }
 		
 		// Setters
 		void setMarket(Market market){ _market = market; }
-		void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
 		void setIssueDate(date issueDate) { _issueDate=issueDate; }
-		void setMaturityDate(date maturityDate) { _maturityDate=maturityDate; }
+		void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
+		void setSpotDate(date spotDate){ _spotDate = spotDate; }
+		void setExpiryDate(date expiryDate){ _expiryDate = expiryDate; }
+		void setDeliveryDate(date deliveryDate) { _deliveryDate=deliveryDate; }
 		void setName(std::string name){ _name = name; }
 		void setID(std::string ID){ _ID = ID;}
 
 	protected: 
 		Market _market;
-		date _tradeDate;
 		date _issueDate;
-		date _maturityDate;	
+		date _tradeDate;
+		date _spotDate;
+		date _expiryDate;
+		date _deliveryDate;
 		std::string _ID;
 		std::string _name;
 	};
