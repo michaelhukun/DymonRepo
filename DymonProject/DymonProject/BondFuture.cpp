@@ -22,7 +22,7 @@ double BondFuture::getPVCouponBeforeExpiry(vector<cashflow> couponVector, double
 	double PVCouponBeforeExpiry = 0;	
 	for (int i=_CTDBond->getNextCouponIndex(); i<couponVector.size();i++){
 		cashflow coupon = couponVector[i];
-		if (coupon.getAccuralEndDate()>_maturityDate)
+		if (coupon.getAccuralEndDate()>_expiryDate)
 			continue;
 
 		int daysToTradeDate = dateUtil::getDaysBetween(_tradeDate,coupon.getAccuralEndDate());
@@ -37,7 +37,7 @@ double BondFuture::getAccuredInterestOnExpiry(vector<cashflow> couponVector){
 	for (unsigned int i=0; i<couponVector.size(); i++){
 		cashflow coupon= couponVector[i];
 		if (_tradeDate>=coupon.getAccuralStartDate() && _tradeDate<coupon.getAccuralEndDate()){
-			double dayCountFraction = dateUtil::getAccrualFactor(coupon.getAccuralStartDate(),_maturityDate,coupon.getAccuralStartDate(),coupon.getAccuralEndDate(),_CTDBond->getDayCount());
+			double dayCountFraction = dateUtil::getAccrualFactor(coupon.getAccuralStartDate(),_expiryDate,coupon.getAccuralStartDate(),coupon.getAccuralEndDate(),_CTDBond->getDayCount());
 			double accruedInterest = coupon.getNotional()*coupon.getCouponRate()*dayCountFraction;
 			return accruedInterest;
 		}

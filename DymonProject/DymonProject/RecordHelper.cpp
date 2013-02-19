@@ -12,6 +12,7 @@
 #include "BondPriceFileSource.h"
 #include "BondFutureFileSource.h"
 #include "FXSkewFileSource.h"
+#include "FXForwardFileSource.h"
 #include <vector>
 
 using namespace Session;
@@ -37,6 +38,7 @@ void RecordHelper::init(Configuration* cfg){
 	dataSourceVector.push_back(new BondPriceFileSource());
 	dataSourceVector.push_back(new BondFutureFileSource());
 	dataSourceVector.push_back(new FXSkewFileSource());
+	dataSourceVector.push_back(new FXForwardFileSource());
 	
 	for(unsigned int i = 0; i<dataSourceVector.size(); i++){
 		AbstractDAO* dao = dataSourceVector[i];

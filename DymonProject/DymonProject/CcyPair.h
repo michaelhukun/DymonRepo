@@ -17,18 +17,20 @@ namespace utilities {
 		~CcyPair(){}
 
 		//Getters and Setters
-		void setCCY1(enums::CurrencyEnum ccy1){_ccy1 = ccy1;}
-		void setCCY2(enums::CurrencyEnum ccy2){_ccy2 = ccy2;}
+		void setCCY1(std::string ccy1){_ccy1 = ccy1;}
+		void setCCY2(std::string ccy2){_ccy2 = ccy2;}
 		void setCcyPairStr(std::string ccyPairStr);
-		enums::CurrencyEnum getCCY1(){return _ccy1;}
-		enums::CurrencyEnum getCCY2(){return _ccy2;}
-		enums::CurrencyEnum getDomesticCCY(){return _ccy1;}
-		enums::CurrencyEnum getForeignCCY(){return _ccy2;}
-		std::string getCcyPairStr(){return _ccyPairStr;}
+		std::string getCCY1(){return _ccy1;}
+		std::string getCCY2(){return _ccy2;}
+
+		enums::CurrencyEnum getCCY1Enum();
+		enums::CurrencyEnum getCCY2Enum();
+		std::string getDomesticCCY(){return _ccy1;}
+		std::string getForeignCCY(){return _ccy2;}
+		std::string getCcyPairStr(){return _ccy1+_ccy2;}
 		bool isEmergingMarket(){return _isEmergingMarket;}
 
 		// Operator overload
-		bool operator != (CcyPair ccyPair){ !isEqual(ccyPair);}
 		bool operator == (CcyPair ccyPair){ isEqual(ccyPair);}
 
 		// Methods
@@ -37,8 +39,8 @@ namespace utilities {
 
 	private:
 
-		enums::CurrencyEnum _ccy1;
-		enums::CurrencyEnum _ccy2;
+		std::string _ccy1;
+		std::string _ccy2;
 		std::string _ccyPairStr;
 		bool _isEmergingMarket;
 	};

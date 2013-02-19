@@ -70,7 +70,7 @@ void FXSkewBuilder::buildQuadratic(AbstractCurve<double>* ac){
 }
 
 double FXSkewBuilder::getForeignRate(CcyPair ccyPair){
-	enums::CurrencyEnum foreignCcy = ccyPair.getForeignCCY();
+	string foreignCcy = ccyPair.getForeignCCY();
 	return 0;
 }
 

@@ -13,6 +13,7 @@
 #include "bond.h"
 #include "BondFuture.h"
 #include "DeltaVol.h"
+#include "FXForward.h"
 
 using namespace utilities;
 using namespace DAO;
@@ -40,6 +41,7 @@ namespace Session {
 		//std::map<tuple<fSwapTenorNumOfMonths,optionTenorNumOfMonths>,ATM Strike> SwaptionATMStrikeMap
 		typedef std::map<std::tuple<int,int>,double> SwaptionATMStrikeMap;
 		typedef map<string, map<double, vector<DeltaVol>>> FXVolSkewMap;
+		typedef map<string, map<string, FXForward>> FXForwardMap;
 		
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}
@@ -52,6 +54,7 @@ namespace Session {
 		SwaptionCubeMap getSwaptionVolMap(){return _swaptionCubeMap;}
 		SwaptionATMStrikeMap getSwaptionATMStrikeMap(){return _swaptionATMStrikeMap;}
 		FXVolSkewMap* getFXVolSkewMap(){ return &_FXVolSkewMap; }
+		FXForwardMap* getFXForwardMap(){ return &_FXForwardMap; }
 
 		// Setters
 		void setHolidayMap(HolidayMap map){_holidayMap=map;}
@@ -64,6 +67,7 @@ namespace Session {
 		void setSwaptionVolMap(SwaptionCubeMap map){_swaptionCubeMap=map;}
 		void setSwaptionATMStrikeMap(SwaptionATMStrikeMap map){_swaptionATMStrikeMap=map;}
 		void setFXVolSkewMap(FXVolSkewMap map){_FXVolSkewMap=map;}
+		void setFXForwardMap(FXForwardMap map){_FXForwardMap=map;}
 
 		// Methods
 		Bond* findCTDinBondMap(std::string CUSIP);
@@ -86,6 +90,7 @@ namespace Session {
 		SwaptionCubeMap _swaptionCubeMap;
 		SwaptionATMStrikeMap _swaptionATMStrikeMap;
 		FXVolSkewMap _FXVolSkewMap;
+		FXForwardMap _FXForwardMap;
 	};
 }
 

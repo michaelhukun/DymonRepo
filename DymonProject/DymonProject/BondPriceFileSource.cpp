@@ -101,7 +101,7 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
 		date maturityDate(fieldVal,true);
-		bond->setDeliveryDate(maturityDate);
+		bond->setExpiryDate(maturityDate);
 	}else if (fieldName=="FIRST_CPN_DT"){
 		date firstCouponDate(fieldVal,true);
 		bond->setFirstCouponDate(firstCouponDate);

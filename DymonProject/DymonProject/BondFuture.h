@@ -48,8 +48,8 @@ namespace instruments {
 
 		// Methods
 		double getMPV(double costOfCarryRate);
-
 		double getImpliedBondPrice();
+		std::string toString(){return "";}
 
 	private:
 

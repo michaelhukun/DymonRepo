@@ -315,6 +315,9 @@
     <ClInclude Include="FXForward.h">
       <Filter>Header Files\dymon.instrument</Filter>
     </ClInclude>
+    <ClInclude Include="FXForwardFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -496,6 +499,9 @@
     </ClCompile>
     <ClCompile Include="AbstractForward.h">
       <Filter>Header Files\dymon.instrument</Filter>
+    </ClCompile>
+    <ClCompile Include="FXForwardFileSource.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

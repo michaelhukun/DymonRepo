@@ -35,6 +35,10 @@ namespace instruments {
 		void setName(std::string name){ _name = name; }
 		void setID(std::string ID){ _ID = ID;}
 
+		// Method
+
+		virtual std::string toString()=0;
+
 	protected: 
 		Market _market;
 		date _issueDate;

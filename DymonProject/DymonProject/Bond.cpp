@@ -21,7 +21,7 @@ using namespace enums;
 void Bond::generateCouponLeg(){
 	Configuration* cfg = Configuration::getInstance();
 	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"-1"));
-	BuilderCashFlowLeg* couponLegBuilder = new BuilderCashFlowLeg(enums::BOND, _issueDate, _maturityDate, _tenorNumOfMonths, _couponRate, 100, _couponFreq, _market.getCurrencyEnum(), buildDirection);
+	BuilderCashFlowLeg* couponLegBuilder = new BuilderCashFlowLeg(enums::BOND, _issueDate, _expiryDate, _tenorNumOfMonths, _couponRate, 100, _couponFreq, _market.getCurrencyEnum(), buildDirection);
 	_couponLeg=couponLegBuilder->getCashFlowLeg();
 	_nextCouponDate = findNextCouponDate();
 	_nextCouponIndex = _couponLeg->getCashFlowIndexForAccrualEnd(_nextCouponDate);
@@ -91,7 +91,7 @@ double Bond::getZeroRateSpread(DiscountCurve* dc){
 	BondPricer pricer(this);
 	double zeroRateSpread;
 	if (_securityType=="Bill"){
-		zeroRateSpread = _cleanPrice/100 - dc->getZeroRate(_maturityDate, _dayCount);
+		zeroRateSpread = _cleanPrice/100 - dc->getZeroRate(_expiryDate, _dayCount);
 	}else{
 		zeroRateSpread = pricer.getZeroRateSpread(_dirtyPrice);
 	}
@@ -100,6 +100,6 @@ double Bond::getZeroRateSpread(DiscountCurve* dc){
 
 string Bond::toString(){	
 	std::stringstream ss (stringstream::in | stringstream::out);
-	ss<<"BondID ["+_CUSIP+"], BondName ["+_name+"], Maturity ["+_maturityDate.toString()+"], quotedPrice ["<<_cleanPrice<<"], quotedYTM ["<<_quotedYTM<<"]";
+	ss<<"BondID ["+_CUSIP+"], BondName ["+_name+"], Maturity ["+_expiryDate.toString()+"], quotedPrice ["<<_cleanPrice<<"], quotedYTM ["<<_quotedYTM<<"]";
 	return ss.str();
 }

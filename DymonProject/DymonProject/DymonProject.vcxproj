@@ -119,6 +119,7 @@
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
     <ClInclude Include="FXForward.h" />
+    <ClInclude Include="FXForwardFileSource.h" />
     <ClInclude Include="FXSkewBuilder.h" />
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="AbstractForward.h" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
+    <ClCompile Include="FXForwardFileSource.cpp" />
     <ClCompile Include="FXSkewBuilder.cpp" />
     <ClCompile Include="FXSkewFileSource.cpp" />
     <ClCompile Include="FXSkewSurface.cpp" />

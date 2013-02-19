@@ -10,8 +10,6 @@ void CcyPair::setCcyPairStr(std::string ccyPairStr){
 	if (std::regex_match (ccyPairStr,ccyPairRegex)){
 		string ccy1 = ccyPairStr.substr(0,3);
 		string ccy2 = ccyPairStr.substr(3,3);
-		setCCY1(EnumHelper::getCcyEnum(ccy1));
-		setCCY2(EnumHelper::getCcyEnum(ccy2));
 	}else{
 		throw "currency pair not recognized!";
 	}
@@ -24,3 +22,12 @@ bool CcyPair::isEqual(CcyPair ccyPair){
 	else
 		return false;
 }
+
+enums::CurrencyEnum CcyPair::getCCY1Enum(){
+	return EnumHelper::getCcyEnum(_ccy1);
+}
+
+enums::CurrencyEnum CcyPair::getCCY2Enum(){
+	return EnumHelper::getCcyEnum(_ccy2);
+}
+

@@ -16,15 +16,6 @@ namespace utilities {
 
 	public:
 		AbstractForward(){};
-		AbstractForward(date tradeDate, std::string tenorStr, enums::DayCountEnum dayCount, double spot, double point){
-			setTradeDate(tradeDate);
-			setSpot(spot);
-			setPoint(point);
-			setTenorStr(tenorStr);
-			setDayCount(dayCount);
-			setOutRight(spot+point);
-			deriveDates();
-		}
 		~AbstractForward(){};
 
 		// Getters and Setters
@@ -33,15 +24,17 @@ namespace utilities {
 		double getOutRight(){ return _outRight; }
 		enums::DayCountEnum getDayCount(){ return _dayCount; }
 		std::string getTenorStr(){ return _tenorStr; }
+		int getDaysToMty(){ return _daysToMty; }
 
 		void setSpot(double spot){ _spot = spot; }
 		void setPoint(double point){ _point = point; }
 		void setOutRight(double outRight){ _outRight = outRight;}
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 		void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
+		void setDaysToMty(int daysToMty){ _daysToMty = daysToMty; }
 		
 		// Methods
-		virtual void deriveDates();
+		virtual std::string toString(){return "";};
 	
 	private:
 
@@ -50,6 +43,7 @@ namespace utilities {
 		double _outRight;
 		enums::DayCountEnum _dayCount;
 		std::string _tenorStr;
+		int _daysToMty;
 	
 	};
 }

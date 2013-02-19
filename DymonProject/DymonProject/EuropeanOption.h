@@ -17,6 +17,7 @@ namespace instruments {
 		AbstractOption(market, tradeDate, expiryInMonth, OptionTypeFlag, S, K, vol, r){}
 
 		virtual double getMPV();
+		std::string toString(){return "";}
 	};
 }
 #endif

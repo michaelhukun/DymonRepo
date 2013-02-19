@@ -45,6 +45,8 @@ namespace instruments {
 		void printCashflowLegFix();
 		void printCashflowLegFloat();
 
+		std::string toString(){return "";}
+
 	private:
 
 		cashflowLeg* _fixCashflowLeg;
