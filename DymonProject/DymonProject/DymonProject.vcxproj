@@ -120,6 +120,8 @@
     <ClInclude Include="FuturePricer.h" />
     <ClInclude Include="FXForward.h" />
     <ClInclude Include="FXForwardFileSource.h" />
+    <ClInclude Include="FXForwardImpliedCurveBuilder.h" />
+    <ClInclude Include="FXEuropeanOption.h" />
     <ClInclude Include="FXSkewBuilder.h" />
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />

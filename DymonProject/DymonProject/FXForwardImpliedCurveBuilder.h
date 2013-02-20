@@ -1,7 +1,6 @@
 //created by Wang Jianwei on 01 Dec 2012
-//Added cashflowleg creating - Kun
-#ifndef FXSkewBuilder_H
-#define FXSkewBuilder_H
+#ifndef FXFORWARDIMPLIEDCURVEBUILDER_H
+#define FXFORWARDIMPLIEDCURVEBUILDER_H
 #include "AbstractCurve.h"
 #include "AbstractBuilder.h"
 #include "CcyPair.h"
@@ -12,12 +11,12 @@
 using namespace instruments;
 
 namespace utilities{
-	class FXSkewBuilder: public AbstractBuilder{
+	class FXForwardImpliedCurveBuilder: public AbstractBuilder{
 		
 	public:
 		
-		FXSkewBuilder():AbstractBuilder(){};
-		FXSkewBuilder(std::string ccyPair, double tenorInYear):AbstractBuilder(){
+		FXForwardImpliedCurveBuilder():AbstractBuilder(){};
+		FXForwardImpliedCurveBuilder(std::string ccyPair, double tenorInYear):AbstractBuilder(){
 			_ccyPair = CcyPair(ccyPair);
 			_tenorInYear = tenorInYear;
 		}

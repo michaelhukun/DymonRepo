@@ -318,6 +318,12 @@
     <ClInclude Include="FXForwardFileSource.h">
       <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
+    <ClInclude Include="FXForwardImpliedCurveBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="FXEuropeanOption.h">
+      <Filter>Header Files\dymon.instrument</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">

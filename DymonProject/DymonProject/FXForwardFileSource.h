@@ -23,6 +23,8 @@ namespace DAO {
 
 		void insertForwardIntoCache(FXForward* forward, RecordHelper::FXForwardMap* FXForwardMap);
 
+		void deriveSpotForwardRate(RecordHelper::FXForwardMap* FXForwardMap);
+		
 		FXForward* createForwardObject(CSVDatabase db, int row);
 
 		void updateObjectField(std::string fieldName, std::string fieldVal, FXForward* forward);

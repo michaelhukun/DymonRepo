@@ -75,7 +75,7 @@ enums::NumericAlgo EnumHelper::getNumericalAlgo(std::string numericalAlgo){
 	throw "Numerical algo not foud: "+numericalAlgo;
 }
 
-enums::OptionType EnumHelper::getOptionType(std::string optionType){
+enums::VolType EnumHelper::getVolType(std::string optionType){
 	if (optionType == "V")
 		return ATM;
 	else if ( optionType == "R")

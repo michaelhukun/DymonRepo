@@ -24,7 +24,7 @@ namespace utilities{
 
 		static enums::NumericAlgo getNumericalAlgo(std::string numericalAlgo);
 
-		static enums::OptionType getOptionType(std::string optionType);
+		static enums::VolType getVolType(std::string optionType);
 	};
 }
 #endif

@@ -14,6 +14,7 @@
 #include "BondFuture.h"
 #include "DeltaVol.h"
 #include "FXForward.h"
+#include "FXEuropeanOption.h"
 
 using namespace utilities;
 using namespace DAO;
@@ -40,7 +41,7 @@ namespace Session {
 		typedef std::map<int, std::map<int,double>> SwaptionSurfaceMap;
 		//std::map<tuple<fSwapTenorNumOfMonths,optionTenorNumOfMonths>,ATM Strike> SwaptionATMStrikeMap
 		typedef std::map<std::tuple<int,int>,double> SwaptionATMStrikeMap;
-		typedef map<string, map<double, vector<DeltaVol>>> FXVolSkewMap;
+		typedef map<string, map<double, vector<FXEuropeanOption>>> FXVolSkewMap;
 		typedef map<string, map<string, FXForward>> FXForwardMap;
 		
 		// Getters

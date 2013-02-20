@@ -4,6 +4,7 @@
 #include "AbstractFileSource.h"
 #include "RecordHelper.h"
 #include "Enums.h"
+#include "FXEuropeanOption.h"
 
 using namespace utilities;
 
@@ -21,17 +22,15 @@ namespace DAO {
 
 	private:
 
-		void parseRow(std::string securityID, double vol);
-
-		int getTenorIndex(std::string deltaTenorStr);
-
-		double getDelta(std::string deltaStr);
-
 		double getTenorExpiry(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum);
 		
 		double getTenorDiscount(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum);
 
-		void insertFXVolIntoCache(std::string ccyPairStr, double tenorExpiry, double tenorDiscount, double delta, OptionType optionType, double vol);
+		void insertOptionIntoCache(FXEuropeanOption* bond, RecordHelper::FXVolSkewMap* FXVolSkewMap);
+
+		FXEuropeanOption* createOptionObject(CSVDatabase db, int row);
+
+		void updateOptionObjectField(std::string fieldName, std::string fieldVal, FXEuropeanOption* option);
 
 	};
 }

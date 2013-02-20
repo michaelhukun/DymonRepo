@@ -5,6 +5,7 @@
 #include <iostream>
 #include "RecordHelper.h"
 #include <ctime>
+#include "Constants.h"
 
 using namespace utilities;
 using namespace Session;
@@ -188,8 +189,9 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 				numBizDay++;
 		accrualFactor = numBizDay/252.0;
 		break;
+	case enums::DayCountNull:
 	default:
-		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/360.0;
+		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/numDaysInYear;
 
 	}
 	return accrualFactor;

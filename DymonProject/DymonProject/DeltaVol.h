@@ -11,8 +11,8 @@ namespace utilities {
 
 	public:
 		DeltaVol(){};
-		DeltaVol(enums::OptionType optionType, double delta, double tenorExpiry, double tenorDiscount, double vol){
-			setOptionType(optionType);
+		DeltaVol(enums::VolType optionType, double delta, double tenorExpiry, double tenorDiscount, double vol){
+			setVolType(optionType);
 			setDelta(delta);
 			setTenorExpiry(tenorExpiry);
 			setTenorDiscount(tenorDiscount);
@@ -23,13 +23,13 @@ namespace utilities {
 		// Getters and Setters
 		double getDelta(){ return _delta; }
 		double getVol(){ return _vol; }
-		enums::OptionType getOptionType(){ return _optionType; }
+		enums::VolType getVolType(){ return _optionType; }
 		double getTenorExpiry(){ return _tenorExpiry; }
 		double getTenorDiscount(){ return _tenorDiscount; }
 
 		void setDelta(double delta){ _delta = delta; }
 		void setVol(double vol) { _vol = vol; }
-		void setOptionType(enums::OptionType optionType){ _optionType = optionType; }
+		void setVolType(enums::VolType optionType){ _optionType = optionType; }
 		void setTenorExpiry(double tenorExpiry){ _tenorExpiry = tenorExpiry; }
 		void setTenorDiscount(double tenorDiscount){ _tenorDiscount = tenorDiscount; }
 
@@ -37,7 +37,7 @@ namespace utilities {
 
 		double _delta;
 		double _vol;
-		enums::OptionType _optionType;
+		enums::VolType _optionType;
 		double _tenorExpiry;
 		double _tenorDiscount;
 	};

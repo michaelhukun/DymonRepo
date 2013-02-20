@@ -41,7 +41,7 @@ double FXSkewBuilder::deriveATMDelta(vector<DeltaVol>* deltaVector){
 	double foreignRate = getForeignRate(_ccyPair);
 	for(unsigned int i=0; i<deltaVector->size(); i++){
 		DeltaVol* deltaVol = &deltaVector->at(i);
-		if (deltaVol->getOptionType() == ATM){
+		if (deltaVol->getVolType() == ATM){
 			double tenorExpiry = deltaVol->getTenorExpiry();
 			double tenorDiscount = deltaVol->getTenorDiscount();
 			double volATM = deltaVol->getVol();
@@ -109,12 +109,12 @@ double FXSkewBuilder::b1tob2(double b1){
 	return b2;
 }
 
-double FXSkewBuilder::getVolFromVector(enums::OptionType optionType, double delta){
+double FXSkewBuilder::getVolFromVector(enums::VolType optionType, double delta){
 	for (unsigned int i=0; i<_deltaVector->size(); i++){
 		DeltaVol deltaVol = _deltaVector->at(i);
-		if (deltaVol.getOptionType() == ATM && optionType == ATM){
+		if (deltaVol.getVolType() == ATM && optionType == ATM){
 			return deltaVol.getVol();
-		} else if (deltaVol.getOptionType() == optionType && deltaVol.getDelta() == delta){
+		} else if (deltaVol.getVolType() == optionType && deltaVol.getDelta() == delta){
 			return deltaVol.getVol();
 		}
 	}

@@ -18,7 +18,7 @@ namespace utilities {
 		~FXForward(){};
 
 		// Getters and Setters
-		CcyPair getCcyPair(){ return _ccyPair; }
+		CcyPair* getCcyPair(){ return &_ccyPair; }
 		bool getIsSpot(){ return _isSpot; }
 
 		void setCcyPair(CcyPair ccyPair){ _ccyPair = ccyPair; }

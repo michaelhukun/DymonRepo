@@ -24,13 +24,13 @@ void TestOption::europeanTestSuit(){
 void TestOption::swaptionTestSuit(){
 }
 
-void TestOption::europeanTest(enums::OptionType OptionTypeFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal){
+void TestOption::europeanTest(enums::VolType VolTypeFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal){
 	Market market(enums::USD);
-	AbstractOption* option = new EuropeanOption(market, dateUtil::getToday(),expiryInMonth,OptionTypeFlag,S,K,vol,r);
+	AbstractOption* option = new EuropeanOption(market, dateUtil::getToday(),expiryInMonth,VolTypeFlag,S,K,vol,r);
 	compareResult("European Option", option->getMPV(), expectedVal);
 }
 
-void TestOption::swaptionTest(enums::OptionType OptionTypeFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal){
+void TestOption::swaptionTest(enums::VolType VolTypeFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal){
 
 }
 

@@ -17,53 +17,63 @@ namespace instruments {
 
 		AbstractOption(){};
 		~AbstractOption(){};
-		AbstractOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol){
-			BaseOption(market, tradeDate, expiryInMonth, OptionTypeFlag, S, K, vol);
+		AbstractOption(Market market, date tradeDate, int expiryInMonth, VolType volType, double S, double K, double vol){
+			BaseOption(tradeDate, volType, S, K, vol);
+			setExpiryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Null,market.getCurrencyEnum(),dateUtil::MONTH));
+			setDeliveryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
+			_expiryInMonth = expiryInMonth;
+			_market = market;
 		}
 
-		AbstractOption(Market market, date tradeDate, date expiryDate, OptionType OptionTypeFlag, double S, double K, double vol) {
-			BaseOption(market, tradeDate, expiryDate, OptionTypeFlag, S, K, vol);
+		AbstractOption(date tradeDate, date expiryDate, date deliveryDate, VolType volType, double S, double K, double vol) {
+			BaseOption(tradeDate, volType, S, K, vol);
+			setExpiryDate(expiryDate);
+			setDeliveryDate(deliveryDate);		
 		}
 
-		AbstractOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol, double r) {
-			BaseOption(market, tradeDate, expiryInMonth, OptionTypeFlag, S, K, vol);
-			_discountFactor = exp(-r*expiryInMonth/12);
+		//Methods
+		virtual double getMPV(){return OptionPricer::getMPV();};
+
+		//Getters and Setters
+		double getVol(){return _vol;}
+		double getPrice(){ return _S; }
+		double getStrike(){ return _K; }
+		VolType getVolType(){ return _volType; }
+		double getDiscountRate(){ return _r; }
+		string getTenorStr(){ return _tenorStr; }
+
+		void setVol(double vol){ _vol = vol; }
+		void setPrice(double S){ _S=S; }
+		void setStrike(double K){ _K=K; }
+		void setTenorStr(string tenorStr){ _tenorStr=tenorStr; }
+		void setDiscountRate(double r){
+			double accrualFactor = dateUtil::getAccrualFactor(_tradeDate, _expiryDate,enums::DayCountNull);
+			_discountFactor = exp(-r*accrualFactor);
 			_r=r;
 		}
-
-		virtual double getMPV(){return OptionPricer::getMPV();};
-		double getVol(){return _vol;}
-
-		void setDiscountFactor(double discountFactor){	_discountFactor = discountFactor;}
+		void setDiscountCurve(DiscountCurve* discountCurve){
+			_discountCurve = discountCurve;
+			_discountFactor = discountCurve->getDiscountFactor(_tradeDate,_expiryDate);
+			_r = discountCurve->getZeroRate(_tradeDate,_expiryDate, enums::DayCountNull);
+		}
 
 	protected:
-		OptionType _OptionTypeFlag;
 		double _S;
 		double _K;
 		double _vol;
 		double _r;
-		double _expiryInMonth;
 		double _discountFactor;
-		Market _market;
+		double _expiryInMonth;
+		DiscountCurve* _discountCurve;
+		VolType _volType;
+		std::string _tenorStr;
 
-		void BaseOption(Market market, date tradeDate, int expiryInMonth, OptionType OptionTypeFlag, double S, double K, double vol){
-			BaseOption(market, tradeDate, OptionTypeFlag, S, K, vol);
-			setDeliveryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
-			_expiryInMonth = expiryInMonth;
-		}
-
-		void BaseOption(Market market, date tradeDate, date expiryDate, OptionType OptionTypeFlag, double S, double K, double vol) {
-			BaseOption(market, tradeDate, OptionTypeFlag, S, K, vol);
-			setDeliveryDate(expiryDate);
-		}
-
-		void BaseOption(Market market, date tradeDate, OptionType OptionTypeFlag, double S, double K, double vol) {
+		void BaseOption(date tradeDate, VolType volType, double S, double K, double vol) {
 			setTradeDate(tradeDate);
-			_OptionTypeFlag = OptionTypeFlag;
+			_volType = volType;
 			_S = S;
 			_K = K;
 			_vol = vol;
-			_market = market;
 		}
 	};
 }

@@ -40,12 +40,13 @@ void FXForwardFileSource::retrieveRecord(){
 		FXForward* tempForward = createForwardObject(db, i);
 		insertForwardIntoCache(tempForward, FXForwardMap);
 	}
+	deriveSpotForwardRate(FXForwardMap);
 
 	_inFile.close();
 }
 
 void FXForwardFileSource::insertForwardIntoCache(FXForward* forward, RecordHelper::FXForwardMap* FXForwardMap){
-	string ccyPairStr = forward->getCcyPair().getCcyPairStr();
+	string ccyPairStr = forward->getCcyPair()->getCcyPairStr();
 	string tenorStr = forward->getTenorStr();
 	if (FXForwardMap->find(ccyPairStr) == FXForwardMap->end()){
 		auto tempMap = std::map<string, FXForward>();
@@ -77,10 +78,9 @@ void FXForwardFileSource::updateObjectField(std::string fieldName, std::string f
 	}else if (fieldName=="SECURITY_TENOR_ONE"){
 		forward->setTenorStr(fieldVal);
 	}else if (fieldName=="PX_MID"){
-		std::regex IDRegex ("[A-Za-z]{3} BGN Curncy");
-		if (std::regex_match (fieldVal,IDRegex)){
+		std::regex IDRegex ("[A-Z]{3} BGN Curncy");
+		if (std::regex_match (forward->getID(),IDRegex)){
 			forward->setSpot(std::stod(fieldVal));
-			forward->setPoint(0);
 			forward->setIsSpot(true);
 		} else{
 			forward->setPoint(std::stod(fieldVal));
@@ -98,8 +98,34 @@ void FXForwardFileSource::updateObjectField(std::string fieldName, std::string f
 		date settleDate(fieldVal,true);
 		forward->setDeliveryDate(settleDate);
 	}else if (fieldName=="CRNCY"){
-		forward->getCcyPair().setCCY1(fieldVal);
+		forward->getCcyPair()->setCCY1(fieldVal);
 	}else if (fieldName=="BASE_CRNCY"){
-		forward->getCcyPair().setCCY2(fieldVal);
+		forward->getCcyPair()->setCCY2(fieldVal);
+	}
+}
+
+void FXForwardFileSource::deriveSpotForwardRate(RecordHelper::FXForwardMap* FXForwardMap){
+	for (auto it = FXForwardMap->begin(); it!=FXForwardMap->end(); it++){
+		double spotRate=NaN;
+		date spotDate=date("",true);
+		map<string, FXForward>* innerMap = &(it->second);
+		
+		// get spot rate and spot date
+		for (auto innerIt = innerMap->begin(); innerIt!=innerMap->end(); innerIt++){
+			FXForward* forward = &(innerIt->second);
+			if (forward->getIsSpot()){
+				spotRate = forward->getSpot();
+				spotDate = forward->getDeliveryDate();			
+				forward->setPoint(0);
+			}
+		}
+
+		// set spot rate and derive outright
+		for (auto innerIt = innerMap->begin(); innerIt!=innerMap->end(); innerIt++){
+			FXForward* forward = &(innerIt->second);
+			forward->setSpot(spotRate);
+			forward->setSpotDate(spotDate);
+			forward->setOutRight(spotRate+forward->getPoint()/10000);
+		}
 	}
 }
