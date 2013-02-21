@@ -303,9 +303,6 @@
     <ClInclude Include="FXSkewBuilder.h">
       <Filter>Header Files\dymon.builder</Filter>
     </ClInclude>
-    <ClInclude Include="DeltaVol.h">
-      <Filter>Header Files\dymon.object</Filter>
-    </ClInclude>
     <ClInclude Include="CcyPair.h">
       <Filter>Header Files\dymon.object</Filter>
     </ClInclude>

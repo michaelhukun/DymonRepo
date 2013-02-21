@@ -31,9 +31,11 @@ namespace Markets {
 		void buildSwapDiscountCurve();
 		void buildSwaptionVolCube();
 		void buildFXSkewSurface();
+		void buildFXForwardImpliedCurve();
 
 		DiscountCurve* getSwapDiscountCurve(enums::CurrencyEnum market);
 		DiscountCurve* getBondDiscountCurve(enums::CurrencyEnum market);
+		DiscountCurve* getFXForwardImpliedCurve(enums::CurrencyEnum market);
 		SwaptionVolCube* getSwaptionVolCube(enums::CurrencyEnum market);
 		FXSkewSurface* getFXSkewSurface(std::string ccyPairStr);
 		
@@ -47,6 +49,7 @@ namespace Markets {
 		static MarketData *single;
 		std::map<enums::CurrencyEnum, DiscountCurve> _SwapDiscountCurveMap;
 		std::map<enums::CurrencyEnum, DiscountCurve> _BondDiscountCurveMap;
+		std::map<enums::CurrencyEnum, DiscountCurve> _FXForwardImpliedCurveMap;
 		std::map<enums::CurrencyEnum, SwaptionVolCube> _SwaptionVolCubeMap;
 		std::map<std::string, FXSkewSurface> _FXSkewSurfaceMap;
 	};

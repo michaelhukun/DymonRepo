@@ -6,7 +6,6 @@
 #include "AbstractOption.h"
 
 using namespace instruments;
-typedef AbstractOption super;
 
 namespace instruments {
 	class EuropeanOption:  public AbstractOption{

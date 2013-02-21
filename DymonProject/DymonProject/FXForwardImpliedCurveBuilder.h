@@ -5,7 +5,7 @@
 #include "AbstractBuilder.h"
 #include "CcyPair.h"
 #include "Market.h"
-#include "DeltaVol.h"
+#include "DiscountCurve.h"
 #include <vector>
 
 using namespace instruments;
@@ -16,14 +16,13 @@ namespace utilities{
 	public:
 		
 		FXForwardImpliedCurveBuilder():AbstractBuilder(){};
-		FXForwardImpliedCurveBuilder(std::string ccyPair, double tenorInYear):AbstractBuilder(){
+		FXForwardImpliedCurveBuilder(std::string ccyPair):AbstractBuilder(){
 			_ccyPair = CcyPair(ccyPair);
-			_tenorInYear = tenorInYear;
 		}
 
 		void init(Configuration* cfg);
 
-		AbstractCurve<double>* build(Configuration* cfg);
+		DiscountCurve* build(Configuration* cfg);
 
 		// Getters and Setters
 		Market getMarket(){return _market;}

@@ -8,8 +8,9 @@ using namespace std;
 void CcyPair::setCcyPairStr(std::string ccyPairStr){
 	std::regex ccyPairRegex ("[A-Za-z]{6}");
 	if (std::regex_match (ccyPairStr,ccyPairRegex)){
-		string ccy1 = ccyPairStr.substr(0,3);
-		string ccy2 = ccyPairStr.substr(3,3);
+		_ccy1 = ccyPairStr.substr(0,3);
+		_ccy2 = ccyPairStr.substr(3,3);
+
 	}else{
 		throw "currency pair not recognized!";
 	}

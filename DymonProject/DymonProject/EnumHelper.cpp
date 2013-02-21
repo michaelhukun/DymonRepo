@@ -76,11 +76,11 @@ enums::NumericAlgo EnumHelper::getNumericalAlgo(std::string numericalAlgo){
 }
 
 enums::VolType EnumHelper::getVolType(std::string optionType){
-	if (optionType == "V")
+	if (optionType == "ATM")
 		return ATM;
-	else if ( optionType == "R")
+	else if ( optionType == "RR")
 		return RR;
-	else if ( optionType == "B")
+	else if ( optionType == "BF")
 		return STR;
 	throw "Option type not foud: "+optionType;
 }

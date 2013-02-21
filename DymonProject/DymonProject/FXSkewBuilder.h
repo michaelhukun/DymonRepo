@@ -6,7 +6,7 @@
 #include "AbstractBuilder.h"
 #include "CcyPair.h"
 #include "Market.h"
-#include "DeltaVol.h"
+#include "FXEuropeanOption.h"
 #include <vector>
 
 using namespace instruments;
@@ -17,9 +17,9 @@ namespace utilities{
 	public:
 		
 		FXSkewBuilder():AbstractBuilder(){};
-		FXSkewBuilder(std::string ccyPair, double tenorInYear):AbstractBuilder(){
+		FXSkewBuilder(std::string ccyPair, int daysToExpiry):AbstractBuilder(){
 			_ccyPair = CcyPair(ccyPair);
-			_tenorInYear = tenorInYear;
+			_daysToExpiry = daysToExpiry;
 		}
 
 		void init(Configuration* cfg);
@@ -38,8 +38,8 @@ namespace utilities{
 	private:
 
 		void buildQuadratic(AbstractCurve<double>* ac);
-		vector<DeltaVol>* getDeltaVector(std::string ccyPairStr, double tenorInYear);
-		double deriveATMDelta(vector<DeltaVol>* deltaVector);
+		vector<FXEuropeanOption>* getOptionVector(std::string ccyPairStr, int daysToExpiry);
+		double deriveATMDelta(vector<FXEuropeanOption>* optionVector);
 		double getForeignRate(CcyPair ccyPair);
 		void buildCutOffSection(AbstractCurve<double>* ac);
 		void buildQuadraticSection(AbstractCurve<double>* ac);
@@ -50,10 +50,10 @@ namespace utilities{
 		double _cutOff;
 		Market _market;
 		CcyPair _ccyPair;
-		double _tenorInYear;
+		int _daysToExpiry;
 		enums::interpolAlgo _interpolAlgo;
 		enums::NumericAlgo _numericAlgo;
-		vector<DeltaVol>* _deltaVector;
+		vector<FXEuropeanOption>* _optionVector;
 		int _iterateCount;
 		double _tolerance;
 		double _volSTR25;

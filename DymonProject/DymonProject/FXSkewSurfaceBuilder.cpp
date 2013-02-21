@@ -3,7 +3,6 @@
 #include "Constants.h"
 #include "Configuration.h"
 #include "AbstractCurve.h"
-#include "DeltaVol.h"
 #include "CcyPair.h"
 
 using namespace utilities;
@@ -17,12 +16,12 @@ FXSkewSurface* FXSkewSurfaceBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	FXSkewSurface* surface = new FXSkewSurface();
 
-	map<double, vector<DeltaVol>> deltaMap = RecordHelper::getInstance()->getFXVolSkewMap()->at(_ccyPair.toString());
+	auto deltaMap = RecordHelper::getInstance()->getFXVolSkewMap()->at(_ccyPair.toString());
 	for (auto it=deltaMap.begin(); it!=deltaMap.end(); it++){
-		double tenorInYear = it->first;
-		FXSkewBuilder skewBuilder = FXSkewBuilder(_ccyPair.toString(), tenorInYear);
+		int daysToExpiry = it->first;
+		FXSkewBuilder skewBuilder = FXSkewBuilder(_ccyPair.toString(), daysToExpiry);
 		AbstractCurve<double>* skew = skewBuilder.build(cfg);
-		surface->insertcurve(tenorInYear, skew);
+		surface->insertcurve(daysToExpiry, skew);
 	}
 	return surface;
 }

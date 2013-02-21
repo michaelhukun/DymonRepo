@@ -2,7 +2,6 @@
 #include <regex>
 #include "Constants.h"
 #include "EnumHelper.h"
-#include "DeltaVol.h"
 #include "Constants.h"
 #include "FXEuropeanOption.h"
 
@@ -30,95 +29,56 @@ void FXSkewFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		FXEuropeanOption* tempOption = createOptionObject(db, i);
+		deriveTenorDiscount(tempOption);
+		deriveTenorExpiry(tempOption);
 		insertOptionIntoCache(tempOption, FXVolSkewMap);
 	}
 
 	_inFile.close();
 }
 
-void FXSkewFileSource::parseRow(std::string securityID, double vol){
-	string ccyPairStr = securityID.substr(0,6);
-	unsigned found = securityID.find(" BGN Curncy");
-	if (found==std::string::npos)
-		throw "Security ID not recognized.";
-	string deltaTenorStr = securityID.erase(found).substr(6);
-	int tenorIndex = getTenorIndex(deltaTenorStr);
-	double delta = getDelta(deltaTenorStr.substr(0,tenorIndex-1));
-	enums::VolType optionType = EnumHelper::getVolType(deltaTenorStr.substr(tenorIndex-1,1));
-	string tenorStr = deltaTenorStr.substr(tenorIndex, deltaTenorStr.length()-tenorIndex-1);
-	char tenorUnit = *deltaTenorStr.rbegin();
-	double tenorExpiry = getTenorExpiry(tenorStr, tenorUnit, USD);
-	double tenorDiscount = getTenorDiscount(tenorStr, tenorUnit, USD);
-	insertFXVolIntoCache(ccyPairStr, tenorExpiry, tenorDiscount, delta,optionType, vol);
+void FXSkewFileSource::deriveTenorExpiry(FXEuropeanOption* option){
+	int daysToExpiry = dateUtil::getDaysBetween(option->getTradeDate(), option->getExpiryDate());
+	double tenorExpiry = daysToExpiry / numDaysInYear;
+	option->setTenorExpiry(tenorExpiry);
 }
 
-double FXSkewFileSource::getDelta(std::string deltaStr){
-	if (deltaStr.length()==0)
-		return NaN;
-	else 
-		return stod(deltaStr)/100.0;
-}
-
-int FXSkewFileSource::getTenorIndex(std::string deltaTenorStr){
-	int tenorIndex = 0;
-	if (deltaTenorStr.find("V")!=string::npos){
-		tenorIndex = deltaTenorStr.find("V");
-	}else if (deltaTenorStr.find("R")!=string::npos){
-		tenorIndex = deltaTenorStr.find("R");
-	}else if(deltaTenorStr.find("B")!=string::npos){
-		tenorIndex = deltaTenorStr.find("B");
-	}else{
-		throw "Security ID not recognized.";
-	}
-	return tenorIndex+1;
-}
-
-
-double FXSkewFileSource::getTenorExpiry(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum){
-	int tenor = (tenorUnit=='N')?1:stoi(tenorStr);
-	if (tenorUnit!='Y'){
-		Market market(marketEnum);
-		date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, marketEnum);
-		date expiryDate  = dateUtil::getEndDate(startDate,tenor, market.getDayRollCashConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit));
-		int daysToExpiry = dateUtil::getDaysBetween(startDate, expiryDate);
-		return daysToExpiry / numDaysInYear;
-	}
-	return tenor;
-}
-
-double FXSkewFileSource::getTenorDiscount(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum){
-	int tenor = (tenorUnit=='N')?1:stoi(tenorStr);
-	Market market(marketEnum);
-	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, marketEnum);
-	date endDate  = dateUtil::getEndDate(startDate,tenor, market.getDayRollCashConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit));
-	date deliveryDate = dateUtil::getBizDateOffSet(endDate,market.getBusinessDaysAfterSpot(enums::SWAP), market.getCurrencyEnum());
-	int daysToDiscount = dateUtil::getDaysBetween(startDate, deliveryDate);
+void FXSkewFileSource::deriveTenorDiscount(FXEuropeanOption* option){	
+	int daysToDiscount = dateUtil::getDaysBetween(option->getTradeDate(), option->getDeliveryDate());
 	double tenorDiscount = daysToDiscount / numDaysInYear;
-	return tenorDiscount;
+	option->setTenorDiscount(tenorDiscount);
 }
 
-void FXSkewFileSource::insertOptionIntoCache(FXEuropeanOption* bond, RecordHelper::FXVolSkewMap* FXVolSkewMap){
-		RecordHelper::FXVolSkewMap* FXVolSkewMap = RecordHelper::getInstance()->getFXVolSkewMap();
-
+void FXSkewFileSource::insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap){
+	
+	string ccyPairStr = option->getCcyPair()->getCcyPairStr();
 	if (FXVolSkewMap->find(ccyPairStr) == FXVolSkewMap->end()){
-		map<double, vector<DeltaVol>> tempMap = map<double, vector<DeltaVol>>();
+		auto tempMap = map<int, vector<FXEuropeanOption>>();
 		FXVolSkewMap->insert(std::make_pair(ccyPairStr, tempMap));
 	}
-	
-	map<double, vector<DeltaVol>>* tempMap = &(FXVolSkewMap->find(ccyPairStr)->second);
 
-	if (tempMap->find(tenorExpiry) == tempMap->end()){
-		vector<DeltaVol> tempVector = vector<DeltaVol>();
-		tempMap->insert(std::make_pair(tenorExpiry, tempVector));
+	auto* tempMap = &(FXVolSkewMap->find(ccyPairStr)->second);
+
+	int daysToExpiry = option->getDaysToExpiry();
+	if (tempMap->find(daysToExpiry) == tempMap->end()){
+		auto tempVector = vector<FXEuropeanOption>();
+		tempMap->insert(std::make_pair(daysToExpiry, tempVector));
 	}
-	
-	vector<DeltaVol>* tempVector = &(tempMap->find(tenorExpiry)->second);
-	DeltaVol deltaVol = DeltaVol(optionType, delta, tenorExpiry, tenorDiscount, vol);
 
-	tempVector->push_back(deltaVol);
+	auto tempVector = &(tempMap->find(daysToExpiry)->second);
+	tempVector->push_back(*option);
 }
 
 FXEuropeanOption* FXSkewFileSource::createOptionObject(CSVDatabase db, int row){
+	int numOfCols=db.at(0).size();
+	FXEuropeanOption* tempOption = new FXEuropeanOption();
+
+	for (int i=0;i<numOfCols;i++) {
+		String fieldName = db.at(0).at(i);
+		String fieldVal = db.at(row).at(i);
+		updateOptionObjectField(fieldName, fieldVal, tempOption);
+	}		
+	return tempOption;
 }
 
 void FXSkewFileSource::updateOptionObjectField(std::string fieldName, std::string fieldVal, FXEuropeanOption* option){
@@ -127,28 +87,23 @@ void FXSkewFileSource::updateOptionObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="SECURITY_TENOR_ONE"){
 		option->setTenorStr(fieldVal);
 	}else if (fieldName=="PX_MID"){
-		std::regex IDRegex ("[A-Z]{3} BGN Curncy");
-		if (std::regex_match (forward->getID(),IDRegex)){
-			forward->setSpot(std::stod(fieldVal));
-			forward->setIsSpot(true);
-		} else{
-			forward->setPoint(std::stod(fieldVal));
-			forward->setIsSpot(false);
-		}
-	}else if (fieldName=="DAY_CNT_DES"){
-		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
-		forward->setDayCount(dayCount);
-	}else if (fieldName=="DAYS_TO_MTY"){
-		forward->setDaysToMty(stoi(fieldVal));
+		option->setVol(stod(fieldVal));
+	}else if (fieldName=="VOL_INSTRUMENT_TYPE"){
+		option->setVolType(EnumHelper::getVolType(fieldVal));
+	}else if (fieldName=="DELTA"){
+		option->setDelta(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
 		date tradeDate(fieldVal,true);
-		forward->setTradeDate(tradeDate);
+		option->setTradeDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
 		date settleDate(fieldVal,true);
-		forward->setDeliveryDate(settleDate);
-	}else if (fieldName=="CRNCY"){
-		forward->getCcyPair()->setCCY1(fieldVal);
-	}else if (fieldName=="BASE_CRNCY"){
-		forward->getCcyPair()->setCCY2(fieldVal);
+		option->setDeliveryDate(settleDate);
+	}else if (fieldName=="OPT_EXPIRE_DT"){
+		date expiryDate(fieldVal,true);
+		option->setExpiryDate(expiryDate);
+	}else if (fieldName=="VOL_CURRENCY_ISO_PAIR"){
+		option->setCcyPair(CcyPair(fieldVal));
+	}else if (fieldName=="OPT_DAYS_EXPIRE"){
+		option->setDaysToExpiry(stoi(fieldVal));
 	}
 }

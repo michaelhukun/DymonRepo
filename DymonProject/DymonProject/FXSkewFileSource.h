@@ -22,11 +22,11 @@ namespace DAO {
 
 	private:
 
-		double getTenorExpiry(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum);
+		void deriveTenorExpiry(FXEuropeanOption* option);
 		
-		double getTenorDiscount(string tenorStr, char tenorUnit, enums::CurrencyEnum marketEnum);
+		void deriveTenorDiscount(FXEuropeanOption* option);
 
-		void insertOptionIntoCache(FXEuropeanOption* bond, RecordHelper::FXVolSkewMap* FXVolSkewMap);
+		void insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap);
 
 		FXEuropeanOption* createOptionObject(CSVDatabase db, int row);
 

@@ -46,6 +46,8 @@ namespace instruments {
 		void setPrice(double S){ _S=S; }
 		void setStrike(double K){ _K=K; }
 		void setTenorStr(string tenorStr){ _tenorStr=tenorStr; }
+		void setVolType(VolType volType){ _volType = volType;}
+		void setExpiryInMonth(int expiryInMonth){ _expiryInMonth = expiryInMonth;}
 		void setDiscountRate(double r){
 			double accrualFactor = dateUtil::getAccrualFactor(_tradeDate, _expiryDate,enums::DayCountNull);
 			_discountFactor = exp(-r*accrualFactor);

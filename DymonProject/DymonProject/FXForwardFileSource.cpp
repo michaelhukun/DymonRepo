@@ -108,7 +108,7 @@ void FXForwardFileSource::deriveSpotForwardRate(RecordHelper::FXForwardMap* FXFo
 	for (auto it = FXForwardMap->begin(); it!=FXForwardMap->end(); it++){
 		double spotRate=NaN;
 		date spotDate=date("",true);
-		map<string, FXForward>* innerMap = &(it->second);
+		auto* innerMap = &(it->second);
 		
 		// get spot rate and spot date
 		for (auto innerIt = innerMap->begin(); innerIt!=innerMap->end(); innerIt++){

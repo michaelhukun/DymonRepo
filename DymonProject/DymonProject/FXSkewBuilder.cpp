@@ -2,7 +2,7 @@
 #include "AbstractCurve.h"
 #include "EnumHelper.h"
 #include "Enums.h"
-#include "DeltaVol.h"
+#include "FXEuropeanOption.h"
 #include "RecordHelper.h"
 #include "AbstractNumerical.h"
 #include "NumericalFactory.h"
@@ -31,37 +31,37 @@ AbstractCurve<double>* FXSkewBuilder::build(Configuration* cfg){
 	return ac;
 }
 
-vector<DeltaVol>* FXSkewBuilder::getDeltaVector(std::string ccyPairStr, double tenorInYear){
+vector<FXEuropeanOption>* FXSkewBuilder::getOptionVector(std::string ccyPairStr, int daysToExpiry){
 	auto deltaMap = &RecordHelper::getInstance()->getFXVolSkewMap()->at(_ccyPair.toString());
-	vector<DeltaVol>* deltaVector = &deltaMap->at(tenorInYear);
+	vector<FXEuropeanOption>* deltaVector = &deltaMap->at(daysToExpiry);
 	return deltaVector;
 }
 
-double FXSkewBuilder::deriveATMDelta(vector<DeltaVol>* deltaVector){
+double FXSkewBuilder::deriveATMDelta(vector<FXEuropeanOption>* optionVector){
 	double foreignRate = getForeignRate(_ccyPair);
-	for(unsigned int i=0; i<deltaVector->size(); i++){
-		DeltaVol* deltaVol = &deltaVector->at(i);
-		if (deltaVol->getVolType() == ATM){
-			double tenorExpiry = deltaVol->getTenorExpiry();
-			double tenorDiscount = deltaVol->getTenorDiscount();
-			double volATM = deltaVol->getVol();
+	for(unsigned int i=0; i<optionVector->size(); i++){
+		FXEuropeanOption* option = &optionVector->at(i);
+		if (option->getVolType() == ATM){
+			double tenorExpiry = option->getTenorExpiry();
+			double tenorDiscount = option->getTenorDiscount();
+			double volATM = option->getVol();
 			if (_ccyPair.toString()=="EURUSD" && tenorExpiry<2)
-				deltaVol->setDelta(exp(-foreignRate*tenorDiscount)/2);
+				option->setDelta(exp(-foreignRate*tenorDiscount)/2);
 			else if (_ccyPair.toString()=="EURUSD" && tenorExpiry>=2)
-				deltaVol->setDelta(0.5);
+				option->setDelta(0.5);
 			else if (tenorExpiry<2)
-				deltaVol->setDelta(exp(-foreignRate*tenorDiscount-pow(volATM,2)*tenorExpiry/2)/2);
+				option->setDelta(exp(-foreignRate*tenorDiscount-pow(volATM,2)*tenorExpiry/2)/2);
 			else if (tenorExpiry>=2 || _ccyPair.isEmergingMarket())
-				deltaVol->setDelta(exp(-pow(volATM,2)*tenorExpiry/2)/2);
-			return deltaVol->getDelta();
+				option->setDelta(exp(-pow(volATM,2)*tenorExpiry/2)/2);
+			return option->getDelta();
 		}
 	}
 	throw "Delta not found!";
 }
 
 void FXSkewBuilder::buildQuadratic(AbstractCurve<double>* ac){
-	_deltaVector = getDeltaVector(_ccyPair.toString(), _tenorInYear);
-	_deltaATM = deriveATMDelta(_deltaVector);
+	_optionVector = getOptionVector(_ccyPair.toString(), _daysToExpiry);
+	_deltaATM = deriveATMDelta(_optionVector);
 	_volSTR25 = getVolFromVector(STR,0.25);
 	_volRR25 = getVolFromVector(RR,0.25);
 	_volATM = getVolFromVector(ATM,0);
@@ -110,12 +110,12 @@ double FXSkewBuilder::b1tob2(double b1){
 }
 
 double FXSkewBuilder::getVolFromVector(enums::VolType optionType, double delta){
-	for (unsigned int i=0; i<_deltaVector->size(); i++){
-		DeltaVol deltaVol = _deltaVector->at(i);
-		if (deltaVol.getVolType() == ATM && optionType == ATM){
-			return deltaVol.getVol();
-		} else if (deltaVol.getVolType() == optionType && deltaVol.getDelta() == delta){
-			return deltaVol.getVol();
+	for (unsigned int i=0; i<_optionVector->size(); i++){
+		FXEuropeanOption option = _optionVector->at(i);
+		if (option.getVolType() == ATM && optionType == ATM){
+			return option.getVol();
+		} else if (option.getVolType() == optionType && option.getDelta() == delta){
+			return option.getVol();
 		}
 	}
 	throw "Vol not found!";

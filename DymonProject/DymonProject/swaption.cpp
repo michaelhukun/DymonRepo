@@ -48,8 +48,10 @@ void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryI
 	double discountFactor = getAnnuityMonetizer(dc);
 
 	//PayReceiver Indictor with respect to the fixed leg
-	BaseOption(market, tradeDate, expiryInMonth, PayReceiveInd == Payer?Call:Put, forwardParRate, strikeInDecimal, vol);
-	setDiscountFactor(discountFactor);
+	BaseOption(tradeDate, PayReceiveInd == Payer?Call:Put, forwardParRate, strikeInDecimal, vol);
+	setMarket(market);
+	setExpiryInMonth(expiryInMonth);
+	setDiscountCurve(dc);
 }
 
 double Swaption::getAnnuityMonetizer( DiscountCurve* dc) {

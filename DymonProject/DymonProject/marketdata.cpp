@@ -4,6 +4,7 @@
 #include "SwapCurveBuilder.h"
 #include "SwaptionVolCubeBuilder.h"
 #include "FXSkewSurfaceBuilder.h"
+#include "FXForwardImpliedCurveBuilder.h"
 #include "BondCurveBuilder.h"
 #include "RecordHelper.h"
 #include "Configuration.h"
@@ -41,7 +42,7 @@ void MarketData::buildAll(){
 }
 
 void MarketData::buildSwapDiscountCurve(){
-	bool enabled = Configuration::getInstance()->getProperty("swapCurve.build.enabled",true,"")=="True"?true:false;
+	bool enabled = Configuration::getInstance()->getProperty("swapCurve.build.enabled",true,"")=="true"?true:false;
 	if (!enabled) return;
 
 	cout << "\n******** Build Swap Discount Curve ********\n" << endl;
@@ -57,7 +58,7 @@ void MarketData::buildSwapDiscountCurve(){
 }
 
 void MarketData::buildBondDiscountCurve(){
-	bool enabled = Configuration::getInstance()->getProperty("bondCurve.build.enabled",true,"")=="True"?true:false;
+	bool enabled = Configuration::getInstance()->getProperty("bondCurve.build.enabled",true,"")=="true"?true:false;
 	if (!enabled) return;
 
 	cout << "\n******** Build Bond Discount Curve ********\n" << endl;
@@ -72,8 +73,24 @@ void MarketData::buildBondDiscountCurve(){
 	}
 }
 
+void MarketData::buildFXForwardImpliedCurve(){
+	bool enabled = Configuration::getInstance()->getProperty("FXForwardImplied.build.enabled",true,"")=="true"?true:false;
+	if (!enabled) return;
+
+	cout << "\n******** Build FX Forward Implied Discount Curve ********\n" << endl;
+	RecordHelper::FXForwardMap::iterator it;
+	RecordHelper::FXForwardMap* rateMap = RecordHelper::getInstance()->getFXForwardMap();
+	for (it = rateMap->begin(); it!= rateMap->end(); ++it){
+		string ccyPairStr = it->first;
+		FXForwardImpliedCurveBuilder* builder = new FXForwardImpliedCurveBuilder(ccyPairStr);
+		DiscountCurve* curve = builder->build(Configuration::getInstance());
+		_FXForwardImpliedCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(ccyEnum, *curve));
+		cout<<curve->toString()<<endl;
+	}
+}
+
 void MarketData::buildSwaptionVolCube(){
-	bool enabled = Configuration::getInstance()->getProperty("swaptionVolCube.build.enabled",true,"")=="True"?true:false;
+	bool enabled = Configuration::getInstance()->getProperty("swaptionVolCube.build.enabled",true,"")=="true"?true:false;
 	if (!enabled) return;
 
 	cout << "\n******** Build Swaption Vol Cube ********\n" << endl;
@@ -115,6 +132,15 @@ DiscountCurve* MarketData::getBondDiscountCurve(enums::CurrencyEnum market){
 	}
 }
 
+DiscountCurve* MarketData::getFXForwardImpliedCurve(enums::CurrencyEnum market){
+	if ( _FXForwardImpliedCurveMap.find(market) == _FXForwardImpliedCurveMap.end()) {
+		throw "FX Forward Implied curve not found in map!";
+	} else {
+		return &_FXForwardImpliedCurveMap.find(market)->second;
+	}
+}
+
+
 SwaptionVolCube* MarketData::getSwaptionVolCube(enums::CurrencyEnum market){
 	if ( _SwaptionVolCubeMap.find(market) == _SwaptionVolCubeMap.end()) {
 		throw "Swaption vol cube not found in map!";
@@ -130,4 +156,3 @@ FXSkewSurface* MarketData::getFXSkewSurface(std::string ccyPairStr){
 		return &_FXSkewSurfaceMap.find(ccyPairStr)->second;
 	}
 }
-
