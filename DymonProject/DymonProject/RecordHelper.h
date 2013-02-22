@@ -41,7 +41,7 @@ namespace Session {
 		//std::map<tuple<fSwapTenorNumOfMonths,optionTenorNumOfMonths>,ATM Strike> SwaptionATMStrikeMap
 		typedef std::map<std::tuple<int,int>,double> SwaptionATMStrikeMap;
 		typedef map<string, map<int, vector<FXEuropeanOption>>> FXVolSkewMap;
-		typedef map<string, map<std::string, FXForward>> FXForwardMap;
+		typedef map<string, map<date, FXForward>> FXForwardMap;
 		
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}

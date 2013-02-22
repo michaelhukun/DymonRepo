@@ -506,5 +506,8 @@
     <ClCompile Include="FXForwardFileSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FXForwardImpliedCurveBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

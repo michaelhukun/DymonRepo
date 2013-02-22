@@ -51,8 +51,6 @@ namespace utilities{
 		Market _market;
 		CcyPair _ccyPair;
 		int _daysToExpiry;
-		enums::interpolAlgo _interpolAlgo;
-		enums::NumericAlgo _numericAlgo;
 		vector<FXEuropeanOption>* _optionVector;
 		int _iterateCount;
 		double _tolerance;

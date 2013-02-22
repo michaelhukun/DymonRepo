@@ -25,8 +25,10 @@ namespace utilities {
 
 		enums::CurrencyEnum getCCY1Enum();
 		enums::CurrencyEnum getCCY2Enum();
-		std::string getDomesticCCY(){return _ccy1;}
-		std::string getForeignCCY(){return _ccy2;}
+		enums::CurrencyEnum getDomesticCCYEnum();
+		enums::CurrencyEnum getForeignCCYEnum();
+		std::string getDomesticCCY();
+		std::string getForeignCCY();
 		std::string getCcyPairStr(){return _ccy1+_ccy2;}
 		bool isEmergingMarket(){return _isEmergingMarket;}
 
@@ -43,6 +45,7 @@ namespace utilities {
 		std::string _ccy2;
 		std::string _ccyPairStr;
 		bool _isEmergingMarket;
+		int _domesticCcyIndex;
 	};
 }
 #endif

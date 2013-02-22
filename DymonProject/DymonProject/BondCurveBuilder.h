@@ -27,12 +27,6 @@ namespace utilities{
 
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}
-
-		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
-		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
-
-		enums::NumericAlgo getNumericalAlgo(){return _numericalAlgo;}
-		void setNumericalAlgo(enums::NumericAlgo numericalAlgo){_numericalAlgo=numericalAlgo;}
 		
 		int getCouponFreqency(){return _couponFreqency;}
 		void seCouponFreqency(int couponFreqency){_couponFreqency=couponFreqency;}
@@ -49,8 +43,6 @@ namespace utilities{
 		int _couponFreqency;
 		int _timeLineBuildDirection;
 		bool _rollAccuralDates;
-		enums::interpolAlgo _interpolAlgo;
-		enums::NumericAlgo _numericalAlgo;
 		point _curvePointer;
 		date _curveStartDate;
 	};

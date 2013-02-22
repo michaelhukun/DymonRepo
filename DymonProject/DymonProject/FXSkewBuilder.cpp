@@ -14,7 +14,7 @@ typedef AbstractBuilder super;
 void FXSkewBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("FXSkew.interpol",false,"QUADRATIC"));
-	_numericAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("FXSkew.numerical",false,"BISECTION"));
+	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("FXSkew.numerical",false,"BISECTION"));
 	_cutOff = stod(cfg->getProperty("FXSkew.cutoff",false,"0.01"));
 	_iterateCount = std::stoi(cfg->getProperty("numerical.iteration", false, "50"));
 	_tolerance = std::stod(cfg->getProperty("numerical.tolerance", false, "0.0000001"));
@@ -76,7 +76,7 @@ double FXSkewBuilder::getForeignRate(CcyPair ccyPair){
 
 void FXSkewBuilder::buildQuadraticSection(AbstractCurve<double>* ac){
 	double b0 = 1;
-	AbstractNumerical<FXSkewBuilder>* an = NumericalFactory<FXSkewBuilder>::getInstance()->getNumerical(this,&FXSkewBuilder::numericalFunc,_numericAlgo);
+	AbstractNumerical<FXSkewBuilder>* an = NumericalFactory<FXSkewBuilder>::getInstance()->getNumerical(this,&FXSkewBuilder::numericalFunc,_numericalAlgo);
 	double lowerBound = -10;
 	double upperBound = 10;
 	double b1 = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);

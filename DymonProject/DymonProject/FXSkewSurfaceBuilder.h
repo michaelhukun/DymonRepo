@@ -27,18 +27,14 @@ namespace utilities{
 		//Getters and Setters
 		Market getMarket(){return _market;}
 		CcyPair getCcyPair(){ return _ccyPair;}
-		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
 
 		void setMarket(Market market){_market = market;}
 		void setCcyPair(CcyPair ccyPair){_ccyPair = ccyPair;}
-		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
-
 
 	private:
 
 		CcyPair _ccyPair;
 		Market _market;
-		enums::interpolAlgo _interpolAlgo;
 
 	};
 }

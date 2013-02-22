@@ -47,14 +47,14 @@ void FXForwardFileSource::retrieveRecord(){
 
 void FXForwardFileSource::insertForwardIntoCache(FXForward* forward, RecordHelper::FXForwardMap* FXForwardMap){
 	string ccyPairStr = forward->getCcyPair()->getCcyPairStr();
-	string tenorStr = forward->getTenorStr();
+	date expiryDate = forward->getExpiryDate();
 	if (FXForwardMap->find(ccyPairStr) == FXForwardMap->end()){
 		auto tempMap = std::map<string, FXForward>();
-		tempMap.insert(std::make_pair(tenorStr, *forward));
+		tempMap.insert(std::make_pair(expiryDate, *forward));
 		FXForwardMap->insert(std::make_pair(ccyPairStr, tempMap));
 	}else{
 		auto tempMap = &(FXForwardMap->find(ccyPairStr)->second);
-		tempMap->insert(std::make_pair(tenorStr, *forward));
+		tempMap->insert(std::make_pair(expiryDate, *forward));
 	}
 	cout<<forward->toString()<<endl;
 }
@@ -97,6 +97,9 @@ void FXForwardFileSource::updateObjectField(std::string fieldName, std::string f
 	}else if (fieldName=="SETTLE_DT"){
 		date settleDate(fieldVal,true);
 		forward->setDeliveryDate(settleDate);
+	}else if (fieldName=="MATURITY"){
+		date expiryDate(fieldVal,true);
+		forward->setExpiryDate(expiryDate);
 	}else if (fieldName=="CRNCY"){
 		forward->getCcyPair()->setCCY1(fieldVal);
 	}else if (fieldName=="BASE_CRNCY"){

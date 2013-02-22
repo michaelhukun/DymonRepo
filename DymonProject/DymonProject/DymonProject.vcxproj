@@ -195,6 +195,7 @@
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
     <ClCompile Include="FXForwardFileSource.cpp" />
+    <ClCompile Include="FXForwardImpliedCurveBuilder.cpp" />
     <ClCompile Include="FXSkewBuilder.cpp" />
     <ClCompile Include="FXSkewFileSource.cpp" />
     <ClCompile Include="FXSkewSurface.cpp" />

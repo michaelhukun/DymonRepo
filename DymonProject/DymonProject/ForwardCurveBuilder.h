@@ -1,29 +1,29 @@
 //created by Wang Jianwei on 01 Dec 2012
-#ifndef FXFORWARDIMPLIEDCURVEBUILDER_H
-#define FXFORWARDIMPLIEDCURVEBUILDER_H
+#ifndef FORWARDCURVEBUILDER_H
+#define FORWARDCURVEBUILDER_H
 #include "AbstractCurve.h"
 #include "AbstractBuilder.h"
 #include "CcyPair.h"
 #include "Market.h"
-#include "DiscountCurve.h"
+#include "AbstractCurve.h"
 #include <vector>
 
 using namespace instruments;
 typedef tuple<date, double> point;
 
 namespace utilities{
-	class FXForwardImpliedCurveBuilder: public AbstractBuilder{
+	class ForwardCurveBuilder: public AbstractBuilder{
 		
 	public:
 		
-		FXForwardImpliedCurveBuilder():AbstractBuilder(){};
-		FXForwardImpliedCurveBuilder(std::string ccyPair):AbstractBuilder(){
+		ForwardCurveBuilder():AbstractBuilder(){};
+		ForwardCurveBuilder(std::string ccyPair):AbstractBuilder(){
 			_ccyPair = CcyPair(ccyPair);
 		}
 
 		void init(Configuration* cfg);
 
-		DiscountCurve* build(Configuration* cfg);
+		AbstractCurve<date>* build(Configuration* cfg);
 
 		// Getters and Setters
 		CcyPair getCcyPair(){ return _ccyPair;}
@@ -32,12 +32,10 @@ namespace utilities{
 
 	private:
 
-		void buildSection(DiscountCurve* dc);
+		void buildSection(AbstractCurve<date>* dc);
 		
 		CcyPair _ccyPair;
 		point _curvePointer;
-		enums::CurrencyEnum _baseYieldCurveCcy;
-		enums::CurrencyEnum _forwardImpliedCurveCcy;
 	};
 }
 #endif
