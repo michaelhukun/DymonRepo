@@ -1,10 +1,7 @@
 //created by Hu Kun on 16 Dec 2012
 #include "SwapPricer.h"
 #include "AbstractPricer.h"
-#include "Swap.h"
 #include "cashflowLeg.h"
-#include <iterator>
-#include "AbstractInstrument.h"
 
 using namespace std;
 using namespace instruments;

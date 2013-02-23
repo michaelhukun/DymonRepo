@@ -11,13 +11,11 @@
 #include "dateUtil.h"
 #include <vector>
 #include <iterator>
-#include "RecordHelper.h"
 #include "DiscountCurve.h"
 
 using namespace utilities;
 using namespace std;
 using namespace enums;
-using namespace Session;
 using namespace instruments;
 
 namespace instruments {

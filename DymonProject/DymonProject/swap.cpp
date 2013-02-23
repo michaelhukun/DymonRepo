@@ -7,7 +7,6 @@
 #include "cashflow.h"
 #include "cashflowLeg.h"
 #include "BuilderCashFlowLeg.h"
-#include "SwapPricer.h"
 #include "AbstractPricer.h"
 
 using namespace instruments;
