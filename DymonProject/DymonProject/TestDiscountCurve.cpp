@@ -9,10 +9,11 @@
 #include "Enums.h"
 #include "Configuration.h"
 #include "dateUtil.h"
-#include "swap.h"
+#include "Swap.h"
 #include "RecordHelper.h"
 #include "Constants.h"
 #include "marketdata.h"
+#include "Market.h"
 
 using namespace UnitTest;
 using namespace utilities;
@@ -35,13 +36,11 @@ void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolA
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(USD);
-
-	Market fixLegCurr=Market(market);
-	Market floatingLegCurr=Market(market);
+	
 	int fixFreq = 2;
 	int floatFreq = 4;
 
-	map<long, double> swapRateMap = RecordHelper::getInstance()->getSwapRateMap()[market];
+	auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(market);
 	//for (map<long, double>::iterator it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
 	//	date accuralEndDate = date((*it).first);
 	//	Swap swap1(dateUtil::getToday(), accuralEndDate, 1000000, 0.01, yc, fixLegCurr, floatingLegCurr,fixFreq, floatFreq, true,1);

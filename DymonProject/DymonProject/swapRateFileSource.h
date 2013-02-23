@@ -26,7 +26,12 @@ namespace DAO {
 		void retrieveRecord();
 
 	private:
-		void insertRateIntoMap(std::string tenorStr, double swapRate, Market market, std::map<long, double>* rateMap);
+		
+		void insertSwapIntoCache(Swap* option, RecordHelper::SwapRateMap* swapRateMap);
+
+		Swap* createSwapObject(CSVDatabase db, int row);
+
+		void updateSwapObjectField(std::string fieldName, std::string fieldVal, Swap* swap);
 
 	};
 

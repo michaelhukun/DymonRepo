@@ -9,6 +9,7 @@
 #include "DiscountCurve.h"
 #include "Configuration.h"
 #include "FXSkewSurface.h"
+#include "ForwardCurveBuilder.h"
 #include <map>
 #include <tuple>
 #include "Enums.h"
@@ -32,13 +33,15 @@ namespace Markets {
 		void buildSwaptionVolCube();
 		void buildFXSkewSurface();
 		void buildFXForwardImpliedCurve();
+		void buildForwardCurve();
 
 		DiscountCurve* getSwapDiscountCurve(enums::CurrencyEnum market);
 		DiscountCurve* getBondDiscountCurve(enums::CurrencyEnum market);
 		DiscountCurve* getFXForwardImpliedCurve(enums::CurrencyEnum market);
 		SwaptionVolCube* getSwaptionVolCube(enums::CurrencyEnum market);
 		FXSkewSurface* getFXSkewSurface(std::string ccyPairStr);
-		
+		AbstractCurve<date>* getForwardCurve(std::string ccyPairStr);
+
 	protected:
 		//private copy constructor
 		MarketData(){};
@@ -52,6 +55,7 @@ namespace Markets {
 		std::map<enums::CurrencyEnum, DiscountCurve> _FXForwardImpliedCurveMap;
 		std::map<enums::CurrencyEnum, SwaptionVolCube> _SwaptionVolCubeMap;
 		std::map<std::string, FXSkewSurface> _FXSkewSurfaceMap;
+		std::map<std::string, AbstractCurve<date>> _ForwardCurveMap;
 	};
 }
 #endif

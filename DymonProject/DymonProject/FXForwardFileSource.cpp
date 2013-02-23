@@ -47,14 +47,14 @@ void FXForwardFileSource::retrieveRecord(){
 
 void FXForwardFileSource::insertForwardIntoCache(FXForward* forward, RecordHelper::FXForwardMap* FXForwardMap){
 	string ccyPairStr = forward->getCcyPair()->getCcyPairStr();
-	date expiryDate = forward->getExpiryDate();
+	long deliveryDateJDN = forward->getDeliveryDate().getJudianDayNumber();
 	if (FXForwardMap->find(ccyPairStr) == FXForwardMap->end()){
-		auto tempMap = std::map<string, FXForward>();
-		tempMap.insert(std::make_pair(expiryDate, *forward));
+		auto tempMap = map<long, FXForward>();
+		tempMap.insert(std::make_pair(deliveryDateJDN, *forward));
 		FXForwardMap->insert(std::make_pair(ccyPairStr, tempMap));
 	}else{
 		auto tempMap = &(FXForwardMap->find(ccyPairStr)->second);
-		tempMap->insert(std::make_pair(expiryDate, *forward));
+		tempMap->insert(std::make_pair(deliveryDateJDN, *forward));
 	}
 	cout<<forward->toString()<<endl;
 }
@@ -92,13 +92,13 @@ void FXForwardFileSource::updateObjectField(std::string fieldName, std::string f
 	}else if (fieldName=="DAYS_TO_MTY"){
 		forward->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,true);
+		date tradeDate(fieldVal,false);
 		forward->setTradeDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
-		date settleDate(fieldVal,true);
+		date settleDate(fieldVal,false);
 		forward->setDeliveryDate(settleDate);
 	}else if (fieldName=="MATURITY"){
-		date expiryDate(fieldVal,true);
+		date expiryDate(fieldVal,false);
 		forward->setExpiryDate(expiryDate);
 	}else if (fieldName=="CRNCY"){
 		forward->getCcyPair()->setCCY1(fieldVal);

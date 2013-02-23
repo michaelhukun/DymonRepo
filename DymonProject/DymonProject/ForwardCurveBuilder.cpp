@@ -6,4 +6,5 @@ void ForwardCurveBuilder::init(Configuration* cfg){
 }
 
 AbstractCurve<date>* ForwardCurveBuilder::build(Configuration* cfg){
+	return 0;
 }

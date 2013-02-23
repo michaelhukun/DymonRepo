@@ -9,6 +9,7 @@
 #include "Enums.h"
 #include "EnumHelper.h"
 #include "Market.h"
+#include "Swap.h"
 
 using namespace DAO;
 using namespace std;
@@ -32,11 +33,8 @@ void SwapRateFileSource::init(Configuration* cfg){
 }
 
 void SwapRateFileSource::retrieveRecord(){
-	if (!_enabled) return;
-	
+	if (!_enabled) return;	
 	AbstractFileSource::retrieveRecord();
-	enums::CurrencyEnum CurrencyEnum;
-	RecordHelper::RateMap swapRateMap;
 
 	CSVDatabase db;
 	readCSV(_inFile, db);
@@ -44,35 +42,64 @@ void SwapRateFileSource::retrieveRecord(){
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
-	for (int i=1;i<numOfCols;i++) {
+	RecordHelper::SwapRateMap* swapRateMap = RecordHelper::getInstance()->getSwapRateMap();
 
-		CurrencyEnum=EnumHelper::getCcyEnum(db.at(0).at(i));
-		Market market = Market(CurrencyEnum);
-
-		map<long, double>* tempMap = new map<long, double>;
-
-		for (int j = 1; j<numOfRows; j++)
-		{
-			string tenorStr = db.at(j).at(0);
-			double liborRate = std::stod(db.at(j).at(i))/100.0;
-			insertRateIntoMap(tenorStr, liborRate, market, tempMap);
-		}
-		swapRateMap.insert(pair<enums::CurrencyEnum, map<long, double>>(CurrencyEnum,*tempMap));
+	for (int i=1;i<numOfRows;i++) {
+		Swap* tempSwap = createSwapObject(db, i);
+		insertSwapIntoCache(tempSwap, swapRateMap);
 	}
 
-	RecordHelper::getInstance()->setSwapRateMap(swapRateMap);
 	_inFile.close();
 }
 
-void SwapRateFileSource::insertRateIntoMap(std::string tenorStr, double swapRate, Market market, std::map<long, double>* rateMap){
-	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, market.getCurrencyEnum());	
-	date accrualStartDate = dateUtil::getBizDateOffSet(startDate,market.getBusinessDaysAfterSpot(enums::SWAP), market.getCurrencyEnum()); // day after spot adjust
-	char tenorUnit = *tenorStr.rbegin(); // 'Y'
-	int tenorNum = std::stoi(tenorStr.substr(0,tenorStr.size()-1)); // 2
-	long accrualEndJDN = dateUtil::getEndDate(accrualStartDate,tenorNum, market.getDayRollSwapConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit)).getJudianDayNumber();
-	rateMap->insert(pair<long, double>(accrualEndJDN, swapRate));
+void SwapRateFileSource::insertSwapIntoCache(Swap* swap, RecordHelper::SwapRateMap* swapRateMap){
+	enums::CurrencyEnum market = swap->getMarket().getCurrencyEnum();
+	long accrualEndJDN = swap->getExpiryDate().getJudianDayNumber();
+	if (swapRateMap->find(market) == swapRateMap->end()){
+		auto tempMap = map<long, Swap>();
+		tempMap.insert(std::make_pair(accrualEndJDN, *swap));
+		swapRateMap->insert(std::make_pair(market, tempMap));
+	}else{
+		auto tempMap = &(swapRateMap->find(market)->second);
+		tempMap->insert(std::make_pair(accrualEndJDN, *swap));
+	}
+	cout<<swap->toString()<<endl;
+}
 
-	date accrualEndDate(accrualEndJDN);
-	cout << market.getNameString()<< " -> tenor[" << tenorStr<<"], accrual start["<<accrualStartDate.toString()<<"], accrual end["
-		<<accrualEndDate.toString() <<"], deposit rate["<< swapRate << "]"<<endl;
+Swap* SwapRateFileSource::createSwapObject(CSVDatabase db, int row){
+	int numOfCols=db.at(0).size();
+	Swap* tempSwap = new Swap();
+
+	for (int i=0;i<numOfCols;i++) {
+		String fieldName = db.at(0).at(i);
+		String fieldVal = db.at(row).at(i);
+		updateSwapObjectField(fieldName, fieldVal, tempSwap);
+	}		
+	return tempSwap;
+}
+
+void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::string fieldVal, Swap* swap){
+	if(fieldName=="ID"){
+		swap->setID(fieldVal);
+	}else if (fieldName=="NAME"){
+		swap->setName(fieldVal);
+	}else if (fieldName=="SECURITY_TENOR_TWO"){
+		swap->setTenorStr(fieldVal);
+	}else if (fieldName=="PX_MID"){
+		swap->setSwapRate(stod(fieldVal));
+	}else if (fieldName=="DAY_CNT_DES"){
+		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
+		swap->setDayCount(dayCount);
+	}else if (fieldName=="DAYS_TO_MTY"){
+		swap->setDaysToMty(stoi(fieldVal));
+	}else if (fieldName=="TRADING_DT_REALTIME"){
+		date tradeDate(fieldVal,false);
+		swap->setTradeDate(tradeDate);
+	}else if (fieldName=="SETTLE_DT"){
+		date accrualStartDate(fieldVal,false);
+		swap->setSpotDate(accrualStartDate);
+	} else if (fieldName=="COUNTRY"){
+		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
+		swap->setMarket(market);
+	}
 }

@@ -28,7 +28,7 @@ namespace utilities {
 		void setDay(unsigned short day);
 		void setMonth(unsigned short month);
 		void setJudianDayNumber(long JDN);
-		long getJudianDayNumber();
+		long getJudianDayNumber() const;
 		bool isEqual(date date0);
 		bool isNull(){ return _isNull; }
 
@@ -37,7 +37,7 @@ namespace utilities {
 		std::string toString();
 		bool isMonthEnd();
 				
-		int compare (date d) {
+		int compare (const date d) {
 			if (_judianDayNumber<d.getJudianDayNumber())
 				return -1;
 			else if (_judianDayNumber>d.getJudianDayNumber())
@@ -46,19 +46,19 @@ namespace utilities {
 				return 0;
 		}
 		
-		bool operator != (date d) {	return compare(d)!=0;}
+		bool operator != (const date d) {	return compare(d)!=0;}
 
-		bool operator == (date d) {	return !compare(d);}
+		bool operator == (const date d) {	return !compare(d);}
 
-		bool operator < (date d) { return compare(d)<0; }
+		bool operator < (const date d) { return compare(d)<0; }
 		
-		bool operator > (date d) { return compare(d)>0; }
+		bool operator > (const date d) { return compare(d)>0; }
 
-		bool operator <= (date d) { return compare(d)<=0; }
+		bool operator <= (const date d) { return compare(d)<=0; }
 		
-		bool operator >=(date d) { return compare(d)>=0; }
+		bool operator >=(const date d) { return compare(d)>=0; }
 
-		long operator - (date d) { return _judianDayNumber - d.getJudianDayNumber(); }
+		long operator - (const date d) { return _judianDayNumber - d.getJudianDayNumber(); }
 		
 		date operator + (int dayIncrement){
 			date incrementedDate(_judianDayNumber+dayIncrement);

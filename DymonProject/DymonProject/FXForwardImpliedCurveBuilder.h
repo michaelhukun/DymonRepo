@@ -27,6 +27,7 @@ namespace utilities{
 
 		// Getters and Setters
 		CcyPair getCcyPair(){ return _ccyPair;}
+		enums::CurrencyEnum getForwardImpliedCurveCcy(){ return _forwardImpliedCurveCcy; }
 
 		void setCcyPair(CcyPair ccyPair){_ccyPair = ccyPair;}
 

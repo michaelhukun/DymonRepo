@@ -61,7 +61,7 @@ namespace utilities {
 		return true;
 	}
 
-	long date::getJudianDayNumber(){
+	long date::getJudianDayNumber() const{
 		return _judianDayNumber;
 	}
 

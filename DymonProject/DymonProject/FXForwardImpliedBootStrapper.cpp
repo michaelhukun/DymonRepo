@@ -40,8 +40,9 @@ AbstractInterpolator<date>* FXForwardImpliedBootStrapper::bootStrap(){
 
 double FXForwardImpliedBootStrapper::getBaseYieldCurveCcyDF(enums::CurrencyEnum baseYieldCurveCcy){
 	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(baseYieldCurveCcy);
+	date spotDate = _forward->getSpotDate();
 	date deliveryDate = _forward->getDeliveryDate();
-	double discountRate = dc->getValue(deliveryDate);
+	double discountRate = dc->getDiscountFactor(spotDate, deliveryDate);
 	return discountRate;
 }
 

@@ -13,6 +13,7 @@
 #include "OvernightRateBootStrapper.h"
 #include "SwapRateBootStrapper.h"
 #include "Constants.h"
+#include "Swap.h"
 
 using namespace utilities;
 typedef AbstractBuilder super;
@@ -43,12 +44,13 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 	point lineStartPoint(_curveStartDate,1);
 	_curvePointer = lineStartPoint;
-	map<long,double> rateMap = RecordHelper::getInstance()->getOverNightRateMap()[_market.getCurrencyEnum()];
-	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
-		double depositRate = (*it).second;
+	auto rateMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
+	for (auto it=rateMap.begin(); it != rateMap.end(); it++ ){
+		date accrualEndDate = ((*it).first);
+		Deposit* deposit = &(it->second);
 		date startDate = _curveStartDate;
-		int numOfNights = (int) (*it).first;
-		date paymentDate = dateUtil::getBizDateOffSet(startDate,numOfNights,_market.getCurrencyEnum());
+		date paymentDate = deposit->getDeliveryDate();
+		double depositRate = deposit->getDepositRate();
 		//cout << "Overnight rate at date ["<<startDate.toString()<< "], maturity date ["<<paymentDate.toString()<<"], number of nights ["<<numOfNights<<"], rate ["<< depositRate<<"]"<< endl;
 
 		cashflow cf(depositRate, 0, startDate, paymentDate,startDate, paymentDate, _market, true);
@@ -58,28 +60,28 @@ void SwapCurveBuilder::buildOvernightSection(DiscountCurve* yc){
 		yc->insertLineSection(lineSection);
 		_curvePointer = lineSection->getEndPoint();
 
-		if (numOfNights == _bizDaysAfterSpot) _bizDaysAfterSpotDF = std::get<1>(lineSection->getEndPoint());
+		if (2 == _bizDaysAfterSpot) _bizDaysAfterSpotDF = std::get<1>(lineSection->getEndPoint());
 	}
 }
 
 void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 	date accrualStartDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpot(enums::SWAP),_market.getCurrencyEnum());
-	map<long,double> rateMap = RecordHelper::getInstance()->getDepositRateMap()[_market.getCurrencyEnum()];
+	auto rateMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
 
-	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
+	for (auto it=rateMap.begin(); it != rateMap.end(); it++ ){
 
 		date fixingDate = _curveStartDate;
 		date accrualEndDate = ((*it).first);
 		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollCashConvention(),_market.getCurrencyEnum());
-		double depositRate = (*it).second;
+		Deposit* deposit = &(it->second);
+		double depositRate = deposit->getDepositRate();
 		//cout << "Deposit rate at fixing date ["<<fixingDate.toString()<<"], accrual start date ["<<accrualStartDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< depositRate<<"]"<< endl;
 
 		cashflow cf(depositRate,0, fixingDate, paymentDate,accrualStartDate, accrualEndDate, _market, true);
 
-		AbstractInterpolator<date>* lineSection;
 		DepositRateBootStrapper depositBS(_curvePointer, paymentDate, cf, _interpolAlgo, _numericalAlgo, _market, _bizDaysAfterSpotDF);
 		depositBS.init(Configuration::getInstance());
-		lineSection = depositBS.bootStrap();
+		AbstractInterpolator<date>* lineSection = depositBS.bootStrap();
 		yc->insertLineSection(lineSection);
 		_curvePointer = lineSection->getEndPoint();
 
@@ -90,16 +92,16 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 	BuilderCashFlowLeg builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, _market.getCurrencyEnum());
 	cashflowLeg* _cashflowLeg=builtCashflowLeg.getCashFlowLeg();
-	//_cashflowLeg.printTimeLine();
 
-	map<long,double> rateMap = RecordHelper::getInstance()->getSwapRateMap()[_market.getCurrencyEnum()];
+	auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
 
-	for (map<long,double>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
+	for (auto it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
 
 		date fixingDate = _curveStartDate;
 		date accrualEndDate=((*it).first);	
-		double swapRate=(*it).second;
-		date paymentDate = dateUtil::dayRollAdjust(accrualEndDate,_market.getDayRollSwapConvention(),_market.getCurrencyEnum());
+		Swap* swap=&(it->second);		
+		date paymentDate = swap->getDeliveryDate();
+		double swapRate = swap->getSwapRate();
 
 		//cout << "Swap rate at fixing date ["<<fixingDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< swapRate<<"]"<< endl;
 

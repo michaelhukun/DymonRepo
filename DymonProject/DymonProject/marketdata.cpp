@@ -8,6 +8,7 @@
 #include "BondCurveBuilder.h"
 #include "RecordHelper.h"
 #include "Configuration.h"
+#include "ForwardCurveBuilder.h"
 
 using namespace Markets;
 using namespace utilities;
@@ -47,9 +48,9 @@ void MarketData::buildSwapDiscountCurve(){
 	if (!enabled) return;
 
 	cout << "\n******** Build Swap Discount Curve ********\n" << endl;
-	RecordHelper::RateMap::iterator it;
-	RecordHelper::RateMap rateMap = RecordHelper::getInstance()->getDepositRateMap();
-	for (it = rateMap.begin(); it!= rateMap.end(); ++it){
+
+	RecordHelper::DepositRateMap* rateMap = RecordHelper::getInstance()->getDepositRateMap();
+	for (auto it = rateMap->begin(); it!= rateMap->end(); ++it){
 		CurrencyEnum ccyEnum = it->first;
 		SwapCurveBuilder* builder = new SwapCurveBuilder(ccyEnum);
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
@@ -85,7 +86,8 @@ void MarketData::buildFXForwardImpliedCurve(){
 		string ccyPairStr = it->first;
 		FXForwardImpliedCurveBuilder* builder = new FXForwardImpliedCurveBuilder(ccyPairStr);
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
-		_FXForwardImpliedCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(ccyEnum, *curve));
+		enums::CurrencyEnum forwardImpliedCurveCcy = builder->getForwardImpliedCurveCcy();
+		_FXForwardImpliedCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(forwardImpliedCurveCcy, *curve));
 		cout<<curve->toString()<<endl;
 	}
 }
@@ -116,6 +118,21 @@ void MarketData::buildFXSkewSurface(){
 	}
 }
 
+void MarketData::buildForwardCurve(){
+	bool enabled = Configuration::getInstance()->getProperty("forwardCurve.build.enabled",true,"")=="true"?true:false;
+	if (!enabled) return;
+
+	cout << "\n******** Build FX Forward curve ********\n" << endl;
+	RecordHelper::FXForwardMap::iterator it;
+	RecordHelper::FXForwardMap* rateMap = RecordHelper::getInstance()->getFXForwardMap();
+	for (it = rateMap->begin(); it!= rateMap->end(); ++it){
+		string ccyPairStr = it->first;
+		ForwardCurveBuilder* builder = new ForwardCurveBuilder(ccyPairStr);
+		AbstractCurve<date>* curve = builder->build(Configuration::getInstance());
+		_ForwardCurveMap.insert(pair<string, AbstractCurve<date>>(ccyPairStr, *curve));
+	}
+}
+
 DiscountCurve* MarketData::getSwapDiscountCurve(enums::CurrencyEnum market){
 	if ( _SwapDiscountCurveMap.find(market) == _SwapDiscountCurveMap.end()) {
 		throw "Swap curve not found in map!";
@@ -141,7 +158,6 @@ DiscountCurve* MarketData::getFXForwardImpliedCurve(enums::CurrencyEnum market){
 	}
 }
 
-
 SwaptionVolCube* MarketData::getSwaptionVolCube(enums::CurrencyEnum market){
 	if ( _SwaptionVolCubeMap.find(market) == _SwaptionVolCubeMap.end()) {
 		throw "Swaption vol cube not found in map!";
@@ -155,5 +171,13 @@ FXSkewSurface* MarketData::getFXSkewSurface(std::string ccyPairStr){
 		throw "FX skew not found in map!";
 	} else {
 		return &_FXSkewSurfaceMap.find(ccyPairStr)->second;
+	}
+}
+
+AbstractCurve<date>* MarketData::getForwardCurve(std::string ccyPairStr){
+	if ( _ForwardCurveMap.find(ccyPairStr) == _ForwardCurveMap.end()) {
+		throw "Forward curve not found in map!";
+	} else {
+		return &_ForwardCurveMap.find(ccyPairStr)->second;
 	}
 }

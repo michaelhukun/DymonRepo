@@ -90,16 +90,19 @@ void FXSkewFileSource::updateOptionObjectField(std::string fieldName, std::strin
 		option->setVol(stod(fieldVal));
 	}else if (fieldName=="VOL_INSTRUMENT_TYPE"){
 		option->setVolType(EnumHelper::getVolType(fieldVal));
-	}else if (fieldName=="DELTA"){
-		option->setDelta(stoi(fieldVal));
+	}else if (fieldName=="VOL_DELTA"){
+		if (fieldVal == "#N/A Field Not Applicable")
+			option->setDelta(NaN);
+		else
+			option->setDelta(stod(fieldVal.substr(0, fieldVal.size()-1))/100);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,true);
+		date tradeDate(fieldVal,false);
 		option->setTradeDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
-		date settleDate(fieldVal,true);
+		date settleDate(fieldVal,false);
 		option->setDeliveryDate(settleDate);
 	}else if (fieldName=="OPT_EXPIRE_DT"){
-		date expiryDate(fieldVal,true);
+		date expiryDate(fieldVal,false);
 		option->setExpiryDate(expiryDate);
 	}else if (fieldName=="VOL_CURRENCY_ISO_PAIR"){
 		option->setCcyPair(CcyPair(fieldVal));

@@ -31,9 +31,6 @@
     <Filter Include="Header Files\dymon.pricer">
       <UniqueIdentifier>{fb167943-99ec-429d-b910-23a8b54f5bfe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\dymon.instrument">
-      <UniqueIdentifier>{49f8e7e4-87d1-4c57-af63-48cfc9b7ca7c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\dymon.persistence">
       <UniqueIdentifier>{61dec5ac-0d29-4671-a9b1-c7849c3d5341}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="Header Files\dymon.session">
       <UniqueIdentifier>{e7dbfc52-e5ca-4dac-9cca-491c0405db3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.instruments">
+      <UniqueIdentifier>{49f8e7e4-87d1-4c57-af63-48cfc9b7ca7c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -100,19 +100,25 @@
       <Filter>Header Files\dymon.numerical</Filter>
     </ClInclude>
     <ClInclude Include="Bond.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="Deposit.h">
+      <Filter>Header Files\dymon.instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="Swap.h">
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="BondFuture.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="bondpricer.h">
       <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="AbstractOption.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="AbstractInstrument.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="AbstractDao.h">
       <Filter>Header Files\dymon.persistence</Filter>
@@ -163,10 +169,10 @@
       <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
     <ClInclude Include="EuropeanOption.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="Future.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="FalsePosition.h">
       <Filter>Header Files\dymon.numerical</Filter>
@@ -203,9 +209,6 @@
     </ClInclude>
     <ClInclude Include="Ridder.h">
       <Filter>Header Files\dymon.numerical</Filter>
-    </ClInclude>
-    <ClInclude Include="swap.h">
-      <Filter>Header Files\dymon.instrument</Filter>
     </ClInclude>
     <ClInclude Include="numericalfactory.h">
       <Filter>Header Files\dymon.numerical</Filter>
@@ -274,7 +277,7 @@
       <Filter>Header Files\dymon.test</Filter>
     </ClInclude>
     <ClInclude Include="swaption.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="cashflow.h">
       <Filter>Header Files\dymon.object</Filter>
@@ -310,7 +313,7 @@
       <Filter>Header Files\dymon.interpolant</Filter>
     </ClInclude>
     <ClInclude Include="FXForward.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="FXForwardFileSource.h">
       <Filter>Header Files\dymon.persistence</Filter>
@@ -319,7 +322,13 @@
       <Filter>Header Files\dymon.builder</Filter>
     </ClInclude>
     <ClInclude Include="FXEuropeanOption.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="ForwardCurveBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="fxforwardimpliedbootstrapper.h">
+      <Filter>Header Files\dymon.bootstrapper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -360,9 +369,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="swap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cashflow.cpp">
@@ -501,12 +507,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="AbstractForward.h">
-      <Filter>Header Files\dymon.instrument</Filter>
+      <Filter>Header Files\dymon.instruments</Filter>
     </ClCompile>
     <ClCompile Include="FXForwardFileSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="FXForwardImpliedCurveBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ForwardCurveBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXForwardImpliedBootStrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Swap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

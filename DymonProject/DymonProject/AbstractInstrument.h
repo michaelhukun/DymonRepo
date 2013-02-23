@@ -24,6 +24,8 @@ namespace instruments {
 		date getDeliveryDate() { return _deliveryDate; }
 		std::string getID(){ return _ID; }
 		std::string getName(){ return _name; }
+		std::string getTenorStr(){ return _tenorStr; }
+		enums::DayCountEnum getDayCount(){ return _dayCount; }
 		
 		// Setters
 		void setMarket(Market market){ _market = market; }
@@ -34,6 +36,8 @@ namespace instruments {
 		void setDeliveryDate(date deliveryDate) { _deliveryDate=deliveryDate; }
 		void setName(std::string name){ _name = name; }
 		void setID(std::string ID){ _ID = ID;}
+		void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
+		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 
 		// Method
 
@@ -48,6 +52,8 @@ namespace instruments {
 		date _deliveryDate;
 		std::string _ID;
 		std::string _name;
+		std::string _tenorStr;
+		enums::DayCountEnum _dayCount;
 	};
 }
 #endif

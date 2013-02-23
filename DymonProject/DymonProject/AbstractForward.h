@@ -22,15 +22,11 @@ namespace utilities {
 		double getSpot(){ return _spot; }
 		double getPoint(){ return _point; }
 		double getOutRight(){ return _outRight; }
-		enums::DayCountEnum getDayCount(){ return _dayCount; }
-		std::string getTenorStr(){ return _tenorStr; }
 		int getDaysToMty(){ return _daysToMty; }
 
 		void setSpot(double spot){ _spot = spot; }
 		void setPoint(double point){ _point = point; }
 		void setOutRight(double outRight){ _outRight = outRight;}
-		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
-		void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
 		void setDaysToMty(int daysToMty){ _daysToMty = daysToMty; }
 		
 		// Methods
@@ -41,8 +37,6 @@ namespace utilities {
 		double _spot;
 		double _point;
 		double _outRight;
-		enums::DayCountEnum _dayCount;
-		std::string _tenorStr;
 		int _daysToMty;
 	
 	};

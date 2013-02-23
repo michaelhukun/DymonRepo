@@ -8,7 +8,7 @@
 #include "Market.h"
 #include <vector>
 #include "Enums.h"
-#include "swap.h"
+#include "Swap.h"
 #include "TestNumerical.h"
 #include "TestInterpolator.h"
 #include "TestDateUtil.h"
@@ -104,19 +104,18 @@ void forwardStartingSwap(DiscountCurve* yc){
 	int paymentFreqFloatingLeg=4;
     bool rollAccuralDates=true;
 
-	Market fixLegCurr=Market(enums::USD);
-	Market floatingLegCurr=Market(enums::USD);
+	Market market=Market(enums::USD);
 
 	for(int i=12; i<240; i++){
 		date startDate =dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,enums::USD);	
 		date tradeDate = dateUtil::getEndDateMonthIncrement(startDate,i);
-		Swap swap1(tradeDate, tenorNumOfMonths, notional, couponRate, yc, fixLegCurr, floatingLegCurr,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
+		Swap swap1(tradeDate, tenorNumOfMonths, notional, couponRate, yc, market,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
 		cashflowLeg* fixLeg=swap1.getCashFlowVectorFix();
 		//fixLeg->printCashFlowLeg();
 		cashflowLeg* floatLeg=swap1.getCashFlowVectorFloat();
 		//cout<<"Swap starting at ["<<tradeDate.toString()<<"] months with par rate ["<<swap1.getParRate(floatLeg,fixLeg,yc)<<"]"<<endl;
 		//cout<<swap1.getParRate(floatLeg,fixLeg,yc)<<endl;
-		cout<<swap1.getMPV(fixLeg,floatLeg,yc)<<endl;
+		cout<<SwapPricer(&swap1).getMPV(fixLeg,floatLeg,yc)<<endl;
 	}
 }
 
@@ -248,61 +247,5 @@ void CashFlowLegTest()  {
 }
 
 void SwapTest() {
-	date tradeDate(2012,12,21);
-	date maturityDate(2062,12,25);
-	
-	
-	double notional=1000000;
-	double couponRate=0.05;
-	int paymentFreqFixLeg=2;
-	int paymentFreqFloatingLeg=4;
-	//build from start to end (build forward)
-	int buildDirection=1;
-	bool rollAccuralDates=false;
-	int tenorInMonth = 50;
-
-	typedef tuple<date, double> point;
-
-	SwapCurveBuilder* builder = new SwapCurveBuilder(USD);
-	builder->init(Configuration::getInstance());
-	DiscountCurve* yc = builder->build(NULL);
-
-	Market fixLegCurr=Market(enums::USD);
-	Market floatingLegCurr=Market(enums::USD);
-	
-	fixLegCurr.setDayCountCashConvention(enums::ACT_360);
-	fixLegCurr.setDayCountSwapConvention(enums::ACT_ACT);
-	fixLegCurr.setDayRollCashConvention(enums::Mfollowing);
-	
-	floatingLegCurr.setDayCountCashConvention(enums::ACT_360);
-	floatingLegCurr.setDayCountSwapConvention(enums::ACT_ACT);
-	floatingLegCurr.setDayRollCashConvention(enums::Mfollowing);
-
-	Swap swap1(tradeDate, maturityDate, notional, tenorInMonth, couponRate, yc, fixLegCurr, floatingLegCurr,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates,buildDirection);
-
-	cout<<"tradeDate=";
-	tradeDate.printDate();
-	cout<<endl;
-
-	cout<<"maturityDate=";
-	maturityDate.printDate();
-	cout<<endl;
-	
-	cashflowLeg* fixLeg=swap1.getCashFlowVectorFix();
-	cashflowLeg* floatLeg=swap1.getCashFlowVectorFloat();
-	
-	cout<<"MPV="<<swap1.getMPV(fixLeg,floatLeg,yc)<<endl;
-	
-	cout<<"ParRate="<<swap1.getParRate(fixLeg,floatLeg,yc)<<endl;
-	
-	cout<<"========================Fix Leg of Swap1 is:========================="<<endl;
-	//swap1.printCashflowLegFix();
-
-
-	cout<<"========================Floating Leg of Swap1 is:===================="<<endl;
-	//swap1.printCashflowLegFloat();
-
-
-
 
 }

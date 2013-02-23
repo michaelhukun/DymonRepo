@@ -26,9 +26,13 @@ namespace DAO {
 		void retrieveRecord();
 
 	private:
-		void insertRateIntoMap(std::string tenorStr, double liborRate, Market market, std::map<long, double>* depositRateMap, std::map<long, double>* overnightRateMap);
+
+		void insertDepositIntoCache(Deposit* deposit, RecordHelper::DepositRateMap* depositRateMap);
+
+		Deposit* createDepositObject(CSVDatabase db, int row);
+
+		void updateDepositObjectField(std::string fieldName, std::string fieldVal, Deposit* deposit);
 
 	};
-
 }
 #endif

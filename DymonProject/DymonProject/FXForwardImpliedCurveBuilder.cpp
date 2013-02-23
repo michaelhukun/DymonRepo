@@ -33,17 +33,19 @@ DiscountCurve* FXForwardImpliedCurveBuilder::build(Configuration* cfg){
 void FXForwardImpliedCurveBuilder::buildSection(DiscountCurve* dc){
 	auto FXForwardMap = RecordHelper::getInstance()->getFXForwardMap()->at(_ccyPair.getCcyPairStr());
 	for (auto it=FXForwardMap.begin(); it != FXForwardMap.end(); it++ ){
-
-		date expiryDate = it->first;
+		date deliveryDate = date(it->first);
 		FXForward* forward = &(it->second);		
-		AbstractInterpolator<date>* lineSection;
 
-		FXForwardImpliedBootStrapper bootStrapper(_curvePointer, expiryDate, forward, _interpolAlgo, _numericalAlgo);
+		if (it == FXForwardMap.begin()){
+			_curvePointer = point(forward->getSpotDate(),1);
+		}
+
+		FXForwardImpliedBootStrapper bootStrapper(_curvePointer, deliveryDate, forward, _interpolAlgo, _numericalAlgo);
 		bootStrapper.setBaseYieldCurveCcy(_baseYieldCurveCcy);
 		bootStrapper.setForwardImpliedCurveCcy(_forwardImpliedCurveCcy);
 		bootStrapper.init(Configuration::getInstance());
 		
-		lineSection = bootStrapper.bootStrap();
+		AbstractInterpolator<date>* lineSection = bootStrapper.bootStrap();
 		dc->insertLineSection(lineSection);
 		_curvePointer = lineSection->getEndPoint();
 	}

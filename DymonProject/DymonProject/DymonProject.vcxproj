@@ -115,10 +115,13 @@
     <ClInclude Include="ConfigurationFileSource.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="CubicSplineInterpolator.h" />
+    <ClInclude Include="Deposit.h" />
+    <ClInclude Include="ForwardCurveBuilder.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
     <ClInclude Include="FXForward.h" />
     <ClInclude Include="FXForwardFileSource.h" />
+    <ClInclude Include="fxforwardimpliedbootstrapper.h" />
     <ClInclude Include="FXForwardImpliedCurveBuilder.h" />
     <ClInclude Include="FXEuropeanOption.h" />
     <ClInclude Include="FXSkewBuilder.h" />
@@ -139,6 +142,7 @@
     <ClInclude Include="QuadraticInterpolator.h" />
     <ClInclude Include="Ridder.h" />
     <ClInclude Include="Secant.h" />
+    <ClInclude Include="Swap.h" />
     <ClInclude Include="SwapPricer.h" />
     <ClInclude Include="SwaptionVolCube.h" />
     <ClInclude Include="SwaptionVolFileSource.h" />
@@ -166,7 +170,6 @@
     <ClInclude Include="AbstractInstrument.h" />
     <ClInclude Include="marketdata.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="swap.h" />
     <ClInclude Include="swapRateFileSource.h" />
     <ClInclude Include="swaption.h" />
     <ClInclude Include="targetver.h" />
@@ -192,9 +195,11 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
     <ClCompile Include="AbstractForward.h" />
+    <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
     <ClCompile Include="FXForwardFileSource.cpp" />
+    <ClCompile Include="FXForwardImpliedBootStrapper.cpp" />
     <ClCompile Include="FXForwardImpliedCurveBuilder.cpp" />
     <ClCompile Include="FXSkewBuilder.cpp" />
     <ClCompile Include="FXSkewFileSource.cpp" />
@@ -221,7 +226,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="swap.cpp" />
+    <ClCompile Include="Swap.cpp" />
     <ClCompile Include="SwapPricer.cpp" />
     <ClCompile Include="SwapRateFileSource.cpp" />
     <ClCompile Include="swaption.cpp" />
