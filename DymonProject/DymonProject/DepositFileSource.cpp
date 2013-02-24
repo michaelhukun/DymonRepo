@@ -44,6 +44,7 @@ void DepositFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		Deposit* tempDeposit = createDepositObject(db, i);
+		tempDeposit->deriveAccrualStartDate();
 		insertDepositIntoCache(tempDeposit, depositRateMap);
 	}
 
@@ -81,7 +82,11 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 		deposit->setID(fieldVal);
 	}else if (fieldName=="NAME"){
 		deposit->setName(fieldVal);
-	}else if (fieldName=="SECURITY_TENOR_TWO"){
+		if (fieldVal.find("O/N")!=std::string::npos) 
+			deposit->setIsOverNight(true);
+		else
+			deposit->setIsOverNight(false);
+	}else if (fieldName=="SECURITY_TENOR_ONE"){
 		deposit->setTenorStr(fieldVal);
 	}else if (fieldName=="PX_MID"){
 		deposit->setDepositRate(stod(fieldVal));
@@ -91,13 +96,16 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 	}else if (fieldName=="DAYS_TO_MTY"){
 		deposit->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,true);
 		deposit->setTradeDate(tradeDate);
-	}else if (fieldName=="SETTLE_DT"){
-		date accrualStartDate(fieldVal,false);
-		deposit->setSpotDate(accrualStartDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		deposit->setMarket(market);
+	}else if (fieldName=="SETTLE_DT"){
+		date deliveryDate(fieldVal,true);
+		deposit->setDeliveryDate(deliveryDate);
+	}else if (fieldName=="MATURITY"){
+		date accrualEndDate(fieldVal,true);
+		deposit->setExpiryDate(accrualEndDate);
 	}
 }

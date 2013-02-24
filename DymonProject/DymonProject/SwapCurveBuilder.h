@@ -17,18 +17,17 @@ namespace utilities{
 		
 	public:
 		
+		SwapCurveBuilder(){}
+		~SwapCurveBuilder(){}
 		SwapCurveBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
 
+		// Methods
 		void init(Configuration* cfg);
-
 		DiscountCurve* build(Configuration* cfg);
-
 		void buildDepositSection(DiscountCurve* yc);
-
 		void buildSwapSection(DiscountCurve* yc);
-		
-		void buildOvernightSection(DiscountCurve* yc);
 
+		// Getters and Setters
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}
 
@@ -47,8 +46,8 @@ namespace utilities{
 		bool getRollAccuralDates(){return _rollAccuralDates;}
 		void setRollAccuralDates(bool rollAccuralDates){_rollAccuralDates = rollAccuralDates;}
 
-		double getBizDaysAfterSpotDF(){return _bizDaysAfterSpotDF;}
-		void setBizDaysAfterSpotDF(double bizDaysAfterSpotDF){_bizDaysAfterSpotDF = bizDaysAfterSpotDF;}
+		double getBizDaysAfterSpotDF(){return _spotDateDF;}
+		void setBizDaysAfterSpotDF(double spotDateDF){_spotDateDF = spotDateDF;}
 
 	private:
 
@@ -58,7 +57,8 @@ namespace utilities{
 		int _timeLineBuildDirection;
 		bool _rollAccuralDates;
 		int _bizDaysAfterSpot;
-		double _bizDaysAfterSpotDF;
+		double _spotDateDF;
+		date _spotDate;
 		point _curvePointer;
 		date _curveStartDate;
 	};

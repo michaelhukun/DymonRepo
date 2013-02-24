@@ -16,28 +16,28 @@ namespace instruments {
 		AbstractInstrument(){};
 		
 		// Getters
-		Market getMarket(){ return _market; }
-		date getIssueDate() { return _issueDate; }
-		date getTradeDate() { return _tradeDate; }
-		date getSpotDate() { return _spotDate; }
-		date getExpiryDate() { return _expiryDate; }
-		date getDeliveryDate() { return _deliveryDate; }
-		std::string getID(){ return _ID; }
-		std::string getName(){ return _name; }
-		std::string getTenorStr(){ return _tenorStr; }
-		enums::DayCountEnum getDayCount(){ return _dayCount; }
+		virtual Market getMarket(){ return _market; }
+		virtual date getIssueDate() { return _issueDate; }
+		virtual date getTradeDate() { return _tradeDate; }
+		virtual date getSpotDate() { return _spotDate; }
+		virtual date getExpiryDate() { return _expiryDate; }
+		virtual date getDeliveryDate() { return _deliveryDate; }
+		virtual std::string getID(){ return _ID; }
+		virtual std::string getName(){ return _name; }
+		virtual std::string getTenorStr(){ return _tenorStr; }
+		virtual enums::DayCountEnum getDayCount(){ return _dayCount; }
 		
 		// Setters
-		void setMarket(Market market){ _market = market; }
-		void setIssueDate(date issueDate) { _issueDate=issueDate; }
-		void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
-		void setSpotDate(date spotDate){ _spotDate = spotDate; }
-		void setExpiryDate(date expiryDate){ _expiryDate = expiryDate; }
-		void setDeliveryDate(date deliveryDate) { _deliveryDate=deliveryDate; }
-		void setName(std::string name){ _name = name; }
-		void setID(std::string ID){ _ID = ID;}
-		void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
-		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
+		virtual void setMarket(Market market){ _market = market; }
+		virtual void setIssueDate(date issueDate) { _issueDate=issueDate; }
+		virtual void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
+		virtual void setSpotDate(date spotDate){ _spotDate = spotDate; }
+		virtual void setExpiryDate(date expiryDate){ _expiryDate = expiryDate; }
+		virtual void setDeliveryDate(date deliveryDate) { _deliveryDate=deliveryDate; }
+		virtual void setName(std::string name){ _name = name; }
+		virtual void setID(std::string ID){ _ID = ID;}
+		virtual void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
+		virtual void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 
 		// Method
 

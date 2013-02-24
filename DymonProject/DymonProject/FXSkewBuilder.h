@@ -40,7 +40,6 @@ namespace utilities{
 		void buildQuadratic(AbstractCurve<double>* ac);
 		vector<FXEuropeanOption>* getOptionVector(std::string ccyPairStr, int daysToExpiry);
 		double deriveATMDelta(vector<FXEuropeanOption>* optionVector);
-		double getForeignRate(CcyPair ccyPair);
 		void buildCutOffSection(AbstractCurve<double>* ac);
 		void buildQuadraticSection(AbstractCurve<double>* ac);
 		double numericalFunc(double b1);
@@ -53,6 +52,7 @@ namespace utilities{
 		int _daysToExpiry;
 		vector<FXEuropeanOption>* _optionVector;
 		int _iterateCount;
+		int _daysBeforeSwitchToSwapCurve;
 		double _tolerance;
 		double _volSTR25;
 		double _volRR25;

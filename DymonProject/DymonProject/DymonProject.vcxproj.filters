@@ -55,12 +55,12 @@
     <None Include="instance.properties" />
     <None Include="swaption_skew_USD.csv" />
     <None Include="MarketConvention.csv" />
-    <None Include="LiborRate.csv" />
     <None Include="SwapRate.csv" />
     <None Include="BondRate.csv" />
     <None Include="BondFuturePrice.csv" />
     <None Include="FXSkew.csv" />
     <None Include="FXForward.csv" />
+    <None Include="DepositRate.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -522,6 +522,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Swap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXEuropeanOption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Deposit.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -19,6 +19,9 @@ namespace utilities{
 
 		virtual void init(Configuration* cfg);
 
+		AbstractBootStrapper(){}
+		~AbstractBootStrapper(){}
+
 		AbstractBootStrapper(point startPoint, date endDate,enums::interpolAlgo interpolAlgo,
 		enums::NumericAlgo numericAlgo){
 			_startPoint = startPoint;

@@ -6,7 +6,7 @@
 using namespace utilities;
 
 enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
-	if (ccyName =="EUR")
+	if (ccyName =="EUR" || ccyName == "EU")
 		return EUR;
 	else if (ccyName == "USD" || ccyName == "US")
 		return USD;
@@ -38,7 +38,7 @@ enums::DayRollEnum EnumHelper::getDayRollEnum(std::string dayRoll){
 }
 
 enums::DayCountEnum EnumHelper::getDayCountEnum(std::string dayCount){
-	if (dayCount =="thirty_360US")
+	if (dayCount =="thirty_360US" || dayCount =="30/360")
 		return thirty_360US;
 	else if (dayCount == "thirthE_360")
 		return thirthE_360;

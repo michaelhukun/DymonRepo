@@ -112,8 +112,6 @@ void SwaptionVolFileSource::swaptionTest() {
 	}
 	CSVDatabase db;
 	readCSV(_inFile, db);
-	display(db);
-
 };
 
 void SwaptionVolFileSource::insertPointVolSurfaceMap(RecordHelper::SwaptionSurfaceMap &map, int fSwapTenorInMonth, int optionExpiryInMonth, double vol){

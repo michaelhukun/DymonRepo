@@ -77,11 +77,11 @@
   <ItemGroup>
     <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
+    <None Include="DepositRate.csv" />
     <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
-    <None Include="LiborRate.csv" />
     <None Include="MarketConvention.csv" />
     <None Include="SwapRate.csv" />
     <None Include="swaption_skew_USD.csv" />
@@ -195,9 +195,11 @@
     <ClCompile Include="CcyPair.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
+    <ClCompile Include="Deposit.cpp" />
     <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
+    <ClCompile Include="FXEuropeanOption.cpp" />
     <ClCompile Include="FXForwardFileSource.cpp" />
     <ClCompile Include="FXForwardImpliedBootStrapper.cpp" />
     <ClCompile Include="FXForwardImpliedCurveBuilder.cpp" />

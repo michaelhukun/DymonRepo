@@ -21,7 +21,20 @@ cashflow::cashflow(double couponRate,double notional,  date fixingDate, date pay
 	setAccuralStartDate(accuralStartDate);
 	setAccuralEndDate(accuralEndDate);
 	setCashFlowCurr(cashFlowCurr);
-	setAccuralFactor();
+	deriveAccuralFactor();
+	setIsValid(isValid);
+}
+
+cashflow::cashflow(Deposit* deposit, bool isValid){
+	setCouponRate(deposit->getDepositRate());
+	setNotional(0);
+	setFixingDate(deposit->getTradeDate());
+	setPaymentDate(deposit->getDeliveryDate());
+	setAccuralStartDate(deposit->getSpotDate());
+	setAccuralEndDate(deposit->getExpiryDate());
+	setCashFlowCurr(deposit->getMarket());
+	setDayCount(deposit->getDayCount());
+	deriveAccuralFactor();
 	setIsValid(isValid);
 }
 
@@ -84,8 +97,8 @@ void cashflow::setCashFlowCurr(Market cashFlowCurr) {
 	_cashFlowCurr=cashFlowCurr;
 }
 
-void cashflow::setAccuralFactor() {
-	_accuralFactor=dateUtil::getAccrualFactor(_accuralStartDate,_accuralEndDate,_cashFlowCurr.getDayCountCashConvention());
+void cashflow::deriveAccuralFactor() {
+	_accuralFactor=dateUtil::getAccrualFactor(_accuralStartDate,_accuralEndDate,_dayCount);
 }
 
 bool cashflow::getIsValid(){

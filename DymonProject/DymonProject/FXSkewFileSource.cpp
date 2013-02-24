@@ -2,7 +2,6 @@
 #include <regex>
 #include "Constants.h"
 #include "EnumHelper.h"
-#include "Constants.h"
 #include "FXEuropeanOption.h"
 
 using namespace DAO;
@@ -29,24 +28,11 @@ void FXSkewFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		FXEuropeanOption* tempOption = createOptionObject(db, i);
-		deriveTenorDiscount(tempOption);
-		deriveTenorExpiry(tempOption);
+		tempOption->deriveTenorExpiry();
 		insertOptionIntoCache(tempOption, FXVolSkewMap);
 	}
 
 	_inFile.close();
-}
-
-void FXSkewFileSource::deriveTenorExpiry(FXEuropeanOption* option){
-	int daysToExpiry = dateUtil::getDaysBetween(option->getTradeDate(), option->getExpiryDate());
-	double tenorExpiry = daysToExpiry / numDaysInYear;
-	option->setTenorExpiry(tenorExpiry);
-}
-
-void FXSkewFileSource::deriveTenorDiscount(FXEuropeanOption* option){	
-	int daysToDiscount = dateUtil::getDaysBetween(option->getTradeDate(), option->getDeliveryDate());
-	double tenorDiscount = daysToDiscount / numDaysInYear;
-	option->setTenorDiscount(tenorDiscount);
 }
 
 void FXSkewFileSource::insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap){
@@ -98,6 +84,7 @@ void FXSkewFileSource::updateOptionObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="TRADING_DT_REALTIME"){
 		date tradeDate(fieldVal,false);
 		option->setTradeDate(tradeDate);
+		option->setSpotDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
 		date settleDate(fieldVal,false);
 		option->setDeliveryDate(settleDate);

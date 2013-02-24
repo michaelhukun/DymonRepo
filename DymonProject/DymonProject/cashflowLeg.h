@@ -22,6 +22,14 @@ namespace instruments {
 		cashflowLeg(vector<cashflow> cashflowLeg, int couponFreq);
 		~cashflowLeg(){};
 		
+		// Getters and Setters
+		int getCouponFreq(){return _couponFreq;}
+		int getSize(){return _cashflowVector.size();}
+		enums::DayCountEnum getDayCount(){ return _dayCount; }
+
+		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
+
+		//Methods		
 		cashflow getCashFlow(unsigned int index);
 		int getFirstValidCashFlowIndex();
 		vector<cashflow> getCashFlowVector();
@@ -30,15 +38,13 @@ namespace instruments {
 		vector<date> getAccuralEndDates();
 		void markCashFlowValidity(date tradeDate);
 		int getCashFlowIndexForAccrualEnd(date accuralEndDate);
-		int getCouponFreq(){return _couponFreq;}
-		int getSize(){return _cashflowVector.size();}
-
 		void printCashFlowLeg();
 		void printTimeLine();
 
 	private:
 		vector<cashflow> _cashflowVector;
 		int _couponFreq;
+		enums::DayCountEnum _dayCount;
 	};
 }
 #endif

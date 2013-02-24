@@ -22,7 +22,10 @@ using namespace instruments;
 namespace instruments {
 	class Swap: public AbstractInstrument{
 	public:
-		Swap():AbstractInstrument(){};
+		Swap():AbstractInstrument(){
+			_fixCashflowLeg = new cashflowLeg();
+			_floatingCashflowLeg = new cashflowLeg();
+		};
 		~Swap(){};
 		Swap(date tradeDate, date maturityDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market market, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
 		Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market market, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates);
@@ -37,19 +40,21 @@ namespace instruments {
 		int getTenor(){ return _tenorNumOfMonths;}
 		double getSwapRate(){ return _swapRate; }
 		double getDaysToMty(){ return _daysToMty; }
+		enums::DayCountEnum getDayCountFixed(){ return _fixCashflowLeg->getDayCount(); }
+		enums::DayCountEnum getDayCountFloat(){ return _floatingCashflowLeg->getDayCount(); }
 
 		void setSwapRate(double swapRate){ _swapRate= swapRate; }
 		void setDaysToMty(int daysToMty){ _daysToMty = daysToMty; }
+		void setDayCountFixed(enums::DayCountEnum dayCountFixed){ _fixCashflowLeg->setDayCount(dayCountFixed);}
+		void setDayCountFloat(enums::DayCountEnum dayCountFloat){ _floatingCashflowLeg->setDayCount(dayCountFloat);}
 
 		// Methods
+		void deriveDates();
 		void printCashflowLegFix();
 		void printCashflowLegFloat();
-
 		std::string toString(){return "";}
 
 	private:
-
-		void deriveDates(date accrualStartDate, int daysToMty);
 
 		cashflowLeg* _fixCashflowLeg;
 		cashflowLeg* _floatingCashflowLeg;

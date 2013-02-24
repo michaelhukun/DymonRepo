@@ -22,10 +22,6 @@ namespace DAO {
 
 	private:
 
-		void deriveTenorExpiry(FXEuropeanOption* option);
-		
-		void deriveTenorDiscount(FXEuropeanOption* option);
-
 		void insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap);
 
 		FXEuropeanOption* createOptionObject(CSVDatabase db, int row);

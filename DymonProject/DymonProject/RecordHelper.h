@@ -72,6 +72,7 @@ namespace Session {
 
 		// Methods
 		Bond* findCTDinBondMap(std::string CUSIP);
+		date getSpotDate(string ccyPairStr);
 
 	private:		
 		

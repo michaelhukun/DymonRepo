@@ -46,8 +46,8 @@ Swap::Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponR
 }
 
 
-void Swap::deriveDates(date accrualStartDate, int daysToMty){
-	_expiryDate = date(accrualStartDate.getJudianDayNumber()+daysToMty);
+void Swap::deriveDates(){
+	_expiryDate = date(_spotDate.getJudianDayNumber()+_daysToMty);
 	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate, _market.getDayRollSwapConvention(), _market.getCurrencyEnum());
 }
 

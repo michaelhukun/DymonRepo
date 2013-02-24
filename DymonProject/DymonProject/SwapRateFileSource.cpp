@@ -46,6 +46,7 @@ void SwapRateFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		Swap* tempSwap = createSwapObject(db, i);
+		tempSwap->deriveDates();
 		insertSwapIntoCache(tempSwap, swapRateMap);
 	}
 
@@ -89,7 +90,7 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 		swap->setSwapRate(stod(fieldVal));
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
-		swap->setDayCount(dayCount);
+		swap->setDayCountFixed(dayCount);
 	}else if (fieldName=="DAYS_TO_MTY"){
 		swap->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){

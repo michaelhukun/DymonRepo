@@ -29,11 +29,11 @@ namespace instruments {
 
 		// Methods
 		
+		void deriveAccrualStartDate();
 		std::string toString(){return "";}
 
 	private:
 
-		void deriveDates(date accrualStartDate, int daysToMty);
 
 		double _depositRate;
 		int _daysToMty;
