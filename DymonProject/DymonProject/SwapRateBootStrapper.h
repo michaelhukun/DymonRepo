@@ -6,11 +6,13 @@
 #include "AbstractBootStrapper.h"
 #include "DiscountCurve.h"
 #include "cashflowLeg.h"
+#include "cashflow.h"
 #include "Enums.h"
 #include "Swap.h"
 #include "date.h"
 
 using namespace instruments;
+using namespace std;
 
 namespace utilities {
 	class SwapRateBootStrapper: public AbstractBootStrapper<date>{
@@ -25,6 +27,7 @@ namespace utilities {
 			enums::NumericAlgo numericAlgo):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
 			_curve = curve;
 			_swap = swap;
+			_cashflowVector = _swap->getCashFlowLegFix()->getCashFlowVector();
 		}
 				
 		AbstractInterpolator<date>* bootStrap();
@@ -36,9 +39,9 @@ namespace utilities {
 		DiscountCurve* _curve;
 		Swap* _swap;
 
+		std::vector<cashflow> _cashflowVector;
 		unsigned int _cashflowStartIndex;
 		unsigned int _cashflowEndIndex;
-
 		unsigned int findCashFlowIndex(date date0);
 	};
 }

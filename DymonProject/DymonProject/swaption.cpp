@@ -39,8 +39,8 @@ Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, do
 void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vc, DiscountCurve* dc, Swap* underlyingSwap){
 	_underlyingSwap = underlyingSwap;
 	_tenorInMonth = _underlyingSwap->getTenor();
-	cashflowLeg* floatCashflowLeg = underlyingSwap->getCashFlowVectorFloat();
-	cashflowLeg* fixCashflowLeg = underlyingSwap->getCashFlowVectorFix();
+	cashflowLeg* floatCashflowLeg = underlyingSwap->getCashFlowLegFloat();
+	cashflowLeg* fixCashflowLeg = underlyingSwap->getCashFlowLegFix();
 	double forwardParRate=SwapPricer(underlyingSwap).getParRate(floatCashflowLeg,fixCashflowLeg,dc);
 	date tradeDate = dateUtil::getToday();
 	double vol=vc->getVol(strikeInBps,expiryInMonth,_tenorInMonth);
@@ -56,7 +56,7 @@ void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryI
 
 double Swaption::getAnnuityMonetizer( DiscountCurve* dc) {
 
-	cashflowLeg* swapFixCashflowLeg= _underlyingSwap->getCashFlowVectorFix();
+	cashflowLeg* swapFixCashflowLeg= _underlyingSwap->getCashFlowLegFix();
 	vector<date> accrualDates=swapFixCashflowLeg->getAccuralEndDates();
 	double sum=0.0;
 	//DayCountEnum swapDayCount = _underlyingSwap->getMarket().getDayCountSwapConvention();

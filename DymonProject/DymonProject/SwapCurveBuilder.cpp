@@ -67,11 +67,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
-	CashFlowLegBuilder builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, _market.getCurrencyEnum());
-	cashflowLeg* _cashflowLeg=builtCashflowLeg.getCashFlowLeg();
-
 	auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
-
 	for (auto it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
 
 		date accrualEndDate=it->first;	

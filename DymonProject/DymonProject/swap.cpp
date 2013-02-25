@@ -20,6 +20,9 @@ void Swap::deriveDates(){
 }
 
 void Swap::buildFixedLeg(){
+	setDayCountFixed(_market.getDayCountSwapFixed());
+	setPayFreqFixed(_market.getPayFreqSwapFixed());
+	_fixedCashflowLeg.setCashFlowNumber(_tenorInYear*_market.getPayFreqSwapFixed());
 	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
 	builder.setPaymentFreq(getPayFreqFixed());
 	builder.setDayCountEnum(getDayCountFixed());
@@ -28,6 +31,9 @@ void Swap::buildFixedLeg(){
 }
 
 void Swap::buildFloatLeg(){
+	setDayCountFloat(_market.getDayCountSwapFloat());
+	setPayFreqFloat(_market.getPayFreqSwapFloat());
+	_floatCashflowLeg.setCashFlowNumber(_tenorInYear*_market.getPayFreqSwapFloat());
 	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
 	builder.setPaymentFreq(getPayFreqFloat());
 	builder.setDayCountEnum(getDayCountFloat());

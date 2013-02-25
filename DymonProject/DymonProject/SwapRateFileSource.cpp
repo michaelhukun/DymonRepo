@@ -47,6 +47,8 @@ void SwapRateFileSource::retrieveRecord(){
 	for (int i=1;i<numOfRows;i++) {
 		Swap* tempSwap = createSwapObject(db, i);
 		tempSwap->deriveDates();
+		tempSwap->buildFixedLeg();
+		tempSwap->buildFloatLeg();
 		insertSwapIntoCache(tempSwap, swapRateMap);
 	}
 
@@ -86,6 +88,7 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 		swap->setName(fieldVal);
 	}else if (fieldName=="SECURITY_TENOR_TWO"){
 		swap->setTenorStr(fieldVal);
+		swap->setTenorInYear(stoi(fieldVal.substr(0, fieldVal.size()-1)));
 	}else if (fieldName=="PX_MID"){
 		swap->setSwapRate(stod(fieldVal)/100);
 	}else if (fieldName=="DAY_CNT_DES"){
@@ -94,10 +97,10 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="DAYS_TO_MTY"){
 		swap->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,true);
 		swap->setTradeDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
-		date accrualStartDate(fieldVal,false);
+		date accrualStartDate(fieldVal,true);
 		swap->setSpotDate(accrualStartDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));

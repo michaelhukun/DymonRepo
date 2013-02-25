@@ -33,10 +33,10 @@ namespace instruments {
 
 		int getPayFreqFixed() { return _fixedCashflowLeg.getCouponFreq(); }
 		int getPayFreqFloat() { return _floatCashflowLeg.getCouponFreq(); }
-		cashflowLeg* getCashFlowVectorFix() { return &_fixedCashflowLeg; }
-		cashflowLeg* getCashFlowVectorFloat() {	return &_floatCashflowLeg; }
+		cashflowLeg* getCashFlowLegFix() { return &_fixedCashflowLeg; }
+		cashflowLeg* getCashFlowLegFloat() {	return &_floatCashflowLeg; }
 		DiscountCurve* Swap::getDiscountCurve() { return _yc; }
-		int getTenor(){ return _tenorNumOfMonths;}
+		int getTenor(){ return _tenorInYear;}
 		double getSwapRate(){ return _swapRate; }
 		double getDaysToMty(){ return _daysToMty; }
 		enums::DayCountEnum getDayCountFixed(){ return _fixedCashflowLeg.getDayCount(); }
@@ -50,6 +50,7 @@ namespace instruments {
 		void setDayCountFloat(enums::DayCountEnum dayCountFloat){ _floatCashflowLeg.setDayCount(dayCountFloat);}
 		void setPayFreqFixed(int payFreqFixed){ _fixedCashflowLeg.setCouponFreq(payFreqFixed);}
 		void setPayFreqFloat(int payFreqFloat){ _floatCashflowLeg.setCouponFreq(payFreqFloat);}
+		void setTenorInYear(int tenorInYear){ _tenorInYear = tenorInYear; }
 
 
 		// Methods
@@ -65,7 +66,7 @@ namespace instruments {
 		cashflowLeg _fixedCashflowLeg;
 		cashflowLeg _floatCashflowLeg;
 		DiscountCurve* _yc;
-		int _tenorNumOfMonths;
+		int _tenorInYear;
 		double _swapRate;
 		int _daysToMty;
 	};
