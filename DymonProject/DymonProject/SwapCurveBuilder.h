@@ -31,12 +31,6 @@ namespace utilities{
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}
 
-		int getFloatFrequency(){return _floatFreqency;}
-		void setFloatFrequency(int floatFreqency){_floatFreqency=floatFreqency;}
-
-		int getFixFreqency(){return _fixFreqency;}
-		void setFixFreqency(int fixFreqency){_fixFreqency=fixFreqency;}
-
 		int getTimeLineBuildDirectiony(){return _timeLineBuildDirection;}
 		void setTimeLineBuildDirection(int timeLineBuildDirection){_timeLineBuildDirection=timeLineBuildDirection;}
 
@@ -52,8 +46,6 @@ namespace utilities{
 	private:
 
 		Market _market;
-		int _floatFreqency;
-		int _fixFreqency;
 		int _timeLineBuildDirection;
 		bool _rollAccuralDates;
 		int _bizDaysAfterSpot;

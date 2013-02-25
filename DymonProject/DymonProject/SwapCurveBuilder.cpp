@@ -22,8 +22,6 @@ typedef tuple<date, double> point;
 
 void SwapCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
-	_floatFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.floatfreq",false,"4"));
-	_fixFreqency = std::stoi(cfg->getProperty("convention."+_market.getNameString()+".swap.fixfreq",false,"2"));
 	_timeLineBuildDirection = std::stoi(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"1"));
 	_rollAccuralDates =  cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".rollAccuralDates",false,"0")=="0"?false:true;
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".interpol",false,"LINEAR"));
@@ -53,7 +51,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		cashflow cf(deposit, true);
 		AbstractBootStrapper<date>* bs;
 		if (deposit->getIsOverNight()){
-			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), cf, _interpolAlgo, _numericalAlgo, _market);
+			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, _interpolAlgo, _numericalAlgo);
 		}else{
 			_spotDate = deposit->getSpotDate();
 			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), cf, _interpolAlgo, _numericalAlgo, _market, _spotDateDF);
@@ -76,21 +74,16 @@ void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 
 	for (auto it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
 
-		date fixingDate = _curveStartDate;
-		date accrualEndDate=((*it).first);	
+		date accrualEndDate=it->first;	
 		Swap* swap=&(it->second);		
 		date paymentDate = swap->getDeliveryDate();
-		double swapRate = swap->getSwapRate();
 
 		//cout << "Swap rate at fixing date ["<<fixingDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< swapRate<<"]"<< endl;
 
-		AbstractInterpolator<date>* lineSection;
-		SwapRateBootStrapper swapBS(_curvePointer, paymentDate, swapRate, _cashflowLeg, yc, _interpolAlgo,_numericalAlgo, _market.getDayCountSwapConvention());
+		SwapRateBootStrapper swapBS(_curvePointer, paymentDate, swap, yc, _interpolAlgo,_numericalAlgo);
 		swapBS.init(Configuration::getInstance());
-		lineSection = swapBS.bootStrap();
+		AbstractInterpolator<date>* lineSection = swapBS.bootStrap();
 		yc->insertLineSection(lineSection);
-
 		_curvePointer=lineSection->getEndPoint();
-
 	}
 }

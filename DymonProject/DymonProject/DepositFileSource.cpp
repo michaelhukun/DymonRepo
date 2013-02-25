@@ -89,7 +89,7 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 	}else if (fieldName=="SECURITY_TENOR_ONE"){
 		deposit->setTenorStr(fieldVal);
 	}else if (fieldName=="PX_MID"){
-		deposit->setDepositRate(stod(fieldVal));
+		deposit->setDepositRate(stod(fieldVal)/100);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		deposit->setDayCount(dayCount);

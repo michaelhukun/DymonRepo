@@ -87,7 +87,7 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="SECURITY_TENOR_TWO"){
 		swap->setTenorStr(fieldVal);
 	}else if (fieldName=="PX_MID"){
-		swap->setSwapRate(stod(fieldVal));
+		swap->setSwapRate(stod(fieldVal)/100);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		swap->setDayCountFixed(dayCount);

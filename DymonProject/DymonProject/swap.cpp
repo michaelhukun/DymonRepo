@@ -22,11 +22,11 @@ Swap::Swap(date tradeDate, date maturityDate, int tenorNumOfMonths, double notio
 	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(enums::SWAP, tradeDate, maturityDate, tenorNumOfMonths, couponRate, notional, paymentFreqFixLeg, market.getCurrencyEnum(), buildDirection);
 	BuilderCashFlowLeg* floatLegs = new BuilderCashFlowLeg(enums::SWAP, tradeDate, maturityDate, tenorNumOfMonths, yc ,notional, paymentFreqFloatingLeg, market.getCurrencyEnum(), buildDirection);
 
-	_fixCashflowLeg=fixLegs->getCashFlowLeg();
-	_floatingCashflowLeg=floatLegs->getCashFlowLeg();
+	_fixedCashflowLeg=fixLegs->getCashFlowLeg();
+	_floatCashflowLeg=floatLegs->getCashFlowLeg();
 	_yc=yc;
-	_paymentFreqFixLeg=paymentFreqFixLeg;
-	_paymentFreqFloatingLeg=paymentFreqFloatingLeg;
+	setPayFreqFixed(paymentFreqFixLeg);
+	setPayFreqFloat(paymentFreqFloatingLeg);
 }
 
 Swap::Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market market, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates) {
@@ -37,11 +37,11 @@ Swap::Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponR
 	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(enums::SWAP,tradeDate, tenorNumOfMonths,couponRate,notional, paymentFreqFixLeg, market.getCurrencyEnum());
 	BuilderCashFlowLeg* floatLegs= new BuilderCashFlowLeg(enums::SWAP,tradeDate, tenorNumOfMonths,yc,notional, paymentFreqFloatingLeg, market.getCurrencyEnum());
 
-	_fixCashflowLeg=fixLegs->getCashFlowLeg();
-	_floatingCashflowLeg=floatLegs->getCashFlowLeg();
+	_fixedCashflowLeg=fixLegs->getCashFlowLeg();
+	_floatCashflowLeg=floatLegs->getCashFlowLeg();
 	_yc=yc;
-	_paymentFreqFixLeg=paymentFreqFixLeg;
-	_paymentFreqFloatingLeg=paymentFreqFloatingLeg;
+	setPayFreqFixed(paymentFreqFixLeg);
+	setPayFreqFloat(paymentFreqFloatingLeg);
 	_tenorNumOfMonths=tenorNumOfMonths;	
 }
 
@@ -51,11 +51,17 @@ void Swap::deriveDates(){
 	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate, _market.getDayRollSwapConvention(), _market.getCurrencyEnum());
 }
 
+void Swap::buildFixedLeg(){
+	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(enums::SWAP, _tradeDate, tenorNumOfMonths,couponRate,notional, paymentFreqFixLeg, market.getCurrencyEnum());
+}
+
+void Swap::buildFloatLeg(){
+}
 
 void Swap::printCashflowLegFix() {
-	_fixCashflowLeg->printCashFlowLeg();
+	_fixedCashflowLeg->printCashFlowLeg();
 }
 
 void Swap::printCashflowLegFloat() {
-	_floatingCashflowLeg->printCashFlowLeg();
+	_floatCashflowLeg->printCashFlowLeg();
 }

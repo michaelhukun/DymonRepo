@@ -28,6 +28,7 @@ namespace instruments {
 		enums::DayCountEnum getDayCount(){ return _dayCount; }
 
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
+		void setCouponFreq(int couponFreq){ _couponFreq = couponFreq; }
 
 		//Methods		
 		cashflow getCashFlow(unsigned int index);

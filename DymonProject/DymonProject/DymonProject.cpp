@@ -143,107 +143,10 @@ void LoadInitialData(){
 
 void CashFlowTest() {
 
-	cout << "******** CashFlow Test starts********" << endl;
-	date fixingDate(2013,11,2);
-	date paymentDate(2014,2,6);
-	date accrualStartDate(2013,11,3);
-	date accrualEndDate(2014,2,5);
-	double notional=1000000;
-	double couponRate=0.05;
-	int paymentFreq=4;
-	Market cashFlowCurr=Market(enums::USD);
-	cashFlowCurr.setDayCountCashConvention(enums::ACT_360);
-	cashFlowCurr.setDayCountSwapConvention(enums::ACT_ACT);
-	cashFlowCurr.setDayRollCashConvention(enums::Mfollowing);
-
-	cashflow testCashFlow(couponRate,notional,fixingDate, paymentDate,accrualStartDate, accrualEndDate, cashFlowCurr, true);
-	testCashFlow.printCashFlow();
-	cout << "******** CashFlow Test ends********" << endl;
 }
 
 void CashFlowLegTest()  {
-	date startDate(2012,12,21);
-	date maturityDate(2014,12,25);
-	//date accuralStartDate(2013,11,3);
-	//date accuralEndDate(2014,2,5);
 	
-	double notional=1000000;
-	double couponRate=0.05;
-	int paymentFreq=4;
-	//build from start to end (build forward)
-	int buildDirection=1;
-	bool rollAccuralDates=false;
-
-	Market cashFlowLegCurr=Market(enums::USD);
-	cashFlowLegCurr.setDayCountCashConvention(enums::ACT_360);
-	cashFlowLegCurr.setDayCountSwapConvention(enums::ACT_ACT);
-	cashFlowLegCurr.setDayRollCashConvention(enums::Mfollowing);
-
-	BuilderCashFlowLeg testCashFlowLeg(enums::SWAP, startDate, maturityDate, 2, couponRate,notional, paymentFreq, enums::USD, buildDirection);
-
-	cout << "******** CashFlowLeg Build Test starts********" << endl;
-
-	std::vector<cashflow> cfVector=testCashFlowLeg.getCashFlowLeg()->getCashFlowVector();
-	std::vector<cashflow>::iterator it=cfVector.begin();
-
-	cout<<"start date="<<startDate.toString()<<endl;
-	cout<<"maturity date="<<maturityDate.toString()<<endl<<endl;
-	
-	int i=0;
-	for (;it!=cfVector.end();it++) {
-	 cashflow aCF(*it);
-	 cout<<"***CF stream #"<<++i<<":"<<endl;
-	 aCF.printCashFlow();	 
-	}
-
-	cout <<"Total number of CF streams="<<i<<endl;
-	std::cout << (-20 % 12) << std::endl;
-	cout<<"****************************************************"<<endl<<endl;
-
-	buildDirection=-1;
-	BuilderCashFlowLeg testCashFlowLegReverse(enums::SWAP,startDate, maturityDate, 2, couponRate,notional, paymentFreq, enums::USD, buildDirection);
-
-	
-	cout << "******** CashFlowLeg ReverseBuild Test starts********" << endl;
-
-	std::vector<cashflow> cfVectorR=testCashFlowLeg.getCashFlowLeg()->getCashFlowVector();
-	std::vector<cashflow>::iterator itR=cfVectorR.begin();
-
-	cout<<"start date="<<startDate.toString()<<endl;
-	cout<<"maturity date="<<maturityDate.toString()<<endl<<endl;
-
-	i=0;
-	for (;itR!=cfVectorR.end();itR++) {
-	 cashflow aCF(*itR);
-	 cout<<"***CF stream #"<<++i<<":"<<endl;
-	 aCF.printCashFlow();	 
-	}
-
-	cout <<"Total number of CF streams="<<i<<endl<<endl;
-
-	int tenorNumMonth=12;
-
-	BuilderCashFlowLeg testCashFlowLegTenor(enums::SWAP,startDate, tenorNumMonth, couponRate, notional,  paymentFreq, enums::USD);
-
-	cout << "******** CashFlowLeg TenorBuild Test starts********" << endl;
-
-	std::vector<cashflow> cfVectorT=testCashFlowLegTenor.getCashFlowLeg()->getCashFlowVector();
-	std::vector<cashflow>::iterator itT=cfVectorT.begin();
-	
-	cout<<"start date="<<startDate.toString()<<endl;
-	cout<<"tenorNumOfMonths="<<tenorNumMonth<<endl<<endl<<endl;
-
-	i=0;
-	for (;itT!=cfVectorT.end();itT++) {
-	 cashflow aCF(*itT);
-	 cout<<"***CF stream #"<<++i<<":"<<endl;
-	 aCF.printCashFlow(); 
-	}
-
-	cout <<"Total number of CF streams="<<i<<endl<<endl;
-
-	string s;
-	getline(cin,s);
 }
 
 void SwapTest() {

@@ -21,9 +21,12 @@ void OvernightRateBootStrapper::init(Configuration* cfg){
 
 AbstractInterpolator<date>* OvernightRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
-	enums::DayCountEnum dayCountCashConvention = _market.getDayCountCashConvention();
-	double accrualFactor = dateUtil::getAccrualFactor(_cashFlow.getAccuralStartDate(),_cashFlow.getAccuralEndDate(), dayCountCashConvention);
-	double discountFactor = 1/(1+accrualFactor*_depositRate);
+	enums::DayCountEnum dayCount = _deposit->getDayCount();
+	date accuralStartDate = _deposit->getSpotDate();
+	date accuralEndDate = _deposit->getExpiryDate();
+	double depositRate = _deposit->getDepositRate();
+	double accrualFactor = dateUtil::getAccrualFactor(accuralStartDate, accuralEndDate, dayCount);
+	double discountFactor = 1/(1+accrualFactor*depositRate);
 	ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
 	return ai;
 }

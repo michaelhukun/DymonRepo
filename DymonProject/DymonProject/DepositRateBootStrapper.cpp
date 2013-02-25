@@ -22,9 +22,8 @@ void DepositRateBootStrapper::init(Configuration* cfg){
 
 AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
-	enums::DayCountEnum dayCountCashConvention = _market.getDayCountCashConvention();
 	if (_spotDateDF != NaN){
-		double accrualFactor = dateUtil::getAccrualFactor(_cashFlow.getAccuralStartDate(),_cashFlow.getAccuralEndDate(), dayCountCashConvention);
+		double accrualFactor = dateUtil::getAccrualFactor(_cashFlow.getAccuralStartDate(),_cashFlow.getAccuralEndDate(), _dayCountCash);
 		double discountFactor = (1/(1+accrualFactor*_depositRate))*_spotDateDF;
 		ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
 	}else{

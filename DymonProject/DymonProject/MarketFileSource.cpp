@@ -56,8 +56,10 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setCurrencyEnum(EnumHelper::getCcyEnum(fieldVal));
 	}else if (fieldName=="DayCountCash"){
 		market->setDayCountCashConvention(EnumHelper::getDayCountEnum(fieldVal));
-	}else if (fieldName=="DayCountSwap"){
-		market->setDayCountSwapConvention(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayCountSwapFixed"){
+		market->setDayCountSwapFixed(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayCountSwapFloat"){
+		market->setDayCountSwapFloat(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayCountBond"){
 		market->setDayCountBondConvention(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayRollCash") {
@@ -76,7 +78,9 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setBusinessDaysAfterSpotSwap(std::stoi(fieldVal));
 	}else if (fieldName=="BizDaysAfterSpotBond"){
 		market->setBusinessDaysAfterSpotBond(std::stoi(fieldVal));
-	}else if (fieldName=="BizDaysAfterExpiryFXOption"){
-		market->setBusinessDaysAfterExpiryFXOption(std::stoi(fieldVal));
+	}else if (fieldName=="PayFreqSwapFixed"){
+		market->setPayFreqSwapFixed(std::stoi(fieldVal));
+	}else if (fieldName=="PayFreqSwapFloat"){
+		market->setPayFreqSwapFloat(std::stoi(fieldVal));
 	}
 }

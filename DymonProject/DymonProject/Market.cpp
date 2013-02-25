@@ -34,17 +34,6 @@ std::string Market::getNameString(){
 	return NULL;
 }
 
-enums::DayCountEnum Market::getDayCountConvention(enums::Instrument instrument){
-	switch (instrument){
-	case enums::BOND:
-		return getDayCountBondConvention();
-	case enums::SWAP:
-		return getDayCountSwapConvention();
-	default:
-		return getDayCountSwapConvention();
-	}
-}
-
 enums::DayRollEnum Market::getDayRollConvention(enums::Instrument instrument){
 	switch (instrument){
 	case enums::BOND:
@@ -78,19 +67,11 @@ int Market::getBusinessDaysAfterSpot(enums::Instrument instrument){
 	}
 }
 
-int Market::getBusinessDaysAfterExpiry(enums::Instrument instrument){
-	switch (instrument){
-	case enums::FXOPTION:
-		return getBusinessDaysAfterExpiryFXOption();
-	default:
-		return getBusinessDaysAfterExpiryFXOption();
-	}
-}
-
 void Market::display(){
 
 	cout << this->getNameString()<< " -> "<< "DayCountCashConvention "<< _dayCountCashConvention<<endl;
-	cout << this->getNameString()<< " -> "<< "DayCountSwapConvention "<< _dayCountSwapConvention<<endl;
+	cout << this->getNameString()<< " -> "<< "DayCountSwapFixed "<< _dayCountSwapFixed<<endl;
+	cout << this->getNameString()<< " -> "<< "DayCountSwapFloat "<< _dayCountSwapFloat<<endl;
 	cout << this->getNameString()<< " -> "<< "DayCountBondConvention "<< _dayCountBondConvention<<endl;
 	cout << this->getNameString()<< " -> "<< "DayRollCashConvention "<< _dayRollCashConvention<<endl;
 	cout << this->getNameString()<< " -> "<< "DayRollSwapConvention "<< _dayRollSwapConvention<<endl;

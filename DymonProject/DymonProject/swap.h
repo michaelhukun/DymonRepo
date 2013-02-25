@@ -23,8 +23,8 @@ namespace instruments {
 	class Swap: public AbstractInstrument{
 	public:
 		Swap():AbstractInstrument(){
-			_fixCashflowLeg = new cashflowLeg();
-			_floatingCashflowLeg = new cashflowLeg();
+			_fixedCashflowLeg = new cashflowLeg();
+			_floatCashflowLeg = new cashflowLeg();
 		};
 		~Swap(){};
 		Swap(date tradeDate, date maturityDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market market, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection);
@@ -32,35 +32,38 @@ namespace instruments {
 
 		// Getters and Setters
 
-		int getPaymentFreqFixLeg() { return _paymentFreqFixLeg; }
-		int getPaymentFreqFloatingLeg() { return _paymentFreqFloatingLeg; }
-		cashflowLeg* getCashFlowVectorFix() { return _fixCashflowLeg; }
-		cashflowLeg* getCashFlowVectorFloat() {	return _floatingCashflowLeg; }
+		int getPayFreqFixed() { return _fixedCashflowLeg->getCouponFreq(); }
+		int getPayFreqFloat() { return _floatCashflowLeg->getCouponFreq(); }
+		cashflowLeg* getCashFlowVectorFix() { return _fixedCashflowLeg; }
+		cashflowLeg* getCashFlowVectorFloat() {	return _floatCashflowLeg; }
 		DiscountCurve* Swap::getDiscountCurve() { return _yc; }
 		int getTenor(){ return _tenorNumOfMonths;}
 		double getSwapRate(){ return _swapRate; }
 		double getDaysToMty(){ return _daysToMty; }
-		enums::DayCountEnum getDayCountFixed(){ return _fixCashflowLeg->getDayCount(); }
-		enums::DayCountEnum getDayCountFloat(){ return _floatingCashflowLeg->getDayCount(); }
+		enums::DayCountEnum getDayCountFixed(){ return _fixedCashflowLeg->getDayCount(); }
+		enums::DayCountEnum getDayCountFloat(){ return _floatCashflowLeg->getDayCount(); }
 
 		void setSwapRate(double swapRate){ _swapRate= swapRate; }
 		void setDaysToMty(int daysToMty){ _daysToMty = daysToMty; }
-		void setDayCountFixed(enums::DayCountEnum dayCountFixed){ _fixCashflowLeg->setDayCount(dayCountFixed);}
-		void setDayCountFloat(enums::DayCountEnum dayCountFloat){ _floatingCashflowLeg->setDayCount(dayCountFloat);}
+		void setDayCountFixed(enums::DayCountEnum dayCountFixed){ _fixedCashflowLeg->setDayCount(dayCountFixed);}
+		void setDayCountFloat(enums::DayCountEnum dayCountFloat){ _floatCashflowLeg->setDayCount(dayCountFloat);}
+		void setPayFreqFixed(int payFreqFixed){ _fixedCashflowLeg->setCouponFreq(payFreqFixed);}
+		void setPayFreqFloat(int payFreqFloat){ _floatCashflowLeg->setCouponFreq(payFreqFloat);}
+
 
 		// Methods
 		void deriveDates();
+		void buildFixedLeg();
+		void buildFloatLeg();
 		void printCashflowLegFix();
 		void printCashflowLegFloat();
 		std::string toString(){return "";}
 
 	private:
 
-		cashflowLeg* _fixCashflowLeg;
-		cashflowLeg* _floatingCashflowLeg;
+		cashflowLeg* _fixedCashflowLeg;
+		cashflowLeg* _floatCashflowLeg;
 		DiscountCurve* _yc;
-		int _paymentFreqFixLeg;
-		int _paymentFreqFloatingLeg;
 		int _tenorNumOfMonths;
 		double _swapRate;
 		int _daysToMty;
