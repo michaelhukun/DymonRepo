@@ -26,9 +26,11 @@ namespace instruments {
 		int getCouponFreq(){return _couponFreq;}
 		int getSize(){return _cashflowVector.size();}
 		enums::DayCountEnum getDayCount(){ return _dayCount; }
+		int getCashFlowNumber(){ return _cashFlowNumber; }
 
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 		void setCouponFreq(int couponFreq){ _couponFreq = couponFreq; }
+		void setCashFlowNumber(int cashFlowNumber){ _cashFlowNumber = cashFlowNumber; }
 
 		//Methods		
 		cashflow getCashFlow(unsigned int index);
@@ -46,6 +48,7 @@ namespace instruments {
 		vector<cashflow> _cashflowVector;
 		int _couponFreq;
 		enums::DayCountEnum _dayCount;
+		int _cashFlowNumber;
 	};
 }
 #endif

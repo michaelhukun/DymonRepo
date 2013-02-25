@@ -1,7 +1,7 @@
 //created by Wang Jianwei on 1 Dec 2012
 #include "BondCurveBuilder.h"
 #include <iostream>
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include "BondRateBootStrapper.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"

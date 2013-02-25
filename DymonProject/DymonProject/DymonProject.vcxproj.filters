@@ -126,9 +126,6 @@
     <ClInclude Include="AbstractFileSource.h">
       <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
-    <ClInclude Include="BuilderCashFlowLeg.h">
-      <Filter>Header Files\dymon.builder</Filter>
-    </ClInclude>
     <ClInclude Include="Constants.h">
       <Filter>Header Files\dymon.util</Filter>
     </ClInclude>
@@ -330,6 +327,9 @@
     <ClInclude Include="fxforwardimpliedbootstrapper.h">
       <Filter>Header Files\dymon.bootstrapper</Filter>
     </ClInclude>
+    <ClInclude Include="CashFlowLegBuilder.h">
+      <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -378,9 +378,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="cashflowLeg.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BuilderCashFlowLeg.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SwapRateBootStrapper.cpp">
@@ -528,6 +525,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Deposit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CashFlowLegBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

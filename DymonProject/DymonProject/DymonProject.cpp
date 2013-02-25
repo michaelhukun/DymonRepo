@@ -3,7 +3,7 @@
 #include "dateUtil.h"
 #include "cashflow.h"
 #include "RecordHelper.h"
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include <math.h>
 #include "Market.h"
 #include <vector>
@@ -109,13 +109,13 @@ void forwardStartingSwap(DiscountCurve* yc){
 	for(int i=12; i<240; i++){
 		date startDate =dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,enums::USD);	
 		date tradeDate = dateUtil::getEndDateMonthIncrement(startDate,i);
-		Swap swap1(tradeDate, tenorNumOfMonths, notional, couponRate, yc, market,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
-		cashflowLeg* fixLeg=swap1.getCashFlowVectorFix();
+		//Swap swap1(tradeDate, tenorNumOfMonths, notional, couponRate, yc, market,paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
+		//cashflowLeg* fixLeg=swap1.getCashFlowVectorFix();
 		//fixLeg->printCashFlowLeg();
-		cashflowLeg* floatLeg=swap1.getCashFlowVectorFloat();
+		//cashflowLeg* floatLeg=swap1.getCashFlowVectorFloat();
 		//cout<<"Swap starting at ["<<tradeDate.toString()<<"] months with par rate ["<<swap1.getParRate(floatLeg,fixLeg,yc)<<"]"<<endl;
 		//cout<<swap1.getParRate(floatLeg,fixLeg,yc)<<endl;
-		cout<<SwapPricer(&swap1).getMPV(fixLeg,floatLeg,yc)<<endl;
+		//cout<<SwapPricer(&swap1).getMPV(fixLeg,floatLeg,yc)<<endl;
 	}
 }
 

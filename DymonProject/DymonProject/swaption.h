@@ -10,7 +10,7 @@
 #include <iterator>
 #include "cashflow.h"
 #include "cashflowLeg.h"
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include "RecordHelper.h"
 #include "SwapPricer.h"
 #include "AbstractPricer.h"

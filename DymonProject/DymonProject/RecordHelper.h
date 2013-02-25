@@ -34,8 +34,8 @@ namespace Session {
 		// Type Definition
 		typedef std::map<enums::CurrencyEnum, std::set<long>> HolidayMap;	
 		typedef std::map<enums::CurrencyEnum, std::map<long, Deposit>> DepositRateMap;	
-		typedef std::map<enums::CurrencyEnum, std::map<long, instruments::Swap>> SwapRateMap;		
-		typedef std::map<enums::CurrencyEnum, std::map<long, instruments::Bond>> BondRateMap;		
+		typedef std::map<enums::CurrencyEnum, std::map<long, Swap>> SwapRateMap;		
+		typedef std::map<enums::CurrencyEnum, std::map<long, Bond>> BondRateMap;		
 		typedef std::map<enums::CurrencyEnum, std::map<long, BondFuture>> BondFutureMap;
 		typedef std::map<enums::CurrencyEnum, Market> MarketMap;
 		//std::map<BasisPoint,std::map<fSwapTenorNumOfMonths,map<optionTenorNumOfMonths,swaptionVol>>> SwaptionCubeMap

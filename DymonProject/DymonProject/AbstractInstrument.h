@@ -26,6 +26,8 @@ namespace instruments {
 		virtual std::string getName(){ return _name; }
 		virtual std::string getTenorStr(){ return _tenorStr; }
 		virtual enums::DayCountEnum getDayCount(){ return _dayCount; }
+		virtual enums::DayRollEnum getDayRoll(){ return _dayRoll; }
+		virtual enums::Instrument getInstrumentEnum(){ return _instrumentEnum; }
 		
 		// Setters
 		virtual void setMarket(Market market){ _market = market; }
@@ -38,6 +40,8 @@ namespace instruments {
 		virtual void setID(std::string ID){ _ID = ID;}
 		virtual void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
 		virtual void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
+		virtual void setDayRoll(enums::DayRollEnum dayRoll){ _dayRoll = dayRoll;}
+		virtual void setInstrumentEnum(enums::Instrument instrumentEnum){ _instrumentEnum = instrumentEnum; }
 
 		// Method
 
@@ -54,6 +58,8 @@ namespace instruments {
 		std::string _name;
 		std::string _tenorStr;
 		enums::DayCountEnum _dayCount;
+		enums::DayRollEnum _dayRoll;
+		enums::Instrument _instrumentEnum;
 	};
 }
 #endif

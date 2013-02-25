@@ -107,7 +107,7 @@
     <ClInclude Include="BondPriceFileSource.h" />
     <ClInclude Include="bondpricer.h" />
     <ClInclude Include="BondRateBootStrapper.h" />
-    <ClInclude Include="BuilderCashFlowLeg.h" />
+    <ClInclude Include="CashFlowLegBuilder.h" />
     <ClInclude Include="cashflow.h" />
     <ClInclude Include="cashflowLeg.h" />
     <ClInclude Include="CcyPair.h" />
@@ -189,7 +189,7 @@
     <ClCompile Include="BondCurveBuilder.cpp" />
     <ClCompile Include="BondPricer.cpp" />
     <ClCompile Include="BondRateBootStrapper.cpp" />
-    <ClCompile Include="BuilderCashFlowLeg.cpp" />
+    <ClCompile Include="CashFlowLegBuilder.cpp" />
     <ClCompile Include="cashflow.cpp" />
     <ClCompile Include="cashflowLeg.cpp" />
     <ClCompile Include="CcyPair.cpp" />

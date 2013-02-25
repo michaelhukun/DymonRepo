@@ -23,7 +23,7 @@ namespace instruments {
 		cashflow(){};
 		cashflow(Deposit* deposit, bool isValid);
 		cashflow(double couponRate,double notional, date fixingDate, date paymentDate, date accuralStartDate, date accuralEndDate, Market cashFlowCurr, bool isValid);
-
+		cashflow(date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, Market cashFlowCurr, bool isValid);
 		~cashflow(){};
 
 		// Getters and Setters

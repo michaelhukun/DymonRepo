@@ -3,7 +3,7 @@
 #include "SwapCurveBuilder.h"
 #include <iostream>
 #include "DiscountCurve.h"
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"
 #include "EnumHelper.h"
@@ -67,7 +67,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
-	BuilderCashFlowLeg builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, _market.getCurrencyEnum());
+	CashFlowLegBuilder builtCashflowLeg(enums::SWAP,_curveStartDate,600,1,1, _floatFreqency, _market.getCurrencyEnum());
 	cashflowLeg* _cashflowLeg=builtCashflowLeg.getCashFlowLeg();
 
 	auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
