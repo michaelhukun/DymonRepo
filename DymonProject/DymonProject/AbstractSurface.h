@@ -4,6 +4,7 @@
 #include "AbstractCurve.h"
 #include "AbstractInterpolator.h"
 #include "AbstractDataStructure.h"
+#include "Configuration.h"
 #include <map>
 #include <sstream>
 
@@ -13,16 +14,9 @@ namespace utilities{
 	public:		
 
 		AbstractSurface():AbstractDataStructure(){
+			_cfg = Configuration::getInstance(); 
 			_curves = new std::map<U, AbstractCurve<T>*>;
 		};
-
-		AbstractSurface(std::map<U, AbstractCurve<T>*> curves){
-			setcurves(curves);
-		}
-
-		void setcurves(std::map<U, AbstractCurve<T>*> curves){
-			_curves=curves;
-		}
 
 		virtual void insertcurve(U majorAxisVal, AbstractCurve<T>* curve);
 
@@ -39,6 +33,9 @@ namespace utilities{
 	protected:
 
 		std::map<U, AbstractCurve<T>*>* _curves;
+		enums::interpolAlgo _majorAxisInterpol;
+		Configuration* _cfg;
+
 	};
 
 	template<typename U, typename T>

@@ -1,9 +1,19 @@
 #include "FXSkewSurface.h"
-
+#include "InterpolatorFactory.h"
+#include "AbstractCurve.h"
 using namespace utilities;
 
-double FXSkewSurface::getValue(long majorAxisVal, double minorAxisVal){
-	return 0;
+typedef tuple<double, double> point;
+
+double FXSkewSurface::getValue(double tenor, double delta){	
+	AbstractCurve<double>* volCurveAlongTenor = getCurveAlongTenor(delta);
+	double vol;
+	if (_interpolateOnVar){
+			vol = volCurveAlongTenor->getValue(tenor);
+		} else {
+			vol = sqrt(volCurveAlongTenor->getValue(tenor)/tenor);
+		}
+	return vol;
 }
 
 string FXSkewSurface::dumpSruface(int deltaAxisPointNum){
@@ -21,4 +31,41 @@ string FXSkewSurface::dumpSruface(int deltaAxisPointNum){
 		ss<<"\n";
 	}
 	return ss.str();
+}
+
+AbstractCurve<double>* FXSkewSurface::getCurveAlongTenor(double delta){
+	AbstractCurve<double>* curve = new AbstractCurve<double>();
+	map<double, AbstractCurve<double>*>::iterator i;
+	map<double, AbstractCurve<double>*>::iterator j;
+	for (i = _curves->begin(), j=++_curves->begin(); j!=_curves->end(); i++,j++){
+		AbstractCurve<double>* lowerTenorCurve = (*i).second;
+		AbstractCurve<double>* upperTenorCurve = (*j).second;
+		double startTenor =  (*i).first;
+		double endTenor =  (*j).first;
+		double startVol = lowerTenorCurve->getValue(delta);
+		double endVol = upperTenorCurve->getValue(delta);
+		AbstractInterpolator<double>* ai;
+		if (_interpolateOnVar){
+			ai = getVarLineSectionAlongTenor(startTenor, startVol, endTenor, endVol);
+		} else {
+			ai = getVolLineSectionAlongTenor(startTenor, startVol, endTenor, endVol);
+		}
+		curve->insertLineSection(ai);
+	}
+	return curve;
+}
+
+AbstractInterpolator<double>* FXSkewSurface::getVolLineSectionAlongTenor(double startTenor, double startVol, double endTenor, double endVol){
+	point startPoint(startTenor,startVol);
+	point endPoint(endTenor,endVol);
+	AbstractInterpolator<double>* ai = InterpolatorFactory<double>::getInstance()->getInterpolator(startPoint, endPoint, _majorAxisInterpol);
+	return ai;
+}
+
+
+AbstractInterpolator<double>* FXSkewSurface::getVarLineSectionAlongTenor(double startTenor, double startVol, double endTenor, double endVol){
+	point startPoint(startTenor,startTenor*pow(startVol,2));
+	point endPoint(endTenor,endTenor*pow(endVol,2));
+	AbstractInterpolator<double>* ai = InterpolatorFactory<double>::getInstance()->getInterpolator(startPoint, endPoint, _majorAxisInterpol);
+	return ai;
 }
