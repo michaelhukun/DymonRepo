@@ -26,6 +26,7 @@ SwapRateFileSource::SwapRateFileSource(std::string persistDir, std::string fileN
 SwapRateFileSource::~SwapRateFileSource(){}
 
 void SwapRateFileSource::init(Configuration* cfg){
+   _name = "Swap Rate";
 	_fileName = cfg->getProperty("swapRate.file",true,"");
 	_persistDir = cfg->getProperty("swapRate.path",false,"");
 	_enabled = cfg->getProperty("swapRate.enabled",true,"")=="true"?true:false;
@@ -52,7 +53,6 @@ void SwapRateFileSource::retrieveRecord(){
 		insertSwapIntoCache(tempSwap, swapRateMap);
 	}
 
-	_inFile.close();
 }
 
 void SwapRateFileSource::insertSwapIntoCache(Swap* swap, RecordHelper::SwapRateMap* swapRateMap){
@@ -66,7 +66,7 @@ void SwapRateFileSource::insertSwapIntoCache(Swap* swap, RecordHelper::SwapRateM
 		auto tempMap = &(swapRateMap->find(market)->second);
 		tempMap->insert(std::make_pair(accrualEndJDN, *swap));
 	}
-	cout<<swap->toString()<<endl;
+	//cout<<swap->toString()<<endl;
 }
 
 Swap* SwapRateFileSource::createSwapObject(CSVDatabase db, int row){
@@ -97,13 +97,14 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="DAYS_TO_MTY"){
 		swap->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,true);
+		date tradeDate(fieldVal,false);
 		swap->setTradeDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
-		date accrualStartDate(fieldVal,true);
+		date accrualStartDate(fieldVal,false);
 		swap->setSpotDate(accrualStartDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		swap->setMarket(market);
+      swap->setDayRoll(market.getDayRollSwapConvention());
 	}
 }

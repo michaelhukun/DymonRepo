@@ -27,6 +27,7 @@ void Swap::buildFixedLeg(){
 	builder.setPaymentFreq(getPayFreqFixed());
 	builder.setDayCountEnum(getDayCountFixed());
 	builder.setPaymentNumber(getCouponNumberFixed());
+   builder.setBuildDirection(1);
 	_fixedCashflowLeg.setCashFlowVector(*builder.build());
 }
 
@@ -38,6 +39,7 @@ void Swap::buildFloatLeg(){
 	builder.setPaymentFreq(getPayFreqFloat());
 	builder.setDayCountEnum(getDayCountFloat());
 	builder.setPaymentNumber(getCouponNumberFloat());
+   builder.setBuildDirection(1);
 	_floatCashflowLeg.setCashFlowVector(*builder.build());
 }
 

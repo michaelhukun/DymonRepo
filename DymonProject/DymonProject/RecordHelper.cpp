@@ -44,6 +44,7 @@ void RecordHelper::init(Configuration* cfg){
 		AbstractDAO* dao = dataSourceVector[i];
 		dao->init(cfg);
 		dao->retrieveRecord();
+      dao->printSuccessMsg();
 	}
 }
 

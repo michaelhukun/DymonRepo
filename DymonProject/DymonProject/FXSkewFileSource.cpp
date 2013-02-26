@@ -8,6 +8,7 @@ using namespace DAO;
 using namespace utilities;
 
 void FXSkewFileSource::init(Configuration* cfg){
+   _name = "FX Skew";
 	_fileName = cfg->getProperty("FXSkew.file",true,"");
 	_persistDir = cfg->getProperty("FXSkew.path",false,"");
 	_enabled = cfg->getProperty("FXSkew.enabled",true,"")=="true"?true:false;

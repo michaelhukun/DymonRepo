@@ -20,8 +20,8 @@ using namespace instruments;
 
 
 void SwaptionVolFileSource::init(Configuration* cfg){
-	
 	Market market(EnumHelper::getCcyEnum("USD"));
+   _name = "Swaption Vol";
 	_fileName = cfg->getProperty("swaptionVolCube."+market.getNameString()+".file",true,"");
 	_enabled = (cfg->getProperty("swaptionVolCube.enabled",true,"")=="true")?true:false;
 	AbstractFileSource::init(cfg);
@@ -90,7 +90,6 @@ void SwaptionVolFileSource::retrieveRecord(){
 	RecordHelper::getInstance()->setSwaptionATMStrikeMap(tempSwaptionATMStrikeMap);
 	RecordHelper::getInstance()->setSwaptionVolMap(tempSwaptionCubeMap);
 	_inFile.close();
-	//DAO::SwaptionVolFileSource::swaptionTest();
 }
 
 int SwaptionVolFileSource::getStrikeDiffATM(string strikeStr){

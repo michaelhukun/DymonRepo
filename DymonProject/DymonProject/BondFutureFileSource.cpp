@@ -18,6 +18,7 @@ using namespace Session;
 using namespace instruments;
 
 void BondFutureFileSource::init(Configuration* cfg){
+   _name = "Bond Future";
 	_fileName = cfg->getProperty("bondFuture.file",true,"");
 	_persistDir = cfg->getProperty("bondFuture.path",false,"");
 	_enabled = cfg->getProperty("bondFuture.enabled",true,"")=="true"?true:false;

@@ -54,7 +54,8 @@ vector<cashflow>* CashFlowLegBuilder::build(){
 		_cashflowVector.push_back(cf);
 	}
 
-	if (dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*_paymentNumber,accrualDayRoll,marketEnum,dateUtil::MONTH)!=_accrualEndDate){
+   date lastCashFlowAccrualEndDate = dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*_paymentNumber,accrualDayRoll,marketEnum,dateUtil::MONTH);
+	if (lastCashFlowAccrualEndDate!=_accrualEndDate){
 		_cashflowVector.clear();
 		throw "Derived end date is not the same as indicated.";
 	}

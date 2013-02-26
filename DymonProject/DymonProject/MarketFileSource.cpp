@@ -15,6 +15,7 @@ using namespace utilities;
 using namespace Session;
 
 void MarketFileSource::init(Configuration* cfg){
+   _name = "Market Convention";
 	_fileName = cfg->getProperty("marketConvention.file",true,"");
 	_persistDir = cfg->getProperty("marketConvention.path",false,"");
 	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="true"?true:false;
@@ -43,7 +44,6 @@ void MarketFileSource::retrieveRecord(){
 			String fieldVal=db.at(i).at(j);
 			updateMarketObjectField(fieldName, fieldVal, market);
 		}
-		market->display();
 		marketMap.insert(std::make_pair(CurrencyEnum,*market));
 	}
 	RecordHelper::getInstance()->setMarketMap(marketMap);

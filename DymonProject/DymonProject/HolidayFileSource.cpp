@@ -23,6 +23,7 @@ HolidayFileSource::HolidayFileSource(std::string persistDir, std::string fileNam
 HolidayFileSource::~HolidayFileSource(){}
 
 void HolidayFileSource::init(Configuration* cfg){
+   _name = "Holiday";
 	_fileName = cfg->getProperty("holiday.file",true,"");
 	_persistDir = cfg->getProperty("holiday.path",false,"");
 	_enabled = cfg->getProperty("holiday.enabled",true,"")=="true"?true:false;
@@ -42,7 +43,7 @@ void HolidayFileSource::retrieveRecord(){
 		vector<string> vec = fileUtil::split(value,':');
 		market = EnumHelper::getCcyEnum(vec[0]);
 		vector<string> holidays = fileUtil::split(vec[1],',');
-		cout<<market<<" market has total holiday number:  "<<holidays.size()<<endl;
+		//cout<<market<<" market has total holiday number:  "<<holidays.size()<<endl;
 		set<long> JDNSet = buildJDNSet(holidays);
 		tempMap.insert(pair<enums::CurrencyEnum,set<long>>(market,JDNSet));
 	}

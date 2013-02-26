@@ -24,6 +24,7 @@ AbstractFileSource(persistDir, fileName){}
 DepositFileSource::~DepositFileSource(){}
 
 void DepositFileSource::init(Configuration* cfg){
+   _name = "Deposit";
 	_fileName = cfg->getProperty("depositRate.file",true,"");
 	_persistDir = cfg->getProperty("depositRate.path",false,"");
 	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
@@ -62,7 +63,7 @@ void DepositFileSource::insertDepositIntoCache(Deposit* deposit, RecordHelper::D
 		auto tempMap = &(depositRateMap->find(market)->second);
 		tempMap->insert(std::make_pair(accrualEndJDN, *deposit));
 	}
-	cout<<deposit->toString()<<endl;
+	//cout<<deposit->toString()<<endl;
 }
 
 Deposit* DepositFileSource::createDepositObject(CSVDatabase db, int row){
@@ -96,16 +97,16 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 	}else if (fieldName=="DAYS_TO_MTY"){
 		deposit->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,true);
+		date tradeDate(fieldVal,false);
 		deposit->setTradeDate(tradeDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		deposit->setMarket(market);
 	}else if (fieldName=="SETTLE_DT"){
-		date deliveryDate(fieldVal,true);
+		date deliveryDate(fieldVal,false);
 		deposit->setDeliveryDate(deliveryDate);
 	}else if (fieldName=="MATURITY"){
-		date accrualEndDate(fieldVal,true);
+		date accrualEndDate(fieldVal,false);
 		deposit->setExpiryDate(accrualEndDate);
 	}
 }
