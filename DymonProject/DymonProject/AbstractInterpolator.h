@@ -29,8 +29,11 @@ namespace utilities{
 			_algo=algo;
 		}
 
+      // Methods
 		virtual point interpolate(T xVal){return point(NULL,0);}
+		virtual std::string toString();
 
+      // Getters and Setters
 		point getStartPoint(){return _startPoint;}
 		point getEndPoint(){return _endPoint;}
 		T getStartingX(){
@@ -42,8 +45,6 @@ namespace utilities{
 		T getEndingX(){
 			return std::get<0>(_endPoint);
 		}
-
-		virtual std::string toString();
 
 	protected:
 

@@ -109,7 +109,7 @@ namespace utilities {
 		if (_isNull){
 			ss <<"NullDate"<<endl;
 		}else{
-			ss<<getDay()<<"/"<<getMonth()<<"/"<<getYear();//"-"<<_judianDayNumber;
+			ss<<getMonth()<<"/"<<getDay()<<"/"<<getYear();//"-"<<_judianDayNumber;
 		}
 		return ss.str();
 	}

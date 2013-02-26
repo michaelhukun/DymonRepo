@@ -32,6 +32,7 @@ void SwapCurveBuilder::init(Configuration* cfg){
 DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	DiscountCurve* yc = new DiscountCurve();
+   yc->setName(_market.getNameString()+" Swap Curve");
 	buildDepositSection(yc);
 	buildSwapSection(yc);
 	return yc;

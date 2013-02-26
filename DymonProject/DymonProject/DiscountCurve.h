@@ -26,10 +26,6 @@ namespace utilities{
 		double getDFChangingZeroRate(date aDate, double zeroRateDiff, enums::DayCountEnum dayCount);
 
 		double getFLiborRate(date forwardStartDate,date forwardEndDate,enums::DayCountEnum dayCount);
-
-		std::string toString();
-		
-		std::string toString(int interval);
 	};
 }
 #endif
