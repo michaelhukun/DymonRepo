@@ -9,10 +9,10 @@ double FXSkewSurface::getValue(double tenor, double delta){
 	AbstractCurve<double>* volCurveAlongTenor = getCurveAlongTenor(delta);
 	double vol;
 	if (_interpolateOnVar){
-			vol = volCurveAlongTenor->getValue(tenor);
-		} else {
-			vol = sqrt(volCurveAlongTenor->getValue(tenor)/tenor);
-		}
+		vol = volCurveAlongTenor->getValue(tenor);
+	} else {
+		vol = sqrt(volCurveAlongTenor->getValue(tenor)/tenor);
+	}
 	return vol;
 }
 
