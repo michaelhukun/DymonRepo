@@ -6,8 +6,7 @@
 #include "dateUtil.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"
-#include "BuilderCashFlowLeg.h"
-#include "SwapPricer.h"
+#include "CashFlowLegBuilder.h"
 #include "AbstractPricer.h"
 
 using namespace instruments;
@@ -15,48 +14,39 @@ using namespace utilities;
 using namespace std;
 using namespace enums;
 
-Swap::Swap(date tradeDate, date maturityDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market market, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates, int buildDirection) {
-
-	setTradeDate(tradeDate);
-	setDeliveryDate(maturityDate);
-
-	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(enums::SWAP, tradeDate, maturityDate, tenorNumOfMonths, couponRate, notional, paymentFreqFixLeg, market.getCurrencyEnum(), buildDirection);
-	BuilderCashFlowLeg* floatLegs = new BuilderCashFlowLeg(enums::SWAP, tradeDate, maturityDate, tenorNumOfMonths, yc ,notional, paymentFreqFloatingLeg, market.getCurrencyEnum(), buildDirection);
-
-	_fixCashflowLeg=fixLegs->getCashFlowLeg();
-	_floatingCashflowLeg=floatLegs->getCashFlowLeg();
-	_yc=yc;
-	_paymentFreqFixLeg=paymentFreqFixLeg;
-	_paymentFreqFloatingLeg=paymentFreqFloatingLeg;
-}
-
-Swap::Swap(date tradeDate, int tenorNumOfMonths, double notional, double couponRate, DiscountCurve* yc, Market market, int paymentFreqFixLeg, int paymentFreqFloatingLeg, bool rollAccuralDates) {
-
-	setTradeDate(tradeDate);
-	setDeliveryDate(dateUtil::getEndDate(tradeDate,tenorNumOfMonths,market.getDayRollSwapConvention(),market.getCurrencyEnum(),dateUtil::MONTH));
-
-	BuilderCashFlowLeg* fixLegs = new BuilderCashFlowLeg(enums::SWAP,tradeDate, tenorNumOfMonths,couponRate,notional, paymentFreqFixLeg, market.getCurrencyEnum());
-	BuilderCashFlowLeg* floatLegs= new BuilderCashFlowLeg(enums::SWAP,tradeDate, tenorNumOfMonths,yc,notional, paymentFreqFloatingLeg, market.getCurrencyEnum());
-
-	_fixCashflowLeg=fixLegs->getCashFlowLeg();
-	_floatingCashflowLeg=floatLegs->getCashFlowLeg();
-	_yc=yc;
-	_paymentFreqFixLeg=paymentFreqFixLeg;
-	_paymentFreqFloatingLeg=paymentFreqFloatingLeg;
-	_tenorNumOfMonths=tenorNumOfMonths;	
-}
-
-
-void Swap::deriveDates(date accrualStartDate, int daysToMty){
-	_expiryDate = date(accrualStartDate.getJudianDayNumber()+daysToMty);
+void Swap::deriveDates(){
+	_expiryDate = date(_spotDate.getJudianDayNumber()+_daysToMty);
 	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate, _market.getDayRollSwapConvention(), _market.getCurrencyEnum());
 }
 
+void Swap::buildFixedLeg(){
+	setDayCountFixed(_market.getDayCountSwapFixed());
+	setPayFreqFixed(_market.getPayFreqSwapFixed());
+	_fixedCashflowLeg.setCashFlowNumber(_tenorInYear*_market.getPayFreqSwapFixed());
+	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
+	builder.setPaymentFreq(getPayFreqFixed());
+	builder.setDayCountEnum(getDayCountFixed());
+	builder.setPaymentNumber(getCouponNumberFixed());
+   builder.setBuildDirection(1);
+	_fixedCashflowLeg.setCashFlowVector(*builder.build());
+}
+
+void Swap::buildFloatLeg(){
+	setDayCountFloat(_market.getDayCountSwapFloat());
+	setPayFreqFloat(_market.getPayFreqSwapFloat());
+	_floatCashflowLeg.setCashFlowNumber(_tenorInYear*_market.getPayFreqSwapFloat());
+	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
+	builder.setPaymentFreq(getPayFreqFloat());
+	builder.setDayCountEnum(getDayCountFloat());
+	builder.setPaymentNumber(getCouponNumberFloat());
+   builder.setBuildDirection(1);
+	_floatCashflowLeg.setCashFlowVector(*builder.build());
+}
 
 void Swap::printCashflowLegFix() {
-	_fixCashflowLeg->printCashFlowLeg();
+	_fixedCashflowLeg.printCashFlowLeg();
 }
 
 void Swap::printCashflowLegFloat() {
-	_floatingCashflowLeg->printCashFlowLeg();
+	_floatCashflowLeg.printCashFlowLeg();
 }

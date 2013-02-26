@@ -21,6 +21,7 @@ ConfigurationFileSource::ConfigurationFileSource(std::string persistDir, std::st
 ConfigurationFileSource::~ConfigurationFileSource(){}
 
 void ConfigurationFileSource::init(Configuration* cfg){
+   _name = "Configuration";
 	_fileName = "instance.properties";
 	_persistDir = "";
 	AbstractFileSource::init(cfg);
@@ -48,7 +49,7 @@ void ConfigurationFileSource::retrieveRecord(){
 			continue;
 		}
 		configMap[key]=value;
-		cout << "Item \"" << key << "\" has value \"" << value << '\"' << endl ;
+		//cout << "Item \"" << key << "\" has value \"" << value << '\"' << endl ;
 	}
 
 	Configuration::getInstance()->setConfiguration(configMap);

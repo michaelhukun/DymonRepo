@@ -9,7 +9,6 @@
 #include "Enums.h"
 #include "Configuration.h"
 #include "dateUtil.h"
-#include "Swap.h"
 #include "RecordHelper.h"
 #include "Constants.h"
 #include "marketdata.h"
@@ -40,7 +39,7 @@ void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolA
 	int fixFreq = 2;
 	int floatFreq = 4;
 
-	auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(market);
+	//auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(market);
 	//for (map<long, double>::iterator it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
 	//	date accuralEndDate = date((*it).first);
 	//	Swap swap1(dateUtil::getToday(), accuralEndDate, 1000000, 0.01, yc, fixLegCurr, floatingLegCurr,fixFreq, floatFreq, true,1);
@@ -56,8 +55,8 @@ void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpol
 
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
 
-	map<long, Bond> bondRateMap = RecordHelper::getInstance()->getBondRateMap()->at(market);
-	for (map<long, Bond>::iterator it=bondRateMap.begin(); it != bondRateMap.end(); it++ ){
+	auto bondRateMap = RecordHelper::getInstance()->getBondRateMap()->at(market);
+	for (auto it=bondRateMap.begin(); it != bondRateMap.end(); it++ ){
 		date accuralEndDate = (*it).first;
 		Bond bond = (*it).second;
 		if (bond.getCouponFreq()!=NaN){

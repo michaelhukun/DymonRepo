@@ -26,6 +26,7 @@ SwapRateFileSource::SwapRateFileSource(std::string persistDir, std::string fileN
 SwapRateFileSource::~SwapRateFileSource(){}
 
 void SwapRateFileSource::init(Configuration* cfg){
+   _name = "Swap Rate";
 	_fileName = cfg->getProperty("swapRate.file",true,"");
 	_persistDir = cfg->getProperty("swapRate.path",false,"");
 	_enabled = cfg->getProperty("swapRate.enabled",true,"")=="true"?true:false;
@@ -46,10 +47,12 @@ void SwapRateFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		Swap* tempSwap = createSwapObject(db, i);
+		tempSwap->deriveDates();
+		tempSwap->buildFixedLeg();
+		tempSwap->buildFloatLeg();
 		insertSwapIntoCache(tempSwap, swapRateMap);
 	}
 
-	_inFile.close();
 }
 
 void SwapRateFileSource::insertSwapIntoCache(Swap* swap, RecordHelper::SwapRateMap* swapRateMap){
@@ -63,7 +66,7 @@ void SwapRateFileSource::insertSwapIntoCache(Swap* swap, RecordHelper::SwapRateM
 		auto tempMap = &(swapRateMap->find(market)->second);
 		tempMap->insert(std::make_pair(accrualEndJDN, *swap));
 	}
-	cout<<swap->toString()<<endl;
+	//cout<<swap->toString()<<endl;
 }
 
 Swap* SwapRateFileSource::createSwapObject(CSVDatabase db, int row){
@@ -85,11 +88,12 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 		swap->setName(fieldVal);
 	}else if (fieldName=="SECURITY_TENOR_TWO"){
 		swap->setTenorStr(fieldVal);
+		swap->setTenorInYear(stoi(fieldVal.substr(0, fieldVal.size()-1)));
 	}else if (fieldName=="PX_MID"){
-		swap->setSwapRate(stod(fieldVal));
+		swap->setSwapRate(stod(fieldVal)/100);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
-		swap->setDayCount(dayCount);
+		swap->setDayCountFixed(dayCount);
 	}else if (fieldName=="DAYS_TO_MTY"){
 		swap->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
@@ -101,5 +105,6 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		swap->setMarket(market);
+      swap->setDayRoll(market.getDayRollSwapConvention());
 	}
 }

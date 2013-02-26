@@ -18,7 +18,9 @@ namespace instruments {
 
 	public:
 
-		Bond(){};
+		Bond(){
+			_instrumentEnum = enums::BOND;
+		};
 		~Bond(){};
 
 		// Getters

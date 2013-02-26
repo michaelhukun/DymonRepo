@@ -254,9 +254,9 @@ date dateUtil::getEndDateMonthIncrement(date startDate, int numMonth){
 	short endYear= startDate.getYear()+yearIncrement;	
 	date endDate(endYear, endMonth, startDate.getDay());
 
-	// Adjust the return day to the end of month if the start date is also start of month
-	if (startDate.getDay() == getMonthLastDay(startDate.getYear(), startDate.getMonth()))
-		endDate.setDay(getMonthLastDay(endDate.getYear(), endDate.getMonth()));
+	// Adjust the return day to the end of month if the start date is also end of month
+	//if (startDate.getDay() == getMonthLastDay(startDate.getYear(), startDate.getMonth()))
+   //endDate.setDay(getMonthLastDay(endDate.getYear(), endDate.getMonth()));
 	return endDate;
 }
 

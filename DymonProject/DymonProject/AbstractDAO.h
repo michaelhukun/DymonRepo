@@ -3,10 +3,12 @@
 #define ABSTRACTDAO_H
 #include <string>
 #include <map>
+#include <iostream>
 #include "AbstractSession.h"
 
 using namespace Session;
 using namespace utilities;
+using namespace std;
 
 namespace DAO{
 	class AbstractDAO: public AbstractSession{
@@ -19,9 +21,15 @@ namespace DAO{
 
 		virtual void retrieveRecord(){};
 
+      virtual void printSuccessMsg(){
+         if(_enabled) cout<<"Loading data for ["+_name+"] is complete!"<<endl;
+      }
+
 	protected:
 
 		Configuration* _cfg;
+      std::string _name;
+		bool _enabled;
 	};
 }
 #endif

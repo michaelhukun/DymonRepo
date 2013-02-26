@@ -22,25 +22,30 @@ namespace instruments {
 		CcyPair* getCcyPair(){ return &_ccyPair; }
 		double getDelta(){ return _delta; }
 		double getTenorExpiry(){ return _tenorExpiry; }
-		double getTenorDiscount(){ return _tenorDiscount; }
 		int getDaysToExpiry(){ return _daysToExpiry; }
+		double getForeignDCF(){ return _foreignDCF; }
+		double getDomesticDCF(){ return _domesticDCF; }
 
 		void setCcyPair(CcyPair ccyPair){ _ccyPair = ccyPair; }
 		void setDelta(double delta){ _delta = delta; }
 		void setTenorExpiry(double tenorExpiry){ _tenorExpiry = tenorExpiry; }
-		void setTenorDiscount(double tenorDiscount){ _tenorDiscount = tenorDiscount; }
 		void setDaysToExpiry(int daysToExpiry){ _daysToExpiry = daysToExpiry; }
 
 		// Methods
+		void deriveTenorExpiry();
+		void deriveDomesticDCF();
+		void deriveForeignDCF();
 		double getMPV(){return 0;};
 		std::string toString(){return "";}
 
 	private:
+		
 		CcyPair _ccyPair;
 		int _daysToExpiry;
 		double _delta;
 		double _tenorExpiry;
-		double _tenorDiscount;
+		double _domesticDCF;
+		double _foreignDCF;
 	};
 }
 #endif

@@ -32,16 +32,15 @@ Swaption::Swaption(Market market,PayReceive PayReceiveInd, int expiryInMonth, do
     bool rollAccuralDates=true;
 	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(market.getCurrencyEnum());
 	SwaptionVolCube* vc = MarketData::getInstance()->getSwaptionVolCube(market.getCurrencyEnum());
-	Swap* underlyingSwap= new Swap(swapStartDate, tenorInMonth, notional, couponRate, dc, market, paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
-	
-	BaseSwaption(market, PayReceiveInd, expiryInMonth, strikeInBps, vc, dc, underlyingSwap);
+	//Swap* underlyingSwap= new Swap(swapStartDate, tenorInMonth, notional, couponRate, dc, market, paymentFreqFixLeg, paymentFreqFloatingLeg, rollAccuralDates);
+	//BaseSwaption(market, PayReceiveInd, expiryInMonth, strikeInBps, vc, dc, underlyingSwap);
 }
 
 void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vc, DiscountCurve* dc, Swap* underlyingSwap){
 	_underlyingSwap = underlyingSwap;
 	_tenorInMonth = _underlyingSwap->getTenor();
-	cashflowLeg* floatCashflowLeg = underlyingSwap->getCashFlowVectorFloat();
-	cashflowLeg* fixCashflowLeg = underlyingSwap->getCashFlowVectorFix();
+	cashflowLeg* floatCashflowLeg = underlyingSwap->getCashFlowLegFloat();
+	cashflowLeg* fixCashflowLeg = underlyingSwap->getCashFlowLegFix();
 	double forwardParRate=SwapPricer(underlyingSwap).getParRate(floatCashflowLeg,fixCashflowLeg,dc);
 	date tradeDate = dateUtil::getToday();
 	double vol=vc->getVol(strikeInBps,expiryInMonth,_tenorInMonth);
@@ -57,13 +56,13 @@ void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryI
 
 double Swaption::getAnnuityMonetizer( DiscountCurve* dc) {
 
-	cashflowLeg* swapFixCashflowLeg= _underlyingSwap->getCashFlowVectorFix();
+	cashflowLeg* swapFixCashflowLeg= _underlyingSwap->getCashFlowLegFix();
 	vector<date> accrualDates=swapFixCashflowLeg->getAccuralEndDates();
-	DayCountEnum swapDayCount = _underlyingSwap->getMarket().getDayCountSwapConvention();
 	double sum=0.0;
-	for (vector<date>::iterator it=accrualDates.begin();it!=accrualDates.end();it++) {
-		sum+=dateUtil::getAccrualFactor(dateUtil::getToday(),*it,swapDayCount)*(dc->getDiscountFactor(*it));
-	}
+	//DayCountEnum swapDayCount = _underlyingSwap->getMarket().getDayCountSwapConvention();
+	//for (vector<date>::iterator it=accrualDates.begin();it!=accrualDates.end();it++) {
+	//	sum+=dateUtil::getAccrualFactor(dateUtil::getToday(),*it,swapDayCount)*(dc->getDiscountFactor(*it));
+	//}
 
 	return sum;
 }

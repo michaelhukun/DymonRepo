@@ -39,8 +39,8 @@ void MarketData::buildAll(){
 	buildSwapDiscountCurve();
 	buildBondDiscountCurve();
 	buildSwaptionVolCube();
-	buildFXSkewSurface();
 	buildFXForwardImpliedCurve();
+	buildFXSkewSurface();
 }
 
 void MarketData::buildSwapDiscountCurve(){

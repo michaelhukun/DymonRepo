@@ -27,7 +27,7 @@ char* AbstractFileSource::readRecord(){
 		_journal = new char[_fileSize];
 		if (_inFile.is_open()){
 			_inFile.read(_journal, _fileSize);
-			cout<<"File read: "<<_journal<<endl;
+			//cout<<"File read: "<<_journal<<endl;
 		}else{
 			throw "Cannot open input file\n";
 		}
@@ -112,7 +112,6 @@ void AbstractFileSource::display(const CSVDatabase& db) {
 	CSVDatabaseCI i=db.begin();
 	for(; i != db.end(); ++i){
 		display(*i);
-		std::cout<<std::endl;
 	}	
 };
 

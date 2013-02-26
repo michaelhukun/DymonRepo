@@ -24,6 +24,7 @@ AbstractFileSource(persistDir, fileName){}
 DepositFileSource::~DepositFileSource(){}
 
 void DepositFileSource::init(Configuration* cfg){
+   _name = "Deposit";
 	_fileName = cfg->getProperty("depositRate.file",true,"");
 	_persistDir = cfg->getProperty("depositRate.path",false,"");
 	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
@@ -44,6 +45,7 @@ void DepositFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		Deposit* tempDeposit = createDepositObject(db, i);
+		tempDeposit->deriveAccrualStartDate();
 		insertDepositIntoCache(tempDeposit, depositRateMap);
 	}
 
@@ -61,7 +63,7 @@ void DepositFileSource::insertDepositIntoCache(Deposit* deposit, RecordHelper::D
 		auto tempMap = &(depositRateMap->find(market)->second);
 		tempMap->insert(std::make_pair(accrualEndJDN, *deposit));
 	}
-	cout<<deposit->toString()<<endl;
+	//cout<<deposit->toString()<<endl;
 }
 
 Deposit* DepositFileSource::createDepositObject(CSVDatabase db, int row){
@@ -81,10 +83,14 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 		deposit->setID(fieldVal);
 	}else if (fieldName=="NAME"){
 		deposit->setName(fieldVal);
-	}else if (fieldName=="SECURITY_TENOR_TWO"){
+		if (fieldVal.find("O/N")!=std::string::npos) 
+			deposit->setIsOverNight(true);
+		else
+			deposit->setIsOverNight(false);
+	}else if (fieldName=="SECURITY_TENOR_ONE"){
 		deposit->setTenorStr(fieldVal);
 	}else if (fieldName=="PX_MID"){
-		deposit->setDepositRate(stod(fieldVal));
+		deposit->setDepositRate(stod(fieldVal)/100);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		deposit->setDayCount(dayCount);
@@ -93,11 +99,14 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 	}else if (fieldName=="TRADING_DT_REALTIME"){
 		date tradeDate(fieldVal,false);
 		deposit->setTradeDate(tradeDate);
-	}else if (fieldName=="SETTLE_DT"){
-		date accrualStartDate(fieldVal,false);
-		deposit->setSpotDate(accrualStartDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		deposit->setMarket(market);
+	}else if (fieldName=="SETTLE_DT"){
+		date deliveryDate(fieldVal,false);
+		deposit->setDeliveryDate(deliveryDate);
+	}else if (fieldName=="MATURITY"){
+		date accrualEndDate(fieldVal,false);
+		deposit->setExpiryDate(accrualEndDate);
 	}
 }

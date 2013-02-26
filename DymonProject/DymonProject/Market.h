@@ -20,7 +20,8 @@ namespace instruments {
 
 		enums::CurrencyEnum getCurrencyEnum(){return _marketName;}
 		enums::DayCountEnum getDayCountCashConvention(){return _dayCountCashConvention;}
-		enums::DayCountEnum getDayCountSwapConvention(){return _dayCountSwapConvention;}
+		enums::DayCountEnum getDayCountSwapFixed(){return _dayCountSwapFixed;}
+		enums::DayCountEnum getDayCountSwapFloat(){return _dayCountSwapFloat;}
 		enums::DayCountEnum getDayCountBondConvention(){return _dayCountBondConvention;}
 		enums::DayRollEnum getDayRollCashConvention(){return _dayRollCashConvention;}
 		enums::DayRollEnum getDayRollSwapConvention(){return _dayRollSwapConvention;}
@@ -30,11 +31,13 @@ namespace instruments {
 		enums::DayRollEnum getAccrualAdjustBondConvention(){return _accrualAdjustBondConvention;}
 		int getBusinessDaysAfterSpotSwap(){return _businessDaysAfterSpotSwap;}
 		int getBusinessDaysAfterSpotBond(){return _businessDaysAfterSpotBond;}
-		int getBusinessDaysAfterExpiryFXOption(){return _businessDaysAfterExpiryFXOption;}
+		int getPayFreqSwapFixed(){ return _payFreqSwapFixed; }
+		int getPayFreqSwapFloat(){ return _payFreqSwapFloat; }
 
 		void setCurrencyEnum(enums::CurrencyEnum marketName){_marketName = marketName;}
 		void setDayCountCashConvention(enums::DayCountEnum dayCountCashConvention){_dayCountCashConvention = dayCountCashConvention;}
-		void setDayCountSwapConvention(enums::DayCountEnum dayCountSwapConvention){_dayCountSwapConvention = dayCountSwapConvention;}
+		void setDayCountSwapFixed(enums::DayCountEnum dayCountSwapFixed){_dayCountSwapFixed = dayCountSwapFixed;}
+		void setDayCountSwapFloat(enums::DayCountEnum dayCountSwapFloat){_dayCountSwapFloat = dayCountSwapFloat;}
 		void setDayCountBondConvention(enums::DayCountEnum dayCountBondConvention){_dayCountBondConvention = dayCountBondConvention;}
 		void setDayRollCashConvention(enums::DayRollEnum dayRollCashConvention){_dayRollCashConvention = dayRollCashConvention;}
 		void setDayRollSwapConvention(enums::DayRollEnum dayRollSwapConvention){_dayRollSwapConvention = dayRollSwapConvention;}
@@ -44,18 +47,18 @@ namespace instruments {
 		void setAccrualAdjustBondConvention(enums::DayRollEnum accrualAdjustBondConvention){_accrualAdjustBondConvention = accrualAdjustBondConvention;}
 		void setBusinessDaysAfterSpotSwap(int businessDaysAfterSpotSwap){_businessDaysAfterSpotSwap =businessDaysAfterSpotSwap;}
 		void setBusinessDaysAfterSpotBond(int businessDaysAfterSpotBond){_businessDaysAfterSpotBond =businessDaysAfterSpotBond;}
-		void setBusinessDaysAfterExpiryFXOption(int businessDaysAfterExpiryFXOption){_businessDaysAfterExpiryFXOption =businessDaysAfterExpiryFXOption;}
-		
-		enums::DayCountEnum getDayCountConvention(enums::Instrument instrument);
+		void setPayFreqSwapFixed(int payFreqSwapFixed){ _payFreqSwapFixed = payFreqSwapFixed; }
+		void setPayFreqSwapFloat(int payFreqSwapFloat){ _payFreqSwapFloat = payFreqSwapFloat; }
+
 		enums::DayRollEnum getDayRollConvention(enums::Instrument instrument);
 		enums::DayRollEnum getAccrualAdjustConvention(enums::Instrument instrument);
 		int getBusinessDaysAfterSpot(enums::Instrument instrument);
-		int getBusinessDaysAfterExpiry(enums::Instrument instrument);
 
 	private:
 		enums::CurrencyEnum _marketName;
 		enums::DayCountEnum _dayCountCashConvention;
-		enums::DayCountEnum _dayCountSwapConvention;
+		enums::DayCountEnum _dayCountSwapFixed;
+		enums::DayCountEnum _dayCountSwapFloat;
 		enums::DayCountEnum _dayCountBondConvention;
 		enums::DayRollEnum _dayRollCashConvention;
 		enums::DayRollEnum _dayRollSwapConvention;
@@ -65,8 +68,8 @@ namespace instruments {
 		enums::DayRollEnum _accrualAdjustBondConvention;
 		int _businessDaysAfterSpotSwap;
 		int _businessDaysAfterSpotBond;
-		int _businessDaysAfterExpiryFXOption;
+		int _payFreqSwapFixed;
+		int _payFreqSwapFloat;
 	};
-
 }
 #endif

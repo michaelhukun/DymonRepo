@@ -1,10 +1,7 @@
 //created by Hu Kun on 16 Dec 2012
 #include "SwapPricer.h"
 #include "AbstractPricer.h"
-#include "Swap.h"
 #include "cashflowLeg.h"
-#include <iterator>
-#include "AbstractInstrument.h"
 
 using namespace std;
 using namespace instruments;
@@ -36,11 +33,10 @@ double SwapPricer::getMPVFloatLeg(cashflowLeg* floatCashflowLeg,DiscountCurve* a
 		cashflow aCF=*it;
 		date accrualEndDate=aCF.getAccuralEndDate();
 		date accrualStartDate=aCF.getAccuralStartDate();
-		//double FWDR=calFLiborRate(accrualStartDate,accrualEndDate,aCF.getAccuralFactor());
 
-		Market cashflowCurr=aCF.getCashFlowCurr();
-		double FLiborRate=aDiscountCurve->getFLiborRate(accrualStartDate,accrualEndDate,cashflowCurr.getDayCountSwapConvention());
-		sum+=aCF.getNotional()*aCF.getAccuralFactor()*(FLiborRate)*(_pricingDiscountCurve->getDiscountFactor(aCF.getPaymentDate()));
+		//Market cashflowCurr=aCF.getCashFlowCurr();
+		//double FLiborRate=aDiscountCurve->getFLiborRate(accrualStartDate,accrualEndDate,cashflowCurr.getDayCountSwapConvention());
+		//sum+=aCF.getNotional()*aCF.getAccuralFactor()*(FLiborRate)*(_pricingDiscountCurve->getDiscountFactor(aCF.getPaymentDate()));
 	}
 
 	return sum;

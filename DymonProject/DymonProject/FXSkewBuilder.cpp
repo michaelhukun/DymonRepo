@@ -7,8 +7,10 @@
 #include "AbstractNumerical.h"
 #include "NumericalFactory.h"
 #include "QuadraticInterpolator.h"
+#include "marketdata.h"
 
 using namespace utilities;
+using namespace Markets;
 typedef AbstractBuilder super;
 
 void FXSkewBuilder::init(Configuration* cfg){
@@ -38,19 +40,19 @@ vector<FXEuropeanOption>* FXSkewBuilder::getOptionVector(std::string ccyPairStr,
 }
 
 double FXSkewBuilder::deriveATMDelta(vector<FXEuropeanOption>* optionVector){
-	double foreignRate = getForeignRate(_ccyPair);
 	for(unsigned int i=0; i<optionVector->size(); i++){
-		FXEuropeanOption* option = &optionVector->at(i);
+		FXEuropeanOption* option = &optionVector->at(i);		
+		option->deriveDomesticDCF();
+		option->deriveForeignDCF();
 		if (option->getVolType() == ATM){
 			double tenorExpiry = option->getTenorExpiry();
-			double tenorDiscount = option->getTenorDiscount();
 			double volATM = option->getVol();
 			if (_ccyPair.toString()=="EURUSD" && tenorExpiry<2)
-				option->setDelta(exp(-foreignRate*tenorDiscount)/2);
+				option->setDelta(exp(-option->getForeignDCF())/2);
 			else if (_ccyPair.toString()=="EURUSD" && tenorExpiry>=2)
 				option->setDelta(0.5);
 			else if (tenorExpiry<2)
-				option->setDelta(exp(-foreignRate*tenorDiscount-pow(volATM,2)*tenorExpiry/2)/2);
+				option->setDelta(exp(-option->getForeignDCF()-pow(volATM,2)*tenorExpiry/2)/2);
 			else if (tenorExpiry>=2 || _ccyPair.isEmergingMarket())
 				option->setDelta(exp(-pow(volATM,2)*tenorExpiry/2)/2);
 			return option->getDelta();
@@ -67,11 +69,6 @@ void FXSkewBuilder::buildQuadratic(AbstractCurve<double>* ac){
 	_volATM = getVolFromVector(ATM,0);
 	buildQuadraticSection(ac);
 	buildCutOffSection(ac);
-}
-
-double FXSkewBuilder::getForeignRate(CcyPair ccyPair){
-	string foreignCcy = ccyPair.getForeignCCY();
-	return 0;
 }
 
 void FXSkewBuilder::buildQuadraticSection(AbstractCurve<double>* ac){

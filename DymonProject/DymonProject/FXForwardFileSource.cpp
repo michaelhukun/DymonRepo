@@ -18,6 +18,7 @@ using namespace Session;
 using namespace instruments;
 
 void FXForwardFileSource::init(Configuration* cfg){
+   _name = "FX Forward";
 	_fileName = cfg->getProperty("FXForward.file",true,"");
 	_persistDir = cfg->getProperty("FXForward.path",false,"");
 	_enabled = cfg->getProperty("FXForward.enabled",true,"")=="true"?true:false;
@@ -56,7 +57,7 @@ void FXForwardFileSource::insertForwardIntoCache(FXForward* forward, RecordHelpe
 		auto tempMap = &(FXForwardMap->find(ccyPairStr)->second);
 		tempMap->insert(std::make_pair(deliveryDateJDN, *forward));
 	}
-	cout<<forward->toString()<<endl;
+	//cout<<forward->toString()<<endl;
 }
 
 FXForward* FXForwardFileSource::createForwardObject(CSVDatabase db, int row){

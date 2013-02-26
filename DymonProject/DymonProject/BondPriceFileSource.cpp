@@ -21,6 +21,7 @@ using namespace instruments;
 
 using namespace DAO;
 void BondPriceFileSource::init(Configuration* cfg){
+   _name = "Bond";
 	_fileName = cfg->getProperty("bondPrice.file",true,"");
 	_persistDir = cfg->getProperty("bondPrice.path",false,"");
 	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="true"?true:false;

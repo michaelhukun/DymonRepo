@@ -41,25 +41,25 @@ double SwapRateBootStrapper::numericalFunc(double x){
 	double denominator = 0;
 
 	for( unsigned int i=0; i<=_cashflowStartIndex; i++){
-		cashflow ithCashFlow = _cashflowVector[i];
-		double ithAccuralFactor=dateUtil::getAccrualFactor(ithCashFlow.getAccuralStartDate(),ithCashFlow.getAccuralEndDate(),_dayCount);
-		double ithDF = _curve->getDiscountFactor(ithCashFlow.getPaymentDate());
+		cashflow cf = _cashflowVector[i];
+		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
+		double ithDF = _curve->getDiscountFactor(cf.getPaymentDate());
 		denominator = denominator + ithAccuralFactor*ithDF;
 	}
 	for( unsigned int i=_cashflowStartIndex+1; i<=_cashflowEndIndex; i++){
-		cashflow ithCashFlow = _cashflowVector[i];
-		double ithAccuralFactor=dateUtil::getAccrualFactor(ithCashFlow.getAccuralStartDate(),ithCashFlow.getAccuralEndDate(),_dayCount);
-		denominator = denominator + ithAccuralFactor*std::get<1>(ai->interpolate(ithCashFlow.getPaymentDate()));
+		cashflow cf = _cashflowVector[i]; 
+		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
+		denominator = denominator + ithAccuralFactor*std::get<1>(ai->interpolate(cf.getPaymentDate()));
 	}
 
-	return numerator - _swapRate*denominator;
+	return numerator - _swap->getSwapRate()*denominator;
 }
 
 unsigned int SwapRateBootStrapper::findCashFlowIndex(date date0){
 	for(unsigned int i = 0; i < _cashflowVector.size(); i++)
 	{
-		cashflow ithCashFlow = _cashflowVector[i];
-		if ( ithCashFlow.getPaymentDate().getJudianDayNumber() == date0.getJudianDayNumber()){
+		cashflow cf = _cashflowVector[i];
+		if ( cf.getPaymentDate().getJudianDayNumber() == date0.getJudianDayNumber()){
 			return i;
 		}
 	}
