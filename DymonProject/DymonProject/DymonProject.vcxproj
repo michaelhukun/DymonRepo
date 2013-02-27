@@ -180,7 +180,6 @@
   <ItemGroup>
     <ClCompile Include="AbstractFileSource.cpp" />
     <ClCompile Include="AbstractForward.h" />
-    <ClCompile Include="AbstractSession.cpp" />
     <ClCompile Include="AbstractTest.cpp" />
     <ClCompile Include="Bond.cpp" />
     <ClCompile Include="BondFuture.cpp" />

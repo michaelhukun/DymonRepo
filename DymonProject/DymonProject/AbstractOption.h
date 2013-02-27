@@ -11,7 +11,7 @@ using namespace utilities;
 using namespace instruments;
 
 namespace instruments {
-	class AbstractOption:  public OptionPricer, public AbstractInstrument{
+	class AbstractOption: public AbstractInstrument{
 
 	public:
 
@@ -31,8 +31,7 @@ namespace instruments {
 			setDeliveryDate(deliveryDate);		
 		}
 
-		//Methods
-		virtual double getMPV(){return OptionPricer::getMPV();};
+      virtual double getMPV()=0;
 
 		//Getters and Setters
 		double getVol(){return _vol;}

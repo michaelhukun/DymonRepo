@@ -5,5 +5,6 @@
 using namespace instruments;
 
 double EuropeanOption::getMPV(){
-	return blackScholesFormula(_volType,_S,_K,_vol,_r,_expiryInMonth/12);
+   OptionPricer pricer(this);
+	return pricer.blackScholesFormula(_volType,_S,_K,_vol,_r,_expiryInMonth/12);
 }

@@ -8,26 +8,24 @@
 #include <map>
 #include "DiscountCurve.h"
 #include "Constants.h"
+#include "AbstractSession.h"
 
 using namespace std;
 using namespace instruments;
 using namespace utilities;
+using namespace Session;
 
 namespace instruments {
-
-	typedef tuple<date,double> PV;
-	typedef map<tuple<double,double>,double> volSurfacePoint;
 	
-	class AbstractPricer {
+	class AbstractPricer: AbstractSession{
 	
 	public:
-		//base class for all other instruments to be derived from
 		AbstractPricer(){};
 		~AbstractPricer(){};		
 		
-		virtual double getMPV(){return NaN;};
+      virtual void init(Configuration*)=0;
 
-		template <class T, class P> vector<PV> getPVLeg(T aInstrument,DiscountCurve curve, int fixOrFloating);
+		virtual double getMPV()=0;
 		
 	protected: 
 		double _MPV;	

@@ -7,6 +7,11 @@
 using namespace utilities;
 using namespace instruments;
 
+double OptionPricer::getMPV(){
+   return 0;
+}
+
+
 double OptionPricer::blackScholesFormula(enums::VolType VolTypeFlag, double S, double K, double vol, double r, double T){
 	double d1, d2;
 	
@@ -37,5 +42,21 @@ double OptionPricer::getImpliedVolBlackATM(enums::VolType VolTypeFlag, double K,
 	return 2*MathUtil::invCNF(n)/sig;
 }
 
+double OptionPricer::deriveDelta(DeltaType deltaType, double strike, double vol){
+   double delta;
+   switch(deltaType){
+   case BS:
+      break;
+   case PREMIUM:
+      break;
+   case FWDBS:
+      break;
+   case FWDPREMIUM:
+      break;
+   }
+   return delta;
+}
 
-
+ double OptionPricer::numericalFunc(double vol){
+    return 0;
+ }

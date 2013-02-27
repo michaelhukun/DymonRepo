@@ -44,12 +44,16 @@ double SwapPricer::getMPVFloatLeg(cashflowLeg* floatCashflowLeg,DiscountCurve* a
 
 
 double SwapPricer::calFLiborRate(date forwardStartDate, date forwardEndDate, double accuralFactor) {
-	return (_pricingDiscountCurve->getDiscountFactor(forwardStartDate)/ _pricingDiscountCurve->getDiscountFactor(forwardEndDate)-1)/accuralFactor;
+   return (_pricingDiscountCurve->getDiscountFactor(forwardStartDate)/ _pricingDiscountCurve->getDiscountFactor(forwardEndDate)-1)/accuralFactor;
+}
+
+double SwapPricer::getMPV(){
+   return 0;
 }
 
 double SwapPricer::getMPV(cashflowLeg* fixCashflowLeg,cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve) {
-	_MPV=getMPVFixLeg(fixCashflowLeg,aDiscountCurve)-getMPVFloatLeg(floatCashflowLeg,aDiscountCurve);
-	return _MPV;
+   _MPV=getMPVFixLeg(fixCashflowLeg,aDiscountCurve)-getMPVFloatLeg(floatCashflowLeg,aDiscountCurve);
+   return _MPV;
 }
 
 double SwapPricer::getParRate(cashflowLeg* floatCashflowLeg,cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve) {

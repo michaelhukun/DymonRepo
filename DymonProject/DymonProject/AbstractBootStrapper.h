@@ -32,7 +32,7 @@ namespace utilities{
 
 		virtual AbstractInterpolator<T>* bootStrap(){return NULL;};
 
-		virtual double numericalFunc(double x){return 0;};
+		virtual double numericalFunc(double x)=0;
 
 	protected:
 	

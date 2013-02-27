@@ -3,6 +3,7 @@
 #ifndef OPTIONPRICER_H
 #define OPTIONPRICER_H
 #include "AbstractPricer.h"
+#include "AbstractOption.h"
 #include "Enums.h"
 
 using namespace instruments;
@@ -13,18 +14,28 @@ namespace instruments {
 
 	public:
 
-		OptionPricer():AbstractPricer(){};
+      enum DeltaType{BS, PREMIUM, FWDBS, FWDPREMIUM};
+
+		OptionPricer(AbstractOption* option):AbstractPricer(){
+         _option = option;
+      };
 		~OptionPricer(){};
 
-		virtual double getMPV(){return AbstractPricer::getMPV();}
-		
-	protected:
+      void init(Configuration*){}
+
+		virtual double getMPV();
 
 		double blackScholesFormula(enums::VolType VolTypeFlag, double S, double K, double vol, double r, double T);
-		double blackFormula(enums::VolType VolTypeFlag, double FwdS, double K, double vol, double discountFactor, double T);
-		
+		double blackFormula(enums::VolType VolTypeFlag, double FwdS, double K, double vol, double discountFactor, double T);		
 		double getImpliedVolBlackATM(enums::VolType VolTypeFlag, double K,  double optionPrice, double discountFactor, double T);
 
+      double deriveDelta(DeltaType deltaType, double strike, double vol));
+      double deriveVol(DeltaType deltaType, double strike);
+      
+		
+	protected:
+      AbstractOption* _option;
+      double numericalFunc(double vol);
 	};
 }
 #endif

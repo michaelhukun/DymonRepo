@@ -13,9 +13,9 @@ namespace Session{
 	public:
 		virtual void init(Configuration*)=0;
 
-		virtual void start();
+		virtual void start(){};
 
-		virtual void stop();
+		virtual void stop(){};
 	};
 }
 #endif
