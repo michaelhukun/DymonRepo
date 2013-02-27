@@ -32,10 +32,15 @@ namespace utilities{
 
 	private:
 
-		void buildSection(AbstractCurve<date>* dc);
 		
 		CcyPair _ccyPair;
 		point _curvePointer;
+		
+		// Khairul's additions
+		int _iterateCount;
+		double _tolerance;
+		double _cutOff;
+      AbstractCurve<date>* BuildSection(AbstractCurve<date>* ac);
 	};
 }
 #endif
