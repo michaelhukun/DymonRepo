@@ -26,6 +26,7 @@ void FXForwardImpliedCurveBuilder::init(Configuration* cfg){
 DiscountCurve* FXForwardImpliedCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	DiscountCurve* dc = new DiscountCurve();
+   dc->setName(Market(_forwardImpliedCurveCcy).getNameString()+" Forward Implied Curve");
 	buildSection(dc);
 	return dc;
 }

@@ -55,7 +55,7 @@ void MarketData::buildSwapDiscountCurve(){
 		SwapCurveBuilder* builder = new SwapCurveBuilder(ccyEnum);
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
 		_SwapDiscountCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(ccyEnum, *curve));
-		cout<<curve->toString()<<endl;
+		cout<<curve->toExcelFriendlyString()<<endl;
 	}
 }
 
@@ -71,7 +71,7 @@ void MarketData::buildBondDiscountCurve(){
 		BondCurveBuilder* builder = new BondCurveBuilder(ccyEnum);
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
 		_BondDiscountCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(ccyEnum, *curve));
-		cout<<curve->toString()<<endl;
+		cout<<curve->toExcelFriendlyString()<<endl;
 	}
 }
 
@@ -88,7 +88,7 @@ void MarketData::buildFXForwardImpliedCurve(){
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
 		enums::CurrencyEnum forwardImpliedCurveCcy = builder->getForwardImpliedCurveCcy();
 		_FXForwardImpliedCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(forwardImpliedCurveCcy, *curve));
-		cout<<curve->toString()<<endl;
+		cout<<curve->toExcelFriendlyString()<<endl;
 	}
 }
 
