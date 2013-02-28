@@ -46,7 +46,7 @@
     <Filter Include="Header Files\dymon.instruments">
       <UniqueIdentifier>{49f8e7e4-87d1-4c57-af63-48cfc9b7ca7c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\dymon.session\dymon.pricer">
+    <Filter Include="Header Files\dymon.pricer">
       <UniqueIdentifier>{fb167943-99ec-429d-b910-23a8b54f5bfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -94,7 +94,7 @@
       <Filter>Header Files\dymon.datastructure</Filter>
     </ClInclude>
     <ClInclude Include="AbstractPricer.h">
-      <Filter>Header Files\dymon.session\dymon.pricer</Filter>
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="Bisection.h">
       <Filter>Header Files\dymon.numerical</Filter>
@@ -112,7 +112,7 @@
       <Filter>Header Files\dymon.instruments</Filter>
     </ClInclude>
     <ClInclude Include="bondpricer.h">
-      <Filter>Header Files\dymon.session\dymon.pricer</Filter>
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="AbstractOption.h">
       <Filter>Header Files\dymon.instruments</Filter>
@@ -211,7 +211,7 @@
       <Filter>Header Files\dymon.numerical</Filter>
     </ClInclude>
     <ClInclude Include="OptionPricer.h">
-      <Filter>Header Files\dymon.session\dymon.pricer</Filter>
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="Secant.h">
       <Filter>Header Files\dymon.numerical</Filter>
@@ -220,7 +220,7 @@
       <Filter>Header Files\dymon.util</Filter>
     </ClInclude>
     <ClInclude Include="SwapPricer.h">
-      <Filter>Header Files\dymon.session\dymon.pricer</Filter>
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="OvernightRateBootStrapper.h">
       <Filter>Header Files\dymon.bootstrapper</Filter>
@@ -298,7 +298,7 @@
       <Filter>Header Files\dymon.util</Filter>
     </ClInclude>
     <ClInclude Include="FuturePricer.h">
-      <Filter>Header Files\dymon.session\dymon.pricer</Filter>
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="FXSkewBuilder.h">
       <Filter>Header Files\dymon.builder</Filter>
@@ -329,6 +329,9 @@
     </ClInclude>
     <ClInclude Include="CashFlowLegBuilder.h">
       <Filter>Header Files\dymon.builder</Filter>
+    </ClInclude>
+    <ClInclude Include="FXOptionPricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -525,6 +528,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CashFlowLegBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXOptionPricer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

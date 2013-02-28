@@ -45,20 +45,28 @@ double FXSkewBuilder::deriveATMDelta(vector<FXEuropeanOption>* optionVector){
 		option->deriveDomesticDCF();
 		option->deriveForeignDCF();
 		if (option->getVolType() == ATM){
-			double tenorExpiry = option->getTenorExpiry();
+         double tenorExpiry = option->getExpiryTenor();
 			double volATM = option->getVol();
-			if (_ccyPair.toString()=="EURUSD" && tenorExpiry<2)
-				option->setDelta(exp(-option->getForeignDCF())/2);
-			else if (_ccyPair.toString()=="EURUSD" && tenorExpiry>=2)
-				option->setDelta(0.5);
-			else if (tenorExpiry<2)
-				option->setDelta(exp(-option->getForeignDCF()-pow(volATM,2)*tenorExpiry/2)/2);
-			else if (tenorExpiry>=2 || _ccyPair.isEmergingMarket())
-				option->setDelta(exp(-pow(volATM,2)*tenorExpiry/2)/2);
-			return option->getDelta();
-		}
-	}
-	throw "Delta not found!";
+         switch(option->getDeltaType()){
+         case enums::BS:
+            option->setDelta(exp(-option->getForeignDCF())/2);
+            break;
+         case enums::FWDBS:
+            option->setDelta(0.5);
+            break;
+         case enums::PREMIUM:
+            option->setDelta(exp(-option->getForeignDCF()-pow(volATM,2)*tenorExpiry/2)/2);
+            break;
+         case enums::FWDPREMIUM:
+            option->setDelta(exp(-pow(volATM,2)*tenorExpiry/2)/2);
+            break;
+         default:
+            throw "Delta type not found!";
+         }
+         return option->getDelta();
+      }
+   }
+   throw "Delta not found!";
 }
 
 void FXSkewBuilder::buildQuadratic(AbstractCurve<double>* ac){
@@ -76,8 +84,8 @@ void FXSkewBuilder::buildQuadraticSection(AbstractCurve<double>* ac){
 	AbstractNumerical<FXSkewBuilder>* an = NumericalFactory<FXSkewBuilder>::getInstance()->getNumerical(this,&FXSkewBuilder::numericalFunc,_numericalAlgo);
 	double lowerBound = -10;
 	double upperBound = 10;
-	double b1 = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
-	double b2 = b1tob2(b1);
+	double b1 = 2*(16*_volSTR25*(_deltaATM-0.5)-_volRR25)/_volRR25; //an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
+	double b2 = 16; //b1tob2(b1);
 
 	double B0 = b0*_volATM-b1*_deltaATM*_volRR25+b2*pow(_deltaATM,2)*_volSTR25;
 	double B1 = b1*_volRR25 - 2*b2*_deltaATM*_volSTR25;

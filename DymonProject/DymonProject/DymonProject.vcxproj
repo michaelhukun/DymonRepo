@@ -124,6 +124,7 @@
     <ClInclude Include="fxforwardimpliedbootstrapper.h" />
     <ClInclude Include="FXForwardImpliedCurveBuilder.h" />
     <ClInclude Include="FXEuropeanOption.h" />
+    <ClInclude Include="FXOptionPricer.h" />
     <ClInclude Include="FXSkewBuilder.h" />
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
@@ -202,6 +203,7 @@
     <ClCompile Include="FXForwardFileSource.cpp" />
     <ClCompile Include="FXForwardImpliedBootStrapper.cpp" />
     <ClCompile Include="FXForwardImpliedCurveBuilder.cpp" />
+    <ClCompile Include="FXOptionPricer.cpp" />
     <ClCompile Include="FXSkewBuilder.cpp" />
     <ClCompile Include="FXSkewFileSource.cpp" />
     <ClCompile Include="FXSkewSurface.cpp" />

@@ -1,7 +1,7 @@
 #include "FXEuropeanOption.h"
 #include "marketdata.h"
 #include "DiscountCurve.h"
-#include "OptionPricer.h"
+#include "FXOptionPricer.h"
 #include "AbstractNumerical.h"
 #include "NumericalFactory.h"
 #include "Configuration.h"
@@ -10,10 +10,22 @@ using namespace instruments;
 using namespace Markets;
 using namespace utilities;
 
+
+void FXEuropeanOption::deriveDeltaType(){
+   if (_ccyPair.toString()=="EURUSD" && _expiryTenor<2)
+      setDeltaType(enums::BS);
+   else if (_ccyPair.toString()=="EURUSD" && _expiryTenor>=2)
+      setDeltaType(enums::FWDBS);
+   else if (_expiryTenor<2) 
+      setDeltaType(enums::PREMIUM);
+   else if (_expiryTenor>=2 || _ccyPair.isEmergingMarket()) 
+      setDeltaType(enums::FWDPREMIUM);
+}
+
 void FXEuropeanOption::deriveTenorExpiry(){
-	int daysToExpiry = dateUtil::getDaysBetween(getTradeDate(), getExpiryDate());
-	double tenorExpiry = daysToExpiry / numDaysInYear;
-	setTenorExpiry(tenorExpiry);
+   double daysToExpiry = dateUtil::getDaysBetween(getTradeDate(), getExpiryDate());
+   double expiryTenor = daysToExpiry / numDaysInYear;
+   setExpiryTenor(expiryTenor);
 }
 
 void FXEuropeanOption::deriveDomesticDCF(){
@@ -32,6 +44,7 @@ void FXEuropeanOption::deriveForeignDCF(){
 		curve = MarketData::getInstance()->getSwapDiscountCurve(foreignCcy);
 	}
 	_foreignDCF = curve->getDiscountFactor(_spotDate, _deliveryDate);
+   _discountFactor = _foreignDCF;
 }
 
 void FXEuropeanOption::deriveVol(){
@@ -46,8 +59,9 @@ void FXEuropeanOption::deriveVol(){
 }
 
 double FXEuropeanOption::numericalFunc(double vol){
-	OptionPricer pricer(this);
-	double delta = pricer.deriveDelta(vol);
+   setVol(vol);
+	FXOptionPricer pricer(this);
+	double delta = pricer.deriveDelta();
 	double volFromSurface = MarketData::getInstance()->getFXSkewSurface(_ccyPair.toString())->getValue(_daysToExpiry, delta);
 	return volFromSurface - vol;
 }

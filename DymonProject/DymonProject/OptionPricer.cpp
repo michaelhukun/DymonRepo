@@ -13,47 +13,52 @@ double OptionPricer::getMPV(){
 }
 
 
-double OptionPricer::blackScholesFormula(enums::VolType VolTypeFlag, double S, double K, double vol, double r, double T){
-	double d1, d2;
-	
-	d1=(log(S/K)+(r+vol*vol/2)*T)/(vol*sqrt(T));
-	d2=d1-vol*sqrt(T);
+double OptionPricer::blackScholesFormula(){
+   double d1 = deriveD1();
+   double d2 = deriveD2();
+   double dcf = _option->getDiscountFactor();
+   double K = _option->getStrike();
+   double S = _option->getPrice();
 
-	if (VolTypeFlag == enums::Call)
-		return S *MathUtil::CNF(d1)-K * exp(-r*T)*MathUtil::CNF(d2);
-	return K * exp(-r * T) * MathUtil::CNF(-d2) - S * MathUtil::CNF(-d1);
-	
+   int sign=(_option->getDeltaType() == enums::Call)? 1: -1;
+   return sign * (S * MathUtil::CNF(sign * d1)-K * dcf * MathUtil::CNF(sign * d2));
 }
 
-double OptionPricer::blackFormula(enums::VolType VolTypeFlag, double FwdS, double K, double vol, double discountFactor, double T){
-	double d1, d2;
+double OptionPricer::blackFormula(){
+   double d1 = deriveD1();
+   double d2 = deriveD2();
+   double dcf = _option->getDiscountFactor();
+   double K = _option->getStrike();
+   double S = _option->getPrice();
 
-	d1=(log(FwdS/K)+vol*vol/2*T)/(vol*sqrt(T));
-	d2=d1-vol*sqrt(T);
-
-	if (VolTypeFlag == enums::Call)
-		return discountFactor*(FwdS *MathUtil::CNF(d1)-K * MathUtil::CNF(d2));
-	return discountFactor*(K * MathUtil::CNF(-d2) - FwdS * MathUtil::CNF(-d1));
+   int sign=(_option->getDeltaType() == enums::Call)? 1: -1;
+   return sign * dcf * (S * MathUtil::CNF(sign * d1)-K * MathUtil::CNF(sign * d2));
 }
 
-
-double OptionPricer::getImpliedVolBlackATM(enums::VolType VolTypeFlag, double K,  double optionPrice, double discountFactor, double T) {
-	int sig=(VolTypeFlag == enums::Call)? 1: -1;
-	double n=optionPrice/2/discountFactor/K/sig+1/2;	
-	return 2*MathUtil::invCNF(n)/sig;
+double OptionPricer::getImpliedVolBlackATM() {
+	int sign=(_option->getDeltaType() == enums::Call)? 1: -1;
+	double n=0; //optionPrice/2/discountFactor/K/sign+1/2;	
+	return 2*MathUtil::invCNF(n)/sign;
 }
 
-double OptionPricer::deriveDelta(double vol){
-   double delta;
-   switch(_option->getDeltaType()){
-   case AbstractOption::BS:
-      break;
-   case AbstractOption::PREMIUM:
-      break;
-   case AbstractOption::FWDBS:
-      break;
-   case AbstractOption::FWDPREMIUM:
-      break;
-   }
-   return delta;
+double OptionPricer::deriveD1(){
+   double S = _option->getPrice();
+   double K = _option->getStrike();
+   double rT = -log(_option->getDiscountTenor());
+   double vol = _option->getVol();
+   double T = _option->getExpiryTenor();
+	double d1=(log(S/K)+rT+pow(vol,2)*T/2)/(vol*sqrt(T));
+   return d1;
+}
+
+double OptionPricer::deriveD2(){
+   double d1=deriveD1();
+   double d2=d1-_option->getVol()*sqrt(_option->getExpiryTenor());
+   return d2;
+}
+
+double OptionPricer::deriveDelta(){
+   double d1 = _option->getD1();
+   double BSdelta = _option->getDiscountFactor() * MathUtil::CNF(d1);
+   return BSdelta;
 }

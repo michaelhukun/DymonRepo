@@ -14,6 +14,7 @@ namespace instruments {
 
 	public:
 
+      OptionPricer():AbstractPricer(){}
 		OptionPricer(AbstractOption* option):AbstractPricer(){
 			_option = option;
 		};
@@ -22,13 +23,12 @@ namespace instruments {
 		void init(Configuration*){}
 
 		virtual double getMPV();
-
-		double blackScholesFormula(enums::VolType VolTypeFlag, double S, double K, double vol, double r, double T);
-		double blackFormula(enums::VolType VolTypeFlag, double FwdS, double K, double vol, double discountFactor, double T);		
-		double getImpliedVolBlackATM(enums::VolType VolTypeFlag, double K,  double optionPrice, double discountFactor, double T);
-
-		double deriveDelta(double vol);
-
+		virtual double blackScholesFormula();
+		virtual double blackFormula();		
+		virtual double getImpliedVolBlackATM();
+      virtual double deriveD1();
+      virtual double deriveD2();
+		virtual double deriveDelta();
 
 	protected:
 		AbstractOption* _option;
