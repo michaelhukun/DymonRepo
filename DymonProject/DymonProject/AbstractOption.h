@@ -15,8 +15,6 @@ namespace instruments {
 
 	public:
 
-		enum DeltaType{BS, PREMIUM, FWDBS, FWDPREMIUM};
-
 		AbstractOption(){};
 		~AbstractOption(){};
 		AbstractOption(Market market, date tradeDate, int expiryInMonth, VolType volType, double S, double K, double vol){
