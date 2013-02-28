@@ -42,8 +42,6 @@ namespace utilities{
 		double deriveATMDelta(vector<FXEuropeanOption>* optionVector);
 		void buildCutOffSection(AbstractCurve<double>* ac);
 		void buildQuadraticSection(AbstractCurve<double>* ac);
-		double numericalFunc(double b1);
-		double b1tob2(double b1);
 		double getVolFromVector(enums::VolType optionType, double delta);
 
 		double _cutOff;

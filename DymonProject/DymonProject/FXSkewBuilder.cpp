@@ -80,12 +80,9 @@ void FXSkewBuilder::buildQuadratic(AbstractCurve<double>* ac){
 }
 
 void FXSkewBuilder::buildQuadraticSection(AbstractCurve<double>* ac){
-	double b0 = 1;
-	AbstractNumerical<FXSkewBuilder>* an = NumericalFactory<FXSkewBuilder>::getInstance()->getNumerical(this,&FXSkewBuilder::numericalFunc,_numericalAlgo);
-	double lowerBound = -10;
-	double upperBound = 10;
-	double b1 = 2*(16*_volSTR25*(_deltaATM-0.5)-_volRR25)/_volRR25; //an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
-	double b2 = 16; //b1tob2(b1);
+	double b1 = 2*(16*_volSTR25*(_deltaATM-0.5)-_volRR25)/_volRR25; 
+	double b2 = 16;
+	double b0 = 1-(b1*_volRR25*(0.5-_deltaATM)+b2*_volSTR25*pow(0.5-_deltaATM,2))/_volATM;
 
 	double B0 = b0*_volATM-b1*_deltaATM*_volRR25+b2*pow(_deltaATM,2)*_volSTR25;
 	double B1 = b1*_volRR25 - 2*b2*_deltaATM*_volSTR25;
@@ -101,17 +98,6 @@ void FXSkewBuilder::buildCutOffSection(AbstractCurve<double>* ac){
 	tuple<double, double> rightCutOffPoint = tuple<double, double>(1-_cutOff,rightCutOffVal);
 	ac->getSection(0)->setStartPoint(leftCutOffPoint);
 	ac->getSection(ac->getSize()-1)->setEndPoint(rightCutOffPoint);
-}
-
-double FXSkewBuilder::numericalFunc(double b1){
-	double b2 = b1tob2(b1);
-	double diff =_volRR25*(-1-0.5*b1)+b2*_volSTR25*(pow(0.25-_deltaATM,2) - pow(0.75-_deltaATM,2));
-	return diff;
-}
-
-double FXSkewBuilder::b1tob2(double b1){
-	double b2 = (2*_volSTR25-b1*_volRR25*(1-2*_deltaATM))/(pow(0.25-_deltaATM,2) + pow(0.75-_deltaATM,2))/_volSTR25;
-	return b2;
 }
 
 double FXSkewBuilder::getVolFromVector(enums::VolType optionType, double delta){
