@@ -15,6 +15,8 @@ namespace instruments {
 
 	public:
 
+		enum DeltaType{BS, PREMIUM, FWDBS, FWDPREMIUM};
+
 		AbstractOption(){};
 		~AbstractOption(){};
 		AbstractOption(Market market, date tradeDate, int expiryInMonth, VolType volType, double S, double K, double vol){
@@ -31,7 +33,7 @@ namespace instruments {
 			setDeliveryDate(deliveryDate);		
 		}
 
-      virtual double getMPV()=0;
+		virtual double getMPV()=0;
 
 		//Getters and Setters
 		double getVol(){return _vol;}
@@ -40,6 +42,7 @@ namespace instruments {
 		VolType getVolType(){ return _volType; }
 		double getDiscountRate(){ return _r; }
 		string getTenorStr(){ return _tenorStr; }
+		DeltaType getDeltaType(){ return _deltaType; }
 
 		void setVol(double vol){ _vol = vol; }
 		void setPrice(double S){ _S=S; }
@@ -47,6 +50,7 @@ namespace instruments {
 		void setTenorStr(string tenorStr){ _tenorStr=tenorStr; }
 		void setVolType(VolType volType){ _volType = volType;}
 		void setExpiryInMonth(int expiryInMonth){ _expiryInMonth = expiryInMonth;}
+		void setDeltaType(DeltaType deltaType){ _deltaType = deltaType; }
 		void setDiscountRate(double r){
 			double accrualFactor = dateUtil::getAccrualFactor(_tradeDate, _expiryDate,enums::DayCountNull);
 			_discountFactor = exp(-r*accrualFactor);
@@ -68,6 +72,7 @@ namespace instruments {
 		DiscountCurve* _discountCurve;
 		VolType _volType;
 		std::string _tenorStr;
+		DeltaType _deltaType;
 
 		void BaseOption(date tradeDate, VolType volType, double S, double K, double vol) {
 			setTradeDate(tradeDate);

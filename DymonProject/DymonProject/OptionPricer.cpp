@@ -3,6 +3,7 @@
 #include "OptionPricer.h"
 #include "Enums.h"
 #include "MathUtil.h"
+#include "AbstractOption.h"
 
 using namespace utilities;
 using namespace instruments;
@@ -42,21 +43,17 @@ double OptionPricer::getImpliedVolBlackATM(enums::VolType VolTypeFlag, double K,
 	return 2*MathUtil::invCNF(n)/sig;
 }
 
-double OptionPricer::deriveDelta(DeltaType deltaType, double strike, double vol){
+double OptionPricer::deriveDelta(double vol){
    double delta;
-   switch(deltaType){
-   case BS:
+   switch(_option->getDeltaType()){
+   case AbstractOption::BS:
       break;
-   case PREMIUM:
+   case AbstractOption::PREMIUM:
       break;
-   case FWDBS:
+   case AbstractOption::FWDBS:
       break;
-   case FWDPREMIUM:
+   case AbstractOption::FWDPREMIUM:
       break;
    }
    return delta;
 }
-
- double OptionPricer::numericalFunc(double vol){
-    return 0;
- }

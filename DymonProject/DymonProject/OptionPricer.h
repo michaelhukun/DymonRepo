@@ -14,14 +14,12 @@ namespace instruments {
 
 	public:
 
-      enum DeltaType{BS, PREMIUM, FWDBS, FWDPREMIUM};
-
 		OptionPricer(AbstractOption* option):AbstractPricer(){
-         _option = option;
-      };
+			_option = option;
+		};
 		~OptionPricer(){};
 
-      void init(Configuration*){}
+		void init(Configuration*){}
 
 		virtual double getMPV();
 
@@ -29,13 +27,11 @@ namespace instruments {
 		double blackFormula(enums::VolType VolTypeFlag, double FwdS, double K, double vol, double discountFactor, double T);		
 		double getImpliedVolBlackATM(enums::VolType VolTypeFlag, double K,  double optionPrice, double discountFactor, double T);
 
-      double deriveDelta(DeltaType deltaType, double strike, double vol));
-      double deriveVol(DeltaType deltaType, double strike);
-      
-		
+		double deriveDelta(double vol);
+
+
 	protected:
-      AbstractOption* _option;
-      double numericalFunc(double vol);
+		AbstractOption* _option;
 	};
 }
 #endif

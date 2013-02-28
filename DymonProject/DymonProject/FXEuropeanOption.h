@@ -36,9 +36,11 @@ namespace instruments {
 		void deriveDomesticDCF();
 		void deriveForeignDCF();
 		double getMPV(){return 0;};
+		void deriveVol();
 		std::string toString(){return "";}
 
 	private:
+		double numericalFunc(double vol);
 		
 		CcyPair _ccyPair;
 		int _daysToExpiry;
