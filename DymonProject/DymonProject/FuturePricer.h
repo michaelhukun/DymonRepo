@@ -25,6 +25,8 @@ namespace instruments {
 						
 		virtual double getMPV(double costOfCarryRate);
 
+      virtual double getMPV();
+
 	private:
 	
 		Future* _future;

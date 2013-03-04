@@ -14,3 +14,7 @@ double FuturePricer::getMPV(double costOfCarryRate){
 	double MPV = _future->getSpotPrice()/discountFactor;
 	return MPV;
 }
+
+double FuturePricer::getMPV(){
+   return 0;
+}

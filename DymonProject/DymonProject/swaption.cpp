@@ -6,6 +6,7 @@
 #include "dateUtil.h"
 #include "marketdata.h"
 #include "SwapPricer.h"
+#include "OptionPricer.h"
 
 using namespace utilities;
 using namespace std;
@@ -50,7 +51,7 @@ void Swaption::BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryI
 	//PayReceiver Indictor with respect to the fixed leg
 	BaseOption(tradeDate, PayReceiveInd == Payer?Call:Put, forwardParRate, strikeInDecimal, vol);
 	setMarket(market);
-	setExpiryInMonth(expiryInMonth);
+	//setExpiryInMonth(expiryInMonth);
 	setDiscountCurve(dc);
 }
 
@@ -69,6 +70,7 @@ double Swaption::getAnnuityMonetizer( DiscountCurve* dc) {
 
 double Swaption::getMPV(){
 	DiscountCurve* dc = MarketData::getInstance()->getSwapDiscountCurve(_market.getCurrencyEnum());
-	return blackFormula(_volType, _S, _K, _vol, _discountFactor, _expiryInMonth/12);
+   OptionPricer pricer(this);
+   return pricer.blackFormula();
 }
 

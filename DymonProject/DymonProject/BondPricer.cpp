@@ -34,6 +34,10 @@ double BondPricer::getMPV(DiscountCurve* discountCurve){
 	return MPV;
 }
 
+double BondPricer::getMPV(){
+   return 0;
+}
+
 double BondPricer::getYieldByDirtyPrice(double dirtyPrice){
 	_tempTargetBondPrice = dirtyPrice;
 	AbstractNumerical<BondPricer>* an = NumericalFactory<BondPricer>::getInstance()->getNumerical(this,&BondPricer::yieldSolverFunc,_numericAlgo);

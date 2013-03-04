@@ -21,10 +21,12 @@ namespace instruments {
 		BondPricer(){};
 		BondPricer(Bond* bond);
 		~BondPricer(){};
-
-		void init(Configuration* cfg);
+      
+      void init(Configuration* cfg);
 						
 		virtual double getMPV(DiscountCurve* discountCurve);	
+
+      virtual double getMPV();
 
 		double getZeroRateSpread(double dirtyPrice);
 		

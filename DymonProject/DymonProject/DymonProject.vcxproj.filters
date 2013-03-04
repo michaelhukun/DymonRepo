@@ -28,9 +28,6 @@
     <Filter Include="Header Files\dymon.datastructure">
       <UniqueIdentifier>{d69cba0e-3e76-4bdb-8dc0-207310e3e253}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\dymon.pricer">
-      <UniqueIdentifier>{fb167943-99ec-429d-b910-23a8b54f5bfe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\dymon.persistence">
       <UniqueIdentifier>{61dec5ac-0d29-4671-a9b1-c7849c3d5341}</UniqueIdentifier>
     </Filter>
@@ -48,6 +45,9 @@
     </Filter>
     <Filter Include="Header Files\dymon.instruments">
       <UniqueIdentifier>{49f8e7e4-87d1-4c57-af63-48cfc9b7ca7c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\dymon.pricer">
+      <UniqueIdentifier>{fb167943-99ec-429d-b910-23a8b54f5bfe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -330,6 +330,9 @@
     <ClInclude Include="CashFlowLegBuilder.h">
       <Filter>Header Files\dymon.builder</Filter>
     </ClInclude>
+    <ClInclude Include="FXOptionPricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -351,9 +354,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HolidayFileSource.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AbstractSession.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="fileUtil.cpp">
@@ -528,6 +528,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CashFlowLegBuilder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FXOptionPricer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

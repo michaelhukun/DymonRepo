@@ -30,6 +30,7 @@ void FXSkewFileSource::retrieveRecord(){
 	for (int i=1;i<numOfRows;i++) {
 		FXEuropeanOption* tempOption = createOptionObject(db, i);
 		tempOption->deriveTenorExpiry();
+      tempOption->deriveDeltaType();
 		insertOptionIntoCache(tempOption, FXVolSkewMap);
 	}
 

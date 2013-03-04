@@ -18,6 +18,9 @@ namespace instruments {
 		SwapPricer(){};
 		SwapPricer(Swap* swap){ _swap = swap; }
 		~SwapPricer(){};
+
+      
+      void init(Configuration*){}
 								
 		virtual double getMPV(cashflowLeg* fixCashflowLeg,cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve);
 
@@ -27,6 +30,8 @@ namespace instruments {
 		//vector<PV> getPVLeg(instruments::swap aSwap,DiscountCurve aDiscountCurve,int fixOrFloating);
 		
 		virtual double getParRate(cashflowLeg* floatCashflowLeg,cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve);
+      
+		virtual double getMPV();
 
 	protected:
 		virtual double getMPVFixLeg(cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve);
@@ -34,8 +39,6 @@ namespace instruments {
 		virtual double calFLiborRate(date forwardStartDate, date forwardEndDate, double accuralFactor);
 
 	private: 
-		vector<PV> _PVFixLeg;
-		vector<PV> _PVFloatingLeg;
 		double _parRate;
 		cashflowLeg* _fixCashflowLeg;
 		cashflowLeg* _floatCashflowLeg;
