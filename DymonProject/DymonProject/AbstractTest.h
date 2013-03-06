@@ -5,18 +5,27 @@
 #include <string>
 #include "date.h"
 #include <tuple>
+#include "AbstractFileSource.h"
 
 using namespace std;
 using namespace utilities;
+using namespace DAO;
 
 namespace UnitTest{
-	class AbstractTest{
+	class AbstractTest: public AbstractFileSource{
 
 	public:
 
 		typedef tuple<date, double> point;
 
 		AbstractTest(){};
+		~AbstractTest(){};
+
+		virtual void init(Configuration* cfg){
+			AbstractFileSource::init(cfg);
+		};
+
+		virtual void retrieveRecord()=0;
 
 		virtual void runTest()=0;
 
