@@ -22,34 +22,25 @@ namespace DAO {
 		typedef CSVDatabase::const_iterator CSVDatabaseCI;
 
 		AbstractFileSource(){};
-		AbstractFileSource(std::string persistDir, std::string fileName);
+		AbstractFileSource(std::string persistDir, std::string fileName){
+			_fileName = fileName;
+			_persistDir = persistDir;
+		}
 		~AbstractFileSource(){};
 
 		virtual void init(Configuration* cfg){
 			AbstractDAO::init(cfg);
 		};
 
-		virtual char* readRecord();
-
-		virtual void retrieveRecord();
-		
-		virtual void writeRecord(char* content);
-
-		virtual void appendRecord(char* content);
-		
-		std::string getFileName();
-		virtual void closeDataSource();
-		virtual void deleteDataSource();		
-
-	private:			
-
-		std::ofstream _outFile;		
-		long _fileSize;
-		bool isModified;
+		virtual void retrieveRecord()=0;
 
 	protected:
 
-		void readCSV(std::ifstream &input, CSVDatabase &db);
+		CSVDatabase readCSV(std::string fileName);
+		
+		char* readText(std::string fileName);
+
+		map<string, string> readMap(std::string fileName);
 
 		void display(const CSVRow& row);
 
@@ -57,8 +48,6 @@ namespace DAO {
 		
 		std::string _fileName;
 		std::string _persistDir;
-		char* _journal;
-		std::ifstream _inFile;
 	};
 }
 #endif

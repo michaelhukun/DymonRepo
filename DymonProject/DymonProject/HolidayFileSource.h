@@ -11,9 +11,9 @@ namespace DAO {
 	class HolidayFileSource: public AbstractFileSource{
 		
 	public:
-		HolidayFileSource();
-		HolidayFileSource(std::string persistDir, std::string fileName);
-		~HolidayFileSource();
+		HolidayFileSource(){};
+		HolidayFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){}
+		~HolidayFileSource(){};
 
 		void init(Configuration*);
 		

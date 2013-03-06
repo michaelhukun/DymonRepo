@@ -25,10 +25,7 @@ void MarketFileSource::init(Configuration* cfg){
 void MarketFileSource::retrieveRecord(){
 	if (!_enabled) return;
 
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	RecordHelper::MarketMap marketMap;
@@ -47,7 +44,6 @@ void MarketFileSource::retrieveRecord(){
 		marketMap.insert(std::make_pair(CurrencyEnum,*market));
 	}
 	RecordHelper::getInstance()->setMarketMap(marketMap);
-	_inFile.close();
 }
 
 void MarketFileSource::updateMarketObjectField(std::string fieldName, std::string fieldVal, Market* market){

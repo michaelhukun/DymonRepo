@@ -31,10 +31,7 @@ void BondPriceFileSource::init(Configuration* cfg){
 void BondPriceFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	int bondTenorNumOfMonths=0;
@@ -45,8 +42,6 @@ void BondPriceFileSource::retrieveRecord(){
 		Bond* tempBond = createBondObject(db, i);
 		insertBondIntoCache(tempBond, bondRateMap);
 	}
-
-	_inFile.close();
 }
 
 void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRateMap* bondRateMap){

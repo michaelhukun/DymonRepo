@@ -28,9 +28,7 @@ void BondFutureFileSource::init(Configuration* cfg){
 void BondFutureFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
+	CSVDatabase db = readCSV(_fileName);
 	int numOfRows=db.size();
 	RecordHelper::BondFutureMap* bondRateMap = RecordHelper::getInstance()->getBondFutureMap();
 
@@ -38,8 +36,6 @@ void BondFutureFileSource::retrieveRecord(){
 		BondFuture* tempBondFuture = createBondFutureObject(db, i);
 		insertBondFutureIntoCache(tempBondFuture, bondRateMap);
 	}
-
-	_inFile.close();
 }
 
 void BondFutureFileSource::insertBondFutureIntoCache(BondFuture* bondFuture, RecordHelper::BondFutureMap* bondFutureMap){

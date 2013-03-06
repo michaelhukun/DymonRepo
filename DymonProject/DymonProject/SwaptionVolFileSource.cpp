@@ -31,8 +31,7 @@ void SwaptionVolFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
 	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
+	CSVDatabase db =	readCSV(_inFile, db);
 	
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();

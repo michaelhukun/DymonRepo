@@ -18,10 +18,7 @@ void FXSkewFileSource::init(Configuration* cfg){
 void FXSkewFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
@@ -33,8 +30,6 @@ void FXSkewFileSource::retrieveRecord(){
       tempOption->deriveDeltaType();
 		insertOptionIntoCache(tempOption, FXVolSkewMap);
 	}
-
-	_inFile.close();
 }
 
 void FXSkewFileSource::insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap){
