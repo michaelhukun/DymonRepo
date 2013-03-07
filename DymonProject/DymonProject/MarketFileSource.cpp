@@ -17,7 +17,7 @@ using namespace Session;
 void MarketFileSource::init(Configuration* cfg){
    _name = "Market Convention";
 	_fileName = cfg->getProperty("marketConvention.file",true,"");
-	_persistDir = cfg->getProperty("marketConvention.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -25,7 +25,7 @@ void MarketFileSource::init(Configuration* cfg){
 void MarketFileSource::retrieveRecord(){
 	if (!_enabled) return;
 
-	CSVDatabase db = readCSV(_fileName);
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	RecordHelper::MarketMap marketMap;

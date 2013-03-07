@@ -18,7 +18,7 @@ using namespace instruments;
 void DepositFileSource::init(Configuration* cfg){
    _name = "Deposit";
 	_fileName = cfg->getProperty("depositRate.file",true,"");
-	_persistDir = cfg->getProperty("depositRate.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -26,7 +26,7 @@ void DepositFileSource::init(Configuration* cfg){
 void DepositFileSource::retrieveRecord(){
 	if (!_enabled) return;	
 
-	CSVDatabase db = readCSV(_fileName);
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 

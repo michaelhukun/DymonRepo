@@ -49,6 +49,9 @@
     <Filter Include="Header Files\dymon.pricer">
       <UniqueIdentifier>{fb167943-99ec-429d-b910-23a8b54f5bfe}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TestData">
+      <UniqueIdentifier>{a67975a4-d04e-45e3-899b-3fe0b58538c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="holiday.txt" />
@@ -61,6 +64,16 @@
     <None Include="FXSkew.csv" />
     <None Include="FXForward.csv" />
     <None Include="DepositRate.csv" />
+    <None Include="DepositRate_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="SwapRate_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="test.properties" />
+    <None Include="MarketConvention_test.csv">
+      <Filter>TestData</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -334,7 +347,7 @@
       <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
     <ClInclude Include="TestManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -539,5 +552,10 @@
     <ClCompile Include="TestManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="holiday_test.txt">
+      <Filter>TestData</Filter>
+    </Text>
   </ItemGroup>
 </Project>

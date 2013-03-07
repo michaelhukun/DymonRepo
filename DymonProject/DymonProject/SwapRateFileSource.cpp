@@ -20,7 +20,7 @@ using namespace instruments;
 void SwapRateFileSource::init(Configuration* cfg){
    _name = "Swap Rate";
 	_fileName = cfg->getProperty("swapRate.file",true,"");
-	_persistDir = cfg->getProperty("swapRate.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("swapRate.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -28,7 +28,7 @@ void SwapRateFileSource::init(Configuration* cfg){
 void SwapRateFileSource::retrieveRecord(){
 	if (!_enabled) return;	
 
-	CSVDatabase db = readCSV(_fileName);
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 

@@ -1,8 +1,10 @@
 #include "TestManager.h"
 #include "RecordHelper.h"
+#include "marketdata.h"
 
 using namespace UnitTest;
 using namespace utilities;
+using namespace Markets;
 
 void TestManager::init(Configuration*){
 	RecordHelper* recordHelper = RecordHelper::getInstance();
@@ -12,6 +14,9 @@ void TestManager::init(Configuration*){
 }
 
 void TestManager::start(){
+	MarketData::getInstance()->buildAll();
+
+
 }
 
 void TestManager::stop(){

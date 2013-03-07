@@ -23,7 +23,7 @@ using namespace DAO;
 void BondPriceFileSource::init(Configuration* cfg){
    _name = "Bond";
 	_fileName = cfg->getProperty("bondPrice.file",true,"");
-	_persistDir = cfg->getProperty("bondPrice.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -31,7 +31,7 @@ void BondPriceFileSource::init(Configuration* cfg){
 void BondPriceFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	CSVDatabase db = readCSV(_fileName);
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	int bondTenorNumOfMonths=0;

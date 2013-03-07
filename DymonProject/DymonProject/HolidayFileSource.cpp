@@ -17,7 +17,7 @@ using namespace Session;
 void HolidayFileSource::init(Configuration* cfg){
    _name = "Holiday";
 	_fileName = cfg->getProperty("holiday.file",true,"");
-	_persistDir = cfg->getProperty("holiday.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("holiday.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -26,7 +26,7 @@ void HolidayFileSource::retrieveRecord(){
 	if (!_enabled) return;
 
 	std::ifstream file;
-	file.open(_fileName);
+	file.open(_persistDir+_fileName);
 	string value;
 	enums::CurrencyEnum market;
 	RecordHelper::HolidayMap tempMap;
