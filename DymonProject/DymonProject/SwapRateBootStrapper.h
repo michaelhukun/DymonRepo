@@ -40,9 +40,9 @@ namespace utilities {
 		Swap* _swap;
 
 		std::vector<cashflow> _cashflowVector;
-		unsigned int _cashflowStartIndex;
-		unsigned int _cashflowEndIndex;
-		unsigned int findCashFlowIndex(date date0);
+		int _cashflowStartIndex;
+		int _cashflowEndIndex;
+		int findCashFlowIndex(date date0);
 	};
 }
 #endif

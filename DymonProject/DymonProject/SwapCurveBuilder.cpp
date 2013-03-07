@@ -22,10 +22,10 @@ typedef tuple<date, double> point;
 
 void SwapCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
-	_timeLineBuildDirection = std::stoi(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"1"));
-	_rollAccuralDates =  cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".rollAccuralDates",false,"0")=="0"?false:true;
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".interpol",false,"LINEAR"));
-	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("SwapDiscountCurve."+_market.getNameString()+".numerical",false,"BISECTION"));
+	_timeLineBuildDirection = std::stoi(cfg->getProperty("SwapDiscountCurve.buildCashFlowDirection",false,"1"));
+	_rollAccuralDates =  cfg->getProperty("SwapDiscountCurve.rollAccuralDates",false,"0")=="0"?false:true;
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve.interpol",false,"LINEAR"));
+	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("SwapDiscountCurve.numerical",false,"BISECTION"));
 	_spotDateDF = NaN;
 }
 
