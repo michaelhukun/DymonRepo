@@ -18,12 +18,16 @@ namespace utilities {
 
 		std::string getProperty(std::string key, bool compulsory, std::string defaultVal);
 		
+		// Getters and Setters
+		std::string getFileName(){ return _fileName; }
+		void setFileName(std::string fileName){ _fileName = fileName; }
 		
 	private:
 		Configuration(){};
 		~Configuration(){};
 		static Configuration* single;
 		ConfigMap _config;
+		std::string _fileName;
 	};
 }
 #endif

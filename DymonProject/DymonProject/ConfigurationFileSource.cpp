@@ -13,8 +13,8 @@ using namespace Session;
 using namespace utilities;
 
 void ConfigurationFileSource::init(Configuration* cfg){
-   _name = "Configuration";
-	_fileName = "instance.properties";
+	_name = "Configuration";
+	_fileName = cfg->getFileName();
 	_persistDir = "";
 	AbstractFileSource::init(cfg);
 }

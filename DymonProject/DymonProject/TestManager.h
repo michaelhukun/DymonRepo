@@ -5,8 +5,9 @@
 #include "AbstractSession.h"
 
 using namespace utilities;
+using namespace Session;
 
-namespace Session {
+namespace UnitTest {
 	class TestManager: public AbstractSession{
 
 	public:

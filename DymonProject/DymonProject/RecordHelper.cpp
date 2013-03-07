@@ -39,12 +39,12 @@ void RecordHelper::init(Configuration* cfg){
 	dataSourceVector.push_back(new BondFutureFileSource());
 	dataSourceVector.push_back(new FXForwardFileSource());
 	dataSourceVector.push_back(new FXSkewFileSource());
-	
+
 	for(unsigned int i = 0; i<dataSourceVector.size(); i++){
 		AbstractDAO* dao = dataSourceVector[i];
 		dao->init(cfg);
 		dao->retrieveRecord();
-      dao->printSuccessMsg();
+		dao->printSuccessMsg();
 	}
 }
 

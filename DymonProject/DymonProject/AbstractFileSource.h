@@ -21,6 +21,7 @@ namespace DAO {
 		typedef std::vector<CSVRow> CSVDatabase;
 		typedef CSVDatabase::const_iterator CSVDatabaseCI;
 
+		// Constructors
 		AbstractFileSource(){};
 		AbstractFileSource(std::string persistDir, std::string fileName){
 			_fileName = fileName;
@@ -28,11 +29,16 @@ namespace DAO {
 		}
 		~AbstractFileSource(){};
 
+		// Methods
 		virtual void init(Configuration* cfg){
 			AbstractDAO::init(cfg);
 		};
 
 		virtual void retrieveRecord()=0;
+
+		// Getters and Setters
+		std::string getFileName(){ return _fileName; }
+		void setFileName(std::string fileName){ _fileName = fileName; }
 
 	protected:
 

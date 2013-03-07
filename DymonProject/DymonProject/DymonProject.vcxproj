@@ -154,6 +154,7 @@
     <ClInclude Include="TestDateUtil.h" />
     <ClInclude Include="TestDiscountCurve.h" />
     <ClInclude Include="TestInterpolator.h" />
+    <ClInclude Include="TestManager.h" />
     <ClInclude Include="TestNumerical.h" />
     <ClInclude Include="TestOption.h" />
     <ClInclude Include="EuropeanOption.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="TestDateUtil.cpp" />
     <ClCompile Include="TestDiscountCurve.cpp" />
     <ClCompile Include="TestInterpolator.cpp" />
+    <ClCompile Include="TestManager.cpp" />
     <ClCompile Include="TestNumerical.cpp" />
     <ClCompile Include="TestOption.cpp" />
     <ClCompile Include="EuropeanOption.cpp" />

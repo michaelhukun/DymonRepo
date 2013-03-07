@@ -136,9 +136,10 @@ void buildSampleCurve(){
 }
 
 void LoadInitialData(){
-	cout << "******** RecordHelper Test ********" << endl;
 	RecordHelper* recordHelper = RecordHelper::getInstance();
-	recordHelper->init(Configuration::getInstance());
+	Configuration* cfg = Configuration::getInstance();
+	cfg->setFileName("instance.properties");
+	recordHelper->init(cfg);
 }
 
 void CashFlowTest() {
