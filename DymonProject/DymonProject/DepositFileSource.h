@@ -17,9 +17,9 @@ namespace DAO {
 	class DepositFileSource: public AbstractFileSource{
 		
 	public:
-		DepositFileSource();
-		DepositFileSource(std::string persistDir, std::string fileName);
-		~DepositFileSource();
+		DepositFileSource(){};
+		DepositFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){}
+		~DepositFileSource(){};
 
 		void init(Configuration*);
 		

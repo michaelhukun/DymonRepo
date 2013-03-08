@@ -14,32 +14,25 @@ using namespace std;
 using namespace utilities;
 using namespace Session;
 
-HolidayFileSource::HolidayFileSource():
-	AbstractFileSource(){}
-
-HolidayFileSource::HolidayFileSource(std::string persistDir, std::string fileName):
-	AbstractFileSource(persistDir, fileName){}
-
-HolidayFileSource::~HolidayFileSource(){}
-
 void HolidayFileSource::init(Configuration* cfg){
    _name = "Holiday";
 	_fileName = cfg->getProperty("holiday.file",true,"");
-	_persistDir = cfg->getProperty("holiday.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("holiday.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void HolidayFileSource::retrieveRecord(){
 	if (!_enabled) return;
-	
-	AbstractFileSource::retrieveRecord();
+
+	std::ifstream file;
+	file.open(_persistDir+_fileName);
 	string value;
 	enums::CurrencyEnum market;
 	RecordHelper::HolidayMap tempMap;
 
-	while (_inFile.good()){
-		_inFile>>value;
+	while (file.good()){
+		file>>value;
 		vector<string> vec = fileUtil::split(value,':');
 		market = EnumHelper::getCcyEnum(vec[0]);
 		vector<string> holidays = fileUtil::split(vec[1],',');
@@ -48,7 +41,7 @@ void HolidayFileSource::retrieveRecord(){
 		tempMap.insert(pair<enums::CurrencyEnum,set<long>>(market,JDNSet));
 	}
 	RecordHelper::getInstance()->setHolidayMap(tempMap);
-	_inFile.close();
+	file.close();
 }
 
 set<long> HolidayFileSource::buildJDNSet(vector<string> vec0){

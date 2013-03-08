@@ -15,7 +15,7 @@ using namespace std;
 using namespace enums;
 
 void Swap::deriveDates(){
-	_expiryDate = date(_spotDate.getJudianDayNumber()+_daysToMty);
+	_expiryDate = dateUtil::getEndDate(_spotDate,_tenorInYear,_market.getAccrualAdjustSwapConvention(), _market.getCurrencyEnum(), dateUtil::YEAR);
 	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate, _market.getDayRollSwapConvention(), _market.getCurrencyEnum());
 }
 

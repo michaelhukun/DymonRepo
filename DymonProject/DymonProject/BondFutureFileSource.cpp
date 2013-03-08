@@ -20,7 +20,7 @@ using namespace instruments;
 void BondFutureFileSource::init(Configuration* cfg){
    _name = "Bond Future";
 	_fileName = cfg->getProperty("bondFuture.file",true,"");
-	_persistDir = cfg->getProperty("bondFuture.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("bondFuture.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -28,9 +28,7 @@ void BondFutureFileSource::init(Configuration* cfg){
 void BondFutureFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	RecordHelper::BondFutureMap* bondRateMap = RecordHelper::getInstance()->getBondFutureMap();
 
@@ -38,8 +36,6 @@ void BondFutureFileSource::retrieveRecord(){
 		BondFuture* tempBondFuture = createBondFutureObject(db, i);
 		insertBondFutureIntoCache(tempBondFuture, bondRateMap);
 	}
-
-	_inFile.close();
 }
 
 void BondFutureFileSource::insertBondFutureIntoCache(BondFuture* bondFuture, RecordHelper::BondFutureMap* bondFutureMap){

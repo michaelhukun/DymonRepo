@@ -15,29 +15,18 @@ using namespace utilities;
 using namespace Session;
 using namespace instruments;
 
-DepositFileSource::DepositFileSource():
-AbstractFileSource(){}
-
-DepositFileSource::DepositFileSource(std::string persistDir, std::string fileName):
-AbstractFileSource(persistDir, fileName){}
-
-DepositFileSource::~DepositFileSource(){}
-
 void DepositFileSource::init(Configuration* cfg){
    _name = "Deposit";
 	_fileName = cfg->getProperty("depositRate.file",true,"");
-	_persistDir = cfg->getProperty("depositRate.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void DepositFileSource::retrieveRecord(){
 	if (!_enabled) return;	
-	AbstractFileSource::retrieveRecord();
 
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
@@ -48,8 +37,6 @@ void DepositFileSource::retrieveRecord(){
 		tempDeposit->deriveAccrualStartDate();
 		insertDepositIntoCache(tempDeposit, depositRateMap);
 	}
-
-	_inFile.close();
 }
 
 void DepositFileSource::insertDepositIntoCache(Deposit* deposit, RecordHelper::DepositRateMap* depositRateMap){	

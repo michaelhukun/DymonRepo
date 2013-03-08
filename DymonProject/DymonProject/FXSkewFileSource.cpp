@@ -10,7 +10,7 @@ using namespace utilities;
 void FXSkewFileSource::init(Configuration* cfg){
    _name = "FX Skew";
 	_fileName = cfg->getProperty("FXSkew.file",true,"");
-	_persistDir = cfg->getProperty("FXSkew.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("FXSkew.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -18,10 +18,7 @@ void FXSkewFileSource::init(Configuration* cfg){
 void FXSkewFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
@@ -33,8 +30,6 @@ void FXSkewFileSource::retrieveRecord(){
       tempOption->deriveDeltaType();
 		insertOptionIntoCache(tempOption, FXVolSkewMap);
 	}
-
-	_inFile.close();
 }
 
 void FXSkewFileSource::insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap){

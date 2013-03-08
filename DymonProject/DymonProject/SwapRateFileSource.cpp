@@ -17,29 +17,18 @@ using namespace utilities;
 using namespace Session;
 using namespace instruments;
 
-SwapRateFileSource::SwapRateFileSource():
-	AbstractFileSource(){}
-
-SwapRateFileSource::SwapRateFileSource(std::string persistDir, std::string fileName):
-	AbstractFileSource(persistDir, fileName){}
-
-SwapRateFileSource::~SwapRateFileSource(){}
-
 void SwapRateFileSource::init(Configuration* cfg){
    _name = "Swap Rate";
 	_fileName = cfg->getProperty("swapRate.file",true,"");
-	_persistDir = cfg->getProperty("swapRate.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("swapRate.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void SwapRateFileSource::retrieveRecord(){
 	if (!_enabled) return;	
-	AbstractFileSource::retrieveRecord();
 
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
@@ -52,7 +41,6 @@ void SwapRateFileSource::retrieveRecord(){
 		tempSwap->buildFloatLeg();
 		insertSwapIntoCache(tempSwap, swapRateMap);
 	}
-
 }
 
 void SwapRateFileSource::insertSwapIntoCache(Swap* swap, RecordHelper::SwapRateMap* swapRateMap){

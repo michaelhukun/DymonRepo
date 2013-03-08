@@ -20,7 +20,7 @@ using namespace instruments;
 void FXForwardFileSource::init(Configuration* cfg){
    _name = "FX Forward";
 	_fileName = cfg->getProperty("FXForward.file",true,"");
-	_persistDir = cfg->getProperty("FXForward.path",false,"");
+	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("FXForward.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
@@ -28,10 +28,7 @@ void FXForwardFileSource::init(Configuration* cfg){
 void FXForwardFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
@@ -42,8 +39,6 @@ void FXForwardFileSource::retrieveRecord(){
 		insertForwardIntoCache(tempForward, FXForwardMap);
 	}
 	deriveSpotForwardRate(FXForwardMap);
-
-	_inFile.close();
 }
 
 void FXForwardFileSource::insertForwardIntoCache(FXForward* forward, RecordHelper::FXForwardMap* FXForwardMap){

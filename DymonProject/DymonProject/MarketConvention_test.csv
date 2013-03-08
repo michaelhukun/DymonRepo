@@ -1,0 +1,16 @@
+Market,USD,EUR,
+DayCountCash,thirty_360US,thirty_360US,
+DayCountSwapFixed,30/360,30U/360,
+DayCountSwapFloat,ACT/360,ACT/360,
+DayCountBond,thirty_360US,thirty_360US,
+DayRollCash,Following,Following,
+DayRollSwap,Following,Following,
+DayRollBond,Mfollowing,Mfollowing,
+AccrualAdjustCash,Null,Null,
+AccrualAdjustSwap,Mfollowing,Mfollowing,
+AccrualAdjustBond,Null,Null,
+BizDaysAfterSpotSwap,2,2,
+BizDaysAfterSpotBond,0,0,
+BizDaysAfterExpiryFXOption,2,2
+PayFreqSwapFixed,2,1
+PayFreqSwapFloat,4,2
