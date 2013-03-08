@@ -26,9 +26,12 @@ namespace instruments {
       virtual void init(Configuration*)=0;
 
 		virtual double getMPV()=0;
+
+		void setDiscountCurve(DiscountCurve* discountCurve){ _discountCurve = discountCurve; }
 		
 	protected: 
 		double _MPV;	
+		DiscountCurve* _discountCurve;
 		
 	};
 }

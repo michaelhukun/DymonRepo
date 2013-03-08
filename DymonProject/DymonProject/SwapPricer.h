@@ -42,7 +42,6 @@ namespace instruments {
 		double _parRate;
 		cashflowLeg* _fixCashflowLeg;
 		cashflowLeg* _floatCashflowLeg;
-		DiscountCurve* _pricingDiscountCurve;	
 		Swap* _swap;
 	};
 }

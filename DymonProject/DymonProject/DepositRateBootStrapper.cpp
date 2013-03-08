@@ -32,6 +32,7 @@ AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 		double lowerBound = abs(previousVal*(1-_plusMinus/100.0));
 		double upperBound = previousVal*(1+_plusMinus/100.0);
 		double discountFactor = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
+		_spotDateDF = discountFactor;
 		ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
 	}
 	return ai;

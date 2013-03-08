@@ -157,6 +157,7 @@ namespace utilities{
 		ss <<  _name + " - Line sections: \n";
 		for (unsigned int i = 0; i<_lineSectionVector->size(); i++){
 			ss << _lineSectionVector->at(i)->toString() <<"\n";
+	  ss.precision(6);
 		}
 		return ss.str();
 	}
@@ -171,6 +172,7 @@ namespace utilities{
 		}
       AbstractCurve::point point = _lineSectionVector->at(_lineSectionVector->size()-1)->getEndPoint();
       ss << std::get<0>(point)<<","<<std::get<1>(point)<<"\n";
+	  ss.precision(6);
 		return ss.str();
    }
 
@@ -184,6 +186,7 @@ namespace utilities{
 		}
       AbstractCurve::point point = _lineSectionVector->at(_lineSectionVector->size()-1)->getEndPoint();
       ss << std::get<0>(point).toString()<<","<<std::get<1>(point)<<"\n";
+	  ss.precision(6);
 		return ss.str();
    }
 	
@@ -195,6 +198,7 @@ namespace utilities{
 		T curveEndX = std::get<0>(getCurveEndPoint());
 		while(curveStartX<=curveEndX){
 			ss << "Point ["<<curveStartX << ", "<<getValue(curveStartX)<<"]; \n";
+	  ss.precision(6);
 			curveStartX = curveStartX + interval;
 		}
 		return ss.str();
@@ -208,6 +212,7 @@ namespace utilities{
 		date curveEndX = std::get<0>(getCurveEndPoint());
 		while(curveStartX<=curveEndX){
 			ss << "Point ["<<curveStartX.toString() << ", "<<getValue(curveStartX)<<"]; \n";
+	  ss.precision(6);
 			curveStartX = curveStartX + (int)interval;
 		}
 		return ss.str();

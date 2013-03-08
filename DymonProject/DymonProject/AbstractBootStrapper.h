@@ -33,6 +33,8 @@ namespace utilities{
 		virtual AbstractInterpolator<T>* bootStrap(){return NULL;};
 
 		virtual double numericalFunc(double x)=0;
+	
+		void setSpotDate(date spotDate){ _spotDate = spotDate; }
 
 	protected:
 	
@@ -43,6 +45,8 @@ namespace utilities{
 		enums::interpolAlgo _interpolAlgo;
 
 		enums::NumericAlgo _numericAlgo; 
+
+		date _spotDate;
 
 		double _tolerance;
 

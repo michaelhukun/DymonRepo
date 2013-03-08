@@ -122,6 +122,7 @@
     <ClInclude Include="Constants.h" />
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Deposit.h" />
+    <ClInclude Include="DepositPricer.h" />
     <ClInclude Include="ForwardCurveBuilder.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />

@@ -47,6 +47,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		if (it==rateMap.begin()){
 			_curveStartDate = deposit->getTradeDate();
 			_curvePointer = point(_curveStartDate,1);
+			_spotDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpotSwap(),_market.getCurrencyEnum());
 		}
 
 		cashflow cf(deposit, true);
@@ -54,9 +55,9 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		if (deposit->getIsOverNight()){
 			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, _interpolAlgo, _numericalAlgo);
 		}else{
-			_spotDate = deposit->getSpotDate();
 			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), cf, _interpolAlgo, _numericalAlgo, _market, _spotDateDF);
 		}
+		bs->setSpotDate(_spotDate);
 		bs->init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = bs->bootStrap();
 		yc->insertLineSection(lineSection);
