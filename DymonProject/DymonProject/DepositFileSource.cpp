@@ -70,7 +70,7 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 		deposit->setID(fieldVal);
 	}else if (fieldName=="NAME"){
 		deposit->setName(fieldVal);
-		if (fieldVal.find("O/N")!=std::string::npos) 
+		if (fieldVal.find("/N")!=std::string::npos) 
 			deposit->setIsOverNight(true);
 		else
 			deposit->setIsOverNight(false);

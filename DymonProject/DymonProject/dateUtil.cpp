@@ -236,7 +236,7 @@ date dateUtil::dayRollAdjust(date aDate,DayRollEnum aDayRollConvention, enums::C
 		break;
 	case enums::EOM:
 		break;
-	case enums::Null:
+	case enums::DayRollNull:
 		adjustedJDN = aDate.getJudianDayNumber();
 		break;
 	}

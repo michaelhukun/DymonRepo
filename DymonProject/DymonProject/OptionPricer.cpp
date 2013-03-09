@@ -12,7 +12,6 @@ double OptionPricer::getMPV(){
    return 0;
 }
 
-
 double OptionPricer::blackScholesFormula(){
    double d1 = deriveD1();
    double d2 = deriveD2();

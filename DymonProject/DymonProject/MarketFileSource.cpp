@@ -78,5 +78,7 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setPayFreqSwapFixed(std::stoi(fieldVal));
 	}else if (fieldName=="PayFreqSwapFloat"){
 		market->setPayFreqSwapFloat(std::stoi(fieldVal));
+	}else if (fieldName=="ShortEndUseLibor"){
+		market->setShortEndUseLibor(fieldVal=="false"?false:true);
 	}
 }

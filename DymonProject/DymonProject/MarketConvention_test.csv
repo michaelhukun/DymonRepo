@@ -14,3 +14,4 @@ BizDaysAfterSpotBond,0,0,
 BizDaysAfterExpiryFXOption,2,2
 PayFreqSwapFixed,2,1
 PayFreqSwapFloat,4,2
+ShortEndUseLibor,false,false

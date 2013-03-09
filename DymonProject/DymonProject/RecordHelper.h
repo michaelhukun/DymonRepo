@@ -16,6 +16,7 @@
 #include "FXEuropeanOption.h"
 #include "Swap.h"
 #include "Deposit.h"
+#include "Libor.h"
 
 using namespace utilities;
 using namespace DAO;
@@ -49,6 +50,7 @@ namespace Session {
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}
 		DepositRateMap* getDepositRateMap(){return &_depositRateMap;}
+		DepositRateMap* getLiborRateMap(){return &_liborRateMap;}
 		BondRateMap* getBondRateMap(){return &_bondRateMap;}
 		BondFutureMap* getBondFutureMap(){return &_bondFutureMap;}
 		SwapRateMap* getSwapRateMap(){return &_swapRateMap;}
@@ -61,6 +63,7 @@ namespace Session {
 		// Setters
 		void setHolidayMap(HolidayMap map){_holidayMap=map;}
 		void setDepositRateMap(DepositRateMap map){_depositRateMap=map;}
+		void setLiborRateMap(DepositRateMap map){_liborRateMap=map;}
 		void setBondRateMap(BondRateMap map){_bondRateMap=map;}
 		void setBondFutureMap(BondFutureMap map){_bondFutureMap=map;}
 		void setSwapRateMap(SwapRateMap map){_swapRateMap=map;}
@@ -84,6 +87,7 @@ namespace Session {
 
 		HolidayMap _holidayMap;
 		DepositRateMap _depositRateMap;
+		DepositRateMap _liborRateMap;
 		SwapRateMap _swapRateMap;
 		BondRateMap _bondRateMap;
 		BondFutureMap _bondFutureMap;				

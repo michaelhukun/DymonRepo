@@ -32,45 +32,53 @@ void SwapCurveBuilder::init(Configuration* cfg){
 DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	DiscountCurve* yc = new DiscountCurve();
-   yc->setName(_market.getNameString()+" Swap Curve");
+	yc->setName(_market.getNameString()+" Swap Curve");
+	loadRateMaps();
 	buildDepositSection(yc);
 	buildSwapSection(yc);
 	return yc;
 }
 
+void SwapCurveBuilder::loadRateMaps(){
+	if (_market.getShortEndUseLibor()){
+		_shortEndMap  = RecordHelper::getInstance()->getLiborRateMap()->at(_market.getCurrencyEnum());
+	}else{
+		_shortEndMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
+	}
+	_longEndMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
+}
+
 void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){			
-	auto rateMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
-	for (auto it=rateMap.begin(); it != rateMap.end(); it++ ){
+	
+	for (auto it=_shortEndMap.begin(); it != _shortEndMap.end(); it++ ){
 		date accrualEndDate = ((*it).first);
 		Deposit* deposit = &(it->second);
 
-		if (it==rateMap.begin()){
+		if (it==_shortEndMap.begin()){
 			_curveStartDate = deposit->getTradeDate();
 			_curvePointer = point(_curveStartDate,1);
 			_spotDate = dateUtil::getBizDateOffSet(_curveStartDate,_market.getBusinessDaysAfterSpotSwap(),_market.getCurrencyEnum());
 		}
 
-		cashflow cf(deposit, true);
 		AbstractBootStrapper<date>* bs;
 		if (deposit->getIsOverNight()){
-			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, _interpolAlgo, _numericalAlgo);
+			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, yc, _interpolAlgo, _numericalAlgo);
 		}else{
-			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), cf, _interpolAlgo, _numericalAlgo, _market, _spotDateDF);
+			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, _interpolAlgo, _numericalAlgo, _spotDateDF);
 		}
 		bs->setSpotDate(_spotDate);
 		bs->init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = bs->bootStrap();
 		yc->insertLineSection(lineSection);
 		_curvePointer = lineSection->getEndPoint();
-		
+
 		if (_spotDateDF == NaN && _spotDate<= std::get<0>(lineSection->getEndPoint())) 
 			_spotDateDF = yc->getValue(_spotDate);
 	}
 }
 
 void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
-	auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
-	for (auto it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
+	for (auto it=_longEndMap.begin(); it != _longEndMap.end(); it++ ){
 
 		date accrualEndDate=it->first;	
 		Swap* swap=&(it->second);		

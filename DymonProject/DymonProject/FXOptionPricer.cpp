@@ -1,6 +1,5 @@
 #include "FXOptionPricer.h"
 #include "FXEuropeanOption.h"
-#include "OptionPricer.h"
 #include "MathUtil.h"
 
 using namespace utilities;
@@ -46,7 +45,7 @@ double FXOptionPricer::deriveDelta(){
    throw "Delta enum not found!";
 }
 
-double OptionPricer::blackFormula(){
+double FXOptionPricer::blackFormula(){
 FXEuropeanOption * option = static_cast<FXEuropeanOption*>(_option);
    double d1 = deriveD1();
    double d2 = deriveD2();

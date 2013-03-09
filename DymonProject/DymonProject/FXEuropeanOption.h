@@ -1,7 +1,6 @@
 //created by Jianwei on 30 Nov 2012
 #ifndef FXEUROPEANOPTION_H
 #define FXEUROPEANOPTION_H
-#include "OptionPricer.h"
 #include "EuropeanOption.h"
 #include "CcyPair.h"
 

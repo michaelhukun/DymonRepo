@@ -19,23 +19,24 @@ namespace instruments {
 	
 		// Getters and Setters
 
-		double getDepositRate(){ return _depositRate; }
+		double getDepositRate(){ return _rate; }
+		double getRate(){ return _rate; }
 		double getDaysToMty(){ return _daysToMty; }
 		bool getIsOverNight(){ return _isOverNight; }
 
-		void setDepositRate(double depositRate){ _depositRate= depositRate; }
+		void setDepositRate(double depositRate){ _rate= depositRate; }
+		void setRate(double rate){ _rate = rate; }
 		void setDaysToMty(int daysToMty){ _daysToMty = daysToMty; }
 		void setIsOverNight(bool isOverNight){ _isOverNight = isOverNight; }
 
 		// Methods
 		
-		void deriveAccrualStartDate();
-		std::string toString(){return "";}
+		virtual void deriveAccrualStartDate();
+		virtual std::string toString(){return "";}
 
-	private:
-
-
-		double _depositRate;
+	protected:
+		
+		double _rate;
 		int _daysToMty;
 		bool _isOverNight;
 	};

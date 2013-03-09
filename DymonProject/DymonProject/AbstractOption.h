@@ -19,7 +19,7 @@ namespace instruments {
 		~AbstractOption(){};
 		AbstractOption(Market market, date tradeDate, int expiryInMonth, VolType volType, double S, double K, double vol){
 			BaseOption(tradeDate, volType, S, K, vol);
-			setExpiryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Null,market.getCurrencyEnum(),dateUtil::MONTH));
+			setExpiryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::DayRollNull,market.getCurrencyEnum(),dateUtil::MONTH));
 			setDeliveryDate(dateUtil::getEndDate(tradeDate,expiryInMonth, enums::Mfollowing,market.getCurrencyEnum(),dateUtil::MONTH));			
 			_market = market;
 		}
@@ -40,13 +40,13 @@ namespace instruments {
 		double getDiscountRate(){ return _r; }
 		string getTenorStr(){ return _tenorStr; }
 		DeltaType getDeltaType(){ return _deltaType; }
-      double getDiscountFactor(){ return _discountFactor; }
-      double getDiscountTenor(){ return _discountTenor; }
-      double getExpiryTenor(){ return _expiryTenor; }
+		double getDiscountFactor(){ return _discountFactor; }
+		double getDiscountTenor(){ return _discountTenor; }
+		double getExpiryTenor(){ return _expiryTenor; }
 		int getDaysToExpiry(){ return _daysToExpiry; }
 		double getDelta(){ return _delta; }
-      double getD1(){ return _d1; }
-      double getD2(){ return _d2; }
+		double getD1(){ return _d1; }
+		double getD2(){ return _d2; }
 
 		void setVol(double vol){ _vol = vol; }
 		void setPrice(double S){ _S=S; }
@@ -54,13 +54,13 @@ namespace instruments {
 		void setTenorStr(string tenorStr){ _tenorStr=tenorStr; }
 		void setVolType(VolType volType){ _volType = volType;}
 		void setExpiryTenor(double expiryTenor){ _expiryTenor = expiryTenor;}
-      void setDiscountTenor(double discountTenor){ _discountTenor = discountTenor; }
+		void setDiscountTenor(double discountTenor){ _discountTenor = discountTenor; }
 		void setDeltaType(DeltaType deltaType){ _deltaType = deltaType; }
-      void setDiscountFactor(double discountFactor){ _discountFactor = discountFactor; }
+		void setDiscountFactor(double discountFactor){ _discountFactor = discountFactor; }
 		void setDaysToExpiry(int daysToExpiry){ _daysToExpiry = daysToExpiry; }
 		void setDelta(double delta){ _delta = delta; }
-      void setD2(double d2){ _d2 = d2; }
-      void setD1(double d1){ _d1 = d1; }
+		void setD2(double d2){ _d2 = d2; }
+		void setD1(double d1){ _d1 = d1; }
 
 		void setDiscountRate(double r){
 			double accrualFactor = dateUtil::getAccrualFactor(_tradeDate, _expiryDate,enums::DayCountNull);

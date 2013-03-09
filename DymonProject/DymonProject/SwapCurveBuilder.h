@@ -5,8 +5,7 @@
 #include "AbstractCurve.h"
 #include "DiscountCurve.h"
 #include "AbstractBuilder.h"
-#include "cashflow.h"
-#include "cashflowLeg.h"
+#include "RecordHelper.h"
 #include <vector>
 
 using namespace instruments;
@@ -26,6 +25,7 @@ namespace utilities{
 		DiscountCurve* build(Configuration* cfg);
 		void buildDepositSection(DiscountCurve* yc);
 		void buildSwapSection(DiscountCurve* yc);
+		void loadRateMaps();
 
 		// Getters and Setters
 		Market getMarket(){return _market;}
@@ -53,6 +53,9 @@ namespace utilities{
 		date _spotDate;
 		point _curvePointer;
 		date _curveStartDate;
+		bool _shortEndUseLibor;
+		std::map<long, Deposit> _shortEndMap;
+		std::map<long, Swap> _longEndMap;
 	};
 }
 #endif

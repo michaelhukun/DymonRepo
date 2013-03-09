@@ -33,6 +33,7 @@ namespace instruments {
 		int getBusinessDaysAfterSpotBond(){return _businessDaysAfterSpotBond;}
 		int getPayFreqSwapFixed(){ return _payFreqSwapFixed; }
 		int getPayFreqSwapFloat(){ return _payFreqSwapFloat; }
+		bool getShortEndUseLibor(){ return _shortEndUseLibor; }
 
 		void setCurrencyEnum(enums::CurrencyEnum marketName){_marketName = marketName;}
 		void setDayCountCashConvention(enums::DayCountEnum dayCountCashConvention){_dayCountCashConvention = dayCountCashConvention;}
@@ -49,6 +50,7 @@ namespace instruments {
 		void setBusinessDaysAfterSpotBond(int businessDaysAfterSpotBond){_businessDaysAfterSpotBond =businessDaysAfterSpotBond;}
 		void setPayFreqSwapFixed(int payFreqSwapFixed){ _payFreqSwapFixed = payFreqSwapFixed; }
 		void setPayFreqSwapFloat(int payFreqSwapFloat){ _payFreqSwapFloat = payFreqSwapFloat; }
+		void setShortEndUseLibor(bool shortEndUseLibor){ _shortEndUseLibor = shortEndUseLibor; } 
 
 		enums::DayRollEnum getDayRollConvention(enums::Instrument instrument);
 		enums::DayRollEnum getAccrualAdjustConvention(enums::Instrument instrument);
@@ -70,6 +72,7 @@ namespace instruments {
 		int _businessDaysAfterSpotBond;
 		int _payFreqSwapFixed;
 		int _payFreqSwapFloat;
+		bool _shortEndUseLibor;
 	};
 }
 #endif

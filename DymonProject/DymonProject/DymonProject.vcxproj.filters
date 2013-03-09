@@ -354,6 +354,12 @@
     <ClInclude Include="DepositPricer.h">
       <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
+    <ClInclude Include="Libor.h">
+      <Filter>Header Files\dymon.instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="LiborFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -555,6 +561,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Libor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LiborFileSource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

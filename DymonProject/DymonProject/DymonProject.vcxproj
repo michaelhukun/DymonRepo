@@ -138,6 +138,8 @@
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
     <ClInclude Include="FXSkewSurfaceBuilder.h" />
+    <ClInclude Include="Libor.h" />
+    <ClInclude Include="LiborFileSource.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -218,6 +220,8 @@
     <ClCompile Include="FXSkewFileSource.cpp" />
     <ClCompile Include="FXSkewSurface.cpp" />
     <ClCompile Include="FXSkewSurfaceBuilder.cpp" />
+    <ClCompile Include="Libor.cpp" />
+    <ClCompile Include="LiborFileSource.cpp" />
     <ClCompile Include="Market.cpp" />
     <ClCompile Include="MarketFileSource.cpp" />
     <ClCompile Include="date.cpp" />

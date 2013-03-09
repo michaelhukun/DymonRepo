@@ -23,8 +23,8 @@ void DepositRateBootStrapper::init(Configuration* cfg){
 AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
 	if (_spotDateDF != NaN){
-		double accrualFactor = dateUtil::getAccrualFactor(_cashFlow.getAccuralStartDate(),_cashFlow.getAccuralEndDate(), _dayCountCash);
-		double discountFactor = (1/(1+accrualFactor*_depositRate))*_spotDateDF;
+		double accrualFactor = dateUtil::getAccrualFactor(_deposit->getSpotDate(),_deposit->getExpiryDate(), _deposit->getDayCount());
+		double discountFactor = (1/(1+accrualFactor*_deposit->getRate()))*_spotDateDF;
 		ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
 	}else{
 		AbstractNumerical<DepositRateBootStrapper>* an = NumericalFactory<DepositRateBootStrapper>::getInstance()->getNumerical(this,&DepositRateBootStrapper::numericalFunc,_numericAlgo);
@@ -41,12 +41,12 @@ AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 double DepositRateBootStrapper::numericalFunc(double x){
 	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
 
-	date spotDate = _cashFlow.getAccuralStartDate();
-	double accrualFactor = dateUtil::getAccrualFactor(spotDate, _cashFlow.getAccuralEndDate(), _dayCountCash);
+	date spotDate = _deposit->getSpotDate();
+	double accrualFactor = dateUtil::getAccrualFactor(spotDate, _deposit->getExpiryDate(), _deposit->getDayCount());
 
 	double spotDateDF = std::get<1>(ai->interpolate(spotDate));
-	double paymentDateDF = std::get<1>(ai->interpolate(_cashFlow.getPaymentDate()));
+	double paymentDateDF = std::get<1>(ai->interpolate(_deposit->getDeliveryDate()));
 
-	double shouldBeZero = (1/(1+_depositRate*accrualFactor))*spotDateDF - paymentDateDF;
+	double shouldBeZero = (1/(1+_deposit->getRate()*accrualFactor))*spotDateDF - paymentDateDF;
 	return shouldBeZero;
 }
