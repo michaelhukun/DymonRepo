@@ -29,7 +29,7 @@ namespace instruments {
 		void deriveTenorExpiry();
 		void deriveDomesticDCF();
 		void deriveForeignDCF();
-      void deriveDeltaType();
+        void deriveDeltaType();
 		double getMPV(){return 0;};
 		void deriveVol();
 		std::string toString(){return "";}

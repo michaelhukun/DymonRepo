@@ -47,21 +47,3 @@ enums::CurrencyEnum CcyPair::getDomesticCCYEnum(){
 enums::CurrencyEnum CcyPair::getForeignCCYEnum(){
 	return EnumHelper::getCcyEnum(getForeignCCY());
 }
-
-std::string CcyPair::getDomesticCCY(){
-	if (_domesticCcyIndex==1)
-		return _ccy1;
-	else if (_domesticCcyIndex==2)
-		return _ccy2;
-	else
-		throw "Domestic currency not found";
-}
-
-std::string CcyPair::getForeignCCY(){
-	if (_domesticCcyIndex==1)
-		return _ccy2;
-	else if (_domesticCcyIndex==2)
-		return _ccy1;
-	else
-		throw "Foreign currency not found";
-}
