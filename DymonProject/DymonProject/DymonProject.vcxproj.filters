@@ -74,6 +74,8 @@
     <None Include="MarketConvention_test.csv">
       <Filter>TestData</Filter>
     </None>
+    <None Include="LiborRate.csv" />
+    <None Include="CcyPair.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

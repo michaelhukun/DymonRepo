@@ -79,12 +79,14 @@
   <ItemGroup>
     <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
+    <None Include="CcyPair.csv" />
     <None Include="DepositRate.csv" />
     <None Include="DepositRate_test.csv" />
     <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
+    <None Include="LiborRate.csv" />
     <None Include="MarketConvention.csv" />
     <None Include="MarketConvention_test.csv" />
     <None Include="SwapRate.csv" />
