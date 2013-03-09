@@ -25,8 +25,14 @@ double FXOptionPricer::deriveD1(){
 double FXOptionPricer::deriveDelta(){
    FXEuropeanOption * option = static_cast<FXEuropeanOption*>(_option);
    double d1 = deriveD1();
-   double BSdelta = option->getDiscountFactor() * MathUtil::CNF(d1);
-   double PremDelta = option->getStrike()/option->getPrice() * BSdelta;
+   double d2 = deriveD2();
+
+   //double BSdelta = option->getDiscountFactor() * MathUtil::CNF(d1);
+   //double PremDelta = option->getStrike()/option->getPrice() * BSdelta;
+
+   int sign=(option->getDeltaType() == enums::Call)? 1: -1;
+   double BSdelta = sign * option->getForeignDCF() * MathUtil::CNF(sign * d1);
+   double PremDelta = sign * option->getStrike()/option->getPrice() * option->getDomesticDCF() * MathUtil::CNF(sign * d2);
    switch(option->getDeltaType()){
    case enums::BS:
       return BSdelta;
@@ -38,4 +44,16 @@ double FXOptionPricer::deriveDelta(){
       return PremDelta/option->getForeignDCF();
    }
    throw "Delta enum not found!";
+}
+
+double OptionPricer::blackFormula(){
+FXEuropeanOption * option = static_cast<FXEuropeanOption*>(_option);
+   double d1 = deriveD1();
+   double d2 = deriveD2();
+   double dcf = option->getDomesticDCF();
+   double K = option->getStrike();
+   double S = option->getPrice();
+
+   int sign=(option->getDeltaType() == enums::Call)? 1: -1;
+   return sign * dcf * (S * MathUtil::CNF(sign * d1)-K * MathUtil::CNF(sign * d2));
 }

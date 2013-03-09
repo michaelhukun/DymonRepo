@@ -13,14 +13,15 @@ namespace instruments {
 	
 	public:
 		FXOptionPricer():OptionPricer(){};
-      FXOptionPricer(FXEuropeanOption* option):OptionPricer(option){};
+		FXOptionPricer(FXEuropeanOption* option):OptionPricer(option){};
 		~FXOptionPricer(){};		
 		
-      void init(Configuration*){}
+		void init(Configuration*){}
 
 		double getMPV();
-      double deriveD1();
+		double deriveD1();
 		double deriveDelta();
+		double blackFormula();
 		
 	};
 }
