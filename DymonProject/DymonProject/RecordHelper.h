@@ -46,6 +46,7 @@ namespace Session {
 		typedef std::map<std::tuple<int, int>, double> SwaptionATMStrikeMap;
 		typedef map<string, map<int, vector<FXEuropeanOption>>> FXVolSkewMap;
 		typedef map<string, map<long, FXForward>> FXForwardMap;
+		typedef std::map<string, CcyPair> CcyPairMap;
 		
 		// Getters
 		HolidayMap getHolidayMap(){return _holidayMap;}
@@ -59,6 +60,7 @@ namespace Session {
 		SwaptionATMStrikeMap getSwaptionATMStrikeMap(){return _swaptionATMStrikeMap;}
 		FXVolSkewMap* getFXVolSkewMap(){ return &_FXVolSkewMap; }
 		FXForwardMap* getFXForwardMap(){ return &_FXForwardMap; }
+		CcyPairMap* getCcyPairMap(){ return &_CcyPairMap; }
 
 		// Setters
 		void setHolidayMap(HolidayMap map){_holidayMap=map;}
@@ -72,6 +74,7 @@ namespace Session {
 		void setSwaptionATMStrikeMap(SwaptionATMStrikeMap map){_swaptionATMStrikeMap=map;}
 		void setFXVolSkewMap(FXVolSkewMap map){_FXVolSkewMap=map;}
 		void setFXForwardMap(FXForwardMap map){_FXForwardMap=map;}
+		void setCcyPairMap(CcyPairMap map){_CcyPairMap=map;}
 
 		// Methods
 		Bond* findCTDinBondMap(std::string CUSIP);
@@ -96,6 +99,7 @@ namespace Session {
 		SwaptionATMStrikeMap _swaptionATMStrikeMap;
 		FXVolSkewMap _FXVolSkewMap;
 		FXForwardMap _FXForwardMap;
+		CcyPairMap _CcyPairMap;
 	};
 }
 
