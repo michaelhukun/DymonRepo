@@ -276,9 +276,6 @@
     <ClInclude Include="TestDateUtil.h">
       <Filter>Header Files\dymon.test</Filter>
     </ClInclude>
-    <ClInclude Include="TestDiscountCurve.h">
-      <Filter>Header Files\dymon.test</Filter>
-    </ClInclude>
     <ClInclude Include="TestInterpolator.h">
       <Filter>Header Files\dymon.test</Filter>
     </ClInclude>
@@ -361,6 +358,9 @@
       <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
     <ClInclude Include="CcyPairFileSource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSwapCurve.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -450,9 +450,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DiscountCurve.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TestDiscountCurve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MathUtil.cpp">
@@ -573,6 +570,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CcyPairFileSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DepositPricer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSwapCurve.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

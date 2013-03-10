@@ -164,7 +164,6 @@
     <ClInclude Include="TestBond.h" />
     <ClInclude Include="TestBuildCashFlowLeg.h" />
     <ClInclude Include="TestDateUtil.h" />
-    <ClInclude Include="TestDiscountCurve.h" />
     <ClInclude Include="TestInterpolator.h" />
     <ClInclude Include="TestManager.h" />
     <ClInclude Include="TestNumerical.h" />
@@ -190,6 +189,7 @@
     <ClInclude Include="SwapRateBootStrapper.h" />
     <ClInclude Include="DiscountCurve.h" />
     <ClInclude Include="TestSurface.h" />
+    <ClInclude Include="TestSwapCurve.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFileSource.cpp" />
@@ -210,6 +210,7 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
     <ClCompile Include="Deposit.cpp" />
+    <ClCompile Include="DepositPricer.cpp" />
     <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
@@ -251,7 +252,6 @@
     <ClCompile Include="TestBond.cpp" />
     <ClCompile Include="TestBuildCashFlowLeg.cpp" />
     <ClCompile Include="TestDateUtil.cpp" />
-    <ClCompile Include="TestDiscountCurve.cpp" />
     <ClCompile Include="TestInterpolator.cpp" />
     <ClCompile Include="TestManager.cpp" />
     <ClCompile Include="TestNumerical.cpp" />
@@ -265,6 +265,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestSwapCurve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
