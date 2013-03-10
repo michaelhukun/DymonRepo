@@ -42,14 +42,14 @@ void CcyPairFileSource::retrieveRecord(){
 void CcyPairFileSource::insertCcyPairIntoCache(CcyPair* ccypair, RecordHelper::CcyPairMap* CcyPairMap){
 	// Do currencies have deliverydates? no?
 	// 
-	if (CcyPairMap->find(ccyPairStr) == CcyPairMap->end()){
-		auto tempMap = map<long, CcyPair>();
-		tempMap.insert(std::make_pair(deliveryDateJDN, *CcyPair));
-		CcyPairMap->insert(std::make_pair(ccyPairStr, tempMap));
-	}else{
-		auto tempMap = &(CcyPairMap->find(ccyPairStr)->second);
-		tempMap->insert(std::make_pair(deliveryDateJDN, *CcyPair));
-	}
+	//if (CcyPairMap->find(ccyPairStr) == CcyPairMap->end()){
+	//	auto tempMap = map<long, CcyPair>();
+	//	tempMap.insert(std::make_pair(deliveryDateJDN, *CcyPair));
+	//	CcyPairMap->insert(std::make_pair(ccyPairStr, tempMap));
+	//}else{
+	//	auto tempMap = &(CcyPairMap->find(ccyPairStr)->second);
+	//	tempMap->insert(std::make_pair(deliveryDateJDN, *CcyPair));
+	//}
 	//cout<<forward->toString()<<endl;
 }
 
@@ -69,9 +69,9 @@ void CcyPairFileSource::updateCcyPairObjectField(std::string fieldName, std::str
 	if (fieldName=="CCYPAIR"){
 		ccypair->setCcyPairStr(fieldVal);
 	}else if (fieldName=="PREMIUM_INCLUDED_DELTA"){
-		ccypair->;
+		//ccypair->;
 	}else if (fieldName=="FORWARD_DELTA"){
-		ccypair->;
+		//ccypair->;
 	}
 }
 

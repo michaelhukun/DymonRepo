@@ -119,6 +119,7 @@
     <ClInclude Include="cashflow.h" />
     <ClInclude Include="cashflowLeg.h" />
     <ClInclude Include="CcyPair.h" />
+    <ClInclude Include="CcyPairFileSource.h" />
     <ClInclude Include="configuration.h" />
     <ClInclude Include="ConfigurationFileSource.h" />
     <ClInclude Include="Constants.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="cashflow.cpp" />
     <ClCompile Include="cashflowLeg.cpp" />
     <ClCompile Include="CcyPair.cpp" />
+    <ClCompile Include="CcyPairFileSource.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
     <ClCompile Include="Deposit.cpp" />
