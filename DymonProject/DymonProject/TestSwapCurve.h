@@ -11,10 +11,12 @@ using namespace std;
 using namespace utilities;
 
 namespace UnitTest{
-	class TestDiscountCurve: public AbstractTest{
+	class TestSwapCurve: public AbstractTest{
 
 	public:
-		TestDiscountCurve():AbstractTest(){}
+		TestSwapCurve():AbstractTest(){}
+
+		void init(Configuration* cfg);
 
 		void runTest();
 

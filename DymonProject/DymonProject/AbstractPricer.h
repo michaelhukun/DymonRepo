@@ -27,6 +27,9 @@ namespace instruments {
 
 		virtual double getMPV()=0;
 
+		// Getters and Setters
+		DiscountCurve* getDiscountCurve(){ return _discountCurve; }
+
 		void setDiscountCurve(DiscountCurve* discountCurve){ _discountCurve = discountCurve; }
 		
 	protected: 

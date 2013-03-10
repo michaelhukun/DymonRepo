@@ -23,9 +23,7 @@ namespace UnitTest{
 		~AbstractTest(){};
 
 		// Methods
-		virtual void init(Configuration* cfg){
-			AbstractFileSource::init(cfg);
-		};
+		virtual void init(Configuration* cfg){	AbstractFileSource::init(cfg);	};
 
 		virtual void retrieveRecord()=0;
 

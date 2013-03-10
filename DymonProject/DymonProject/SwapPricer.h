@@ -12,36 +12,25 @@ using namespace instruments;
 
 namespace instruments {
 	class SwapPricer: public AbstractPricer {
-	
+
 	public:
-		
+
 		SwapPricer(){};
 		SwapPricer(Swap* swap){ _swap = swap; }
 		~SwapPricer(){};
 
-      
-      void init(Configuration*){}
-								
-		virtual double getMPV(cashflowLeg* fixCashflowLeg,cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve);
 
-		//fixOrFloating=-1 ==>floating
-		//fixOrFloating=1 ==>fixed
+		void init(Configuration*){}
 
-		//vector<PV> getPVLeg(instruments::swap aSwap,DiscountCurve aDiscountCurve,int fixOrFloating);
-		
-		virtual double getParRate(cashflowLeg* floatCashflowLeg,cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve);
-      
+		virtual double deriveSwapRate();
+
 		virtual double getMPV();
 
 	protected:
-		virtual double getMPVFixLeg(cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve);
-		virtual double getMPVFloatLeg(cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve);
-		virtual double calFLiborRate(date forwardStartDate, date forwardEndDate, double accuralFactor);
+		virtual double getFixLegPV();
+		virtual double getFloatLegPV();
 
 	private: 
-		double _parRate;
-		cashflowLeg* _fixCashflowLeg;
-		cashflowLeg* _floatCashflowLeg;
 		Swap* _swap;
 	};
 }

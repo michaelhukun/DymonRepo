@@ -19,14 +19,11 @@ namespace instruments {
 		DepositPricer(Deposit* deposit){ _deposit = deposit; }
 		~DepositPricer(){};
 
-
 		void init(Configuration*){}
 
 		virtual double getMPV();
 
-
-	protected:
-
+		double deriveDepositRate();
 
 	private: 
 		Deposit* _deposit;	

@@ -15,24 +15,25 @@ namespace utilities {
 
 	public:
 		
-		date();
+		date(){};
 		date(unsigned short year, unsigned short month, unsigned short day);
 		date(std::string dateStr, bool monthBeforeDay);
 		date(long JDN);
 		~date(){};
 
 		// Getters and Setters
-		int getYear();
-		int getMonth();
-		int getDay();
+		int getYear(){	return _year; }
+		int getMonth(){ return _month; }
+		int getDay(){ return _day; }
+		long getJudianDayNumber() const{ return _judianDayNumber; }
+		bool isNull(){ return _isNull; }
+
 		void setDay(unsigned short day);
 		void setMonth(unsigned short month);
 		void setJudianDayNumber(long JDN);
-		long getJudianDayNumber() const;
-		bool isEqual(date date0);
-		bool isNull(){ return _isNull; }
 
 		// Methods
+		bool isEqual(date date0);
 		void printDate();
 		std::string toString();
 		bool isMonthEnd();

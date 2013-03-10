@@ -1,7 +1,6 @@
 //created by Wang Jianwei on 1 Dec 2012
-#include "TestDiscountCurve.h"
+#include "TestSwapCurve.h"
 #include "SwapCurveBuilder.h"
-#include "BondCurveBuilder.h"
 #include "DiscountCurve.h"
 #include <string>
 #include <sstream>
@@ -19,19 +18,22 @@ using namespace utilities;
 using namespace std;
 using namespace Markets;
 
-void TestDiscountCurve::runTest(){
+void TestSwapCurve::init(Configuration* cfg){
+}
+
+void TestSwapCurve::runTest(){
 	_EPSILON = 0.000001;
 	discountCurveTestSuit();
 }
 
-void TestDiscountCurve::discountCurveTestSuit(){
+void TestSwapCurve::discountCurveTestSuit(){
 	swapRateTest(enums::USD, enums::LINEAR);
 	swapRateTest(enums::USD, enums::LOGLINEAR);
 	BondRateTest(enums::USD, enums::LINEAR);
 	BondRateTest(enums::USD, enums::LOGLINEAR);
 }
 
-void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
+void TestSwapCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(USD);
@@ -50,7 +52,7 @@ void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolA
 }
 
 
-void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo){
+void TestSwapCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Bond Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
@@ -67,7 +69,7 @@ void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpol
 	}
 }
 
-void TestDiscountCurve::compareResult(string testName, date accuralEndDate, double derivedVal,  double expectedVal){
+void TestSwapCurve::compareResult(string testName, date accuralEndDate, double derivedVal,  double expectedVal){
 	std::stringstream ss (stringstream::in | stringstream::out);
 	ss.precision(10);
 	bool result = AbstractTest::compareResult(derivedVal, expectedVal);	
