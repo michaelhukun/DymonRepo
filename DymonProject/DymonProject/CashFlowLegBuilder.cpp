@@ -51,6 +51,7 @@ vector<cashflow>* CashFlowLegBuilder::build(){
 			date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd,_dayRoll, marketEnum);
 			cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, marketEnum, true);
 		}
+		cf.setDayCount(_dayCount);
 		_cashflowVector.push_back(cf);
 	}
 

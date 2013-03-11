@@ -37,7 +37,7 @@ double SwapRateBootStrapper::numericalFunc(double x){
 	
 	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
 
-	double numerator = 1 - x;
+	double numerator = _curve->getValue(_spotDate) - x;
 	double denominator = 0;
 
 	for( int i=0; i<=_cashflowStartIndex; i++){
@@ -49,7 +49,8 @@ double SwapRateBootStrapper::numericalFunc(double x){
 	for( int i=_cashflowStartIndex+1; i<=_cashflowEndIndex; i++){
 		cashflow cf = _cashflowVector[i]; 
 		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
-		denominator = denominator + ithAccuralFactor*std::get<1>(ai->interpolate(cf.getPaymentDate()));
+		double ithDF = std::get<1>(ai->interpolate(cf.getPaymentDate()));
+		denominator = denominator + ithAccuralFactor*ithDF;
 	}
 
 	return numerator - _swap->getSwapRate()*denominator;

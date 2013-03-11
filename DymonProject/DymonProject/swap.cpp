@@ -19,6 +19,11 @@ void Swap::deriveDates(){
 	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate, _market.getDayRollSwapConvention(), _market.getCurrencyEnum());
 }
 
+void Swap::deriveDayCount(){
+	_fixedCashflowLeg.setDayCount(_market.getDayCountSwapFixed());
+	_floatCashflowLeg.setDayCount(_market.getDayCountSwapFloat());
+}
+
 void Swap::buildFixedLeg(){
 	setDayCountFixed(_market.getDayCountSwapFixed());
 	setPayFreqFixed(_market.getPayFreqSwapFixed());
@@ -27,7 +32,7 @@ void Swap::buildFixedLeg(){
 	builder.setPaymentFreq(getPayFreqFixed());
 	builder.setDayCountEnum(getDayCountFixed());
 	builder.setPaymentNumber(getCouponNumberFixed());
-   builder.setBuildDirection(1);
+	builder.setBuildDirection(1);
 	_fixedCashflowLeg.setCashFlowVector(*builder.build());
 }
 

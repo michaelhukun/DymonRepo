@@ -87,6 +87,7 @@ void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 		//cout << "Swap rate at fixing date ["<<fixingDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< swapRate<<"]"<< endl;
 
 		SwapRateBootStrapper swapBS(_curvePointer, paymentDate, swap, yc, _interpolAlgo,_numericalAlgo);
+		swapBS.setSpotDate(_spotDate);
 		swapBS.init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = swapBS.bootStrap();
 		yc->insertLineSection(lineSection);

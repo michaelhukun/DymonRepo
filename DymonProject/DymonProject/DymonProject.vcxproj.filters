@@ -357,11 +357,14 @@
     <ClInclude Include="LiborFileSource.h">
       <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
-    <ClInclude Include="CcyPairFileSource.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="TestGenericSwap.h">
+      <Filter>Header Files\dymon.test</Filter>
     </ClInclude>
     <ClInclude Include="TestSwapCurve.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
+    <ClInclude Include="CcyPairFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -576,6 +579,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestSwapCurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestGenericSwap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

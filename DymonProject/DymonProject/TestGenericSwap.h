@@ -5,6 +5,7 @@
 #include "AbstractSurface.h"
 #include "Enums.h"
 #include "Market.h"
+#include "DiscountCurve.h"
 #include <string>
 
 using namespace std;
@@ -20,7 +21,7 @@ namespace UnitTest{
 
 	private:
 
-		void surfaceTest(enums::CurrencyEnum currency);
+		void curveTest(enums::CurrencyEnum currency, DiscountCurve* dc);
 
 		void compareResult(string testName, double derivedVal, double expectedVal);
 	};

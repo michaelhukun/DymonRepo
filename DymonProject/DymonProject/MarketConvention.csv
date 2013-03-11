@@ -1,6 +1,6 @@
 Market,USD,EUR,
 DayCountCash,thirty_360US,thirty_360US,
-DayCountSwapFixed,30/360,30U/360,
+DayCountSwapFixed,ACT/360,30U/360,
 DayCountSwapFloat,ACT/360,ACT/360,
 DayCountBond,thirty_360US,thirty_360US,
 DayRollCash,Following,Following,

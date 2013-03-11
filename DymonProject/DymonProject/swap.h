@@ -55,6 +55,7 @@ namespace instruments {
 
 		// Methods
 		void deriveDates();
+		void deriveDayCount();
 		void buildFixedLeg();
 		void buildFloatLeg();
 		void printCashflowLegFix();
