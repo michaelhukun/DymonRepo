@@ -23,6 +23,8 @@ namespace utilities{
 		static enums::interpolAlgo getInterpolAlgo(std::string interpolAlgo);
 
 		static enums::NumericAlgo getNumericalAlgo(std::string numericalAlgo);
+
+		static enums::VolType getVolType(std::string optionType);
 	};
 }
 #endif

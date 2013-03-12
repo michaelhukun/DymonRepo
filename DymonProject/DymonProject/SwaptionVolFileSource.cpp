@@ -20,20 +20,17 @@ using namespace instruments;
 
 
 void SwaptionVolFileSource::init(Configuration* cfg){
-	
 	Market market(EnumHelper::getCcyEnum("USD"));
+   _name = "Swaption Vol";
 	_fileName = cfg->getProperty("swaptionVolCube."+market.getNameString()+".file",true,"");
-	_enabled = (cfg->getProperty("swaptionVolCube.enabled",true,"")=="True")?true:false;
+	_enabled = (cfg->getProperty("swaptionVolCube.enabled",true,"")=="true")?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void SwaptionVolFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-	
+	CSVDatabase db = readCSV(_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	int strikeDiffATM=0;
@@ -89,8 +86,6 @@ void SwaptionVolFileSource::retrieveRecord(){
 	tempSwaptionCubeMap.insert(std::make_pair(strikeDiffATM,volSurfaceMap));
 	RecordHelper::getInstance()->setSwaptionATMStrikeMap(tempSwaptionATMStrikeMap);
 	RecordHelper::getInstance()->setSwaptionVolMap(tempSwaptionCubeMap);
-	_inFile.close();
-	//DAO::SwaptionVolFileSource::swaptionTest();
 }
 
 int SwaptionVolFileSource::getStrikeDiffATM(string strikeStr){
@@ -110,10 +105,7 @@ void SwaptionVolFileSource::swaptionTest() {
 		std::cout << "File not found!\n";
 		return;
 	}
-	CSVDatabase db;
-	readCSV(_inFile, db);
-	display(db);
-
+	CSVDatabase db = readCSV(_fileName);
 };
 
 void SwaptionVolFileSource::insertPointVolSurfaceMap(RecordHelper::SwaptionSurfaceMap &map, int fSwapTenorInMonth, int optionExpiryInMonth, double vol){

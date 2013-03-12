@@ -5,6 +5,7 @@
 #include <iostream>
 #include "RecordHelper.h"
 #include <ctime>
+#include "Constants.h"
 
 using namespace utilities;
 using namespace Session;
@@ -188,8 +189,9 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 				numBizDay++;
 		accrualFactor = numBizDay/252.0;
 		break;
+	case enums::DayCountNull:
 	default:
-		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/360.0;
+		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/numDaysInYear;
 
 	}
 	return accrualFactor;
@@ -234,7 +236,7 @@ date dateUtil::dayRollAdjust(date aDate,DayRollEnum aDayRollConvention, enums::C
 		break;
 	case enums::EOM:
 		break;
-	case enums::Null:
+	case enums::DayRollNull:
 		adjustedJDN = aDate.getJudianDayNumber();
 		break;
 	}
@@ -252,9 +254,9 @@ date dateUtil::getEndDateMonthIncrement(date startDate, int numMonth){
 	short endYear= startDate.getYear()+yearIncrement;	
 	date endDate(endYear, endMonth, startDate.getDay());
 
-	// Adjust the return day to the end of month if the start date is also start of month
-	if (startDate.getDay() == getMonthLastDay(startDate.getYear(), startDate.getMonth()))
-		endDate.setDay(getMonthLastDay(endDate.getYear(), endDate.getMonth()));
+	// Adjust the return day to the end of month if the start date is also end of month
+	//if (startDate.getDay() == getMonthLastDay(startDate.getYear(), startDate.getMonth()))
+   //endDate.setDay(getMonthLastDay(endDate.getYear(), endDate.getMonth()));
 	return endDate;
 }
 
@@ -350,6 +352,8 @@ dateUtil::DateUnit dateUtil::getDateUnit(char letterDateUnit){
 	case 'BD':
 		return BIZDAY;
 	case 'D':
+		return DAY;
+	case 'N':
 		return DAY;
 	case 'M':
 		return MONTH;

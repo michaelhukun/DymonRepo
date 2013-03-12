@@ -10,7 +10,7 @@
 #include <iterator>
 #include "cashflow.h"
 #include "cashflowLeg.h"
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include "RecordHelper.h"
 #include "SwapPricer.h"
 #include "AbstractPricer.h"
@@ -40,12 +40,12 @@ namespace instruments {
 
 		virtual double getAnnuityMonetizer( DiscountCurve* dc);
 		virtual double getMPV();
+		std::string toString(){return "";}
 
 	private:		
 
 		int _tenorInMonth;
-		Swap* _underlyingSwap;
-		
+		Swap* _underlyingSwap;		
 
 		void BaseSwaption(Market market, PayReceive PayReceiveInd, int expiryInMonth, double strikeInBps, SwaptionVolCube* vc, DiscountCurve* dc, Swap* underlyingSwap);
 	};

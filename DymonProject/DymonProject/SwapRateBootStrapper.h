@@ -6,10 +6,13 @@
 #include "AbstractBootStrapper.h"
 #include "DiscountCurve.h"
 #include "cashflowLeg.h"
+#include "cashflow.h"
 #include "Enums.h"
+#include "Swap.h"
 #include "date.h"
 
 using namespace instruments;
+using namespace std;
 
 namespace utilities {
 	class SwapRateBootStrapper: public AbstractBootStrapper<date>{
@@ -20,12 +23,11 @@ namespace utilities {
 		
 		void init(Configuration* cfg);
 
-		SwapRateBootStrapper(point startPoint, date endDate, double swapRate, cashflowLeg* cashflows, DiscountCurve* curve, enums::interpolAlgo interpolAlgo,
-			enums::NumericAlgo numericAlgo, enums::DayCountEnum dayCount):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
+		SwapRateBootStrapper(point startPoint, date endDate, Swap* swap, DiscountCurve* curve, enums::interpolAlgo interpolAlgo,
+			enums::NumericAlgo numericAlgo):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
 			_curve = curve;
-			_swapRate = swapRate;
-			_cashflowVector = cashflows->getCashFlowVector();
-			_dayCount = dayCount;
+			_swap = swap;
+			_cashflowVector = _swap->getCashFlowLegFix()->getCashFlowVector();
 		}
 				
 		AbstractInterpolator<date>* bootStrap();
@@ -35,14 +37,12 @@ namespace utilities {
 	private:
 
 		DiscountCurve* _curve;
-		double _swapRate;
-		vector<cashflow> _cashflowVector;
-		enums::DayCountEnum _dayCount;
+		Swap* _swap;
 
-		unsigned int _cashflowStartIndex;
-		unsigned int _cashflowEndIndex;
-
-		unsigned int findCashFlowIndex(date date0);
+		std::vector<cashflow> _cashflowVector;
+		int _cashflowStartIndex;
+		int _cashflowEndIndex;
+		int findCashFlowIndex(date date0);
 	};
 }
 #endif

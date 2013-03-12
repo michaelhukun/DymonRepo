@@ -1,7 +1,7 @@
 //created by Wang Jianwei on 1 Dec 2012
 #include "BondCurveBuilder.h"
 #include <iostream>
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include "BondRateBootStrapper.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"
@@ -16,11 +16,9 @@ typedef tuple<date, double> point;
 
 void BondCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
-	
-	_market = Market(EnumHelper::getCcyEnum("USD"));
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".interpol",false,"LINEAR"));
-	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".numerical",false,"BISECTION"));
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve.interpol",false,"LINEAR"));
+	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve.numerical",false,"BISECTION"));
 }
 
 DiscountCurve* BondCurveBuilder::build(Configuration* cfg){
@@ -34,7 +32,7 @@ DiscountCurve* BondCurveBuilder::build(Configuration* cfg){
 void BondCurveBuilder::buildSection(DiscountCurve* dc){
 	point lineStartPoint(_curveStartDate,1);
 	_curvePointer = lineStartPoint;
-	map<long,Bond> rateMap = RecordHelper::getInstance()->getBondRateMap()->at(enums::USD);
+	map<long,Bond> rateMap = RecordHelper::getInstance()->getBondRateMap()->at(_market.getCurrencyEnum());
 	for (map<long,Bond>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
 		Bond bond = (*it).second;
 		int numOfNights = (int) (*it).first;

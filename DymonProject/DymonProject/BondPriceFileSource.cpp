@@ -21,19 +21,17 @@ using namespace instruments;
 
 using namespace DAO;
 void BondPriceFileSource::init(Configuration* cfg){
+   _name = "Bond";
 	_fileName = cfg->getProperty("bondPrice.file",true,"");
-	_persistDir = cfg->getProperty("bondPrice.path",false,"");
-	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="True"?true:false;
+	_persistDir = cfg->getProperty("data.path",false,"");
+	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void BondPriceFileSource::retrieveRecord(){
 	if (!_enabled) return;
 	
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	int bondTenorNumOfMonths=0;
@@ -44,13 +42,11 @@ void BondPriceFileSource::retrieveRecord(){
 		Bond* tempBond = createBondObject(db, i);
 		insertBondIntoCache(tempBond, bondRateMap);
 	}
-
-	_inFile.close();
 }
 
 void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRateMap* bondRateMap){
 	CurrencyEnum market = bond->getMarket().getCurrencyEnum();
-	long maturityDateJDN = bond->getMaturityDate().getJudianDayNumber();
+	long maturityDateJDN = bond->getDeliveryDate().getJudianDayNumber();
 	if (bondRateMap->find(market) == bondRateMap->end()){
 		std::map<long, Bond> tempMap = std::map<long, Bond>();
 		tempMap.insert(std::make_pair(maturityDateJDN, *bond));
@@ -59,7 +55,7 @@ void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRate
 		std::map<long, Bond>* tempMap = &(bondRateMap->find(market)->second);
 		tempMap->insert(std::make_pair(maturityDateJDN, *bond));
 	}
-	cout<<bond->toString()<<endl;
+	//cout<<bond->toString()<<endl;
 }
 
 Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
@@ -71,7 +67,7 @@ Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
 		String fieldVal = db.at(row).at(i);
 		updateMarketObjectField(fieldName, fieldVal, tempBond);
 	}		
-	tempBond->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBond->getMarket().getCurrencyEnum()));	
+	tempBond->deriveDates();
 	tempBond->generateCouponLeg();
 	tempBond->deriveDirtyPrice();
 	return tempBond;
@@ -81,6 +77,7 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	if (fieldName=="COUNTRY") {		
 		Market market(EnumHelper::getCcyEnum(fieldVal));
 		bond->setMarket(market);
+		bond->setDayRoll(market.getDayRollBondConvention());
 	}else if(fieldName=="NAME"){
 		bond->setName(fieldVal);
 	}else if(fieldName=="ID"){
@@ -90,29 +87,32 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	}else if (fieldName=="SECURITY_TYP2"){
 		bond->setSecurityType(fieldVal);
 	}else if (fieldName=="YRS_TO_MTY_ISSUE"){
-		int issueToMaturity = ((int)(std::stod(fieldVal)+0.01))*12;
-		bond->setTenor(issueToMaturity);
+		int tenorInYear = (int)(std::stod(fieldVal)+0.01);
+		bond->setTenor(tenorInYear);
 	}else if (fieldName=="CPN"){
 		double couponRate = NaN;
-		if (fieldVal!="#N/A Field Not Applicable") couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
+		if (fieldVal.find("#N/A")==std::string::npos) couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
 		bond->setCouponRate(couponRate);
 	}else if (fieldName=="CPN_FREQ"){
-		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?(int)NaN:std::stoi(fieldVal);
+		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?1:std::stoi(fieldVal);
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
-		date maturityDate(fieldVal,true);
-		bond->setMaturityDate(maturityDate);
+		date maturityDate(fieldVal, false);
+		bond->setExpiryDate(maturityDate);
+	}else if (fieldName=="TRADING_DT_REALTIME"){
+		date tradeDate(fieldVal,false);
+		bond->setTradeDate(tradeDate);
 	}else if (fieldName=="FIRST_CPN_DT"){
-		date firstCouponDate(fieldVal,true);
+		date firstCouponDate(fieldVal,false);
 		bond->setFirstCouponDate(firstCouponDate);
 	}else if (fieldName=="PREV_CPN_DT"){
-		date prevCouponDate(fieldVal,true);
+		date prevCouponDate(fieldVal,false);
 		bond->setPrevCouponDate(prevCouponDate);
 	}else if (fieldName=="NXT_CPN_DT"){
-		date nextCouponDate(fieldVal,true);
+		date nextCouponDate(fieldVal,false);
 		bond->setNextCouponDate(nextCouponDate);
 	}else if (fieldName=="ISSUE_DT"){
-		date issueDate(fieldVal,true);
+		date issueDate(fieldVal,false);
 		bond->setIssueDate(issueDate);
 	}else if (fieldName=="PX_MID"){
 		double cleanPrice = std::stod(fieldVal);
@@ -132,5 +132,11 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	}else if (fieldName=="IS_US_ON_THE_RUN"){
 		bool isGeneric = (fieldVal=="Y")?true:false;
 		bond->setIsGeneric(isGeneric);
+	}else if (fieldName=="TRADING_DT_REALTIME"){
+		date tradeDate(fieldVal,false);
+		bond->setTradeDate(tradeDate);
+	}else if (fieldName=="SETTLE_DT"){
+		date accrualStartDate(fieldVal,false);
+		bond->setSpotDate(accrualStartDate);
 	}
 }

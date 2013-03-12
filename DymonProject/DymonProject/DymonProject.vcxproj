@@ -20,12 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v100</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -77,13 +79,21 @@
   <ItemGroup>
     <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
+    <None Include="BondRate_test.csv" />
+    <None Include="CcyPair.csv" />
+    <None Include="DepositRate.csv" />
+    <None Include="DepositRate_test.csv" />
+    <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
     <None Include="holiday.txt" />
     <None Include="instance.properties" />
     <None Include="LiborRate.csv" />
     <None Include="MarketConvention.csv" />
+    <None Include="MarketConvention_test.csv" />
     <None Include="SwapRate.csv" />
+    <None Include="SwapRate_test.csv" />
     <None Include="swaption_skew_USD.csv" />
+    <None Include="test.properties" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstractBootStrapper.h" />
@@ -106,16 +116,32 @@
     <ClInclude Include="BondPriceFileSource.h" />
     <ClInclude Include="bondpricer.h" />
     <ClInclude Include="BondRateBootStrapper.h" />
-    <ClInclude Include="BuilderCashFlowLeg.h" />
+    <ClInclude Include="CashFlowLegBuilder.h" />
     <ClInclude Include="cashflow.h" />
     <ClInclude Include="cashflowLeg.h" />
+    <ClInclude Include="CcyPair.h" />
+    <ClInclude Include="CcyPairFileSource.h" />
     <ClInclude Include="configuration.h" />
     <ClInclude Include="ConfigurationFileSource.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="CubicSplineInterpolator.h" />
+    <ClInclude Include="Deposit.h" />
+    <ClInclude Include="DepositPricer.h" />
+    <ClInclude Include="ForwardCurveBuilder.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
-    <ClInclude Include="FXVolSkewFileSource.h" />
+    <ClInclude Include="FXForward.h" />
+    <ClInclude Include="FXForwardFileSource.h" />
+    <ClInclude Include="fxforwardimpliedbootstrapper.h" />
+    <ClInclude Include="FXForwardImpliedCurveBuilder.h" />
+    <ClInclude Include="FXEuropeanOption.h" />
+    <ClInclude Include="FXOptionPricer.h" />
+    <ClInclude Include="FXSkewBuilder.h" />
+    <ClInclude Include="FXSkewFileSource.h" />
+    <ClInclude Include="FXSkewSurface.h" />
+    <ClInclude Include="FXSkewSurfaceBuilder.h" />
+    <ClInclude Include="Libor.h" />
+    <ClInclude Include="LiborFileSource.h" />
     <ClInclude Include="Market.h" />
     <ClInclude Include="AbstractFileSource.h" />
     <ClInclude Include="MarketFileSource.h" />
@@ -127,8 +153,10 @@
     <ClInclude Include="numericalfactory.h" />
     <ClInclude Include="OptionPricer.h" />
     <ClInclude Include="OvernightRateBootStrapper.h" />
+    <ClInclude Include="QuadraticInterpolator.h" />
     <ClInclude Include="Ridder.h" />
     <ClInclude Include="Secant.h" />
+    <ClInclude Include="Swap.h" />
     <ClInclude Include="SwapPricer.h" />
     <ClInclude Include="SwaptionVolCube.h" />
     <ClInclude Include="SwaptionVolFileSource.h" />
@@ -137,15 +165,15 @@
     <ClInclude Include="TestBond.h" />
     <ClInclude Include="TestBuildCashFlowLeg.h" />
     <ClInclude Include="TestDateUtil.h" />
-    <ClInclude Include="TestDiscountCurve.h" />
+    <ClInclude Include="TestGenericSwap.h" />
     <ClInclude Include="TestInterpolator.h" />
+    <ClInclude Include="TestManager.h" />
     <ClInclude Include="TestNumerical.h" />
     <ClInclude Include="TestOption.h" />
     <ClInclude Include="EuropeanOption.h" />
     <ClInclude Include="SwapCurveBuilder.h" />
     <ClInclude Include="date.h" />
     <ClInclude Include="dateUtil.h" />
-    <ClInclude Include="deposit.h" />
     <ClInclude Include="DepositFileSource.h" />
     <ClInclude Include="InterpolatorFactory.h" />
     <ClInclude Include="LinearInterpolator.h" />
@@ -157,17 +185,17 @@
     <ClInclude Include="AbstractInstrument.h" />
     <ClInclude Include="marketdata.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="swap.h" />
     <ClInclude Include="swapRateFileSource.h" />
     <ClInclude Include="swaption.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="SwapRateBootStrapper.h" />
     <ClInclude Include="DiscountCurve.h" />
     <ClInclude Include="TestSurface.h" />
+    <ClInclude Include="TestSwapCurve.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AbstractFileSource.cpp" />
-    <ClCompile Include="AbstractSession.cpp" />
+    <ClCompile Include="AbstractForward.h" />
     <ClCompile Include="AbstractTest.cpp" />
     <ClCompile Include="Bond.cpp" />
     <ClCompile Include="BondFuture.cpp" />
@@ -176,16 +204,29 @@
     <ClCompile Include="BondCurveBuilder.cpp" />
     <ClCompile Include="BondPricer.cpp" />
     <ClCompile Include="BondRateBootStrapper.cpp" />
-    <ClCompile Include="BuilderCashFlowLeg.cpp" />
+    <ClCompile Include="CashFlowLegBuilder.cpp" />
     <ClCompile Include="cashflow.cpp" />
     <ClCompile Include="cashflowLeg.cpp" />
+    <ClCompile Include="CcyPair.cpp" />
+    <ClCompile Include="CcyPairFileSource.cpp" />
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConfigurationFileSource.cpp" />
-    <ClCompile Include="CurrencyPair.cpp" />
-    <ClCompile Include="CurrencyPair.h" />
+    <ClCompile Include="Deposit.cpp" />
+    <ClCompile Include="DepositPricer.cpp" />
+    <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
-    <ClCompile Include="FXVolSkewFileSource.cpp" />
+    <ClCompile Include="FXEuropeanOption.cpp" />
+    <ClCompile Include="FXForwardFileSource.cpp" />
+    <ClCompile Include="FXForwardImpliedBootStrapper.cpp" />
+    <ClCompile Include="FXForwardImpliedCurveBuilder.cpp" />
+    <ClCompile Include="FXOptionPricer.cpp" />
+    <ClCompile Include="FXSkewBuilder.cpp" />
+    <ClCompile Include="FXSkewFileSource.cpp" />
+    <ClCompile Include="FXSkewSurface.cpp" />
+    <ClCompile Include="FXSkewSurfaceBuilder.cpp" />
+    <ClCompile Include="Libor.cpp" />
+    <ClCompile Include="LiborFileSource.cpp" />
     <ClCompile Include="Market.cpp" />
     <ClCompile Include="MarketFileSource.cpp" />
     <ClCompile Include="date.cpp" />
@@ -203,11 +244,7 @@
     <ClCompile Include="fileUtil.cpp" />
     <ClCompile Include="HolidayFileSource.cpp" />
     <ClCompile Include="marketdata.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="swap.cpp" />
+    <ClCompile Include="Swap.cpp" />
     <ClCompile Include="SwapPricer.cpp" />
     <ClCompile Include="SwapRateFileSource.cpp" />
     <ClCompile Include="swaption.cpp" />
@@ -217,8 +254,9 @@
     <ClCompile Include="TestBond.cpp" />
     <ClCompile Include="TestBuildCashFlowLeg.cpp" />
     <ClCompile Include="TestDateUtil.cpp" />
-    <ClCompile Include="TestDiscountCurve.cpp" />
+    <ClCompile Include="TestGenericSwap.cpp" />
     <ClCompile Include="TestInterpolator.cpp" />
+    <ClCompile Include="TestManager.cpp" />
     <ClCompile Include="TestNumerical.cpp" />
     <ClCompile Include="TestOption.cpp" />
     <ClCompile Include="EuropeanOption.cpp" />
@@ -226,6 +264,11 @@
     <ClCompile Include="SwapRateBootStrapper.cpp" />
     <ClCompile Include="SwapCurveBuilder.cpp" />
     <ClCompile Include="TestSurface.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TestSwapCurve.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -233,6 +276,9 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="holiday_test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

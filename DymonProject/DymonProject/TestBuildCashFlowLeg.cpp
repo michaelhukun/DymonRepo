@@ -1,5 +1,5 @@
 #include "TestBuildCashFlowLeg.h"
-#include "BuilderCashFlowLeg.h"
+#include "CashFlowLegBuilder.h"
 #include "dateUtil.h"
 #include "cashflow.h"
 
@@ -16,21 +16,7 @@ void TestBuildCashFlowLeg::BuildCashFlowLegTestSuit(){
 }
 
 void TestBuildCashFlowLeg::buildCashFlowLegTest(date startDate, int numberOfMonth, double tolerance, enums::CurrencyEnum market){
-	int paymentFreq = 4;
-	int buildDirection =1;
-	Market mkt(market);
-	enums::DayCountEnum dayCountSwapConvention = mkt.getDayCountSwapConvention();
-	enums::DayRollEnum dayRollSwapConvention = mkt.getDayRollSwapConvention();
-	enums::DayRollEnum accrualAdjustSwapConvention = mkt.getAccrualAdjustSwapConvention();
-	date swapAccrualStartDate = dateUtil::getBizDateOffSet(startDate,mkt.getBusinessDaysAfterSpot(enums::SWAP),market);
-	date swapMaturityDate = dateUtil::getEndDate(swapAccrualStartDate,numberOfMonth,dayRollSwapConvention,market,dateUtil::MONTH);
-	BuilderCashFlowLeg builderFromTenor(enums::SWAP,startDate,numberOfMonth,1,1,paymentFreq, market);
-	BuilderCashFlowLeg builderFromMaturity(enums::SWAP, startDate, swapMaturityDate,numberOfMonth, 1,1,paymentFreq,market,buildDirection);
-	cashflowLeg* cashflowLegFromMaturity = builderFromMaturity.getCashFlowLeg();
-	cashflowLeg* cashflowLegFromTenor = builderFromTenor.getCashFlowLeg();
-	cout<<"Cash flow building Test, start date ["<<startDate.toString()<<"], number of month ["<<numberOfMonth<<"]"<<endl;
-	bool result = compareResult(cashflowLegFromMaturity,cashflowLegFromTenor);
-	if (result==true) cout<<"Test Passed!"<<endl;
+
 }
 
 bool TestBuildCashFlowLeg::compareResult(cashflowLeg* cashflowLegFromMaturity, cashflowLeg* cashflowLegFromTenor){

@@ -21,9 +21,9 @@ namespace UnitTest{
 
 	private:
 
-		void europeanTest(enums::CallPut callPutFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal);
+		void europeanTest(enums::VolType VolTypeFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal);
 
-		void swaptionTest(enums::CallPut callPutFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal);
+		void swaptionTest(enums::VolType VolTypeFlag, double S, double K, double vol, double r, int expiryInMonth, double expectedVal);
 
 		void compareResult(string testName, double derivedVal, double expectedVal);
 	};

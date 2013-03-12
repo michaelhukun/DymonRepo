@@ -1,77 +1,36 @@
 //created by Hu Kun on 16 Dec 2012
 #include "SwapPricer.h"
 #include "AbstractPricer.h"
-#include "swap.h"
 #include "cashflowLeg.h"
-#include <iterator>
-#include "AbstractInstrument.h"
 
 using namespace std;
 using namespace instruments;
 
-double SwapPricer::getMPVFixLeg(cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve) {
-	_fixCashflowLeg=fixCashflowLeg;
-	_pricingDiscountCurve=aDiscountCurve;
-	vector<cashflow> cfVector=fixCashflowLeg->getCashFlowVector();
-	vector<cashflow>::iterator it=cfVector.begin();
-	double sum=0.0;
-	int count=0;
-	for (;it!=cfVector.end();it++) {
-		cashflow aCF=*it;
-		date paymentDate=aCF.getPaymentDate();
-		sum+=aCF.getNotional()*aCF.getAccuralFactor()*aCF.getCouponRate()*_pricingDiscountCurve->getDiscountFactor(paymentDate);
+double SwapPricer::getFixLegPV() {
+	vector<cashflow> cfVector=_swap->getCashFlowLegFix()->getCashFlowVector();
+	double mpv=0;
+	for (auto it=cfVector.begin();it!=cfVector.end();it++) {
+		cashflow cf=*it;
+		date paymentDate=cf.getPaymentDate();
+		mpv+=cf.getAccuralFactor()*_discountCurve->getDiscountFactor(paymentDate);
 	}
 
-	return sum;
+	return mpv;
 }
 
-double SwapPricer::getMPVFloatLeg(cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve) {
-	_floatCashflowLeg=floatCashflowLeg;
-	_pricingDiscountCurve=aDiscountCurve;
-	vector<cashflow> cfVector=floatCashflowLeg->getCashFlowVector();
-	vector<cashflow>::iterator it=cfVector.begin();
-	double sum=0.0;
-	int count=0;
-	for (;it!=cfVector.end();it++) {
-		cashflow aCF=*it;
-		date accrualEndDate=aCF.getAccuralEndDate();
-		date accrualStartDate=aCF.getAccuralStartDate();
-		//double FWDR=calFLiborRate(accrualStartDate,accrualEndDate,aCF.getAccuralFactor());
-
-		Market cashflowCurr=aCF.getCashFlowCurr();
-		double FLiborRate=aDiscountCurve->getFLiborRate(accrualStartDate,accrualEndDate,cashflowCurr.getDayCountSwapConvention());
-		sum+=aCF.getNotional()*aCF.getAccuralFactor()*(FLiborRate)*(_pricingDiscountCurve->getDiscountFactor(aCF.getPaymentDate()));
-	}
-
-	return sum;
+double SwapPricer::getFloatLegPV() {
+	vector<cashflow> cfVector = _swap->getCashFlowLegFloat()->getCashFlowVector();
+	cashflow cf = cfVector.at(cfVector.size()-1);
+	double mpv = _discountCurve->getDiscountFactor(_swap->getSpotDate()) - _discountCurve->getDiscountFactor(cf.getPaymentDate());
+	return mpv;
 }
 
-
-double SwapPricer::calFLiborRate(date forwardStartDate, date forwardEndDate, double accuralFactor) {
-	return (_pricingDiscountCurve->getDiscountFactor(forwardStartDate)/ _pricingDiscountCurve->getDiscountFactor(forwardEndDate)-1)/accuralFactor;
+double SwapPricer::getMPV(){
+   return 0;
 }
 
-double SwapPricer::getMPV(cashflowLeg* fixCashflowLeg,cashflowLeg* floatCashflowLeg,DiscountCurve* aDiscountCurve) {
-	_MPV=getMPVFixLeg(fixCashflowLeg,aDiscountCurve)-getMPVFloatLeg(floatCashflowLeg,aDiscountCurve);
-	return _MPV;
-}
-
-double SwapPricer::getParRate(cashflowLeg* floatCashflowLeg,cashflowLeg* fixCashflowLeg,DiscountCurve* aDiscountCurve) {
-
-	_floatCashflowLeg=floatCashflowLeg;
-	_fixCashflowLeg=fixCashflowLeg;
-	_pricingDiscountCurve=aDiscountCurve;
-	vector<cashflow> cfVector=fixCashflowLeg->getCashFlowVector();
-	vector<cashflow>::iterator it=cfVector.begin();
-	double denom=0.0;
-
-	for (;it!=cfVector.end();it++) {
-		cashflow aCF=*it;
-		date paymentDate=aCF.getPaymentDate();
-		denom+=aCF.getNotional()*aCF.getAccuralFactor()*(aDiscountCurve->getDiscountFactor(paymentDate));
-	}
-
-	_parRate=getMPVFloatLeg(floatCashflowLeg,_pricingDiscountCurve)/denom;
-	return _parRate;
+double SwapPricer::deriveSwapRate() {
+	double swapRate = getFloatLegPV() / getFixLegPV();
+	return swapRate;
 }
 

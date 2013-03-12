@@ -17,18 +17,22 @@ namespace DAO {
 	class DepositFileSource: public AbstractFileSource{
 		
 	public:
-		DepositFileSource();
-		DepositFileSource(std::string persistDir, std::string fileName);
-		~DepositFileSource();
+		DepositFileSource(){};
+		DepositFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){}
+		~DepositFileSource(){};
 
 		void init(Configuration*);
 		
 		void retrieveRecord();
 
 	private:
-		void insertRateIntoMap(std::string tenorStr, double liborRate, Market market, std::map<long, double>* depositRateMap, std::map<long, double>* overnightRateMap);
+
+		void insertDepositIntoCache(Deposit* deposit, RecordHelper::DepositRateMap* depositRateMap);
+
+		Deposit* createDepositObject(CSVDatabase db, int row);
+
+		void updateDepositObjectField(std::string fieldName, std::string fieldVal, Deposit* deposit);
 
 	};
-
 }
 #endif

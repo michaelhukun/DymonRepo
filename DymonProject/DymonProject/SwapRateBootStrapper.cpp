@@ -37,31 +37,34 @@ double SwapRateBootStrapper::numericalFunc(double x){
 	
 	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
 
-	double numerator = 1 - x;
+	double numerator = _curve->getValue(_spotDate) - x;
 	double denominator = 0;
 
-	for( unsigned int i=0; i<=_cashflowStartIndex; i++){
-		cashflow ithCashFlow = _cashflowVector[i];
-		double ithAccuralFactor=dateUtil::getAccrualFactor(ithCashFlow.getAccuralStartDate(),ithCashFlow.getAccuralEndDate(),_dayCount);
-		double ithDF = _curve->getDiscountFactor(ithCashFlow.getPaymentDate());
+	for( int i=0; i<=_cashflowStartIndex; i++){
+		cashflow cf = _cashflowVector[i];
+		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
+		double ithDF = _curve->getDiscountFactor(cf.getPaymentDate());
 		denominator = denominator + ithAccuralFactor*ithDF;
 	}
-	for( unsigned int i=_cashflowStartIndex+1; i<=_cashflowEndIndex; i++){
-		cashflow ithCashFlow = _cashflowVector[i];
-		double ithAccuralFactor=dateUtil::getAccrualFactor(ithCashFlow.getAccuralStartDate(),ithCashFlow.getAccuralEndDate(),_dayCount);
-		denominator = denominator + ithAccuralFactor*std::get<1>(ai->interpolate(ithCashFlow.getPaymentDate()));
+	for( int i=_cashflowStartIndex+1; i<=_cashflowEndIndex; i++){
+		cashflow cf = _cashflowVector[i]; 
+		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
+		double ithDF = std::get<1>(ai->interpolate(cf.getPaymentDate()));
+		denominator = denominator + ithAccuralFactor*ithDF;
 	}
 
-	return numerator - _swapRate*denominator;
+	return numerator - _swap->getSwapRate()*denominator;
 }
 
-unsigned int SwapRateBootStrapper::findCashFlowIndex(date date0){
+int SwapRateBootStrapper::findCashFlowIndex(date date0){
 	for(unsigned int i = 0; i < _cashflowVector.size(); i++)
 	{
-		cashflow ithCashFlow = _cashflowVector[i];
-		if ( ithCashFlow.getPaymentDate().getJudianDayNumber() == date0.getJudianDayNumber()){
+		cashflow cf = _cashflowVector[i];
+		if ( cf.getPaymentDate().getJudianDayNumber() == date0.getJudianDayNumber()){
 			return i;
+		}else if ( cf.getPaymentDate().getJudianDayNumber() > date0.getJudianDayNumber()){
+			return i-1;
 		}
 	}
-	throw "Date not found in all accrual dates: " + date0.getJudianDayNumber();
+	return -1;
 }
