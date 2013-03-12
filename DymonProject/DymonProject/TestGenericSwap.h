@@ -17,6 +17,8 @@ namespace UnitTest{
 	public:
 		TestGenericSwap():AbstractTest(){}
 
+		void init(Configuration* cfg);
+
 		void runTest();
 
 	private:

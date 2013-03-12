@@ -21,7 +21,6 @@ cashflow::cashflow(double couponRate,double notional,  date fixingDate, date pay
 	setAccuralStartDate(accuralStartDate);
 	setAccuralEndDate(accuralEndDate);
 	setCashFlowCurr(cashFlowCurr);
-	deriveAccuralFactor();
 	setIsValid(isValid);
 }
 
@@ -31,7 +30,6 @@ cashflow::cashflow(date fixingDate, date paymentDate,date accuralStartDate, date
 	setAccuralStartDate(accuralStartDate);
 	setAccuralEndDate(accuralEndDate);
 	setCashFlowCurr(cashFlowCurr);
-	deriveAccuralFactor();
 	setIsValid(isValid);
 }
 

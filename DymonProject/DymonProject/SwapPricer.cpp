@@ -21,7 +21,7 @@ double SwapPricer::getFixLegPV() {
 double SwapPricer::getFloatLegPV() {
 	vector<cashflow> cfVector = _swap->getCashFlowLegFloat()->getCashFlowVector();
 	cashflow cf = cfVector.at(cfVector.size()-1);
-	double mpv = 1 - _discountCurve->getDiscountFactor(cf.getPaymentDate());
+	double mpv = _discountCurve->getDiscountFactor(_swap->getSpotDate()) - _discountCurve->getDiscountFactor(cf.getPaymentDate());
 	return mpv;
 }
 

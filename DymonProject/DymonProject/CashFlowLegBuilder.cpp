@@ -52,6 +52,7 @@ vector<cashflow>* CashFlowLegBuilder::build(){
 			cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, marketEnum, true);
 		}
 		cf.setDayCount(_dayCount);
+		cf.deriveAccuralFactor();
 		_cashflowVector.push_back(cf);
 	}
 

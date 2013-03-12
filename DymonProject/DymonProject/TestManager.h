@@ -3,6 +3,7 @@
 #define TESTMANAGER_H
 #include <string>
 #include "AbstractSession.h"
+#include "AbstractTest.h"
 
 using namespace utilities;
 using namespace Session;
@@ -18,6 +19,8 @@ namespace UnitTest {
 		void stop();
 
 	private:	
+		Configuration* _cfg;
+		vector<AbstractTest*> _testVector;
 	};
 }
 
