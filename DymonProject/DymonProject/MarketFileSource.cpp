@@ -15,19 +15,17 @@ using namespace utilities;
 using namespace Session;
 
 void MarketFileSource::init(Configuration* cfg){
+   _name = "Market Convention";
 	_fileName = cfg->getProperty("marketConvention.file",true,"");
-	_persistDir = cfg->getProperty("marketConvention.path",false,"");
-	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="True"?true:false;
+	_persistDir = cfg->getProperty("data.path",false,"");
+	_enabled = cfg->getProperty("marketConvention.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void MarketFileSource::retrieveRecord(){
 	if (!_enabled) return;
 
-	AbstractFileSource::retrieveRecord();
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 	RecordHelper::MarketMap marketMap;
@@ -43,11 +41,9 @@ void MarketFileSource::retrieveRecord(){
 			String fieldVal=db.at(i).at(j);
 			updateMarketObjectField(fieldName, fieldVal, market);
 		}
-		market->display();
 		marketMap.insert(std::make_pair(CurrencyEnum,*market));
 	}
 	RecordHelper::getInstance()->setMarketMap(marketMap);
-	_inFile.close();
 }
 
 void MarketFileSource::updateMarketObjectField(std::string fieldName, std::string fieldVal, Market* market){
@@ -56,8 +52,10 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setCurrencyEnum(EnumHelper::getCcyEnum(fieldVal));
 	}else if (fieldName=="DayCountCash"){
 		market->setDayCountCashConvention(EnumHelper::getDayCountEnum(fieldVal));
-	}else if (fieldName=="DayCountSwap"){
-		market->setDayCountSwapConvention(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayCountSwapFixed"){
+		market->setDayCountSwapFixed(EnumHelper::getDayCountEnum(fieldVal));
+	}else if (fieldName=="DayCountSwapFloat"){
+		market->setDayCountSwapFloat(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayCountBond"){
 		market->setDayCountBondConvention(EnumHelper::getDayCountEnum(fieldVal));
 	}else if (fieldName=="DayRollCash") {
@@ -76,5 +74,11 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setBusinessDaysAfterSpotSwap(std::stoi(fieldVal));
 	}else if (fieldName=="BizDaysAfterSpotBond"){
 		market->setBusinessDaysAfterSpotBond(std::stoi(fieldVal));
+	}else if (fieldName=="PayFreqSwapFixed"){
+		market->setPayFreqSwapFixed(std::stoi(fieldVal));
+	}else if (fieldName=="PayFreqSwapFloat"){
+		market->setPayFreqSwapFloat(std::stoi(fieldVal));
+	}else if (fieldName=="ShortEndUseLibor"){
+		market->setShortEndUseLibor(fieldVal=="false"?false:true);
 	}
 }

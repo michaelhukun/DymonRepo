@@ -17,7 +17,7 @@ namespace utilities{
 		
 	public:
 		
-		SwaptionVolCubeBuilder():AbstractBuilder(){}
+		SwaptionVolCubeBuilder(enums::CurrencyEnum ccyEnum):AbstractBuilder(){_market = Market(ccyEnum);}
 
 		void init(Configuration* cfg);
 
@@ -26,14 +26,10 @@ namespace utilities{
 		Market getMarket(){return _market;}
 		void setMarket(Market market){_market = market;}
 
-		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
-		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
-
 
 	private:
 
 		Market _market;
-		enums::interpolAlgo _interpolAlgo;
 
 		SwaptionVolSurface* buildVolSurface(RecordHelper::SwaptionSurfaceMap volSurfaceMap);
 		AbstractCurve<double>* buildVolCurve(map<int,double> curveMap);

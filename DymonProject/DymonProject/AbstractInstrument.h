@@ -16,28 +16,53 @@ namespace instruments {
 		AbstractInstrument(){};
 		
 		// Getters
-		Market getMarket(){ return _market; }
-		date getTradeDate() { return _tradeDate; }
-		date getIssueDate() { return _issueDate; }
-		date getMaturityDate() { return _maturityDate; }
-		std::string getID(){ return _ID; }
-		std::string getName(){ return _name; }
+		virtual Market getMarket(){ return _market; }
+		virtual date getIssueDate() { return _issueDate; }
+		virtual date getStartDate() { return _startDate; }
+		virtual date getTradeDate() { return _tradeDate; }
+		virtual date getSpotDate() { return _spotDate; }
+		virtual date getExpiryDate() { return _expiryDate; }
+		virtual date getDeliveryDate() { return _deliveryDate; }
+		virtual std::string getID(){ return _ID; }
+		virtual std::string getName(){ return _name; }
+		virtual std::string getTenorStr(){ return _tenorStr; }
+		virtual enums::DayCountEnum getDayCount(){ return _dayCount; }
+		virtual enums::DayRollEnum getDayRoll(){ return _dayRoll; }
+		virtual enums::Instrument getInstrumentEnum(){ return _instrumentEnum; }
 		
 		// Setters
-		void setMarket(Market market){ _market = market; }
-		void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
-		void setIssueDate(date issueDate) { _issueDate=issueDate; }
-		void setMaturityDate(date maturityDate) { _maturityDate=maturityDate; }
-		void setName(std::string name){ _name = name; }
-		void setID(std::string ID){ _ID = ID;}
+		virtual void setMarket(Market market){ _market = market; }
+		virtual void setStartDate(date startDate) { _startDate=startDate; }
+		virtual void setIssueDate(date issueDate) { _issueDate=issueDate; }
+		virtual void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
+		virtual void setSpotDate(date spotDate){ _spotDate = spotDate; }
+		virtual void setExpiryDate(date expiryDate){ _expiryDate = expiryDate; }
+		virtual void setDeliveryDate(date deliveryDate) { _deliveryDate=deliveryDate; }
+		virtual void setName(std::string name){ _name = name; }
+		virtual void setID(std::string ID){ _ID = ID;}
+		virtual void setTenorStr(std::string tenorStr){ _tenorStr = tenorStr; }
+		virtual void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
+		virtual void setDayRoll(enums::DayRollEnum dayRoll){ _dayRoll = dayRoll;}
+		virtual void setInstrumentEnum(enums::Instrument instrumentEnum){ _instrumentEnum = instrumentEnum; }
+
+		// Method
+
+		virtual std::string toString()=0;
 
 	protected: 
 		Market _market;
-		date _tradeDate;
 		date _issueDate;
-		date _maturityDate;	
+		date _startDate;
+		date _tradeDate;
+		date _spotDate;
+		date _expiryDate;
+		date _deliveryDate;
 		std::string _ID;
 		std::string _name;
+		std::string _tenorStr;
+		enums::DayCountEnum _dayCount;
+		enums::DayRollEnum _dayRoll;
+		enums::Instrument _instrumentEnum;
 	};
 }
 #endif

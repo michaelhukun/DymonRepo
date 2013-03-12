@@ -1,7 +1,6 @@
 //created by Wang Jianwei on 1 Dec 2012
-#include "TestDiscountCurve.h"
+#include "TestSwapCurve.h"
 #include "SwapCurveBuilder.h"
-#include "BondCurveBuilder.h"
 #include "DiscountCurve.h"
 #include <string>
 #include <sstream>
@@ -9,39 +8,40 @@
 #include "Enums.h"
 #include "Configuration.h"
 #include "dateUtil.h"
-#include "swap.h"
 #include "RecordHelper.h"
 #include "Constants.h"
 #include "marketdata.h"
+#include "Market.h"
 
 using namespace UnitTest;
 using namespace utilities;
 using namespace std;
 using namespace Markets;
 
-void TestDiscountCurve::runTest(){
+void TestSwapCurve::init(Configuration* cfg){
+}
+
+void TestSwapCurve::runTest(){
 	_EPSILON = 0.000001;
 	discountCurveTestSuit();
 }
 
-void TestDiscountCurve::discountCurveTestSuit(){
+void TestSwapCurve::discountCurveTestSuit(){
 	swapRateTest(enums::USD, enums::LINEAR);
 	swapRateTest(enums::USD, enums::LOGLINEAR);
 	BondRateTest(enums::USD, enums::LINEAR);
 	BondRateTest(enums::USD, enums::LOGLINEAR);
 }
 
-void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
+void TestSwapCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
-	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve();
-
-	Market fixLegCurr=Market(market);
-	Market floatingLegCurr=Market(market);
+	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(USD);
+	
 	int fixFreq = 2;
 	int floatFreq = 4;
 
-	map<long, double> swapRateMap = RecordHelper::getInstance()->getSwapRateMap()[market];
+	//auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(market);
 	//for (map<long, double>::iterator it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
 	//	date accuralEndDate = date((*it).first);
 	//	Swap swap1(dateUtil::getToday(), accuralEndDate, 1000000, 0.01, yc, fixLegCurr, floatingLegCurr,fixFreq, floatFreq, true,1);
@@ -52,13 +52,13 @@ void TestDiscountCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolA
 }
 
 
-void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo){
+void TestSwapCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Bond Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(USD);
 
-	map<long, Bond> bondRateMap = RecordHelper::getInstance()->getBondRateMap()->at(market);
-	for (map<long, Bond>::iterator it=bondRateMap.begin(); it != bondRateMap.end(); it++ ){
+	auto bondRateMap = RecordHelper::getInstance()->getBondRateMap()->at(market);
+	for (auto it=bondRateMap.begin(); it != bondRateMap.end(); it++ ){
 		date accuralEndDate = (*it).first;
 		Bond bond = (*it).second;
 		if (bond.getCouponFreq()!=NaN){
@@ -69,7 +69,7 @@ void TestDiscountCurve::BondRateTest(enums::CurrencyEnum market, enums::interpol
 	}
 }
 
-void TestDiscountCurve::compareResult(string testName, date accuralEndDate, double derivedVal,  double expectedVal){
+void TestSwapCurve::compareResult(string testName, date accuralEndDate, double derivedVal,  double expectedVal){
 	std::stringstream ss (stringstream::in | stringstream::out);
 	ss.precision(10);
 	bool result = AbstractTest::compareResult(derivedVal, expectedVal);	

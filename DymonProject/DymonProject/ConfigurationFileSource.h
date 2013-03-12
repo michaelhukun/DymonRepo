@@ -11,9 +11,9 @@ namespace DAO {
 	class ConfigurationFileSource: public AbstractFileSource{
 		
 	public:
-		ConfigurationFileSource();
-		ConfigurationFileSource(std::string persistDir, std::string fileName);
-		~ConfigurationFileSource();
+		ConfigurationFileSource(){};
+		ConfigurationFileSource(std::string persistDir, std::string fileName):AbstractFileSource(persistDir, fileName){}
+		~ConfigurationFileSource(){};
 
 		void init(Configuration*);
 		

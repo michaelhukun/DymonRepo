@@ -15,17 +15,17 @@ namespace utilities{
 
 		DiscountCurve(std::vector<AbstractInterpolator<date>*>* lineSectionVector):AbstractCurve(lineSectionVector){};
 
-		double getDiscountFactor(date Date0);
+		double getDiscountFactor(date endDate);
+
+		double getDiscountFactor(date beginDate, date endDate);
 
 		double getZeroRate(date aDate, enums::DayCountEnum dayCount);
+
+		double getZeroRate(date beginDate, date endDate, enums::DayCountEnum dayCount);
 
 		double getDFChangingZeroRate(date aDate, double zeroRateDiff, enums::DayCountEnum dayCount);
 
 		double getFLiborRate(date forwardStartDate,date forwardEndDate,enums::DayCountEnum dayCount);
-
-		std::string toString();
-		
-		std::string toString(int interval);
 	};
 }
 #endif

@@ -15,7 +15,6 @@ using namespace utilities;
 
 namespace utilities {
 
-	date::date() {};
 	date::date(unsigned short year, unsigned short month, unsigned short day){
 		if (year<=0 || month<=0 || day<=0)
 			throw "Year/Month/Day must be larger than 0";
@@ -61,22 +60,6 @@ namespace utilities {
 		return true;
 	}
 
-	long date::getJudianDayNumber(){
-		return _judianDayNumber;
-	}
-
-	int date::getYear(){
-		return _year;
-	}
-
-	int date::getMonth(){
-		return _month;
-	}
-
-	int date::getDay(){
-		return _day;
-	}
-
 	void date::setDay(unsigned short day){
 		if (_isNull) return;
 		_day=day;
@@ -109,7 +92,7 @@ namespace utilities {
 		if (_isNull){
 			ss <<"NullDate"<<endl;
 		}else{
-			ss<<getDay()<<"/"<<getMonth()<<"/"<<getYear();//"-"<<_judianDayNumber;
+			ss<<(getDay()<10?"0":"")<<getDay()<<"/"<<(getMonth()<10?"0":"")<<getMonth()<<"/"<<getYear();//"-"<<_judianDayNumber;
 		}
 		return ss.str();
 	}

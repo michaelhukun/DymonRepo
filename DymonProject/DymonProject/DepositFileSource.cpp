@@ -15,74 +15,85 @@ using namespace utilities;
 using namespace Session;
 using namespace instruments;
 
-DepositFileSource::DepositFileSource():
-AbstractFileSource(){}
-
-DepositFileSource::DepositFileSource(std::string persistDir, std::string fileName):
-AbstractFileSource(persistDir, fileName){}
-
-DepositFileSource::~DepositFileSource(){}
-
 void DepositFileSource::init(Configuration* cfg){
+   _name = "Deposit";
 	_fileName = cfg->getProperty("depositRate.file",true,"");
-	_persistDir = cfg->getProperty("depositRate.path",false,"");
-	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="True"?true:false;
+	_persistDir = cfg->getProperty("data.path",false,"");
+	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
 void DepositFileSource::retrieveRecord(){
-	if (!_enabled) return;
-	
-	AbstractFileSource::retrieveRecord();
-	enums::CurrencyEnum CurrencyEnum;
+	if (!_enabled) return;	
 
-	CSVDatabase db;
-	readCSV(_inFile, db);
-
+	CSVDatabase db = readCSV(_persistDir+_fileName);
 	int numOfRows=db.size();
 	int numOfCols=db.at(0).size();
 
-	RecordHelper::RateMap tempDepositMap;
-	RecordHelper::RateMap tempOvernightMap;
+	RecordHelper::DepositRateMap* depositRateMap = RecordHelper::getInstance()->getDepositRateMap();
 
-	for (int i=1;i<numOfCols;i++) {
-
-		CurrencyEnum=EnumHelper::getCcyEnum(db.at(0).at(i));
-		Market market = Market(CurrencyEnum);
-
-		map<long, double>* depositRateMap = new map<long, double>;
-		map<long, double>* overnightRateMap = new map<long, double>;
-
-		for (int j = 1; j<numOfRows; j++)
-		{
-			string tenorStr = db.at(j).at(0);
-			double liborRate = std::stod(db.at(j).at(i))/100.0;
-			insertRateIntoMap(tenorStr, liborRate, market, depositRateMap, overnightRateMap);
-		}
-		tempDepositMap.insert(pair<enums::CurrencyEnum, map<long, double>>(CurrencyEnum,*depositRateMap));
-		tempOvernightMap.insert(pair<enums::CurrencyEnum, map<long, double>>(CurrencyEnum,*overnightRateMap));
+	for (int i=1;i<numOfRows;i++) {
+		Deposit* tempDeposit = createDepositObject(db, i);
+		tempDeposit->deriveAccrualStartDate();
+		insertDepositIntoCache(tempDeposit, depositRateMap);
 	}
-	RecordHelper::getInstance()->setDepositRateMap(tempDepositMap);
-	RecordHelper::getInstance()->setOverNightRateMap(tempOvernightMap);
-	_inFile.close();
 }
 
-void DepositFileSource::insertRateIntoMap(std::string tenorStr, double liborRate, Market market, map<long, double>* depositRateMap, map<long, double>* overnightRateMap){
-	date startDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,market.getCurrencyEnum());	
-	char tenorUnit = *tenorStr.rbegin();
-	int tenorNum = std::stoi(tenorStr.substr(0,tenorStr.size()-1)); // 2
-	if (tenorUnit != 'D')
-		startDate = dateUtil::getBizDateOffSet(startDate,market.getBusinessDaysAfterSpot(enums::SWAP),market.getCurrencyEnum()); // day after spot adjust
-
-	long JDN = dateUtil::getEndDate(startDate,tenorNum, market.getDayRollCashConvention(), market.getCurrencyEnum(), dateUtil::getDateUnit(tenorUnit)).getJudianDayNumber();
-	if (tenorUnit == 'D'){
-		overnightRateMap->insert(pair<long, double>(tenorNum, liborRate));
-		cout << market.getNameString()<< " -> tenor[" << tenorStr <<"], accrual start["<<startDate.toString()<<"], duration ["
-			<<tenorNum <<"], deposit rate["<< liborRate << "]"<<endl;
+void DepositFileSource::insertDepositIntoCache(Deposit* deposit, RecordHelper::DepositRateMap* depositRateMap){	
+	enums::CurrencyEnum market = deposit->getMarket().getCurrencyEnum();
+	long accrualEndJDN = deposit->getExpiryDate().getJudianDayNumber();
+	if (depositRateMap->find(market) == depositRateMap->end()){
+		auto tempMap = map<long, Deposit>();
+		tempMap.insert(std::make_pair(accrualEndJDN, *deposit));
+		depositRateMap->insert(std::make_pair(market, tempMap));
 	}else{
-		date accrualEndDate(JDN);
-		depositRateMap->insert(pair<long, double>(JDN, liborRate));
-		cout << market.getNameString()<< " -> tenor[" << tenorStr<<"], accrual start["<<startDate.toString()<<"], accrual end["
-			<<accrualEndDate.toString() <<"], deposit rate["<< liborRate << "]"<<endl;
+		auto tempMap = &(depositRateMap->find(market)->second);
+		tempMap->insert(std::make_pair(accrualEndJDN, *deposit));
+	}
+	//cout<<deposit->toString()<<endl;
+}
+
+Deposit* DepositFileSource::createDepositObject(CSVDatabase db, int row){
+	int numOfCols=db.at(0).size();
+	Deposit* tempDeposit = new Deposit();
+
+	for (int i=0;i<numOfCols;i++) {
+		String fieldName = db.at(0).at(i);
+		String fieldVal = db.at(row).at(i);
+		updateDepositObjectField(fieldName, fieldVal, tempDeposit);
+	}		
+	return tempDeposit;
+}
+
+void DepositFileSource::updateDepositObjectField(std::string fieldName, std::string fieldVal, Deposit* deposit){
+	if(fieldName=="ID"){
+		deposit->setID(fieldVal);
+	}else if (fieldName=="NAME"){
+		deposit->setName(fieldVal);
+		if (fieldVal.find("/N")!=std::string::npos) 
+			deposit->setIsOverNight(true);
+		else
+			deposit->setIsOverNight(false);
+	}else if (fieldName=="SECURITY_TENOR_ONE"){
+		deposit->setTenorStr(fieldVal);
+	}else if (fieldName=="PX_MID"){
+		deposit->setDepositRate(stod(fieldVal)/100);
+	}else if (fieldName=="DAY_CNT_DES"){
+		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
+		deposit->setDayCount(dayCount);
+	}else if (fieldName=="DAYS_TO_MTY"){
+		deposit->setDaysToMty(stoi(fieldVal));
+	}else if (fieldName=="TRADING_DT_REALTIME"){
+		date tradeDate(fieldVal,false);
+		deposit->setTradeDate(tradeDate);
+	} else if (fieldName=="COUNTRY"){
+		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
+		deposit->setMarket(market);
+	}else if (fieldName=="SETTLE_DT"){
+		date deliveryDate(fieldVal,false);
+		deposit->setDeliveryDate(deliveryDate);
+	}else if (fieldName=="MATURITY"){
+		date accrualEndDate(fieldVal,false);
+		deposit->setExpiryDate(accrualEndDate);
 	}
 }

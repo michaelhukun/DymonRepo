@@ -19,6 +19,9 @@ namespace utilities{
 
 		virtual void init(Configuration* cfg);
 
+		AbstractBootStrapper(){}
+		~AbstractBootStrapper(){}
+
 		AbstractBootStrapper(point startPoint, date endDate,enums::interpolAlgo interpolAlgo,
 		enums::NumericAlgo numericAlgo){
 			_startPoint = startPoint;
@@ -29,7 +32,9 @@ namespace utilities{
 
 		virtual AbstractInterpolator<T>* bootStrap(){return NULL;};
 
-		virtual double numericalFunc(double x){return 0;};
+		virtual double numericalFunc(double x)=0;
+	
+		void setSpotDate(date spotDate){ _spotDate = spotDate; }
 
 	protected:
 	
@@ -40,6 +45,8 @@ namespace utilities{
 		enums::interpolAlgo _interpolAlgo;
 
 		enums::NumericAlgo _numericAlgo; 
+
+		date _spotDate;
 
 		double _tolerance;
 

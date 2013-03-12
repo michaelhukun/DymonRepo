@@ -38,7 +38,7 @@ void TestSurface::surfaceTest(){
 	yc2->insertLineSection(li3);
 	yc2->insertLineSection(li4);
 
-	AbstractSurface<date>* as = new AbstractSurface<date>();
+	AbstractSurface<double, date>* as = new AbstractSurface<double, date>();
 	as->insertcurve(1,yc1);
 	as->insertcurve(2,yc2);
 	cout<<"Surface validation pass: "<<as->validateSurface()<<endl;

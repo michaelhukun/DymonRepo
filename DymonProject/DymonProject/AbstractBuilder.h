@@ -16,7 +16,17 @@ namespace utilities{
 		virtual void init(Configuration* cfg){}
 		
 		virtual AbstractDataStructure* build(Configuration* cfg)=0;
+		
+		// Getters and Setters
+		enums::interpolAlgo getInterpolAlgo(){return _interpolAlgo;}
+		void setInterpolAlgo(enums::interpolAlgo interpolAlgo){_interpolAlgo=interpolAlgo;}
 
+		enums::NumericAlgo getNumericalAlgo(){return _numericalAlgo;}
+		void setNumericalAlgo(enums::NumericAlgo numericalAlgo){_numericalAlgo=numericalAlgo;}
+
+	protected:
+		enums::interpolAlgo _interpolAlgo;
+		enums::NumericAlgo _numericalAlgo;
 	};
 }
 #endif

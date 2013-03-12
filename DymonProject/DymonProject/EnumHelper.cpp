@@ -6,7 +6,7 @@
 using namespace utilities;
 
 enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
-	if (ccyName =="EUR")
+	if (ccyName =="EUR" || ccyName == "EU")
 		return EUR;
 	else if (ccyName == "USD" || ccyName == "US")
 		return USD;
@@ -32,15 +32,15 @@ enums::DayRollEnum EnumHelper::getDayRollEnum(std::string dayRoll){
 		return Mfollowingbi;
 	else if (dayRoll == "EOM")
 		return EOM;
-	else if (dayRoll == "Null")
-		return Null;
+	else
+		return DayRollNull;
 	throw "Day roll name not foud: "+dayRoll;
 }
 
 enums::DayCountEnum EnumHelper::getDayCountEnum(std::string dayCount){
-	if (dayCount =="thirty_360US")
+	if (dayCount =="thirty_360US" || dayCount =="30/360")
 		return thirty_360US;
-	else if (dayCount == "thirthE_360")
+	else if (dayCount == "thirthE_360" || dayCount =="30U/360")
 		return thirthE_360;
 	else if (dayCount == "ACT_360" || dayCount == "ACT/360")
 		return ACT_360;
@@ -50,6 +50,8 @@ enums::DayCountEnum EnumHelper::getDayCountEnum(std::string dayCount){
 		return ACT_ACT;
 	else if (dayCount == "BUS_252")
 		return BUS_252;
+	else
+		return DayCountNull;
 	throw "Day count name not foud: "+dayCount;
 }
 
@@ -58,6 +60,8 @@ enums::interpolAlgo EnumHelper::getInterpolAlgo(std::string interpolAlgo){
 		return LINEAR;
 	else if ( interpolAlgo == "LOGLINEAR")
 		return LOGLINEAR;
+	else if (interpolAlgo == "QUADRATIC")
+		return QUADRATIC;
 	throw "Interpolation algo not foud: "+interpolAlgo;
 }
 
@@ -71,4 +75,14 @@ enums::NumericAlgo EnumHelper::getNumericalAlgo(std::string numericalAlgo){
 	else if ( numericalAlgo == "FALSEPOSITION")
 		return FALSEPOSITION;
 	throw "Numerical algo not foud: "+numericalAlgo;
+}
+
+enums::VolType EnumHelper::getVolType(std::string optionType){
+	if (optionType == "ATM")
+		return ATM;
+	else if ( optionType == "RR")
+		return RR;
+	else if ( optionType == "BF")
+		return STR;
+	throw "Option type not foud: "+optionType;
 }

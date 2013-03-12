@@ -32,7 +32,7 @@ namespace utilities {
 		static int getMonthLastDay(int year, int month);
 
 		//to be used by instruments namespaces to calc dates
-		static date getBizDateOffSet(date refDate, long bias, enums::CurrencyEnum market);
+		static date getBizDateOffSet(date refDate, long offset, enums::CurrencyEnum market);
 		static date getEndDate(date refDate, int increment, enums::DayRollEnum dayRoll, enums::CurrencyEnum market, DateUnit dateUnit);
 		static date dayRollAdjust(date aDate,enums::DayRollEnum aDayRollConvention, enums::CurrencyEnum market);
 		static double getAccrualFactor(date startDate,date endDate, enums::DayCountEnum dayCount);

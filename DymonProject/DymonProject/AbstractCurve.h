@@ -31,6 +31,10 @@ namespace utilities{
 
 		point getCurveEndPoint();
 
+		AbstractInterpolator<T>* getSection(int sectionIndex);
+
+		int getSize();
+
 		void setLineSectionVector(std::vector<AbstractInterpolator<T>*>* lineSectionVector){
 			_lineSectionVector = lineSectionVector;		
 		}
@@ -39,7 +43,9 @@ namespace utilities{
 
 		virtual std::string toString();
 
-		virtual std::string toString(int interval);
+		virtual std::string toString(double interval);
+
+      virtual std::string toExcelFriendlyString();
 
 	private:
 
@@ -74,6 +80,16 @@ namespace utilities{
 			int vectorSize = _lineSectionVector->size();
 			_lineSectionVector->insert(_lineSectionVector->begin()+vectorSize,lineSection);
 		}
+	}
+
+	template<typename T>
+	AbstractInterpolator<T>* AbstractCurve<T>::getSection(int sectionIndex){
+		return _lineSectionVector->at(sectionIndex);
+	}
+
+	template<typename T>
+	int AbstractCurve<T>::getSize(){
+		return _lineSectionVector->size();
 	}
 
 	template<typename T>
@@ -119,31 +135,6 @@ namespace utilities{
 		return validationPass;
 	}
 
-	template<typename T>
-	string AbstractCurve<T>::toString(){
-		std::stringstream ss (stringstream::in | stringstream::out);
-		ss << "Curve - Line sections: \n";
-		for (unsigned int i = 0; i<_lineSectionVector->size(); i++){
-			ss << _lineSectionVector->at(i)->toString() <<"\n";
-		}
-		return ss.str();
-	}
-	
-	template<typename T>
-	string AbstractCurve<T>::toString(int interval){
-		std::stringstream ss (stringstream::in | stringstream::out);
-		ss << "Curve - Fixed interval ["<<interval<<"] \n";
-		T curveStartX = std::get<0>(getCurveStartPoint());
-		T curveEndX = std::get<0>(getCurveEndPoint());
-		while(curveStartX<curveEndX){
-			ss << "Point ["<<curveStartX << ", "<<getValue(curveStartX)<<"]; \n";
-			curveStartX = curveStartX + interval;
-		}
-			ss << "Point ["<<curveEndX << ", "<<getValue(curveStartX)<<"]; \n";
-		return ss.str();
-
-	}
-
 	template<>
 	inline bool AbstractCurve<date>::validateLineSections(){
 		bool validationPass = true;
@@ -160,17 +151,66 @@ namespace utilities{
 		return validationPass;
 	}
 
-	template<>
-	inline string AbstractCurve<date>::toString(int interval){
+	template<typename T>
+	string AbstractCurve<T>::toString(){
 		std::stringstream ss (stringstream::in | stringstream::out);
-		ss << "Curve - Fixed interval ["<<interval<<"] \n";
-		date curveStartX = std::get<0>(getCurveStartPoint());
-		date curveEndX = std::get<0>(getCurveEndPoint());
-		while(curveStartX<curveEndX){
-			ss << "Point ["<<curveStartX.toString() << ", "<<getValue(curveStartX)<<"]; \n";
+		ss <<  _name + " - Line sections: \n";
+		for (unsigned int i = 0; i<_lineSectionVector->size(); i++){
+			ss << _lineSectionVector->at(i)->toString() <<"\n";
+		}
+		return ss.str();
+	}
+
+   template<typename T>
+   string AbstractCurve<T>::toExcelFriendlyString(){
+      std::stringstream ss (stringstream::in | stringstream::out);
+		ss <<  _name + " - Line sections: \n";
+		for (unsigned int i = 0; i<_lineSectionVector->size(); i++){
+         AbstractCurve::point point = _lineSectionVector->at(i)->getStartPoint();
+			ss << std::get<0>(point)<<","<<std::get<1>(point)<<"\n";
+		}
+      AbstractCurve::point point = _lineSectionVector->at(_lineSectionVector->size()-1)->getEndPoint();
+      ss <<std::get<0>(point)<<","<<std::get<1>(point)<<"\n";
+	  return ss.str();
+   }
+
+   template<>
+   inline string AbstractCurve<date>::toExcelFriendlyString(){
+	   std::stringstream ss (stringstream::in | stringstream::out);
+	   ss <<  _name + " - Line sections: \n";
+	   ss.precision(numeric_limits<double>::digits10);
+	   for (unsigned int i = 0; i<_lineSectionVector->size(); i++){
+		   AbstractCurve::point point = _lineSectionVector->at(i)->getStartPoint();
+		   ss << std::get<0>(point).toString()<<","<<std::get<1>(point)<<"\n";
+	   }
+	   AbstractCurve::point point = _lineSectionVector->at(_lineSectionVector->size()-1)->getEndPoint();
+	   ss << std::get<0>(point).toString()<<","<<std::get<1>(point)<<"\n";
+	   return ss.str();
+   }
+
+	template<typename T>
+	string AbstractCurve<T>::toString(double interval){
+		std::stringstream ss (stringstream::in | stringstream::out);
+		ss <<  _name + " - Fixed interval ["<<interval<<"] \n";
+		T curveStartX = std::get<0>(getCurveStartPoint());
+		T curveEndX = std::get<0>(getCurveEndPoint());
+		while(curveStartX<=curveEndX){
+			ss << "Point ["<<curveStartX << ", "<<getValue(curveStartX)<<"]; \n";
 			curveStartX = curveStartX + interval;
 		}
-			ss << "Point ["<<curveEndX.toString() << ", "<<getValue(curveEndX)<<"]; \n";
+		return ss.str();
+	}
+
+	template<>
+	inline string AbstractCurve<date>::toString(double interval){
+		std::stringstream ss (stringstream::in | stringstream::out);
+		ss << _name + " - Fixed interval ["<<(int)interval<<"] \n";
+		date curveStartX = std::get<0>(getCurveStartPoint());
+		date curveEndX = std::get<0>(getCurveEndPoint());
+		while(curveStartX<=curveEndX){
+			ss << "Point ["<<curveStartX.toString() << ", "<<getValue(curveStartX)<<"]; \n";
+			curveStartX = curveStartX + (int)interval;
+		}
 		return ss.str();
 
 	}

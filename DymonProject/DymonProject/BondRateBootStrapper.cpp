@@ -17,7 +17,7 @@ using namespace utilities;
 AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
 	double discountFactor;
-	if (_bond.getCouponFreq()==NaN){
+   if (_bond.getCouponRate()==NaN){
 		discountFactor = getTreasuryBillDiscountFactor();
 	}else {
 		AbstractNumerical<BondRateBootStrapper>* an = NumericalFactory<BondRateBootStrapper>::getInstance()->getNumerical(this,&BondRateBootStrapper::numericalFunc,_numericAlgo);

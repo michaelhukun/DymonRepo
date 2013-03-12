@@ -24,13 +24,11 @@ namespace instruments {
 		int getTenor(){ return _tenorInMonths; }
 		double getQuotedPrice(){ return _quotedPrice; }
 		double getSpotPrice(){ return _spotPrice; }
-		enums::DayCountEnum getDayCount(){ return _dayCount; }
 
 		// Setters
 		void setTenor(int tenorInMonths){ _tenorInMonths = tenorInMonths;}		
 		void setQuotedPrice(double quotedPrice){ _quotedPrice = quotedPrice;}		
 		void setSpotPrice(double spotPrice){ _spotPrice = spotPrice; }
-		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 
 		// Methods
 		virtual double getMPV(double costOfCarryRate);
@@ -40,7 +38,6 @@ namespace instruments {
 		int _tenorInMonths;
 		double _quotedPrice;
 		double _spotPrice;
-		enums::DayCountEnum _dayCount;
 	};
 
 }

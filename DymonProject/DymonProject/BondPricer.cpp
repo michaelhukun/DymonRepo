@@ -34,6 +34,10 @@ double BondPricer::getMPV(DiscountCurve* discountCurve){
 	return MPV;
 }
 
+double BondPricer::getMPV(){
+   return 0;
+}
+
 double BondPricer::getYieldByDirtyPrice(double dirtyPrice){
 	_tempTargetBondPrice = dirtyPrice;
 	AbstractNumerical<BondPricer>* an = NumericalFactory<BondPricer>::getInstance()->getNumerical(this,&BondPricer::yieldSolverFunc,_numericAlgo);
@@ -51,13 +55,13 @@ double BondPricer::getZeroRateSpread(double dirtyPrice){
 }
 
 double BondPricer::getYieldByZeroRate(double zerRate){
-	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getMaturityDate(),_bond->getDayCount());
+	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getDeliveryDate(),_bond->getDayCount());
 	double yield = (exp(dayCountFraction*zerRate)-1)/dayCountFraction;
 	return yield;
 }
 
 double BondPricer::getYieldByDiscountFactor(double discountFactor){
-	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getMaturityDate(),_bond->getDayCount());
+	double dayCountFraction = dateUtil::getAccrualFactor(_bond->getTradeDate(), _bond->getDeliveryDate(),_bond->getDayCount());
 	double yield = (1/discountFactor-1)/dayCountFraction;
 	return yield;
 }
@@ -80,7 +84,7 @@ double BondPricer::yieldSolverFunc(double yield){
 }
 
 double BondPricer::curveBumpSolverFunc(double zeroRateSpread){
-	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve();
+	DiscountCurve* dc = MarketData::getInstance()->getBondDiscountCurve(_bond->getMarket().getCurrencyEnum());
 	vector<cashflow> couponLegVec = _bond->getCouponLeg()->getCashFlowVector();
 	double fullPrice = 0;
 	int couponFreq = _bond->getCouponFreq();
