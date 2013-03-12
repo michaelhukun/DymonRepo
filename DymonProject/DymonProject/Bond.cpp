@@ -20,18 +20,26 @@ using namespace enums;
 
 void Bond::generateCouponLeg(){
 	Configuration* cfg = Configuration::getInstance();
-	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".buildCashFlowDirection",false,"-1"));
-	/*CashFlowLegBuilder* couponLegBuilder = new CashFlowLegBuilder(enums::BOND, _issueDate, _expiryDate, _tenorNumOfMonths, _couponRate, 100, _couponFreq, _market.getCurrencyEnum(), buildDirection);
-	_couponLeg=couponLegBuilder->getCashFlowLeg();*/
+	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve.buildCashFlowDirection",false,"-1"));
+	_couponLeg.setCashFlowNumber(_couponFreq==(int)NaN?1:(_tenorInYear*_couponFreq));
+	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
+	builder.setPaymentNumber(_couponLeg.getCashFlowNumber());
+	builder.setBuildDirection(buildDirection);
+	_couponLeg.setCashFlowVector(*builder.build());
 	_nextCouponDate = findNextCouponDate();
-	_nextCouponIndex = _couponLeg->getCashFlowIndexForAccrualEnd(_nextCouponDate);
+	_nextCouponIndex = _couponLeg.getCashFlowIndexForAccrualEnd(_nextCouponDate);
+}
+
+void Bond::deriveDates(){
+	_startDate = dateUtil::getBizDateOffSet(_issueDate,_market.getBusinessDaysAfterSpotBond(), _market.getCurrencyEnum());
+	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate, _market.getDayRollBondConvention(), _market.getCurrencyEnum());
 }
 
 date Bond::findNextCouponDate(){
 	if (!_nextCouponDate.isNull()) 
 		return _nextCouponDate;
 
-	vector<cashflow> couponVector = _couponLeg->getCashFlowVector();
+	vector<cashflow> couponVector = _couponLeg.getCashFlowVector();
 	for (unsigned int i = 0; i< couponVector.size(); i++){
 		cashflow coupon = couponVector.at(i);
 		if (_tradeDate>=coupon.getAccuralStartDate() && _tradeDate<coupon.getAccuralEndDate())
@@ -45,7 +53,7 @@ void Bond::deriveDirtyPrice(){
 		_dirtyPrice = NaN;
 	}else{
 		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";
-		cashflow firstCashFlow = _couponLeg->getCashFlowVector()[_nextCouponIndex];
+		cashflow firstCashFlow = _couponLeg.getCashFlowVector()[_nextCouponIndex];
 		date refStartDate = firstCashFlow.getAccuralStartDate();
 		date refEndDate = firstCashFlow.getAccuralEndDate();
 		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _tradeDate, refStartDate, refEndDate, _market.getDayCountBondConvention());
@@ -76,7 +84,7 @@ double Bond::getYieldSpread(DiscountCurve* bc){
 	double yieldByBondCurve;
 	double yieldByQuotedPrice = getYield();
 	if (_securityType=="Bill"){
-		date paymentDate = _couponLeg->getCashFlow(_couponLeg->getSize()-1).getPaymentDate();
+		date paymentDate = _couponLeg.getCashFlow(_couponLeg.getSize()-1).getPaymentDate();
 		double discountFactor = bc->getDiscountFactor(paymentDate);
 		yieldByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);
 	}else{

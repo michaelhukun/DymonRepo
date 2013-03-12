@@ -12,6 +12,8 @@
 #include <vector>
 #include "DiscountCurve.h"
 #include "AbstractInstrument.h"
+#include "swap.h"
+#include "bond.h"
 
 using namespace utilities;
 using namespace std;
@@ -30,7 +32,7 @@ namespace instruments {
 		vector<cashflow>* build();
 
 		// Getters and Setters
-		date getStartDate(){ return _startDate; }
+		date getIssueDate(){ return _issueDate; }
 		date getAccuralStartDate(){ return _accrualStartDate; }
 		date getAccuralEndDate(){ return _accrualEndDate; }
 		date getDeliveryDate(){ return _deliveryDate; }
@@ -43,7 +45,7 @@ namespace instruments {
 		enums::Instrument getInstrumentEnum(){ return _instrumentEnum; }
 		vector<cashflow>* getCashFlowVector(){ return &_cashflowVector;	}
 		
-		void setStartDate(date startDate){ _startDate = startDate; }
+		void setIssueDate(date issueDate){ _issueDate = issueDate; }
 		void setAccuralStartDate(date accrualStartDate){ _accrualStartDate = accrualStartDate; }
 		void setAccuralEndDate(date accrualEndDate){ _accrualEndDate = accrualEndDate; }
 		void setDeliveryDate(date deliveryDate){ _deliveryDate = deliveryDate; }
@@ -56,7 +58,7 @@ namespace instruments {
 		void setInstrumentEnum(enums::Instrument instrumentEnum){ _instrumentEnum = instrumentEnum; }
 
 	private:
-		date _startDate;
+		date _issueDate;
 		date _accrualStartDate;
 		date _accrualEndDate;
 		date _deliveryDate;

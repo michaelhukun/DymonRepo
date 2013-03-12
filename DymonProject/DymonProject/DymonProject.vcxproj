@@ -79,6 +79,7 @@
   <ItemGroup>
     <None Include="BondFuturePrice.csv" />
     <None Include="BondRate.csv" />
+    <None Include="BondRate_test.csv" />
     <None Include="CcyPair.csv" />
     <None Include="DepositRate.csv" />
     <None Include="DepositRate_test.csv" />

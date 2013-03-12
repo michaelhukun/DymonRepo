@@ -91,6 +91,6 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		swap->setMarket(market);
-      swap->setDayRoll(market.getDayRollSwapConvention());
+		swap->setDayRoll(market.getDayRollSwapConvention());
 	}
 }

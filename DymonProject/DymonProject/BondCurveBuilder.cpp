@@ -17,8 +17,8 @@ typedef tuple<date, double> point;
 void BondCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
-	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".interpol",false,"LINEAR"));
-	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve."+_market.getNameString()+".numerical",false,"BISECTION"));
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve.interpol",false,"LINEAR"));
+	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve.numerical",false,"BISECTION"));
 }
 
 DiscountCurve* BondCurveBuilder::build(Configuration* cfg){

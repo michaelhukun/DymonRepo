@@ -20,8 +20,8 @@ using namespace enums;
 using namespace instruments;
 
 CashFlowLegBuilder::CashFlowLegBuilder(AbstractInstrument* instrument){
-	setStartDate(instrument->getSpotDate());
-	setAccuralStartDate(instrument->getSpotDate());
+	setIssueDate(instrument->getIssueDate());
+	setAccuralStartDate(instrument->getStartDate());
 	setAccuralEndDate(instrument->getExpiryDate());
 	setDeliveryDate(instrument->getDeliveryDate());
 	setMarket(instrument->getMarket());

@@ -24,7 +24,7 @@ namespace instruments {
 		~Bond(){};
 
 		// Getters
-		cashflowLeg* getCouponLeg(){ return _couponLeg;}
+		cashflowLeg* getCouponLeg(){ return &_couponLeg;}
 		std::string getCUSIP(){ return _CUSIP; }
 		std::string getSecurityType(){ return _securityType; }
 		date getFirstCouponDate(){ return _firstCouponDate; }
@@ -32,7 +32,7 @@ namespace instruments {
 		date getPrevCouponDate(){ return _prevCouponDate; }
 		double getCouponRate(){ return _couponRate;}
 		int getCouponFreq(){ return _couponFreq;}
-		int getTenor(){ return _tenorNumOfMonths;}
+		int getTenor(){ return _tenorInYear;}
 		int getNextCouponIndex(){ return _nextCouponIndex; }
 		double getDirtyPrice(){ return _dirtyPrice; }
 		double getCleanPrice(){ return _cleanPrice; }
@@ -42,7 +42,7 @@ namespace instruments {
 		bool getIsGeneric(){ return _isGeneric; }
 
 		// Setters
-		void setCouponLeg(cashflowLeg* couponLeg){ _couponLeg = couponLeg; }
+		void setCouponLeg(cashflowLeg couponLeg){ _couponLeg = couponLeg; }
 		void setCUSIP(std::string CUSIP){ _CUSIP = CUSIP; }
 		void setSecurityType(std::string securityType){ _securityType = securityType; }
 		void setFirstCouponDate(date firstCouponDate){ _firstCouponDate=firstCouponDate; }
@@ -50,7 +50,7 @@ namespace instruments {
 		void setPrevCouponDate(date prevCouponDate){ _prevCouponDate=prevCouponDate; }
 		void setCouponRate(double couponRate){ _couponRate = couponRate;}
 		void setCouponFreq(int couponFreq){ _couponFreq = couponFreq;}
-		void setTenor(int tenorNumOfMonths){ _tenorNumOfMonths = tenorNumOfMonths;}
+		void setTenor(int tenorInYear){ _tenorInYear = tenorInYear;}
 		void setNextCouponIndex(int nextCouponIndex){ _nextCouponIndex = nextCouponIndex; }
 		void setDirtyPrice(double dirtyPrice){ _dirtyPrice = dirtyPrice;}
 		void setCleanPrice(double cleanPrice){ _cleanPrice = cleanPrice;}
@@ -65,6 +65,7 @@ namespace instruments {
 		double getYield();
 		double getZeroRateSpread(DiscountCurve* dc);
 		void deriveDirtyPrice();
+		void deriveDates();
 		void generateCouponLeg();
 		date findNextCouponDate();
 		void printCouponLeg();
@@ -72,7 +73,7 @@ namespace instruments {
 
 	private:
 
-		cashflowLeg* _couponLeg;
+		cashflowLeg _couponLeg;
 		date _firstCouponDate;
 		date _nextCouponDate;
 		date _prevCouponDate;
@@ -81,7 +82,7 @@ namespace instruments {
 		bool _isGeneric;
 		double _couponRate;
 		int _couponFreq;
-		int _tenorNumOfMonths;
+		int _tenorInYear;
 		int _nextCouponIndex;
 		double _dirtyPrice;
 		double _cleanPrice;

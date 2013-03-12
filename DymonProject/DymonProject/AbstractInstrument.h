@@ -18,6 +18,7 @@ namespace instruments {
 		// Getters
 		virtual Market getMarket(){ return _market; }
 		virtual date getIssueDate() { return _issueDate; }
+		virtual date getStartDate() { return _startDate; }
 		virtual date getTradeDate() { return _tradeDate; }
 		virtual date getSpotDate() { return _spotDate; }
 		virtual date getExpiryDate() { return _expiryDate; }
@@ -31,6 +32,7 @@ namespace instruments {
 		
 		// Setters
 		virtual void setMarket(Market market){ _market = market; }
+		virtual void setStartDate(date startDate) { _startDate=startDate; }
 		virtual void setIssueDate(date issueDate) { _issueDate=issueDate; }
 		virtual void setTradeDate(date tradeDate) { _tradeDate=tradeDate; }
 		virtual void setSpotDate(date spotDate){ _spotDate = spotDate; }
@@ -50,6 +52,7 @@ namespace instruments {
 	protected: 
 		Market _market;
 		date _issueDate;
+		date _startDate;
 		date _tradeDate;
 		date _spotDate;
 		date _expiryDate;

@@ -67,7 +67,7 @@ Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
 		String fieldVal = db.at(row).at(i);
 		updateMarketObjectField(fieldName, fieldVal, tempBond);
 	}		
-	tempBond->setTradeDate(dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following, tempBond->getMarket().getCurrencyEnum()));	
+	tempBond->deriveDates();
 	tempBond->generateCouponLeg();
 	tempBond->deriveDirtyPrice();
 	return tempBond;
@@ -77,6 +77,7 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	if (fieldName=="COUNTRY") {		
 		Market market(EnumHelper::getCcyEnum(fieldVal));
 		bond->setMarket(market);
+		bond->setDayRoll(market.getDayRollBondConvention());
 	}else if(fieldName=="NAME"){
 		bond->setName(fieldVal);
 	}else if(fieldName=="ID"){
@@ -86,8 +87,8 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	}else if (fieldName=="SECURITY_TYP2"){
 		bond->setSecurityType(fieldVal);
 	}else if (fieldName=="YRS_TO_MTY_ISSUE"){
-		int issueToMaturity = ((int)(std::stod(fieldVal)+0.01))*12;
-		bond->setTenor(issueToMaturity);
+		int tenorInYear = (int)(std::stod(fieldVal)+0.01);
+		bond->setTenor(tenorInYear);
 	}else if (fieldName=="CPN"){
 		double couponRate = NaN;
 		if (fieldVal!="#N/A Field Not Applicable") couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
@@ -96,19 +97,19 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?(int)NaN:std::stoi(fieldVal);
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
-		date maturityDate(fieldVal,true);
+		date maturityDate(fieldVal, false);
 		bond->setExpiryDate(maturityDate);
 	}else if (fieldName=="FIRST_CPN_DT"){
-		date firstCouponDate(fieldVal,true);
+		date firstCouponDate(fieldVal,false);
 		bond->setFirstCouponDate(firstCouponDate);
 	}else if (fieldName=="PREV_CPN_DT"){
-		date prevCouponDate(fieldVal,true);
+		date prevCouponDate(fieldVal,false);
 		bond->setPrevCouponDate(prevCouponDate);
 	}else if (fieldName=="NXT_CPN_DT"){
-		date nextCouponDate(fieldVal,true);
+		date nextCouponDate(fieldVal,false);
 		bond->setNextCouponDate(nextCouponDate);
 	}else if (fieldName=="ISSUE_DT"){
-		date issueDate(fieldVal,true);
+		date issueDate(fieldVal,false);
 		bond->setIssueDate(issueDate);
 	}else if (fieldName=="PX_MID"){
 		double cleanPrice = std::stod(fieldVal);
@@ -128,5 +129,11 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 	}else if (fieldName=="IS_US_ON_THE_RUN"){
 		bool isGeneric = (fieldVal=="Y")?true:false;
 		bond->setIsGeneric(isGeneric);
+	}else if (fieldName=="TRADING_DT_REALTIME"){
+		date tradeDate(fieldVal,false);
+		bond->setTradeDate(tradeDate);
+	}else if (fieldName=="SETTLE_DT"){
+		date accrualStartDate(fieldVal,false);
+		bond->setSpotDate(accrualStartDate);
 	}
 }
