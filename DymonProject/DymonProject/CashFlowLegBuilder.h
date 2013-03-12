@@ -30,6 +30,7 @@ namespace instruments {
 
 		// Methods		
 		vector<cashflow>* build();
+      void checkEndDate(int numOfMonthIncr, enums::DayRollEnum accrualAdjust, enums::CurrencyEnum marketEnum);
 
 		// Getters and Setters
 		date getIssueDate(){ return _issueDate; }
@@ -43,7 +44,8 @@ namespace instruments {
 		Market getMarket(){ return _market; }
 		int getBuildDirection(){ return _buildDirection; }
 		enums::Instrument getInstrumentEnum(){ return _instrumentEnum; }
-		vector<cashflow>* getCashFlowVector(){ return &_cashflowVector;	}
+		vector<cashflow>* getCashFlowVector(){ return &_cashflowVector; }
+      bool getJoinMismatchedEndPoint(){ return _joinMismatchedEndPoint; }
 		
 		void setIssueDate(date issueDate){ _issueDate = issueDate; }
 		void setAccuralStartDate(date accrualStartDate){ _accrualStartDate = accrualStartDate; }
@@ -56,6 +58,7 @@ namespace instruments {
 		void setMarket(Market market){ _market = market; }
 		void setBuildDirection(int buildDirection){ _buildDirection = buildDirection; }
 		void setInstrumentEnum(enums::Instrument instrumentEnum){ _instrumentEnum = instrumentEnum; }
+      void setJoinMismatchedEndPoint(bool joinMismatchedEndPoint){ _joinMismatchedEndPoint = joinMismatchedEndPoint; }
 
 	private:
 		date _issueDate;
@@ -70,6 +73,7 @@ namespace instruments {
 		int _buildDirection; // 1=build from issueDate towards maturityDate
 		vector<cashflow> _cashflowVector;
 		enums::Instrument _instrumentEnum;	
+      bool _joinMismatchedEndPoint;
 	};
 }
 #endif

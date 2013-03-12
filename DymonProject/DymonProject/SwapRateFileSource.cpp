@@ -85,9 +85,11 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="TRADING_DT_REALTIME"){
 		date tradeDate(fieldVal,false);
 		swap->setTradeDate(tradeDate);
+      swap->setIssueDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
 		date accrualStartDate(fieldVal,false);
 		swap->setSpotDate(accrualStartDate);
+      swap->setStartDate(accrualStartDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		swap->setMarket(market);

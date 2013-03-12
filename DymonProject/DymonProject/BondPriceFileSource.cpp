@@ -55,7 +55,7 @@ void BondPriceFileSource::insertBondIntoCache(Bond* bond, RecordHelper::BondRate
 		std::map<long, Bond>* tempMap = &(bondRateMap->find(market)->second);
 		tempMap->insert(std::make_pair(maturityDateJDN, *bond));
 	}
-	cout<<bond->toString()<<endl;
+	//cout<<bond->toString()<<endl;
 }
 
 Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
@@ -91,10 +91,10 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		bond->setTenor(tenorInYear);
 	}else if (fieldName=="CPN"){
 		double couponRate = NaN;
-		if (fieldVal!="#N/A Field Not Applicable") couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
+		if (fieldVal.find("#N/A")!=std::string::npos) couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
 		bond->setCouponRate(couponRate);
 	}else if (fieldName=="CPN_FREQ"){
-		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?(int)NaN:std::stoi(fieldVal);
+		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?1:std::stoi(fieldVal);
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
 		date maturityDate(fieldVal, false);

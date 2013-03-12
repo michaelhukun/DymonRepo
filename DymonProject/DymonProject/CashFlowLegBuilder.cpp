@@ -32,34 +32,53 @@ CashFlowLegBuilder::CashFlowLegBuilder(AbstractInstrument* instrument){
 
 vector<cashflow>* CashFlowLegBuilder::build(){
 	_cashflowVector.clear();
-	int numOfMonthIncr=12/_paymentFreq;
+   int numOfMonthIncr=12/_paymentFreq;
 	enums::DayRollEnum accrualAdjust = _market.getAccrualAdjustConvention(_instrumentEnum);
 	enums::CurrencyEnum marketEnum = _market.getCurrencyEnum();
 
 	for(int i=0; i<_paymentNumber; i++){
-		cashflow cf;
-		if (_buildDirection==1) {
-			date calDateNewStart=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*i,accrualAdjust, marketEnum, dateUtil::MONTH);
-			date calDateNewEnd=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*(i+1),accrualAdjust,marketEnum, dateUtil::MONTH);			
-			date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum), marketEnum);
-			date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd, _dayRoll, marketEnum);
-			cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, marketEnum, true);
-		}else if (_buildDirection==-1) {
-			date calDateNewStart=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*(i+1),accrualAdjust,marketEnum,dateUtil::MONTH);
-			date calDateNewEnd=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*i,accrualAdjust,marketEnum,dateUtil::MONTH);
-			date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum),marketEnum);
-			date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd,_dayRoll, marketEnum);
-			cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, marketEnum, true);
-		}
-		cf.setDayCount(_dayCount);
-		cf.deriveAccuralFactor();
-		_cashflowVector.push_back(cf);
-	}
+      cashflow cf;
+      if (_buildDirection==1) {
+         date calDateNewStart=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*i,accrualAdjust, marketEnum, dateUtil::MONTH);
+         date calDateNewEnd=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*(i+1),accrualAdjust,marketEnum, dateUtil::MONTH);			
+         date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum), marketEnum);
+         date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd, _dayRoll, marketEnum);
+         cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, _dayCount, marketEnum, true);
+         _cashflowVector.push_back(cf);
+      }else if (_buildDirection==-1) {
+         date calDateNewStart=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*(i+1),accrualAdjust,marketEnum,dateUtil::MONTH);
+         date calDateNewEnd=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*i,accrualAdjust,marketEnum,dateUtil::MONTH);
+         date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum),marketEnum);
+         date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd,_dayRoll, marketEnum);
+         cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, _dayCount, marketEnum, true);
+         _cashflowVector.insert(_cashflowVector.begin(),cf);
+      }
+   }
 
-   date lastCashFlowAccrualEndDate = dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*_paymentNumber,accrualAdjust,marketEnum,dateUtil::MONTH);
-	if (lastCashFlowAccrualEndDate!=_accrualEndDate){
-		_cashflowVector.clear();
-		throw "Derived end date is not the same as indicated.";
-	}
-	return &_cashflowVector;
+   checkEndDate(numOfMonthIncr, accrualAdjust, marketEnum);
+   return &_cashflowVector;
+}
+
+void CashFlowLegBuilder::checkEndDate(int numOfMonthIncr, enums::DayRollEnum accrualAdjust, enums::CurrencyEnum marketEnum){
+   if (_buildDirection==1) {
+      cashflow* cf = &_cashflowVector.at(0);
+      if (cf->getAccuralEndDate()!=_accrualEndDate){
+         if (_joinMismatchedEndPoint){
+            cf->setAccuralEndDate(_accrualEndDate);
+         }else{
+            _cashflowVector.clear();
+            throw "Derived end date is not the same as indicated.";
+         }
+      }
+   }else if (_buildDirection==-1) {
+      cashflow* cf = &_cashflowVector.at(0);
+      if (cf->getAccuralStartDate()!=_accrualStartDate){
+         if (_joinMismatchedEndPoint){
+            cf->setAccuralStartDate(_accrualStartDate);
+         }else{
+            _cashflowVector.clear();
+            throw "Derived start date is not the same as indicated.";
+         }
+      }
+   }
 }

@@ -25,8 +25,9 @@ void Bond::generateCouponLeg(){
 	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
 	builder.setPaymentNumber(_couponLeg.getCashFlowNumber());
 	builder.setBuildDirection(buildDirection);
+   builder.setPaymentFreq(_couponFreq);
+   builder.setJoinMismatchedEndPoint(true);
 	_couponLeg.setCashFlowVector(*builder.build());
-	_nextCouponDate = findNextCouponDate();
 	_nextCouponIndex = _couponLeg.getCashFlowIndexForAccrualEnd(_nextCouponDate);
 }
 
@@ -49,7 +50,7 @@ date Bond::findNextCouponDate(){
 }
 
 void Bond::deriveDirtyPrice(){
-	if (_couponFreq==NaN ){
+   if (_couponRate==NaN ){
 		_dirtyPrice = NaN;
 	}else{
 		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";

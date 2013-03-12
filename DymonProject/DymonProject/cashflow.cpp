@@ -24,12 +24,14 @@ cashflow::cashflow(double couponRate,double notional,  date fixingDate, date pay
 	setIsValid(isValid);
 }
 
-cashflow::cashflow(date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, Market cashFlowCurr, bool isValid) {
+cashflow::cashflow(date fixingDate, date paymentDate,date accuralStartDate, date accuralEndDate, enums::DayCountEnum dayCount, Market cashFlowCurr, bool isValid) {
 	setFixingDate(fixingDate);
 	setPaymentDate(paymentDate);
 	setAccuralStartDate(accuralStartDate);
 	setAccuralEndDate(accuralEndDate);
 	setCashFlowCurr(cashFlowCurr);
+	setDayCount(dayCount);
+	deriveAccuralFactor();
 	setIsValid(isValid);
 }
 
