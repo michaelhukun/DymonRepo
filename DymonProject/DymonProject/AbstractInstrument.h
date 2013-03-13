@@ -29,6 +29,7 @@ namespace instruments {
 		virtual enums::DayCountEnum getDayCount(){ return _dayCount; }
 		virtual enums::DayRollEnum getDayRoll(){ return _dayRoll; }
 		virtual enums::Instrument getInstrumentEnum(){ return _instrumentEnum; }
+		virtual double getNotional(){ return _notional; }
 		
 		// Setters
 		virtual void setMarket(Market market){ _market = market; }
@@ -44,6 +45,7 @@ namespace instruments {
 		virtual void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount;}
 		virtual void setDayRoll(enums::DayRollEnum dayRoll){ _dayRoll = dayRoll;}
 		virtual void setInstrumentEnum(enums::Instrument instrumentEnum){ _instrumentEnum = instrumentEnum; }
+		virtual void setNotional(double notional){ _notional = notional; }
 
 		// Method
 
@@ -57,6 +59,7 @@ namespace instruments {
 		date _spotDate;
 		date _expiryDate;
 		date _deliveryDate;
+		double _notional;
 		std::string _ID;
 		std::string _name;
 		std::string _tenorStr;

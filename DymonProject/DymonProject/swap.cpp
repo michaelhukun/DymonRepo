@@ -33,6 +33,7 @@ void Swap::buildFixedLeg(){
 	builder.setDayCountEnum(getDayCountFixed());
 	builder.setPaymentNumber(getCouponNumberFixed());
 	builder.setBuildDirection(1);
+	builder.setJoinMismatchedEndPoint(false);
 	_fixedCashflowLeg.setCashFlowVector(*builder.build());
 }
 

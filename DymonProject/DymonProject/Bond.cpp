@@ -25,8 +25,8 @@ void Bond::generateCouponLeg(){
 	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
 	builder.setPaymentNumber(_couponLeg.getCashFlowNumber());
 	builder.setBuildDirection(buildDirection);
-   builder.setPaymentFreq(_couponFreq);
-   builder.setJoinMismatchedEndPoint(true);
+	builder.setPaymentFreq(_couponFreq);
+	builder.setJoinMismatchedEndPoint(true);
 	_couponLeg.setCashFlowVector(*builder.build());
 	_nextCouponIndex = _couponLeg.getCashFlowIndexForAccrualEnd(_nextCouponDate);
 }
@@ -57,8 +57,8 @@ void Bond::deriveDirtyPrice(){
 		cashflow firstCashFlow = _couponLeg.getCashFlowVector()[_nextCouponIndex];
 		date refStartDate = firstCashFlow.getAccuralStartDate();
 		date refEndDate = firstCashFlow.getAccuralEndDate();
-		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _tradeDate, refStartDate, refEndDate, _market.getDayCountBondConvention());
-		_dirtyPrice = _cleanPrice + _couponRate/_couponFreq*_fractionFirstCouponAccrued;
+		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _spotDate, refStartDate, refEndDate, _dayCount);
+		_dirtyPrice = _cleanPrice + _couponRate*_notional*_fractionFirstCouponAccrued;
 	}
 }
 

@@ -28,6 +28,7 @@ CashFlowLegBuilder::CashFlowLegBuilder(AbstractInstrument* instrument){
 	setInstrumentEnum(instrument->getInstrumentEnum());
 	setDayCountEnum(instrument->getDayCount());
 	setDayRollEnum(instrument->getDayRoll());
+	setNotional(instrument->getNotional());
 }
 
 vector<cashflow>* CashFlowLegBuilder::build(){
@@ -39,29 +40,31 @@ vector<cashflow>* CashFlowLegBuilder::build(){
 	for(int i=0; i<_paymentNumber; i++){
       cashflow cf;
       if (_buildDirection==1) {
-         date calDateNewStart=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*i,accrualAdjust, marketEnum, dateUtil::MONTH);
-         date calDateNewEnd=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*(i+1),accrualAdjust,marketEnum, dateUtil::MONTH);			
-         date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum), marketEnum);
-         date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd, _dayRoll, marketEnum);
-         cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, _dayCount, marketEnum, true);
-         _cashflowVector.push_back(cf);
-      }else if (_buildDirection==-1) {
-         date calDateNewStart=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*(i+1),accrualAdjust,marketEnum,dateUtil::MONTH);
-         date calDateNewEnd=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*i,accrualAdjust,marketEnum,dateUtil::MONTH);
-         date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum),marketEnum);
-         date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd,_dayRoll, marketEnum);
-         cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, _dayCount, marketEnum, true);
-         _cashflowVector.insert(_cashflowVector.begin(),cf);
-      }
-   }
+		  date calDateNewStart=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*i,accrualAdjust, marketEnum, dateUtil::MONTH);
+		  date calDateNewEnd=dateUtil::getEndDate(_accrualStartDate,numOfMonthIncr*(i+1),accrualAdjust,marketEnum, dateUtil::MONTH);			
+		  date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum), marketEnum);
+		  date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd, _dayRoll, marketEnum);
+		  cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, _dayCount, marketEnum, true);
+		  cf.setNotional(_notional);
+		  _cashflowVector.push_back(cf);
+	  }else if (_buildDirection==-1) {
+		  date calDateNewStart=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*(i+1),accrualAdjust,marketEnum,dateUtil::MONTH);
+		  date calDateNewEnd=dateUtil::getEndDate(_accrualEndDate,-numOfMonthIncr*i,accrualAdjust,marketEnum,dateUtil::MONTH);
+		  date calFixingDate=dateUtil::getBizDateOffSet(calDateNewStart,-_market.getBusinessDaysAfterSpot(_instrumentEnum),marketEnum);
+		  date calPaymentDate=dateUtil::dayRollAdjust(calDateNewEnd,_dayRoll, marketEnum);
+		  cf = cashflow(calFixingDate, calPaymentDate, calDateNewStart, calDateNewEnd, _dayCount, marketEnum, true);
+		  cf.setNotional(_notional);
+		  _cashflowVector.insert(_cashflowVector.begin(),cf);
+	  }
+	}
 
-   checkEndDate(numOfMonthIncr, accrualAdjust, marketEnum);
+	checkEndDate(numOfMonthIncr, accrualAdjust, marketEnum);
    return &_cashflowVector;
 }
 
 void CashFlowLegBuilder::checkEndDate(int numOfMonthIncr, enums::DayRollEnum accrualAdjust, enums::CurrencyEnum marketEnum){
    if (_buildDirection==1) {
-      cashflow* cf = &_cashflowVector.at(0);
+	   cashflow* cf = &_cashflowVector.at(_cashflowVector.size()-1);
       if (cf->getAccuralEndDate()!=_accrualEndDate){
          if (_joinMismatchedEndPoint){
             cf->setAccuralEndDate(_accrualEndDate);

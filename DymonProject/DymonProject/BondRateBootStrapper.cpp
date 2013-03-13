@@ -57,7 +57,7 @@ double BondRateBootStrapper::numericalFunc(double x){
 
 double BondRateBootStrapper::getTreasuryBillDiscountFactor(){
 	cashflow cashFlowAtMaturity = _bond.getCouponLeg()->getCashFlow(0);
-	date accrualStart = _bond.getTradeDate();
+	date accrualStart = _bond.getSpotDate();
 	date accrualEnd = cashFlowAtMaturity.getAccuralEndDate();
 	date refStart = cashFlowAtMaturity.getAccuralStartDate();
 	date refEnd = accrualEnd;

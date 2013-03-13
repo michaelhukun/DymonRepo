@@ -67,6 +67,7 @@ Bond* BondPriceFileSource::createBondObject(CSVDatabase db, int row){
 		String fieldVal = db.at(row).at(i);
 		updateMarketObjectField(fieldName, fieldVal, tempBond);
 	}		
+	tempBond->setNotional(100);
 	tempBond->deriveDates();
 	tempBond->generateCouponLeg();
 	tempBond->deriveDirtyPrice();
