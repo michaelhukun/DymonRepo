@@ -61,6 +61,8 @@ double BondRateBootStrapper::getTreasuryBillDiscountFactor(){
 	date accrualEnd = cashFlowAtMaturity.getAccuralEndDate();
 	date refStart = cashFlowAtMaturity.getAccuralStartDate();
 	date refEnd = accrualEnd;
+   //As this is a T-Bill it is quoted in terms of the discount rate.
+   //The actual price of a T Bill is calculated as 100-(days to maturity/360)*Discount rate
 	double accrualFactor = dateUtil::getAccrualFactor(accrualStart, accrualEnd, refStart, refEnd, _dayCount);
 	return exp(-accrualFactor*_bond.getCleanPrice()/100);
 }
