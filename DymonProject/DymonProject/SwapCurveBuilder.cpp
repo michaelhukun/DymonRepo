@@ -33,6 +33,7 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	DiscountCurve* yc = new DiscountCurve();
 	yc->setName(_market.getNameString()+" Swap Curve");
+	yc->setDayCount(ACT_365);
 	loadRateMaps();
 	buildDepositSection(yc);
 	buildSwapSection(yc);

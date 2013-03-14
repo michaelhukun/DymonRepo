@@ -36,15 +36,11 @@ namespace utilities{
       // Getters and Setters
 		point getStartPoint(){return _startPoint;}
 		point getEndPoint(){return _endPoint;}
-		T getStartingX(){
-			return std::get<0>(_startPoint);
-		}
+		T getStartingX(){ return std::get<0>(_startPoint);	}
 
 		void setStartPoint(point startPoint){_startPoint=startPoint;}
 		void setEndPoint(point endPoint){_endPoint=endPoint;}
-		T getEndingX(){
-			return std::get<0>(_endPoint);
-		}
+		T getEndingX(){	return std::get<0>(_endPoint);	}
 
 	protected:
 

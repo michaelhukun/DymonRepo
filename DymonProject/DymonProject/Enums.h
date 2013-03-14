@@ -8,6 +8,7 @@ namespace enums {
 	enum CurrencyEnum{EUR,USD,THB,KRW,SGD,JPY};
 	enum DayRollEnum {DayRollNull,Following,Preceding,Mfollowing,Mfollowingbi,EOM};
 	enum DayCountEnum {DayCountNull, thirty_360US, thirthE_360,ACT_360,ACT_365,ACT_ACT,BUS_252};
+	enum RateType {DF, SPOT, FWD, ZERO};
 	enum CompoundType {CONTINUOUS, ANNUAL};
 	enum NumericAlgo {BISECTION, RIDDER, SECANT, FALSEPOSITION};
 	enum interpolAlgo{LINEAR,LOGLINEAR,CUBIC,QUADRATIC};

@@ -11,7 +11,9 @@ namespace utilities{
 		
 	public:
 		
-		DiscountCurve():AbstractCurve(){};
+		DiscountCurve():AbstractCurve(){
+			_rateType = enums::DF;
+		};
 
 		DiscountCurve(std::vector<AbstractInterpolator<date>*>* lineSectionVector):AbstractCurve(lineSectionVector){};
 
@@ -19,9 +21,17 @@ namespace utilities{
 
 		double getDiscountFactor(date beginDate, date endDate);
 
+		double getDiscountFactor(date endDate, double zeroRate);
+
+		double getZeroRate(date endDate);
+
+		double getZeroRate(date endDate, double discountFactor);
+
 		double getZeroRate(date aDate, enums::DayCountEnum dayCount);
 
 		double getZeroRate(date beginDate, date endDate, enums::DayCountEnum dayCount);
+
+		double getZeroRate(date beginDate, date endDate, double discountFactor, enums::DayCountEnum dayCount);
 
 		double getDFChangingZeroRate(date aDate, double zeroRateDiff, enums::DayCountEnum dayCount);
 

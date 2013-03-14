@@ -12,7 +12,10 @@ double SwapPricer::getFixLegPV() {
 	for (auto it=cfVector.begin();it!=cfVector.end();it++) {
 		cashflow cf=*it;
 		date paymentDate=cf.getPaymentDate();
-		mpv+=cf.getAccuralFactor()*_discountCurve->getDiscountFactor(paymentDate);
+		double discountFactor = _discountCurve->getDiscountFactor(paymentDate);
+		mpv+=cf.getAccuralFactor()*discountFactor;
+		cout.precision(12);
+		//cout<<"Fixed Leg: PaymentDate "<<paymentDate.toString()<<", DF " << discountFactor<<endl;
 	}
 
 	return mpv;

@@ -45,11 +45,23 @@ namespace utilities{
 
 		virtual std::string toString(double interval);
 
-      virtual std::string toExcelFriendlyString();
+		virtual std::string toExcelFriendlyString();
 
-	private:
+		// Getters and Setters
+
+		enums::DayCountEnum getDayCount(){ return _dayCount; }
+		enums::RateType getRateType(){ return _rateType; }
+
+		void setRateType(enums::RateType rateType){ _rateType = rateType; }
+		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount; }
+
+	protected:
 
 		std::vector<AbstractInterpolator<T>*>* _lineSectionVector;
+
+		enums::DayCountEnum _dayCount;
+
+		enums::RateType _rateType;
 
 	};
 

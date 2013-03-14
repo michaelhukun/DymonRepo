@@ -86,3 +86,15 @@ enums::VolType EnumHelper::getVolType(std::string optionType){
 		return STR;
 	throw "Option type not foud: "+optionType;
 }
+
+enums::RateType EnumHelper::getRateType(std::string rateType){
+	if (rateType == "DF")
+		return DF;
+	else if ( rateType == "SPOT")
+		return SPOT;
+	else if ( rateType == "FWD")
+		return FWD;
+	else if (rateType == "ZERO")
+		return ZERO;
+	throw "Rate type not foud: "+rateType;
+}
