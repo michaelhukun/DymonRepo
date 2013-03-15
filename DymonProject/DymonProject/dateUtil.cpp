@@ -247,11 +247,14 @@ date dateUtil::dayRollAdjust(date aDate,DayRollEnum aDayRollConvention, enums::C
 date dateUtil::getEndDateMonthIncrement(date startDate, int numMonth){
 	if (numMonth==0) return startDate;
 	short startMonth = startDate.getMonth();
-	short endMonth = (startMonth + numMonth)%12;
-	int yearIncrement = (startMonth + numMonth)/12;
-	yearIncrement = (startMonth + numMonth)<=0?yearIncrement-1:yearIncrement;
-	endMonth = endMonth<=0?endMonth+12:endMonth;
-	short endYear= startDate.getYear()+yearIncrement;	
+	short endMonth = (startMonth + numMonth);
+	bool isEndMonthPow12 = (startMonth + numMonth)%12==0?true:false;
+	endMonth = isEndMonthPow12 ? 12 : (startMonth + numMonth)%12;
+	int yearIncrement = abs((startMonth + numMonth)/12) - (isEndMonthPow12 ? 1 : 0);
+	if (startMonth + numMonth<0)
+		yearIncrement = -abs((startMonth + numMonth)/12) - 1 - (isEndMonthPow12 ? 1 : 0);
+	endMonth = endMonth<=0 ? endMonth+12 : endMonth;
+	short endYear= startDate.getYear()+ yearIncrement;	
 	date endDate(endYear, endMonth, startDate.getDay());
 
 	// Adjust the return day to the end of month if the start date is also end of month
