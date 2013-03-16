@@ -35,11 +35,13 @@ AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 		_spotDateDF = discountFactor;
 		ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
 	}
+	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
 	return ai;
 }
 
 double DepositRateBootStrapper::numericalFunc(double x){
 	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
+	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
 
 	date spotDate = _deposit->getSpotDate();
 	double accrualFactor = dateUtil::getAccrualFactor(spotDate, _deposit->getExpiryDate(), _deposit->getDayCount());

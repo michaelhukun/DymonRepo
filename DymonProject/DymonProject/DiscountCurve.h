@@ -12,7 +12,7 @@ namespace utilities{
 	public:
 		
 		DiscountCurve():AbstractCurve(){
-			_rateType = enums::DF;
+			_curveRateType = enums::DF;
 		};
 
 		DiscountCurve(std::vector<AbstractInterpolator<date>*>* lineSectionVector):AbstractCurve(lineSectionVector){};

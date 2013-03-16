@@ -3,6 +3,7 @@
 #include "DiscountCurve.h"
 #include <cmath>
 #include "dateUtil.h"
+#include "RateConverter.h"
 #include "Enums.h"
 
 using namespace utilities;
@@ -24,8 +25,8 @@ double DiscountCurve::getDiscountFactor(date beginDate, date endDate){
 
 double DiscountCurve::getDiscountFactor(date endDate, double zeroRate){
 	date beginDate = get<0>(super::getCurveStartPoint());
-	double dayCountFraction = dateUtil::getAccrualFactor(beginDate,endDate,_dayCount);
-	double discountFactor = pow(1+zeroRate, -dayCountFraction);
+	RateConverter rc(beginDate, _dayCount);
+	double discountFactor = rc.convertRate(endDate, zeroRate, enums::ZERO, enums::DF);
 	return discountFactor;
 }
 
@@ -49,8 +50,8 @@ double DiscountCurve::getZeroRate(date beginDate, date endDate, enums::DayCountE
 }
 
 double DiscountCurve::getZeroRate(date beginDate, date endDate, double discountFactor, enums::DayCountEnum dayCount){
-	double dayCountFraction = dateUtil::getAccrualFactor(beginDate,endDate,dayCount);
-	double zeroRate = pow(discountFactor, -1/dayCountFraction)-1;
+	RateConverter rc(beginDate, _dayCount);
+	double zeroRate = rc.convertRate(endDate, discountFactor, enums::DF, enums::ZERO);
 	return zeroRate;
 }
 

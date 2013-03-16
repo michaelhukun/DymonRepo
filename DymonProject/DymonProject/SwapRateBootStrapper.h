@@ -34,15 +34,10 @@ namespace utilities {
 	
 		double numericalFunc(double xVal);
 
-		AbstractInterpolator<date>* getInterpolant(RateType rateType, double x);
-
-		double getRateFromInterpolant(RateType rateType, date paymentDate);
-
 	private:
 
 		DiscountCurve* _curve;
 		Swap* _swap;
-		RateType _rateInterpolated;
 		AbstractInterpolator<date>* _interpolant;
 
 		std::vector<cashflow> _cashflowVector;

@@ -50,19 +50,19 @@ namespace utilities{
 		// Getters and Setters
 
 		enums::DayCountEnum getDayCount(){ return _dayCount; }
-		enums::RateType getRateType(){ return _rateType; }
+		enums::RateType getCurveRateType(){ return _curveRateType; }
+		enums::RateType getInterpolRateType(){ return _interpolRateType; }
 
-		void setRateType(enums::RateType rateType){ _rateType = rateType; }
+		void setCurveRateType(enums::RateType curveRateType){ _curveRateType = curveRateType; }
+		void setInterpolRateType(enums::RateType interpolRateType){ _interpolRateType = interpolRateType; }
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount; }
 
 	protected:
 
 		std::vector<AbstractInterpolator<T>*>* _lineSectionVector;
-
 		enums::DayCountEnum _dayCount;
-
-		enums::RateType _rateType;
-
+		enums::RateType _curveRateType;
+		enums::RateType _interpolRateType;
 	};
 
 	template<typename T>

@@ -20,8 +20,7 @@ namespace utilities{
 			_algo = enums::CUBIC;
 		}
 
-		virtual point interpolate(T xVal){
-			xValInRangeCheck(xVal);
+		point interpolateConverted(Point convertedStartPoint, Point convertedEndPoint, T xVal){
 			coefficientCheck();
 
 			double yVal = b1 + b2 * xVal + b3 * xVal^2 + b4 * xVal^3;

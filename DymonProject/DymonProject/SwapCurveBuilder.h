@@ -54,6 +54,7 @@ namespace utilities{
 		point _curvePointer;
 		date _curveStartDate;
 		bool _shortEndUseLibor;
+		RateType _interpolRateType;
 		std::map<long, Deposit> _shortEndMap;
 		std::map<long, Swap> _longEndMap;
 	};

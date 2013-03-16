@@ -36,6 +36,7 @@ void SwapRateFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		Swap* tempSwap = createSwapObject(db, i);
+		tempSwap->setNotional(1000000);
 		tempSwap->deriveDates();
 		tempSwap->deriveDayCount();
 		tempSwap->buildFixedLeg();

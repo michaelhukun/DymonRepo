@@ -26,6 +26,7 @@ void SwapCurveBuilder::init(Configuration* cfg){
 	_rollAccuralDates =  cfg->getProperty("SwapDiscountCurve.rollAccuralDates",false,"0")=="0"?false:true;
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve.interpol",false,"LINEAR"));
 	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("SwapDiscountCurve.numerical",false,"BISECTION"));
+	_interpolRateType = EnumHelper::getRateType(cfg->getProperty("SwapDiscountCurve.interpol.rate",true,"ZERO"));
 	_spotDateDF = NaN;
 }
 
@@ -34,6 +35,8 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 	DiscountCurve* yc = new DiscountCurve();
 	yc->setName(_market.getNameString()+" Swap Curve");
 	yc->setDayCount(ACT_365);
+	yc->setInterpolRateType(_interpolRateType);
+
 	loadRateMaps();
 	buildDepositSection(yc);
 	buildSwapSection(yc);
@@ -65,7 +68,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		if (deposit->getIsOverNight()){
 			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, yc, _interpolAlgo, _numericalAlgo);
 		}else{
-			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, _interpolAlgo, _numericalAlgo, _spotDateDF);
+			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, yc, _interpolAlgo, _numericalAlgo, _spotDateDF);
 		}
 		bs->setSpotDate(_spotDate);
 		bs->init(Configuration::getInstance());

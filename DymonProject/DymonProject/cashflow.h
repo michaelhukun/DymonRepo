@@ -45,8 +45,10 @@ namespace instruments {
 		void setAccuralStartDate(date accuralStartDate);
 		void setAccuralEndDate(date accuralEndDate);
 		void setCashFlowCurr(Market cashFlowCurr);
+		void setAccuralFactor(double accrualFactor){ _accuralFactor = accrualFactor; }
 		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount; }
 		void setIsValid(bool isValid);
+		void setProjectValue(double projectValue){ _projectValue = projectValue; }
 
 		// Methods
 		void deriveAccuralFactor();
@@ -56,6 +58,7 @@ namespace instruments {
 	private:
 		double _couponRate;
 		double _notional;
+		double _projectValue;
 		enums::DayCountEnum _dayCount;
 
 		date _fixingDate;
