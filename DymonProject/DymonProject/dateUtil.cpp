@@ -162,7 +162,7 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 		//This is the most used day count convention for money market instruments (maturity below one year).
 		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/360.0;
 		//cout<<"inside ACT_360"<<endl;
-		break;
+			break;
 	case enums::ACT_365:
 		//Also called English Money Market basis.
 		//The number 365 is used even in a leap year.

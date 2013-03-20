@@ -8,6 +8,7 @@
 #include "cashflowLeg.h"
 #include "CashFlowLegBuilder.h"
 #include "AbstractPricer.h"
+#include "Libor.h"
 
 using namespace instruments;
 using namespace utilities;
@@ -45,8 +46,30 @@ void Swap::buildFloatLeg(){
 	builder.setPaymentFreq(getPayFreqFloat());
 	builder.setDayCountEnum(getDayCountFloat());
 	builder.setPaymentNumber(getCouponNumberFloat());
-   builder.setBuildDirection(1);
+	builder.setBuildDirection(1);
 	_floatCashflowLeg.setCashFlowVector(*builder.build());
+	insertFloatLegReset();
+}
+
+void Swap::insertFloatLegReset(){
+	for (int i=0; i<_floatCashflowLeg.getSize(); i++){
+		cashflow* cf = _floatCashflowLeg.getCashFlow(i);
+		Libor* libor = new Libor();
+		libor->setStartDate(cf->getAccuralStartDate());
+		libor->setSpotDate(cf->getAccuralStartDate());
+		libor->setTenorInMonth(cf->getTenorInMonth());
+		libor->setMarket(EUR);
+		libor->setDayCount(enums::ACT_360);
+		libor->deriveDates();
+		cf->setReset(*libor);
+	}
+}
+
+date Swap::getMaxSwapAndResetDeliveryDate(){
+	date lastResetDeliveryDate = (_floatCashflowLeg.getCashFlowVector().back()).getReset()->getDeliveryDate();
+	if (_deliveryDate<lastResetDeliveryDate)
+		return lastResetDeliveryDate;
+	return _deliveryDate;
 }
 
 void Swap::printCashflowLegFix() {

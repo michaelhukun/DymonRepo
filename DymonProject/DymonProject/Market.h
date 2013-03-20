@@ -31,6 +31,7 @@ namespace instruments {
 		enums::DayRollEnum getAccrualAdjustBondConvention(){return _accrualAdjustBondConvention;}
 		int getBusinessDaysAfterSpotSwap(){return _businessDaysAfterSpotSwap;}
 		int getBusinessDaysAfterSpotBond(){return _businessDaysAfterSpotBond;}
+		int getBusinessDaysAfterSpotCash(){return _businessDaysAfterSpotCash;}
 		int getPayFreqSwapFixed(){ return _payFreqSwapFixed; }
 		int getPayFreqSwapFloat(){ return _payFreqSwapFloat; }
 		bool getShortEndUseLibor(){ return _shortEndUseLibor; }
@@ -48,6 +49,7 @@ namespace instruments {
 		void setAccrualAdjustBondConvention(enums::DayRollEnum accrualAdjustBondConvention){_accrualAdjustBondConvention = accrualAdjustBondConvention;}
 		void setBusinessDaysAfterSpotSwap(int businessDaysAfterSpotSwap){_businessDaysAfterSpotSwap =businessDaysAfterSpotSwap;}
 		void setBusinessDaysAfterSpotBond(int businessDaysAfterSpotBond){_businessDaysAfterSpotBond =businessDaysAfterSpotBond;}
+		void setBusinessDaysAfterSpotCash(int businessDaysAfterSpotCash){_businessDaysAfterSpotCash =businessDaysAfterSpotCash;}
 		void setPayFreqSwapFixed(int payFreqSwapFixed){ _payFreqSwapFixed = payFreqSwapFixed; }
 		void setPayFreqSwapFloat(int payFreqSwapFloat){ _payFreqSwapFloat = payFreqSwapFloat; }
 		void setShortEndUseLibor(bool shortEndUseLibor){ _shortEndUseLibor = shortEndUseLibor; } 
@@ -70,6 +72,7 @@ namespace instruments {
 		enums::DayRollEnum _accrualAdjustBondConvention;
 		int _businessDaysAfterSpotSwap;
 		int _businessDaysAfterSpotBond;
+		int _businessDaysAfterSpotCash;
 		int _payFreqSwapFixed;
 		int _payFreqSwapFloat;
 		bool _shortEndUseLibor;

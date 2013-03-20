@@ -85,7 +85,7 @@ double Bond::getYieldSpread(DiscountCurve* bc){
 	double yieldByBondCurve;
 	double yieldByQuotedPrice = getYield();
 	if (_securityType=="Bill"){
-		date paymentDate = _couponLeg.getCashFlow(_couponLeg.getSize()-1).getPaymentDate();
+		date paymentDate = _couponLeg.getCashFlow(_couponLeg.getSize()-1)->getPaymentDate();
 		double discountFactor = bc->getDiscountFactor(paymentDate);
 		yieldByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);
 	}else{

@@ -74,6 +74,8 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setBusinessDaysAfterSpotSwap(std::stoi(fieldVal));
 	}else if (fieldName=="BizDaysAfterSpotBond"){
 		market->setBusinessDaysAfterSpotBond(std::stoi(fieldVal));
+	}else if (fieldName=="BizDaysAfterSpotCash"){
+		market->setBusinessDaysAfterSpotCash(std::stoi(fieldVal));
 	}else if (fieldName=="PayFreqSwapFixed"){
 		market->setPayFreqSwapFixed(std::stoi(fieldVal));
 	}else if (fieldName=="PayFreqSwapFloat"){

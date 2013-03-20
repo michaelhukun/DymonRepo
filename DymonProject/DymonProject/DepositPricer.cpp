@@ -13,3 +13,7 @@ double DepositPricer::deriveDepositRate(){
 	double rate = (spotDateDF/deliveryDateDF-1)/accrualFactor;
 	return rate;
 }
+
+double DepositPricer::deriveForwardRate(){
+	return deriveDepositRate();
+}

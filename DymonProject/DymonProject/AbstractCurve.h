@@ -33,6 +33,8 @@ namespace utilities{
 
 		AbstractInterpolator<T>* getSection(int sectionIndex);
 
+		void removeSection(int sectionIndex);
+
 		int getSize();
 
 		void setLineSectionVector(std::vector<AbstractInterpolator<T>*>* lineSectionVector){
@@ -97,6 +99,11 @@ namespace utilities{
 	template<typename T>
 	AbstractInterpolator<T>* AbstractCurve<T>::getSection(int sectionIndex){
 		return _lineSectionVector->at(sectionIndex);
+	}
+
+	template<typename T>
+	void AbstractCurve<T>::removeSection(int sectionIndex){
+		_lineSectionVector->erase(_lineSectionVector->begin()+sectionIndex);
 	}
 
 	template<typename T>

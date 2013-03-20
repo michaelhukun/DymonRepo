@@ -86,7 +86,7 @@ void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 
 		date accrualEndDate=it->first;	
 		Swap* swap=&(it->second);		
-		date paymentDate = swap->getDeliveryDate();
+		date paymentDate = swap->getMaxSwapAndResetDeliveryDate();
 
 		//cout << "Swap rate at fixing date ["<<fixingDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< swapRate<<"]"<< endl;
 

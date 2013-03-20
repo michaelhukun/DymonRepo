@@ -21,16 +21,17 @@ namespace instruments {
 		// Getters and Setters
 
 		double getLiborRate(){ return _rate; }
+		int getTenorInMonth(){ return _tenorInMonth; }
 
 		void setLiborRate(double liborRate){ _rate= liborRate; }
+		void setTenorInMonth(int tenorInMonth){ _tenorInMonth = tenorInMonth; }
 
 		// Methods
-		
-		void deriveAccrualStartDate();
+		void deriveDates();
 		std::string toString(){return "";}
 
 	private:
-
+		int _tenorInMonth;
 	};
 
 }

@@ -56,10 +56,10 @@ double BondRateBootStrapper::numericalFunc(double x){
 }
 
 double BondRateBootStrapper::getTreasuryBillDiscountFactor(){
-	cashflow cashFlowAtMaturity = _bond.getCouponLeg()->getCashFlow(0);
+	cashflow* cashFlowAtMaturity = _bond.getCouponLeg()->getCashFlow(0);
 	date accrualStart = _bond.getSpotDate();
-	date accrualEnd = cashFlowAtMaturity.getAccuralEndDate();
-	date refStart = cashFlowAtMaturity.getAccuralStartDate();
+	date accrualEnd = cashFlowAtMaturity->getAccuralEndDate();
+	date refStart = cashFlowAtMaturity->getAccuralStartDate();
 	date refEnd = accrualEnd;
    //As this is a T-Bill it is quoted in terms of the discount rate.
    //The actual price of a T Bill is calculated as 100-(days to maturity/360)*Discount rate

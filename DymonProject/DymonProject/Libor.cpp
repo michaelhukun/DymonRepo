@@ -3,10 +3,8 @@
 
 using namespace instruments;
 
-void Libor::deriveAccrualStartDate(){
-	if (_isOverNight){
-		_spotDate = _tradeDate;
-	}else{
-		_spotDate = dateUtil::getBizDateOffSet(_tradeDate,_market.getBusinessDaysAfterSpotSwap(),_market.getCurrencyEnum());
-	}
+void Libor::deriveDates(){
+	_fixingDate = dateUtil::getBizDateOffSet(_startDate,-_market.getBusinessDaysAfterSpotCash(),_market.getCurrencyEnum());
+	_expiryDate = dateUtil::getEndDate(_startDate,_tenorInMonth, _market.getAccrualAdjustCashConvention(),_market.getCurrencyEnum(), dateUtil::MONTH);
+	_deliveryDate = dateUtil::dayRollAdjust(_expiryDate,_market.getDayRollCashConvention(), _market.getCurrencyEnum());
 }
