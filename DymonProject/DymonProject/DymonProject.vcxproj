@@ -83,6 +83,8 @@
     <None Include="CcyPair.csv" />
     <None Include="DepositRate.csv" />
     <None Include="DepositRate_test.csv" />
+    <None Include="EuroDollarFuture.csv" />
+    <None Include="EuroDollarFuture_test.csv" />
     <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
     <None Include="holiday.txt" />
@@ -127,6 +129,8 @@
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Deposit.h" />
     <ClInclude Include="DepositPricer.h" />
+    <ClInclude Include="EuroDollarFutureBootStrapper.h" />
+    <ClInclude Include="EuroDollarFutureFileSource.h" />
     <ClInclude Include="ForwardCurveBuilder.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
@@ -140,6 +144,7 @@
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
     <ClInclude Include="FXSkewSurfaceBuilder.h" />
+    <ClInclude Include="EuroDollarFuture.h" />
     <ClInclude Include="Libor.h" />
     <ClInclude Include="LiborFileSource.h" />
     <ClInclude Include="Market.h" />
@@ -214,6 +219,9 @@
     <ClCompile Include="ConfigurationFileSource.cpp" />
     <ClCompile Include="Deposit.cpp" />
     <ClCompile Include="DepositPricer.cpp" />
+    <ClCompile Include="EuroDollarFuture.cpp" />
+    <ClCompile Include="EuroDollarFutureBootStrapper.cpp" />
+    <ClCompile Include="EuroDollarFutureFileSource.cpp" />
     <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />

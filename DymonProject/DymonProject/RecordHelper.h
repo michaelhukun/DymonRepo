@@ -14,6 +14,7 @@
 #include "BondFuture.h"
 #include "FXForward.h"
 #include "FXEuropeanOption.h"
+#include "EuroDollarFuture.h"
 #include "Swap.h"
 #include "Deposit.h"
 #include "Libor.h"
@@ -36,6 +37,7 @@ namespace Session {
 		typedef std::map<enums::CurrencyEnum, std::set<long>> HolidayMap;	
 		typedef std::map<enums::CurrencyEnum, std::map<long, Deposit>> DepositRateMap;	
 		typedef std::map<enums::CurrencyEnum, std::map<long, Swap>> SwapRateMap;		
+		typedef std::map<enums::CurrencyEnum, std::map<long, EuroDollarFuture>> EuroDollarFutureMap;		
 		typedef std::map<enums::CurrencyEnum, std::map<long, Bond>> BondRateMap;		
 		typedef std::map<enums::CurrencyEnum, std::map<long, BondFuture>> BondFutureMap;
 		typedef std::map<enums::CurrencyEnum, Market> MarketMap;
@@ -52,6 +54,7 @@ namespace Session {
 		HolidayMap getHolidayMap(){return _holidayMap;}
 		DepositRateMap* getDepositRateMap(){return &_depositRateMap;}
 		DepositRateMap* getLiborRateMap(){return &_liborRateMap;}
+		EuroDollarFutureMap* getEuroDollarFutureMap(){return &_euroDollarFutureMap;}
 		BondRateMap* getBondRateMap(){return &_bondRateMap;}
 		BondFutureMap* getBondFutureMap(){return &_bondFutureMap;}
 		SwapRateMap* getSwapRateMap(){return &_swapRateMap;}
@@ -66,6 +69,7 @@ namespace Session {
 		void setHolidayMap(HolidayMap map){_holidayMap=map;}
 		void setDepositRateMap(DepositRateMap map){_depositRateMap=map;}
 		void setLiborRateMap(DepositRateMap map){_liborRateMap=map;}
+		void setEuroDollarFutureMap(EuroDollarFutureMap map){_euroDollarFutureMap=map;}
 		void setBondRateMap(BondRateMap map){_bondRateMap=map;}
 		void setBondFutureMap(BondFutureMap map){_bondFutureMap=map;}
 		void setSwapRateMap(SwapRateMap map){_swapRateMap=map;}
@@ -92,6 +96,7 @@ namespace Session {
 		DepositRateMap _depositRateMap;
 		DepositRateMap _liborRateMap;
 		SwapRateMap _swapRateMap;
+		EuroDollarFutureMap _euroDollarFutureMap;
 		BondRateMap _bondRateMap;
 		BondFutureMap _bondFutureMap;				
 		MarketMap _MarketMap;

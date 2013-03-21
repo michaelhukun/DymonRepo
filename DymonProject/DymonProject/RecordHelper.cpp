@@ -14,6 +14,7 @@
 #include "FXSkewFileSource.h"
 #include "FXForwardFileSource.h"
 #include "LiborFileSource.h"
+#include "EuroDollarFutureFileSource.h"
 #include <vector>
 
 using namespace Session;
@@ -36,6 +37,7 @@ void RecordHelper::init(Configuration* cfg){
 	dataSourceVector.push_back(new SwapRateFileSource());
 	dataSourceVector.push_back(new DepositFileSource());
 	dataSourceVector.push_back(new LiborFileSource());
+	dataSourceVector.push_back(new EuroDollarFutureFileSource());
 	dataSourceVector.push_back(new SwaptionVolFileSource());
 	dataSourceVector.push_back(new BondPriceFileSource());
 	dataSourceVector.push_back(new BondFutureFileSource());

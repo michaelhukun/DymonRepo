@@ -11,6 +11,7 @@
 #include "RecordHelper.h"
 #include "DepositRateBootStrapper.h"
 #include "OvernightRateBootStrapper.h"
+#include "EuroDollarFutureBootStrapper.h"
 #include "SwapRateBootStrapper.h"
 #include "AbstractBootStrapper.h"
 #include "Constants.h"
@@ -39,6 +40,7 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 
 	loadRateMaps();
 	buildDepositSection(yc);
+	buildEuroDollarFutureSection(yc);
 	buildSwapSection(yc);
 	return yc;
 }
@@ -50,6 +52,7 @@ void SwapCurveBuilder::loadRateMaps(){
 		_shortEndMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
 	}
 	_longEndMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
+	_midEndMap = RecordHelper::getInstance()->getEuroDollarFutureMap()->at(_market.getCurrencyEnum());
 }
 
 void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){			
@@ -78,6 +81,23 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 
 		if (_spotDateDF == NaN && _spotDate<= std::get<0>(lineSection->getEndPoint())) 
 			_spotDateDF = yc->getValue(_spotDate);
+	}
+}
+
+void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
+	return;
+
+	for (auto it=_midEndMap.begin(); it != _midEndMap.end(); it++ ){
+
+		date accrualEndDate=it->first;	
+		EuroDollarFuture* future=&(it->second);		
+		date paymentDate = future->getMaxFutureAndResetDeliveryDate();
+		EuroDollarFutureBootStrapper futureBS(_curvePointer, paymentDate, future, yc, _interpolAlgo,_numericalAlgo);
+		futureBS.setSpotDate(_spotDate);
+		futureBS.init(Configuration::getInstance());
+		AbstractInterpolator<date>* lineSection = futureBS.bootStrap();
+		yc->insertLineSection(lineSection);
+		_curvePointer=lineSection->getEndPoint();
 	}
 }
 

@@ -24,6 +24,7 @@ namespace utilities{
 		void init(Configuration* cfg);
 		DiscountCurve* build(Configuration* cfg);
 		void buildDepositSection(DiscountCurve* yc);
+		void buildEuroDollarFutureSection(DiscountCurve* yc);
 		void buildSwapSection(DiscountCurve* yc);
 		void loadRateMaps();
 
@@ -56,6 +57,7 @@ namespace utilities{
 		bool _shortEndUseLibor;
 		RateType _interpolRateType;
 		std::map<long, Deposit> _shortEndMap;
+		std::map<long, EuroDollarFuture> _midEndMap;
 		std::map<long, Swap> _longEndMap;
 	};
 }

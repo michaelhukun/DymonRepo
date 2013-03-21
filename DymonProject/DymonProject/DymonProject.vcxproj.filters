@@ -79,6 +79,10 @@
     <None Include="BondRate_test.csv">
       <Filter>TestData</Filter>
     </None>
+    <None Include="EuroDollarFuture.csv" />
+    <None Include="EuroDollarFuture_test.csv">
+      <Filter>TestData</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -372,6 +376,15 @@
     <ClInclude Include="RateConverter.h">
       <Filter>Header Files\dymon.util</Filter>
     </ClInclude>
+    <ClInclude Include="EuroDollarFutureFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroDollarFuture.h">
+      <Filter>Header Files\dymon.instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroDollarFutureBootStrapper.h">
+      <Filter>Header Files\dymon.bootstrapper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -591,6 +604,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RateConverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFutureFileSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFuture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFutureBootStrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
