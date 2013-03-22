@@ -2,9 +2,12 @@
 #ifndef DiscountCurve_H
 #define DiscountCurve_H
 #include "AbstractCurve.h"
+#include "AbstractInstrument.h"
 #include <vector>
 #include "Enums.h"
 #include "date.h"
+
+using namespace instruments;
 
 namespace utilities{
 	class DiscountCurve: public AbstractCurve<date>{
@@ -36,6 +39,20 @@ namespace utilities{
 		double getDFChangingZeroRate(date aDate, double zeroRateDiff, enums::DayCountEnum dayCount);
 
 		double getFLiborRate(date forwardStartDate,date forwardEndDate,enums::DayCountEnum dayCount);
+
+		void insertComponent(AbstractInstrument* instrument){ _components.push_back(instrument); }
+
+		void dumpComponentNames();
+
+		//getters and setters
+
+		vector<AbstractInstrument*>* getComponents() {return &_components; }
+
+		void setComponents(vector<AbstractInstrument*> components) { _components = components; }
+
+	private:
+
+		vector<AbstractInstrument*> _components;
 	};
 }
 #endif

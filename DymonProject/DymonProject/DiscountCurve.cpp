@@ -67,3 +67,11 @@ double DiscountCurve::getFLiborRate(date forwardStartDate,date forwardEndDate,en
 	double cal=getDiscountFactor(forwardStartDate)/getDiscountFactor(forwardEndDate);
 	return (cal-1)/dateUtil::getAccrualFactor(forwardStartDate,forwardEndDate,dayCount);
 }
+
+void DiscountCurve::dumpComponentNames(){
+		cout << _name + " - Components: \n";
+		for (int i = 0; i<_components.size(); i++){
+			cout << _components.at(i)->getName() << "; \n";
+		}
+		cout<<endl;
+}

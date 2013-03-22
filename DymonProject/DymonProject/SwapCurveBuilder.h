@@ -27,6 +27,7 @@ namespace utilities{
 		void buildEuroDollarFutureSection(DiscountCurve* yc);
 		void buildSwapSection(DiscountCurve* yc);
 		void loadRateMaps();
+		bool isFutureEligible(EuroDollarFuture* future, DiscountCurve* yc);
 
 		// Getters and Setters
 		Market getMarket(){return _market;}
@@ -50,11 +51,14 @@ namespace utilities{
 		int _timeLineBuildDirection;
 		bool _rollAccuralDates;
 		int _bizDaysAfterSpot;
+		int _numberFuture;
+		int _futureDaysBeforeExpiry;
 		double _spotDateDF;
 		date _spotDate;
 		point _curvePointer;
 		date _curveStartDate;
 		bool _shortEndUseLibor;
+		enums::DayCountEnum _swapCurveDayCount;
 		RateType _interpolRateType;
 		std::map<long, Deposit> _shortEndMap;
 		std::map<long, EuroDollarFuture> _midEndMap;

@@ -28,6 +28,9 @@ void SwapCurveBuilder::init(Configuration* cfg){
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve.interpol",false,"LINEAR"));
 	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("SwapDiscountCurve.numerical",false,"BISECTION"));
 	_interpolRateType = EnumHelper::getRateType(cfg->getProperty("SwapDiscountCurve.interpol.rate",true,"ZERO"));
+	_swapCurveDayCount = EnumHelper::getDayCountEnum(cfg->getProperty("SwapDiscountCurve.daycount",false,"ACT/365"));
+	_numberFuture = std::stoi(cfg->getProperty("SwapDiscountCurve.numberFutureUsed",false,"4"));
+	_futureDaysBeforeExpiry = std::stoi(cfg->getProperty("SwapDiscountCurve.futureDaysBeforeExpiry",false,"14"));
 	_spotDateDF = NaN;
 }
 
@@ -35,13 +38,14 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
 	DiscountCurve* yc = new DiscountCurve();
 	yc->setName(_market.getNameString()+" Swap Curve");
-	yc->setDayCount(ACT_365);
+	yc->setDayCount(_swapCurveDayCount);
 	yc->setInterpolRateType(_interpolRateType);
 
 	loadRateMaps();
 	buildDepositSection(yc);
 	buildEuroDollarFutureSection(yc);
 	buildSwapSection(yc);
+	yc->dumpComponentNames();
 	return yc;
 }
 
@@ -77,6 +81,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		bs->init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = bs->bootStrap();
 		yc->insertLineSection(lineSection);
+		yc->insertComponent(deposit);
 		_curvePointer = lineSection->getEndPoint();
 
 		if (_spotDateDF == NaN && _spotDate<= std::get<0>(lineSection->getEndPoint())) 
@@ -85,19 +90,24 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
-	return;
+
+	int numberFutureUsed = 0;
 
 	for (auto it=_midEndMap.begin(); it != _midEndMap.end(); it++ ){
-
 		date accrualEndDate=it->first;	
 		EuroDollarFuture* future=&(it->second);		
+		if (!isFutureEligible(future, yc) || numberFutureUsed>=_numberFuture)
+			return;
+
 		date paymentDate = future->getMaxFutureAndResetDeliveryDate();
 		EuroDollarFutureBootStrapper futureBS(_curvePointer, paymentDate, future, yc, _interpolAlgo,_numericalAlgo);
 		futureBS.setSpotDate(_spotDate);
 		futureBS.init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = futureBS.bootStrap();
 		yc->insertLineSection(lineSection);
+		yc->insertComponent(future);
 		_curvePointer=lineSection->getEndPoint();
+		numberFutureUsed++;
 	}
 }
 
@@ -115,6 +125,14 @@ void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 		swapBS.init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = swapBS.bootStrap();
 		yc->insertLineSection(lineSection);
+		yc->insertComponent(swap);
 		_curvePointer=lineSection->getEndPoint();
 	}
+}
+
+bool SwapCurveBuilder::isFutureEligible(EuroDollarFuture* future, DiscountCurve* yc){
+	date curveStartDate = std::get<0>(yc->getCurveStartPoint());
+	if (future->getExpiryDate()-curveStartDate>_futureDaysBeforeExpiry)
+		return true;
+	return false;
 }
