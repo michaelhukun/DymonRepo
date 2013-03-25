@@ -79,6 +79,7 @@
     <None Include="EuroDollarFuture_test.csv">
       <Filter>TestData</Filter>
     </None>
+    <None Include="Holiday.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
