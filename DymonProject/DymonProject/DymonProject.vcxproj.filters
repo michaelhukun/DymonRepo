@@ -50,7 +50,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="holiday.txt" />
     <None Include="instance.properties" />
     <None Include="swaption_skew_USD.csv" />
     <None Include="MarketConvention.csv" />
@@ -80,6 +79,9 @@
       <Filter>TestData</Filter>
     </None>
     <None Include="Holiday.csv" />
+    <None Include="Holiday_test.csv">
+      <Filter>TestData</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -612,10 +614,5 @@
     <ClCompile Include="EuroDollarFutureBootStrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="holiday_test.txt">
-      <Filter>TestData</Filter>
-    </Text>
   </ItemGroup>
 </Project>

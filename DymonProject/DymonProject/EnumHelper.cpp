@@ -10,13 +10,19 @@ enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
 		return EUR;
 	else if (ccyName == "USD" || ccyName == "US")
 		return USD;
+	else if (ccyName == "GB")
+		return GBP;
 	else if (ccyName == "THB")
 		return THB;
 	else if (ccyName == "KRW")
 		return KRW;
-	else if (ccyName == "SGD")
+	else if (ccyName == "HK")
+		return HKD;
+	else if (ccyName == "CH")
+		return CNY;
+	else if (ccyName == "SGD" || ccyName == "SI")
 		return SGD;
-	else if (ccyName == "JPY")
+	else if (ccyName == "JPY" || ccyName == "JN")
 		return JPY;
 	throw "Market name not foud: "+ccyName;
 }

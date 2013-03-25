@@ -25,30 +25,19 @@ void HolidayFileSource::init(Configuration* cfg){
 void HolidayFileSource::retrieveRecord(){
 	if (!_enabled) return;
 
-	std::ifstream file;
-	file.open(_persistDir+_fileName);
-	string value;
-	enums::CurrencyEnum market;
-	RecordHelper::HolidayMap tempMap;
+	CSVDatabase db = readCSV(_persistDir+_fileName);
+	int numOfRows=db.size();
+	int numOfCols=db.at(0).size();
 
-	while (file.good()){
-		file>>value;
-		vector<string> vec = fileUtil::split(value,':');
-		market = EnumHelper::getCcyEnum(vec[0]);
-		vector<string> holidays = fileUtil::split(vec[1],',');
-		//cout<<market<<" market has total holiday number:  "<<holidays.size()<<endl;
-		set<long> JDNSet = buildJDNSet(holidays);
-		tempMap.insert(pair<enums::CurrencyEnum,set<long>>(market,JDNSet));
+	for (int i=0;i<numOfCols;i++) {
+		set<long> JDNSet;
+		enums::CurrencyEnum market= EnumHelper::getCcyEnum(db.at(0).at(i));
+		for(int j=1; j<numOfRows; j++){
+			std::string dateStr =  db.at(j).at(i);
+			if (dateStr=="") continue;
+			long JDN = date(dateStr, false).getJudianDayNumber();
+			JDNSet.insert(JDN);
+		}
+		RecordHelper::getInstance()->getHolidayMap()->insert(pair<enums::CurrencyEnum,set<long>>(market,JDNSet));
 	}
-	RecordHelper::getInstance()->setHolidayMap(tempMap);
-	file.close();
-}
-
-set<long> HolidayFileSource::buildJDNSet(vector<string> vec0){
-	set<long> JDNSet;
-	for(unsigned int i=0; i<vec0.size(); i++) {
-		long JDN = dateUtil::getJudianDayNumber(stoi(vec0[i].substr(0,4)),stoi(vec0[i].substr(4,2)),stoi(vec0[i].substr(6,2)));
-		JDNSet.insert(JDN);
-	}
-	return JDNSet;
 }

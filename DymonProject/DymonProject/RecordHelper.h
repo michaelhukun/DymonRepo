@@ -51,7 +51,7 @@ namespace Session {
 		typedef std::map<string, CcyPair> CcyPairMap;
 		
 		// Getters
-		HolidayMap getHolidayMap(){return _holidayMap;}
+		HolidayMap* getHolidayMap(){return &_holidayMap;}
 		DepositRateMap* getDepositRateMap(){return &_depositRateMap;}
 		DepositRateMap* getLiborRateMap(){return &_liborRateMap;}
 		EuroDollarFutureMap* getEuroDollarFutureMap(){return &_euroDollarFutureMap;}

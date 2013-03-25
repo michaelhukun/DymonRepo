@@ -5,7 +5,7 @@
 
 namespace enums {
 
-	enum CurrencyEnum{EUR,USD,THB,KRW,SGD,JPY};
+	enum CurrencyEnum{EUR,USD,THB,KRW,SGD,JPY,GBP,CNY,HKD};
 	enum DayRollEnum {DayRollNull,Following,Preceding,Mfollowing,Mfollowingbi,EOM};
 	enum DayCountEnum {DayCountNull, thirty_360US, thirthE_360,ACT_360,ACT_365,ACT_ACT,BUS_252};
 	enum RateType {RateTypeNull, DF, SPOT, FWD, ZERO};

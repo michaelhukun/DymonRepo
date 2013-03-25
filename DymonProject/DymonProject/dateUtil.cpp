@@ -63,13 +63,13 @@ bool dateUtil::isBizDay(long JDN){
 }
 
 bool dateUtil::isHoliday(long JDN, enums::CurrencyEnum market){
-	RecordHelper::HolidayMap holidayMap= RecordHelper::getInstance()->getHolidayMap();
-	if (holidayMap.find(market)== holidayMap.end()){
+	auto holidayMap= RecordHelper::getInstance()->getHolidayMap();
+	if (holidayMap->find(market)== holidayMap->end()){
 		cout<< "Market not found in Holiday Map: "+market<<endl;
 		return false;
 	}
 
-	set<long> holidaySet = holidayMap[market];
+	set<long> holidaySet = holidayMap->at(market);
 	if (holidaySet.find(JDN) != holidaySet.end())
 		return true;
 	return false;
