@@ -21,21 +21,33 @@ void BondPricer::init(Configuration* cfg){
 }
 
 double BondPricer::getMPV(DiscountCurve* discountCurve){
-	double MPV = 0;
-	vector<cashflow> couponLegVec = _bond->getCouponLeg()->getCashFlowVector();
-	for (unsigned int i=_bond->getNextCouponIndex(); i<couponLegVec.size();i++){
-		cashflow coupon = couponLegVec[i];
-		date paymentDate = coupon.getPaymentDate();
-		double dcf = discountCurve->getDiscountFactor(paymentDate);
-		double couponAmount = coupon.getCouponRate()*coupon.getNotional();
-		double cashFlowAmt = couponAmount +((i==(couponLegVec.size()-1))?coupon.getNotional():0);
-		MPV = MPV +	cashFlowAmt*dcf;
-	}
-	return MPV;
+	return 0;
 }
 
 double BondPricer::getMPV(){
-   return 0;
+	double MPV = 0;
+	if (_bond->getIsBill()){
+		cashflow* cashFlowAtMaturity = _bond->getCouponLeg()->getCashFlow(0);
+		date accrualStart = _bond->getSpotDate();
+		date accrualEnd = cashFlowAtMaturity->getAccuralEndDate();
+		date refStart = cashFlowAtMaturity->getAccuralStartDate();
+		date refEnd = accrualEnd;
+		//As this is a T-Bill it is quoted in terms of the discount rate.
+		//The actual price of a T Bill is calculated as 100-(days to maturity/360)*Discount rate
+		double accrualFactor = dateUtil::getAccrualFactor(accrualStart, accrualEnd, refStart, refEnd, _bond->getDayCount());
+		return 1-accrualFactor*_bond->getCleanPrice()/100;
+	}else{
+		vector<cashflow> couponLegVec = _bond->getCouponLeg()->getCashFlowVector();
+		for (unsigned int i=_bond->getNextCouponIndex(); i<couponLegVec.size();i++){
+			cashflow coupon = couponLegVec[i];
+			date paymentDate = coupon.getPaymentDate();
+			double dcf = _discountCurve->getDiscountFactor(paymentDate);
+			double couponAmount = _bond->getCouponRate()*coupon.getNotional();
+			double cashFlowAmt = couponAmount +((i==(couponLegVec.size()-1))?coupon.getNotional():0);
+			MPV = MPV +	cashFlowAmt*dcf;
+		}
+	}
+	return MPV;
 }
 
 double BondPricer::getYieldByDirtyPrice(double dirtyPrice){

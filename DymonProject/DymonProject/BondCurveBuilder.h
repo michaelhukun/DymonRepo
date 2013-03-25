@@ -45,6 +45,8 @@ namespace utilities{
 		bool _rollAccuralDates;
 		point _curvePointer;
 		date _curveStartDate;
+		enums::DayCountEnum _bondCurveDayCount;
+		RateType _interpolRateType;
 	};
 }
 #endif

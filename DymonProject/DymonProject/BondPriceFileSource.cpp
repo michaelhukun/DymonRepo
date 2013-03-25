@@ -91,7 +91,7 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		int tenorInYear = (int)(std::stod(fieldVal)+0.01);
 		bond->setTenor(tenorInYear);
 	}else if (fieldName=="CPN"){
-		double couponRate = NaN;
+		double couponRate = 0;
 		if (fieldVal.find("#N/A")==std::string::npos) couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
 		bond->setCouponRate(couponRate);
 	}else if (fieldName=="CPN_FREQ"){

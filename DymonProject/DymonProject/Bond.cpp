@@ -50,7 +50,7 @@ date Bond::findNextCouponDate(){
 }
 
 void Bond::deriveDirtyPrice(){
-   if (_couponRate==NaN ){
+	if (getCouponRate()==0 ){
 		_dirtyPrice = NaN;
 	}else{
 		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";

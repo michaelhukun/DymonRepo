@@ -11,14 +11,16 @@
 #include "dateUtil.h"
 #include "RecordHelper.h"
 #include "Constants.h"
+#include "BondPricer.h"
 
 using namespace utilities;
 
 AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
 	double discountFactor;
-   if (_bond.getCouponRate()==NaN){
-		discountFactor = getTreasuryBillDiscountFactor();
+	if (_bond->getIsBill()){
+		BondPricer pricer(_bond);
+		discountFactor = pricer.getMPV();
 	}else {
 		AbstractNumerical<BondRateBootStrapper>* an = NumericalFactory<BondRateBootStrapper>::getInstance()->getNumerical(this,&BondRateBootStrapper::numericalFunc,_numericAlgo);
 		double previousVal = std::get<1>(_startPoint);
@@ -26,43 +28,19 @@ AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 		double upperBound = previousVal*(1+_plusMinus/100.0);
 		discountFactor = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
 	}
+	date curveStartDate = std::get<0>(_bond->getIsBill()?_startPoint:_curve->getCurveStartPoint());
 	ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
+	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), curveStartDate);
 	return ai;
 }
 
 double BondRateBootStrapper::numericalFunc(double x){	
-	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
-
-	vector<cashflow> couponLeg = _bond.getCouponLeg()->getCashFlowVector();
-	double derivedBondPrice = 0;
-
-	for( unsigned int i=0; i<couponLeg.size(); i++){
-		cashflow ithCashFlow = couponLeg[i];
-		date paymentDate = ithCashFlow.getPaymentDate();
-		date lastDateOnExistingCurve = std::get<0>(_startPoint);
-		double ithDF = 0;
-		if (paymentDate<=lastDateOnExistingCurve){
-			ithDF = _curve->getDiscountFactor(paymentDate);
-		}else {
-			ithDF = std::get<1>(ai->interpolate(paymentDate));
-		}
-		double ithCouponAmt = ithDF*_couponRate*ithCashFlow.getNotional();
-		double ithCashFlowAmt = ithCouponAmt + ithDF*(i==(couponLeg.size()-1)?ithCashFlow.getNotional():0);
-		derivedBondPrice = derivedBondPrice + ithCashFlowAmt;
-	}
-	double priceDiff = derivedBondPrice - _bond.getDirtyPrice();
-
-	return priceDiff;
-}
-
-double BondRateBootStrapper::getTreasuryBillDiscountFactor(){
-	cashflow* cashFlowAtMaturity = _bond.getCouponLeg()->getCashFlow(0);
-	date accrualStart = _bond.getSpotDate();
-	date accrualEnd = cashFlowAtMaturity->getAccuralEndDate();
-	date refStart = cashFlowAtMaturity->getAccuralStartDate();
-	date refEnd = accrualEnd;
-   //As this is a T-Bill it is quoted in terms of the discount rate.
-   //The actual price of a T Bill is calculated as 100-(days to maturity/360)*Discount rate
-	double accrualFactor = dateUtil::getAccrualFactor(accrualStart, accrualEnd, refStart, refEnd, _dayCount);
-	return exp(-accrualFactor*_bond.getCleanPrice()/100);
+	_interpolant = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
+	_interpolant->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
+	_curve->insertLineSection(_interpolant);
+	BondPricer pricer(_bond);
+	pricer.setDiscountCurve(_curve);
+	double derivedBondPrice = pricer.getMPV();
+	_curve->removeSection(_curve->getSize()-1);
+	return derivedBondPrice - _bond->getDirtyPrice();
 }

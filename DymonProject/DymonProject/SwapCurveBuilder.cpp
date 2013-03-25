@@ -90,7 +90,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
-
+	return;
 	int numberFutureUsed = 0;
 
 	for (auto it=_midEndMap.begin(); it != _midEndMap.end(); it++ ){
@@ -117,8 +117,6 @@ void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 		date accrualEndDate=it->first;	
 		Swap* swap=&(it->second);		
 		date paymentDate = swap->getMaxSwapAndResetDeliveryDate();
-
-		//cout << "Swap rate at fixing date ["<<fixingDate.toString()<<"], accrual end date ["<<accrualEndDate.toString()<<"], payment day ["<<paymentDate.toString()<<"], rate ["<< swapRate<<"]"<< endl;
 
 		SwapRateBootStrapper swapBS(_curvePointer, paymentDate, swap, yc, _interpolAlgo,_numericalAlgo);
 		swapBS.setSpotDate(_spotDate);

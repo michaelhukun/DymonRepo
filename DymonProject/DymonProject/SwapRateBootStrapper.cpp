@@ -21,10 +21,6 @@ void SwapRateBootStrapper::init(Configuration* cfg){
 }
 
 AbstractInterpolator<date>* SwapRateBootStrapper::bootStrap(){
-
-	//_cashflowStartIndex = findCashFlowIndex(std::get<0>(_startPoint));
-	//_cashflowEndIndex = findCashFlowIndex(_endDate);
-
 	AbstractNumerical<SwapRateBootStrapper>* an = NumericalFactory<SwapRateBootStrapper>::getInstance()->getNumerical(this,&SwapRateBootStrapper::numericalFunc,_numericAlgo);
 	double previousVal = std::get<1>(_startPoint);
 	double lowerBound = abs(previousVal*(1-_plusMinus/100.0));
@@ -37,9 +33,6 @@ AbstractInterpolator<date>* SwapRateBootStrapper::bootStrap(){
 }
 
 double SwapRateBootStrapper::numericalFunc(double x){
-
-	/*double numerator = _curve->getValue(_spotDate) - x;
-	double denominator = 0;*/
 	_interpolant = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
 	_interpolant->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
 	_curve->insertLineSection(_interpolant);
@@ -48,23 +41,6 @@ double SwapRateBootStrapper::numericalFunc(double x){
 	double derivedSwapRate = pricer.deriveSwapRate();
 	_curve->removeSection(_curve->getSize()-1);
 	return derivedSwapRate - _swap->getSwapRate();
-
-
-	/*for( int i=0; i<=_cashflowStartIndex; i++){
-		cashflow cf = _cashflowVector[i];
-		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
-		double ithDF = _curve->getDiscountFactor(cf.getPaymentDate());
-		denominator = denominator + ithAccuralFactor*ithDF;
-	}
-
-	for( int i=_cashflowStartIndex+1; i<=_cashflowEndIndex; i++){
-		cashflow cf = _cashflowVector[i]; 
-		double ithAccuralFactor=dateUtil::getAccrualFactor(cf.getAccuralStartDate(),cf.getAccuralEndDate(),cf.getDayCount());
-		double ithDF = std::get<1>(_interpolant->interpolate(cf.getPaymentDate()));
-		denominator = denominator + ithAccuralFactor*ithDF;
-	}
-
-	return numerator - _swap->getSwapRate()*denominator;*/
 }
 
 int SwapRateBootStrapper::findCashFlowIndex(date date0){

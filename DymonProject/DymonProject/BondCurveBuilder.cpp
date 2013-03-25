@@ -19,21 +19,26 @@ void BondCurveBuilder::init(Configuration* cfg){
 	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve.interpol",false,"LINEAR"));
 	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve.numerical",false,"BISECTION"));
+	_interpolRateType = EnumHelper::getRateType(cfg->getProperty("BondDiscountCurve.interpol.rate",true,"ZERO"));
+	_bondCurveDayCount = EnumHelper::getDayCountEnum(cfg->getProperty("BondDiscountCurve.daycount",false,"ACT/365"));
+
 }
 
 DiscountCurve* BondCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
-	DiscountCurve* bc = new DiscountCurve();
-	buildSection(bc);
-	return bc;
+	DiscountCurve* dc = new DiscountCurve();
+	dc->setName(_market.getNameString()+" Bond Curve");
+	dc->setDayCount(_bondCurveDayCount);
+	dc->setInterpolRateType(_interpolRateType);
+	buildSection(dc);
+	return dc;
 }
 
 
-void BondCurveBuilder::buildSection(DiscountCurve* dc){
-	point lineStartPoint(_curveStartDate,1);
-	_curvePointer = lineStartPoint;
-	map<long,Bond> rateMap = RecordHelper::getInstance()->getBondRateMap()->at(_market.getCurrencyEnum());
-	for (map<long,Bond>::iterator it=rateMap.begin(); it != rateMap.end(); it++ ){
+void BondCurveBuilder::buildSection(DiscountCurve* dc){	
+	_curvePointer = point(_curveStartDate,1);
+	auto rateMap = RecordHelper::getInstance()->getBondRateMap()->at(_market.getCurrencyEnum());
+	for (auto it=rateMap.begin(); it != rateMap.end(); it++ ){
 		Bond bond = (*it).second;
 		int numOfNights = (int) (*it).first;
 		if (bond.getIsGeneric()==false) 
@@ -41,7 +46,7 @@ void BondCurveBuilder::buildSection(DiscountCurve* dc){
 
 		vector<cashflow> couponLeg = bond.getCouponLeg()->getCashFlowVector();
 		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();
-		BondRateBootStrapper bondBS(_curvePointer, lastPaymentDate, bond, dc, _interpolAlgo, _numericalAlgo, _market);
+		BondRateBootStrapper bondBS(_curvePointer, lastPaymentDate, &bond, dc, _interpolAlgo, _numericalAlgo, _market);
 		bondBS.init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = bondBS.bootStrap();
 		dc->insertLineSection(lineSection);

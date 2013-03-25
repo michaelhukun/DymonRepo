@@ -40,6 +40,7 @@ namespace instruments {
 		double getQuotedGSpread(){ return _quotedGSpread; }		
 		double getFractionFirstCouponAccrued(){ return _fractionFirstCouponAccrued; }
 		bool getIsGeneric(){ return _isGeneric; }
+		bool getIsBill(){ return _couponRate==0?true:false; }
 
 		// Setters
 		void setCouponLeg(cashflowLeg couponLeg){ _couponLeg = couponLeg; }
@@ -80,6 +81,7 @@ namespace instruments {
 		std::string _CUSIP;
 		std::string _securityType;
 		bool _isGeneric;
+		bool _isBill;
 		double _couponRate;
 		int _couponFreq;
 		int _tenorInYear;
