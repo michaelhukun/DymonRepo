@@ -72,9 +72,9 @@ void EuroDollarFutureFileSource::updateFutureObjectField(std::string fieldName, 
 		euroDollarFuture->setName(fieldVal);
 		euroDollarFuture->setTenor(3);
 	}else if (fieldName=="PX_MID"){
-		euroDollarFuture->setQuotedPrice(stod(fieldVal));
-		euroDollarFuture->setRate(1 - stod(fieldVal)/100);
-	}else if (fieldName=="DAY_CNT_DES"){
+		euroDollarFuture->setRate(stod(fieldVal));
+		euroDollarFuture->setForwardLiborRate(1 - stod(fieldVal)/100);
+	}else if (fieldName=="INT_RT_DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		euroDollarFuture->setDayCount(dayCount);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
@@ -95,5 +95,7 @@ void EuroDollarFutureFileSource::updateFutureObjectField(std::string fieldName, 
 	}else if (fieldName=="INT_RATE_FUT_END_DT"){
 		date expiryDate(fieldVal,false);
 		euroDollarFuture->setExpiryDate(expiryDate);
+	}else if (fieldName=="CONV_ADJ"){
+		euroDollarFuture->setConvAdj(stod(fieldVal)/100);
 	}
 }

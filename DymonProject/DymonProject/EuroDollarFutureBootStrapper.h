@@ -35,6 +35,7 @@ namespace utilities {
 		
 		DiscountCurve* _curve;
 		EuroDollarFuture* _future;
+		AbstractInterpolator<date>* _interpolant;
 	};
 }
 #endif

@@ -24,8 +24,12 @@ namespace instruments {
 
 		// Getters
 		AbstractInstrument* getReset(){ return &_reset; }
+		double getConvAdj(){ return _convAdj; }
+		double getForwardLiborRate(){ return _forwardLiborRate; }
 		
 		void setReset(AbstractInstrument reset){ _reset = reset; }
+		void setConvAdj(double convAdj){ _convAdj = convAdj; }
+		void setForwardLiborRate(double forwardLiborRate){ _forwardLiborRate = forwardLiborRate; }
 
 		// Methods
 
@@ -36,6 +40,8 @@ namespace instruments {
 	private:
 
 		AbstractInstrument _reset;
+		double _forwardLiborRate;
+		double _convAdj;
 	};
 
 }

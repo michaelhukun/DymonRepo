@@ -28,6 +28,7 @@ namespace utilities{
 		void buildSwapSection(DiscountCurve* yc);
 		void loadRateMaps();
 		bool isFutureEligible(EuroDollarFuture* future, DiscountCurve* yc);
+		void removeLineSectionBeforeDate(DiscountCurve* yc, date interestEndDate);
 
 		// Getters and Setters
 		Market getMarket(){return _market;}

@@ -90,7 +90,6 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 }
 
 void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
-	return;
 	int numberFutureUsed = 0;
 
 	for (auto it=_midEndMap.begin(); it != _midEndMap.end(); it++ ){
@@ -99,6 +98,7 @@ void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
 		if (!isFutureEligible(future, yc) || numberFutureUsed>=_numberFuture)
 			return;
 
+		removeLineSectionBeforeDate(yc, accrualEndDate);
 		date paymentDate = future->getMaxFutureAndResetDeliveryDate();
 		EuroDollarFutureBootStrapper futureBS(_curvePointer, paymentDate, future, yc, _interpolAlgo,_numericalAlgo);
 		futureBS.setSpotDate(_spotDate);
@@ -117,6 +117,8 @@ void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 		date accrualEndDate=it->first;	
 		Swap* swap=&(it->second);		
 		date paymentDate = swap->getMaxSwapAndResetDeliveryDate();
+		if (get<0>(_curvePointer)>paymentDate)
+			continue;
 
 		SwapRateBootStrapper swapBS(_curvePointer, paymentDate, swap, yc, _interpolAlgo,_numericalAlgo);
 		swapBS.setSpotDate(_spotDate);
@@ -133,4 +135,17 @@ bool SwapCurveBuilder::isFutureEligible(EuroDollarFuture* future, DiscountCurve*
 	if (future->getExpiryDate()-curveStartDate>_futureDaysBeforeExpiry)
 		return true;
 	return false;
+}
+
+void SwapCurveBuilder::removeLineSectionBeforeDate(DiscountCurve* yc, date interestEndDate){
+	for (int i=yc->getSize()-1; i>=0; i--){
+		AbstractInterpolator<date>* lineSection = yc->getSection(i);
+		date lineEndDate = get<0>(lineSection->getEndPoint());
+		if (lineEndDate>=interestEndDate){
+			yc->removeSection(i);
+		_curvePointer = yc->getCurveEndPoint();
+		}
+		else
+			return;
+	}
 }

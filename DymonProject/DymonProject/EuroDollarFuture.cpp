@@ -16,7 +16,7 @@ void EuroDollarFuture::genereateReset(){
 
 date EuroDollarFuture::getMaxFutureAndResetDeliveryDate(){
 	date lastResetDeliveryDate = _reset.getDeliveryDate();
-	if (_deliveryDate<lastResetDeliveryDate)
+	//if (_deliveryDate<lastResetDeliveryDate)
 		return lastResetDeliveryDate;
-	return _deliveryDate;
+	//return _deliveryDate;
 }

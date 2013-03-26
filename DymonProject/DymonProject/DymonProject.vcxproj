@@ -132,6 +132,7 @@
     <ClInclude Include="DepositPricer.h" />
     <ClInclude Include="EuroDollarFutureBootStrapper.h" />
     <ClInclude Include="EuroDollarFutureFileSource.h" />
+    <ClInclude Include="EuroDollarFuturePricer.h" />
     <ClInclude Include="ForwardCurveBuilder.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
@@ -223,6 +224,7 @@
     <ClCompile Include="EuroDollarFuture.cpp" />
     <ClCompile Include="EuroDollarFutureBootStrapper.cpp" />
     <ClCompile Include="EuroDollarFutureFileSource.cpp" />
+    <ClCompile Include="EuroDollarFuturePricer.cpp" />
     <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
