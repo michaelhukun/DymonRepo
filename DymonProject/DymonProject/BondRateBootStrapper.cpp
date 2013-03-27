@@ -20,7 +20,7 @@ AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 	double discountFactor;
 	if (_bond->getIsBill()){
 		BondPricer pricer(_bond);
-		discountFactor = pricer.getMPV();
+		discountFactor = pricer.getMPV()/_bond->getNotional();
 	}else {
 		AbstractNumerical<BondRateBootStrapper>* an = NumericalFactory<BondRateBootStrapper>::getInstance()->getNumerical(this,&BondRateBootStrapper::numericalFunc,_numericAlgo);
 		double previousVal = std::get<1>(_startPoint);

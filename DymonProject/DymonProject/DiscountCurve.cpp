@@ -70,8 +70,8 @@ double DiscountCurve::getFLiborRate(date forwardStartDate,date forwardEndDate,en
 
 void DiscountCurve::dumpComponentNames(){
 		cout << _name + " - Components: \n";
-		for (int i = 0; i<_components.size(); i++){
-			cout << _components.at(i)->getName() << "; \n";
+		for (unsigned int i = 0; i<_components.size(); i++){
+			cout << _components.at(i)->getID() << "; \n";
 		}
 		cout<<endl;
 }

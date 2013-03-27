@@ -36,6 +36,7 @@ namespace instruments {
 		int getNextCouponIndex(){ return _nextCouponIndex; }
 		double getDirtyPrice(){ return _dirtyPrice; }
 		double getCleanPrice(){ return _cleanPrice; }
+		double getQuotedPrice(){ return _quotedPrice; }
 		double getQuotedYTM(){ return _quotedYTM; }
 		double getQuotedGSpread(){ return _quotedGSpread; }		
 		double getFractionFirstCouponAccrued(){ return _fractionFirstCouponAccrued; }
@@ -55,6 +56,7 @@ namespace instruments {
 		void setNextCouponIndex(int nextCouponIndex){ _nextCouponIndex = nextCouponIndex; }
 		void setDirtyPrice(double dirtyPrice){ _dirtyPrice = dirtyPrice;}
 		void setCleanPrice(double cleanPrice){ _cleanPrice = cleanPrice;}
+		void setQuotedPrice(double quotedPrice){ _quotedPrice = quotedPrice; }
 		void setQuotedYTM(double quotedYTM){ _quotedYTM = quotedYTM;}
 		void setQuotedGSpread(double quotedGSpread){ _quotedGSpread = quotedGSpread;}
 		void setFractionFirstCouponAccrued(double fractionFirstCouponAccrued){ _fractionFirstCouponAccrued = fractionFirstCouponAccrued; }
@@ -88,6 +90,7 @@ namespace instruments {
 		int _nextCouponIndex;
 		double _dirtyPrice;
 		double _cleanPrice;
+		double _quotedPrice;
 		double _quotedYTM;
 		double _quotedGSpread;
 		double _fractionFirstCouponAccrued;

@@ -387,6 +387,9 @@
     <ClInclude Include="EuroDollarFuturePricer.h">
       <Filter>Header Files\dymon.pricer</Filter>
     </ClInclude>
+    <ClInclude Include="TestGenericBond.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -618,6 +621,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="EuroDollarFuturePricer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestGenericBond.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

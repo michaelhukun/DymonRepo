@@ -26,30 +26,32 @@ void BondCurveBuilder::init(Configuration* cfg){
 
 DiscountCurve* BondCurveBuilder::build(Configuration* cfg){
 	if (cfg!=NULL) init(cfg);
+	_bondMap = RecordHelper::getInstance()->getBondRateMap()->at(_market.getCurrencyEnum());
 	DiscountCurve* dc = new DiscountCurve();
 	dc->setName(_market.getNameString()+" Bond Curve");
 	dc->setDayCount(_bondCurveDayCount);
 	dc->setInterpolRateType(_interpolRateType);
 	buildSection(dc);
+	dc->dumpComponentNames();
 	return dc;
 }
 
 
 void BondCurveBuilder::buildSection(DiscountCurve* dc){	
 	_curvePointer = point(_curveStartDate,1);
-	auto rateMap = RecordHelper::getInstance()->getBondRateMap()->at(_market.getCurrencyEnum());
-	for (auto it=rateMap.begin(); it != rateMap.end(); it++ ){
-		Bond bond = (*it).second;
+	for (auto it=_bondMap.begin(); it != _bondMap.end(); it++ ){
+		Bond* bond = &(it->second);
 		int numOfNights = (int) (*it).first;
-		if (bond.getIsGeneric()==false) 
+		if (bond->getIsGeneric()==false) 
 			continue;
 
-		vector<cashflow> couponLeg = bond.getCouponLeg()->getCashFlowVector();
+		vector<cashflow> couponLeg = bond->getCouponLeg()->getCashFlowVector();
 		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();
-		BondRateBootStrapper bondBS(_curvePointer, lastPaymentDate, &bond, dc, _interpolAlgo, _numericalAlgo, _market);
+		BondRateBootStrapper bondBS(_curvePointer, lastPaymentDate, bond, dc, _interpolAlgo, _numericalAlgo, _market);
 		bondBS.init(Configuration::getInstance());
 		AbstractInterpolator<date>* lineSection = bondBS.bootStrap();
 		dc->insertLineSection(lineSection);
+		dc->insertComponent(bond);
 		_curvePointer = lineSection->getEndPoint();
 	}
 }

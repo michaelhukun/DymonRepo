@@ -18,6 +18,7 @@ namespace instruments {
 		std::string getNameString();
 		void display();
 
+
 		enums::CurrencyEnum getCurrencyEnum(){return _marketName;}
 		enums::DayCountEnum getDayCountCashConvention(){return _dayCountCashConvention;}
 		enums::DayCountEnum getDayCountSwapFixed(){return _dayCountSwapFixed;}

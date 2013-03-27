@@ -29,7 +29,7 @@ void SwapCurveBuilder::init(Configuration* cfg){
 	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("SwapDiscountCurve.numerical",false,"BISECTION"));
 	_interpolRateType = EnumHelper::getRateType(cfg->getProperty("SwapDiscountCurve.interpol.rate",true,"ZERO"));
 	_swapCurveDayCount = EnumHelper::getDayCountEnum(cfg->getProperty("SwapDiscountCurve.daycount",false,"ACT/365"));
-	_numberFuture = std::stoi(cfg->getProperty("SwapDiscountCurve.numberFutureUsed",false,"4"));
+	_numberFuture = std::stoi(cfg->getProperty("SwapDiscountCurve.numberFuture",false,"4"));
 	_futureDaysBeforeExpiry = std::stoi(cfg->getProperty("SwapDiscountCurve.futureDaysBeforeExpiry",false,"14"));
 	_spotDateDF = NaN;
 }
@@ -143,7 +143,8 @@ void SwapCurveBuilder::removeLineSectionBeforeDate(DiscountCurve* yc, date inter
 		date lineEndDate = get<0>(lineSection->getEndPoint());
 		if (lineEndDate>=interestEndDate){
 			yc->removeSection(i);
-		_curvePointer = yc->getCurveEndPoint();
+			_curvePointer = yc->getCurveEndPoint();
+			yc->deleteLastComponent();
 		}
 		else
 			return;

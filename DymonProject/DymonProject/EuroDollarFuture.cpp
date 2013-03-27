@@ -1,15 +1,16 @@
 #include "EuroDollarFuture.h"
 #include "Libor.h"
+#include "dateUtil.h"
 
 using namespace instruments;
+using namespace utilities;
 
 void EuroDollarFuture::genereateReset(){
 	Libor* libor = new Libor();
-	libor->setStartDate(_startDate);
-	libor->setSpotDate(_startDate);
 	libor->setTenorInMonth(_tenorInMonths);
-	libor->setMarket(EUR);
+		libor->setMarket(Market(GBP));
 	libor->setDayCount(enums::ACT_360);
+	libor->setFixingDate(dateUtil::getBizDateOffSet(_startDate, -_market.getBusinessDaysAfterSpotCash(),_market.getCurrencyEnum()));
 	libor->deriveDates();
 	setReset(*libor);
 }

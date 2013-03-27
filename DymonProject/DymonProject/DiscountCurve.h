@@ -42,6 +42,16 @@ namespace utilities{
 
 		void insertComponent(AbstractInstrument* instrument){ _components.push_back(instrument); }
 
+		void deleteLastComponent(){	_components.erase(_components.end()-1); }
+
+		bool existComponent(AbstractInstrument* instrument){ 
+			for(unsigned int i = 0; i<_components.size(); i++){
+				if (_components.at(i)->getID() == instrument->getID())
+					return true;
+			}
+			return false;
+		}
+
 		void dumpComponentNames();
 
 		//getters and setters

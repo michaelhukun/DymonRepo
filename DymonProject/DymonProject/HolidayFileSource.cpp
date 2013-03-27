@@ -33,10 +33,13 @@ void HolidayFileSource::retrieveRecord(){
 		set<long> JDNSet;
 		enums::CurrencyEnum market= EnumHelper::getCcyEnum(db.at(0).at(i));
 		for(int j=1; j<numOfRows; j++){
+			try{
 			std::string dateStr =  db.at(j).at(i);
 			if (dateStr=="") continue;
 			long JDN = date(dateStr, false).getJudianDayNumber();
 			JDNSet.insert(JDN);
+			}catch (...){
+			}
 		}
 		RecordHelper::getInstance()->getHolidayMap()->insert(pair<enums::CurrencyEnum,set<long>>(market,JDNSet));
 	}
