@@ -34,10 +34,10 @@ void RecordHelper::init(Configuration* cfg){
 	dataSourceVector.push_back(new ConfigurationFileSource());
 	dataSourceVector.push_back(new MarketFileSource());
 	dataSourceVector.push_back(new HolidayFileSource());
-	dataSourceVector.push_back(new SwapRateFileSource());
 	dataSourceVector.push_back(new DepositFileSource());
 	dataSourceVector.push_back(new LiborFileSource());
 	dataSourceVector.push_back(new EuroDollarFutureFileSource());
+	dataSourceVector.push_back(new SwapRateFileSource());
 	dataSourceVector.push_back(new SwaptionVolFileSource());
 	dataSourceVector.push_back(new BondPriceFileSource());
 	dataSourceVector.push_back(new BondFutureFileSource());

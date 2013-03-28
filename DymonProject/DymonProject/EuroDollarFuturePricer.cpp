@@ -11,7 +11,7 @@ double EuroDollarFuturePricer::getMPV(){
 double EuroDollarFuturePricer::deriveConvAdjFwdLibor(){
 	EuroDollarFuture* euroDollarFuture = static_cast<EuroDollarFuture*>(_future);
 	date interestStartDate = _future->getStartDate();
-	date interestEndDate = euroDollarFuture->getMaxFutureAndResetDeliveryDate();
+	date interestEndDate = euroDollarFuture->getResetDeliveryDate();
 	double interestStartDateDF = _discountCurve->getValue(interestStartDate);
 	double interestEndDateDF = _discountCurve->getValue(interestEndDate);
 	double accrualFactor = dateUtil::getAccrualFactor(interestStartDate, interestEndDate, _future->getDayCount());

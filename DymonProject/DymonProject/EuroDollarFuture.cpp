@@ -8,16 +8,17 @@ using namespace utilities;
 void EuroDollarFuture::genereateReset(){
 	Libor* libor = new Libor();
 	libor->setTenorInMonth(_tenorInMonths);
-		libor->setMarket(Market(GBP));
+	libor->setMarket(Market(GBP));
 	libor->setDayCount(enums::ACT_360);
-	libor->setFixingDate(dateUtil::getBizDateOffSet(_startDate, -_market.getBusinessDaysAfterSpotCash(),_market.getCurrencyEnum()));
+	libor->setFixingDate(_deliveryDate);
+	libor->setStartDate(_startDate);
 	libor->deriveDates();
 	setReset(*libor);
 }
 
-date EuroDollarFuture::getMaxFutureAndResetDeliveryDate(){
+date EuroDollarFuture::getResetDeliveryDate(){
 	date lastResetDeliveryDate = _reset.getDeliveryDate();
 	//if (_deliveryDate<lastResetDeliveryDate)
-		return lastResetDeliveryDate;
+	return lastResetDeliveryDate;
 	//return _deliveryDate;
 }

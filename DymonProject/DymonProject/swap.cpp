@@ -55,10 +55,14 @@ void Swap::insertFloatLegReset(){
 	for (int i=0; i<_floatCashflowLeg.getSize(); i++){
 		cashflow* cf = _floatCashflowLeg.getCashFlow(i);
 		Libor* libor = new Libor();
+		Market market = Market(GBP);
+		date liborFixingDate = dateUtil::getBizDateOffSet(cf->getAccuralStartDate(),-market.getBusinessDaysAfterSpotCash(),market.getCurrencyEnum());
+		date liborStartDate = dateUtil::getBizDateOffSet(liborFixingDate,_market.getBusinessDaysAfterSpotCash(),market.getCurrencyEnum());
 		libor->setTenorInMonth(cf->getTenorInMonth());
-		libor->setMarket(Market(GBP));
+		libor->setMarket(market);
 		libor->setDayCount(enums::ACT_360);
-		libor->setFixingDate(cf->getFixingDate());
+		libor->setFixingDate(liborFixingDate);
+		libor->setStartDate(liborStartDate);
 		libor->deriveDates();
 		cf->setReset(*libor);
 	}

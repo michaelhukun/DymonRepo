@@ -34,7 +34,7 @@ namespace instruments {
 		// Methods
 
 		void genereateReset();
-		date getMaxFutureAndResetDeliveryDate();
+		date getResetDeliveryDate();
 		std::string toString(){return "";}
 
 	private:

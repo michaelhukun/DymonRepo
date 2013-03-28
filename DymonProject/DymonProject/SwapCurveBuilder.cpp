@@ -75,7 +75,7 @@ void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){
 		if (deposit->getIsOverNight()){
 			bs = new OvernightRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, yc, _interpolAlgo, _numericalAlgo);
 		}else{
-			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, yc, _interpolAlgo, _numericalAlgo, _spotDateDF);
+			bs = new DepositRateBootStrapper(_curvePointer, deposit->getDeliveryDate(), deposit, yc, _interpolAlgo, _numericalAlgo, _spotDateDF);		
 		}
 		bs->setSpotDate(_spotDate);
 		bs->init(Configuration::getInstance());
@@ -99,7 +99,7 @@ void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
 			return;
 
 		removeLineSectionBeforeDate(yc, accrualEndDate);
-		date paymentDate = future->getMaxFutureAndResetDeliveryDate();
+		date paymentDate = future->getResetDeliveryDate();
 		EuroDollarFutureBootStrapper futureBS(_curvePointer, paymentDate, future, yc, _interpolAlgo,_numericalAlgo);
 		futureBS.setSpotDate(_spotDate);
 		futureBS.init(Configuration::getInstance());
@@ -113,7 +113,6 @@ void SwapCurveBuilder::buildEuroDollarFutureSection(DiscountCurve* yc){
 
 void SwapCurveBuilder::buildSwapSection(DiscountCurve* yc){
 	for (auto it=_longEndMap.begin(); it != _longEndMap.end(); it++ ){
-
 		date accrualEndDate=it->first;	
 		Swap* swap=&(it->second);		
 		date paymentDate = swap->getMaxSwapAndResetDeliveryDate();
