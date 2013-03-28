@@ -87,6 +87,7 @@
     <None Include="EuroDollarFuture_test.csv" />
     <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
+    <None Include="FXSkew_test.csv" />
     <None Include="Holiday.csv" />
     <None Include="Holiday_test.csv" />
     <None Include="instance.properties" />

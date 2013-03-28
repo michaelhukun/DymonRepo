@@ -27,13 +27,13 @@ void FXSkewFileSource::retrieveRecord(){
 	for (int i=1;i<numOfRows;i++) {
 		FXEuropeanOption* tempOption = createOptionObject(db, i);
 		tempOption->deriveTenorExpiry();
-      tempOption->deriveDeltaType();
+		tempOption->deriveDeltaType();
 		insertOptionIntoCache(tempOption, FXVolSkewMap);
 	}
 }
 
 void FXSkewFileSource::insertOptionIntoCache(FXEuropeanOption* option, RecordHelper::FXVolSkewMap* FXVolSkewMap){
-	
+
 	string ccyPairStr = option->getCcyPair()->getCcyPairStr();
 	if (FXVolSkewMap->find(ccyPairStr) == FXVolSkewMap->end()){
 		auto tempMap = map<int, vector<FXEuropeanOption>>();
