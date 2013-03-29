@@ -19,7 +19,7 @@ namespace instruments {
 
 	public:
 
-		EuroDollarFuture():Future(){};
+		EuroDollarFuture():Future(){ _instrumentEnum = enums::EURODOLLARFUTURE; }
 		~EuroDollarFuture(){};
 
 		// Getters

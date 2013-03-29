@@ -50,13 +50,25 @@ DiscountCurve* SwapCurveBuilder::build(Configuration* cfg){
 }
 
 void SwapCurveBuilder::loadRateMaps(){
-	if (_market.getShortEndUseLibor()){
-		_shortEndMap  = RecordHelper::getInstance()->getLiborRateMap()->at(_market.getCurrencyEnum());
-	}else{
-		_shortEndMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
+	try{
+		if (_market.getShortEndUseLibor()){
+			_shortEndMap  = RecordHelper::getInstance()->getLiborRateMap()->at(_market.getCurrencyEnum());
+		}else{
+			_shortEndMap = RecordHelper::getInstance()->getDepositRateMap()->at(_market.getCurrencyEnum());
+		}
+	}catch(...){
+		cout<<"<WARNING> ShortEnd data load error ["<<_market.getNameString()<<"]"<<endl;
 	}
-	_longEndMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
-	_midEndMap = RecordHelper::getInstance()->getEuroDollarFutureMap()->at(_market.getCurrencyEnum());
+	try{
+		_midEndMap = RecordHelper::getInstance()->getEuroDollarFutureMap()->at(_market.getCurrencyEnum());
+	}catch(...){
+		cout<<"<WARNING> MidEnd data load error ["<<_market.getNameString()<<"]"<<endl;
+	}
+	try{
+		_longEndMap = RecordHelper::getInstance()->getSwapRateMap()->at(_market.getCurrencyEnum());
+	}catch(...){
+		cout<<"<WARNING> LongEnd data load error ["<<_market.getNameString()<<"]"<<endl;
+	}
 }
 
 void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){			

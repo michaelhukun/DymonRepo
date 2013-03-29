@@ -82,5 +82,7 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setPayFreqSwapFloat(std::stoi(fieldVal));
 	}else if (fieldName=="ShortEndUseLibor"){
 		market->setShortEndUseLibor(fieldVal=="false"?false:true);
+	}else if (fieldName== "LiborCalendar"){
+		market->setLiborCalendar(EnumHelper::getCcyEnum(fieldVal));
 	}
 }

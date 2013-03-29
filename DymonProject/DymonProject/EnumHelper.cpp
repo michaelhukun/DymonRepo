@@ -20,10 +20,12 @@ enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
 		return HKD;
 	else if (ccyName == "CH")
 		return CNY;
-	else if (ccyName == "SGD" || ccyName == "SI")
+	else if (ccyName == "SGD" || ccyName == "SI" || ccyName == "SG")
 		return SGD;
 	else if (ccyName == "JPY" || ccyName == "JN")
 		return JPY;
+	else if (ccyName== "MA")
+		return MYR;
 	throw "Market name not foud: "+ccyName;
 }
 

@@ -26,6 +26,7 @@ AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 		double accrualFactor = dateUtil::getAccrualFactor(_deposit->getSpotDate(),_deposit->getExpiryDate(), _deposit->getDayCount());
 		double discountFactor = (1/(1+accrualFactor*_deposit->getRate()))*_spotDateDF;
 		ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
+		ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
 	}else{
 		AbstractNumerical<DepositRateBootStrapper>* an = NumericalFactory<DepositRateBootStrapper>::getInstance()->getNumerical(this,&DepositRateBootStrapper::numericalFunc,_numericAlgo);
 		double previousVal = std::get<1>(_startPoint);
@@ -34,14 +35,14 @@ AbstractInterpolator<date>* DepositRateBootStrapper::bootStrap(){
 		double discountFactor = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
 		_spotDateDF = discountFactor;
 		ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
+		ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_startPoint));
 	}
-	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
 	return ai;
 }
 
 double DepositRateBootStrapper::numericalFunc(double x){
 	AbstractInterpolator<date>* ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,x) , _interpolAlgo);
-	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_curve->getCurveStartPoint()));
+	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_startPoint));
 
 	date spotDate = _deposit->getSpotDate();
 	double accrualFactor = dateUtil::getAccrualFactor(spotDate, _deposit->getExpiryDate(), _deposit->getDayCount());

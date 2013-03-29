@@ -5,7 +5,7 @@
 
 namespace enums {
 
-	enum CurrencyEnum{EUR,USD,THB,KRW,SGD,JPY,GBP,CNY,HKD};
+	enum CurrencyEnum{EUR,USD,THB,KRW,SGD,JPY,GBP,CNY,HKD,MYR};
 	enum DayRollEnum {DayRollNull,Following,Preceding,Mfollowing,Mfollowingbi,EOM};
 	enum DayCountEnum {DayCountNull, thirty_360US, thirthE_360,ACT_360,ACT_365,ACT_ACT,BUS_252};
 	enum RateType {RateTypeNull, DF, SPOT, FWD, ZERO};
@@ -15,7 +15,7 @@ namespace enums {
 	enum VolType{Call, Put, RR, STR, ATM};
 	enum DeltaType{BS, PREMIUM, FWDBS, FWDPREMIUM};
 	enum PayReceive {Payer, Receiver};
-	enum Instrument{SWAP,OPTION,BOND,FXOPTION};
+	enum Instrument{SWAP,OPTION,BOND,FXOPTION,DEPOSIT,LIBOR,EURODOLLARFUTURE};
 }
 
 #endif

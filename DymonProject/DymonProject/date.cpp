@@ -28,7 +28,7 @@ namespace utilities {
 	date::date(std::string dateStr, bool monthBeforeDay){
 		std::regex dateRegex ("[0-9]*/[0-9]*/[0-9]{4}");
 		if (std::regex_match (dateStr,dateRegex)){
-			vector<std::string> dayMonthYear = fileUtil::split(dateStr, '/');
+			vector<std::string> dayMonthYear = FileUtil::split(dateStr, '/');
 			_year=(unsigned short) std::stoul(dayMonthYear[2],NULL,0);
 			_month=(unsigned short) std::stoul(dayMonthYear[monthBeforeDay?0:1],NULL,0);
 			_day=(unsigned short) std::stoul(dayMonthYear[monthBeforeDay?1:0],NULL,0);

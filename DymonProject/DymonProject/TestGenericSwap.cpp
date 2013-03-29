@@ -4,6 +4,7 @@
 #include "DepositPricer.h"
 #include "SwapPricer.h"
 #include "EuroDollarFuturePricer.h"
+#include "AbstractInstrument.h"
 
 using namespace UnitTest;
 using namespace Markets;
@@ -25,37 +26,31 @@ void TestGenericSwap::runTest(){
 }
 
 void TestGenericSwap::curveTest(enums::CurrencyEnum currency, DiscountCurve* dc){
-	auto map = RecordHelper::getInstance()->getDepositRateMap()->at(currency);
-	for (auto it=map.begin(); it!=map.end(); it++){
-		Deposit* deposit = &(it->second);
-		if (!dc->existComponent(deposit)) continue;
-		DepositPricer pricer = DepositPricer(deposit);
-		pricer.setDiscountCurve(dc);
-		double expectedVal = deposit->getRate();
-		double derivedVal = pricer.deriveDepositRate();
-		compareResult(deposit->getID(),derivedVal, expectedVal);
-	}
 
-	auto futureMap = RecordHelper::getInstance()->getEuroDollarFutureMap()->at(currency);
-	for (auto it=futureMap.begin(); it!=futureMap.end(); it++){
-		EuroDollarFuture* future = &(it->second);
-		if (!dc->existComponent(future)) continue;
-		EuroDollarFuturePricer pricer = EuroDollarFuturePricer(future);
-		pricer.setDiscountCurve(dc);
-		double expectedVal = future->getRate();
-		double derivedVal = pricer.getMPV();
-		compareResult(future->getID(),derivedVal, expectedVal);
-	}
-
-	auto swapMap = RecordHelper::getInstance()->getSwapRateMap()->at(currency);
-	for (auto it=swapMap.begin(); it!=swapMap.end(); it++){
-		Swap* swap = &(it->second);
-		if (!dc->existComponent(swap)) continue;
-		SwapPricer pricer = SwapPricer(swap);
-		pricer.setDiscountCurve(dc);
-		double expectedVal = swap->getSwapRate();
-		double derivedVal = pricer.deriveSwapRate();
-		compareResult(swap->getID(),derivedVal, expectedVal);
+	for (unsigned int i =0; i<dc->getComponents()->size(); i++){
+		double expectedVal = NaN;
+		double derivedVal = NaN;
+		AbstractInstrument* instrument = dc->getComponents()->at(i);
+		if (instrument->getInstrumentEnum() == enums::DEPOSIT || instrument->getInstrumentEnum() == enums::LIBOR){
+			Deposit* deposit = static_cast<Deposit*>(instrument);
+			DepositPricer pricer = DepositPricer(deposit);
+			pricer.setDiscountCurve(dc);
+			expectedVal = deposit->getRate();
+			derivedVal = pricer.deriveDepositRate();
+		}else if (instrument->getInstrumentEnum() == enums::EURODOLLARFUTURE){
+			EuroDollarFuture* future = static_cast<EuroDollarFuture*>(instrument);
+			EuroDollarFuturePricer pricer = EuroDollarFuturePricer(future);
+			pricer.setDiscountCurve(dc);
+			expectedVal = future->getRate();
+			derivedVal = pricer.getMPV();
+		}else if (instrument->getInstrumentEnum() == enums::SWAP){
+			Swap* swap = static_cast<Swap*>(instrument);
+			SwapPricer pricer = SwapPricer(swap);
+			pricer.setDiscountCurve(dc);
+			expectedVal = swap->getSwapRate();
+			derivedVal = pricer.deriveSwapRate();
+		}
+		compareResult(instrument->getID(),derivedVal, expectedVal);
 	}
 }
 

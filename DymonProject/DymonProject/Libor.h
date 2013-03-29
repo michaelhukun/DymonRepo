@@ -15,23 +15,29 @@ using namespace instruments;
 namespace instruments {
 	class Libor: public Deposit{
 	public:
-		Libor():Deposit(){};
+		Libor():Deposit(){ _instrumentEnum = enums::LIBOR; }
 		~Libor(){};
 	
 		// Getters and Setters
 
 		double getLiborRate(){ return _rate; }
-		int getTenorInMonth(){ return _tenorInMonth; }
+		int getTenorNum(){ return _tenorNum; }
+		dateUtil::DateUnit getDateUnit(){ return _dateUnit; }
+		enums::CurrencyEnum getCountry(){ return _country; }
 
 		void setLiborRate(double liborRate){ _rate= liborRate; }
-		void setTenorInMonth(int tenorInMonth){ _tenorInMonth = tenorInMonth; }
+		void setTenorNum(int tenorNum){ _tenorNum = tenorNum; }
+		void setDateUnit(dateUtil::DateUnit dateUnit){ _dateUnit = dateUnit; }
+		void setCountry(enums::CurrencyEnum country){ _country = country; }
 
 		// Methods
 		void deriveDates();
 		std::string toString(){return "";}
 
 	private:
-		int _tenorInMonth;
+		int _tenorNum;
+		dateUtil::DateUnit _dateUnit;
+		enums::CurrencyEnum _country;
 	};
 
 }

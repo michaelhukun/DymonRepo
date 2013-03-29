@@ -14,7 +14,7 @@ using namespace instruments;
 namespace instruments {
 	class Deposit: public AbstractInstrument{
 	public:
-		Deposit():AbstractInstrument(){};
+		Deposit():AbstractInstrument(){ _instrumentEnum = enums::DEPOSIT; }
 		~Deposit(){};
 	
 		// Getters and Setters

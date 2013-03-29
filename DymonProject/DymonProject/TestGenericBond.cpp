@@ -23,15 +23,20 @@ void TestGenericBond::runTest(){
 }
 
 void TestGenericBond::curveTest(enums::CurrencyEnum currency, DiscountCurve* dc){
-	auto map = RecordHelper::getInstance()->getBondRateMap()->at(currency);
-	for (auto it=map.begin(); it!=map.end(); it++){
-		Bond* bond = &(it->second);
-		if (bond->getIsBill() || !dc->existComponent(bond)) continue;
-		BondPricer pricer = BondPricer(bond);
-		pricer.setDiscountCurve(dc);
-		double expectedVal = bond->getDirtyPrice();
-		double derivedVal = pricer.getMPV();
-		compareResult(bond->getID(),derivedVal, expectedVal);
+
+	for (unsigned int i =0; i<dc->getComponents()->size(); i++){
+		double expectedVal = NaN;
+		double derivedVal = NaN;
+		AbstractInstrument* instrument = dc->getComponents()->at(i);
+		if (instrument->getInstrumentEnum() == enums::DEPOSIT ){
+			Bond* bond = static_cast<Bond*>(instrument);
+			if (bond->getIsBill()) continue;
+			BondPricer pricer = BondPricer(bond);
+			pricer.setDiscountCurve(dc);
+			expectedVal = bond->getDirtyPrice();
+			derivedVal = pricer.getMPV();
+		}
+		compareResult(instrument->getID(),derivedVal, expectedVal);
 	}
 
 }

@@ -15,7 +15,7 @@ using namespace utilities;
 using namespace Session;
 
 void HolidayFileSource::init(Configuration* cfg){
-   _name = "Holiday";
+	_name = "Holiday";
 	_fileName = cfg->getProperty("holiday.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("holiday.enabled",true,"")=="true"?true:false;
@@ -34,10 +34,10 @@ void HolidayFileSource::retrieveRecord(){
 		enums::CurrencyEnum market= EnumHelper::getCcyEnum(db.at(0).at(i));
 		for(int j=1; j<numOfRows; j++){
 			try{
-			std::string dateStr =  db.at(j).at(i);
-			if (dateStr=="") continue;
-			long JDN = date(dateStr, false).getJudianDayNumber();
-			JDNSet.insert(JDN);
+				std::string dateStr =  db.at(j).at(i);
+				if (dateStr=="") continue;
+				long JDN = date(dateStr, false).getJudianDayNumber();
+				JDNSet.insert(JDN);
 			}catch (...){
 			}
 		}

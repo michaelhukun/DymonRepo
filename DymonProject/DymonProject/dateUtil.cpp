@@ -281,6 +281,8 @@ date dateUtil::getEndDate(date startDate, int increment, enums::DayRollEnum dayR
 	case BIZDAY:
 		endDate = getBizDateOffSet(startDate,increment, market);
 		break;
+	default:
+		throw "DateUnit not implemented!";
 	}
 	endDate = dayRollAdjust(adjustInvalidateDate(endDate,false),dayRoll, market);
 	return endDate;
@@ -350,20 +352,24 @@ double dateUtil::thirty_360(date startDate, date endDate){
 	return (yearFactor+monthFactor+dayFactor)/360.0;
 }
 
-dateUtil::DateUnit dateUtil::getDateUnit(char letterDateUnit){
-	switch(letterDateUnit){
-	case 'BD':
+dateUtil::DateUnit dateUtil::getDateUnit(std::string dateUnit){
+	if (dateUnit == "BD")
 		return BIZDAY;
-	case 'D':
+	else if (dateUnit == "N" || dateUnit == "D")
 		return DAY;
-	case 'N':
-		return DAY;
-	case 'M':
+	else if (dateUnit == "M")
 		return MONTH;
-	case 'W':
+	else if (dateUnit == "W")
 		return WEEK;
-	case 'Y':
+	else if (dateUnit == "Y")
 		return YEAR;
-	}
-	throw "DateUnit not found: "+letterDateUnit;
+	else if (dateUnit == "O/N")
+		return ON;
+	else if (dateUnit == "O/N")
+		return SN;
+	else if (dateUnit == "S/N")
+		return TN;
+	else
+		throw "Date Unit Not Found!";
+
 }

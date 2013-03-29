@@ -58,7 +58,6 @@
     <None Include="BondFuturePrice.csv" />
     <None Include="FXSkew.csv" />
     <None Include="FXForward.csv" />
-    <None Include="DepositRate.csv" />
     <None Include="DepositRate_test.csv">
       <Filter>TestData</Filter>
     </None>
@@ -85,6 +84,10 @@
     <None Include="FXSkew_test.csv">
       <Filter>TestData</Filter>
     </None>
+    <None Include="LiborRate_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="DepositRate.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">

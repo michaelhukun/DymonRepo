@@ -7,11 +7,12 @@ using namespace utilities;
 
 void EuroDollarFuture::genereateReset(){
 	Libor* libor = new Libor();
-	libor->setTenorInMonth(_tenorInMonths);
+	libor->setTenorNum(_tenorInMonths);
+	libor->setDateUnit(dateUtil::MONTH);
 	libor->setMarket(Market(GBP));
 	libor->setDayCount(enums::ACT_360);
+	libor->setIsOverNight(false);
 	libor->setFixingDate(_deliveryDate);
-	libor->setStartDate(_startDate);
 	libor->deriveDates();
 	setReset(*libor);
 }
