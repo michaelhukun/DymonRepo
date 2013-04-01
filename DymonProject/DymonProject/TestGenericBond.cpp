@@ -28,7 +28,7 @@ void TestGenericBond::curveTest(enums::CurrencyEnum currency, DiscountCurve* dc)
 		double expectedVal = NaN;
 		double derivedVal = NaN;
 		AbstractInstrument* instrument = dc->getComponents()->at(i);
-		if (instrument->getInstrumentEnum() == enums::DEPOSIT ){
+		if (instrument->getInstrumentEnum() == enums::BOND){
 			Bond* bond = static_cast<Bond*>(instrument);
 			if (bond->getIsBill()) continue;
 			BondPricer pricer = BondPricer(bond);
