@@ -12,6 +12,7 @@
 #include "Configuration.h"
 #include "BondPricer.h"
 #include <sstream>
+#include <algorithm> 
 
 using namespace instruments;
 using namespace utilities;
@@ -21,7 +22,7 @@ using namespace enums;
 void Bond::generateCouponLeg(){
 	Configuration* cfg = Configuration::getInstance();
 	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve.buildCashFlowDirection",false,"-1"));
-	_couponLeg.setCashFlowNumber(_couponFreq==(int)NaN?1:(_tenorInYear*_couponFreq));
+	_couponLeg.setCashFlowNumber(_couponFreq==(int)NaN?1:max(1, _tenorInYear*_couponFreq));
 	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
 	builder.setPaymentNumber(_couponLeg.getCashFlowNumber());
 	builder.setBuildDirection(buildDirection);

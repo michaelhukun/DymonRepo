@@ -95,7 +95,7 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		if (fieldVal.find("#N/A")==std::string::npos) couponRate = (std::stod(fieldVal)/bond->getCouponFreq())/100;
 		bond->setCouponRate(couponRate);
 	}else if (fieldName=="CPN_FREQ"){
-		int couponFreq=(fieldVal=="#N/A Field Not Applicable")?1:std::stoi(fieldVal);
+		int couponFreq=(fieldVal.find("#N/A")!=std::string::npos)?1:std::stoi(fieldVal);
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
 		date maturityDate(fieldVal, false);
