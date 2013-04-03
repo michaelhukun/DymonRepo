@@ -22,6 +22,7 @@ void SwapRateFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("swapRate.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("swapRate.enabled",true,"")=="true"?true:false;
+	_monthBeforeDay = cfg->getProperty("swapRate.monthBeforeDay",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -84,11 +85,11 @@ void SwapRateFileSource::updateSwapObjectField(std::string fieldName, std::strin
 	}else if (fieldName=="DAYS_TO_MTY"){
 		swap->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		swap->setTradeDate(tradeDate);
 		swap->setIssueDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
-		date accrualStartDate(fieldVal,false);
+		date accrualStartDate(fieldVal,_monthBeforeDay);
 		swap->setSpotDate(accrualStartDate);
 		swap->setStartDate(accrualStartDate);
 	} else if (fieldName=="COUNTRY"){

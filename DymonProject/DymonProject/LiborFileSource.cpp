@@ -20,6 +20,7 @@ void LiborFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("liborRate.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("liborRate.enabled",true,"")=="true"?true:false;
+	_monthBeforeDay = cfg->getProperty("liborRate.monthBeforeDay",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -88,7 +89,7 @@ void LiborFileSource::updateLiborObjectField(std::string fieldName, std::string 
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		libor->setDayCount(dayCount);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		libor->setTradeDate(tradeDate);
 		libor->setFixingDate(tradeDate);
 	} else if (fieldName=="COUNTRY"){

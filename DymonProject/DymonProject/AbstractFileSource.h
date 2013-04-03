@@ -54,6 +54,7 @@ namespace DAO {
 		
 		std::string _fileName;
 		std::string _persistDir;
+		bool _monthBeforeDay;
 	};
 }
 #endif

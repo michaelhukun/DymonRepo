@@ -36,7 +36,7 @@ void TestSwapCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo 
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
 	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(market);
-	map<date, double> expectedCurve = _expectedCurveMap.at(
+	//map<date, double> expectedCurve = _expectedCurveMap.at(
 
 }
 
@@ -59,12 +59,12 @@ void TestSwapCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo
 }
 
 void TestSwapCurve::constructExpectedCurveMap(){
-	map<date, double> curveUSD;
-	curveUSD.insert(std::make_pair(date(2010,2,1),0.99999));
-	_expectedCurveMap.insert(std::make_pair(USD, curveUSD));
-	map<date, double> curveSGD;
-	curveSGD.insert(std::make_pair(date(2010,2,1),0.99999));
-	_expectedCurveMap.insert(std::make_pair(SGD, curveSGD));
+	//map<date, double> curveUSD;
+	//curveUSD.insert(std::make_pair(date(2010,2,1),0.99999));
+	//_expectedCurveMap.insert(std::make_pair(USD, curveUSD));
+	//map<date, double> curveSGD;
+	//curveSGD.insert(std::make_pair(date(2010,2,1),0.99999));
+	//_expectedCurveMap.insert(std::make_pair(SGD, curveSGD));
 }
 
 void TestSwapCurve::compareResult(string testName, date accuralEndDate, double derivedVal,  double expectedVal){
