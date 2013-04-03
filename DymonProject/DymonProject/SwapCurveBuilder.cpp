@@ -72,7 +72,7 @@ void SwapCurveBuilder::loadRateMaps(){
 }
 
 void SwapCurveBuilder::buildDepositSection(DiscountCurve* yc){			
-	
+
 	for (auto it=_shortEndMap.begin(); it != _shortEndMap.end(); it++ ){
 		date accrualEndDate = ((*it).first);
 		Deposit* deposit = &(it->second);

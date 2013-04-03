@@ -22,6 +22,8 @@ namespace UnitTest{
 
 		void discountCurveTestSuit();
 
+		void constructExpectedCurveMap();
+
 	private:
 
 		void swapRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo);
@@ -29,6 +31,10 @@ namespace UnitTest{
 		void BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo interpolAlgo);
 
 		void compareResult(string testName, date accuralEndDate, double derivedVal, double expectedVal);
+
+		std::map<enums::CurrencyEnum, map<date, double>> _expectedCurveMap;
+
+		enums::interpolAlgo _interpolAlgo;
 	};
 }
 #endif
