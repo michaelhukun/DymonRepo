@@ -25,6 +25,7 @@ void BondPriceFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("bondPrice.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("bondPrice.enabled",true,"")=="true"?true:false;
+	_monthBeforeDay = cfg->getProperty("bondPrice.monthBeforeDay",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -98,22 +99,22 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		int couponFreq=(fieldVal.find("#N/A")!=std::string::npos)?1:std::stoi(fieldVal);
 		bond->setCouponFreq(couponFreq);
 	}else if (fieldName=="MATURITY"){
-		date maturityDate(fieldVal, false);
+		date maturityDate(fieldVal, _monthBeforeDay);
 		bond->setExpiryDate(maturityDate);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		bond->setTradeDate(tradeDate);
 	}else if (fieldName=="FIRST_CPN_DT"){
-		date firstCouponDate(fieldVal,false);
+		date firstCouponDate(fieldVal,_monthBeforeDay);
 		bond->setFirstCouponDate(firstCouponDate);
 	}else if (fieldName=="PREV_CPN_DT"){
-		date prevCouponDate(fieldVal,false);
+		date prevCouponDate(fieldVal,_monthBeforeDay);
 		bond->setPrevCouponDate(prevCouponDate);
 	}else if (fieldName=="NXT_CPN_DT"){
-		date nextCouponDate(fieldVal,false);
+		date nextCouponDate(fieldVal,_monthBeforeDay);
 		bond->setNextCouponDate(nextCouponDate);
 	}else if (fieldName=="ISSUE_DT"){
-		date issueDate(fieldVal,false);
+		date issueDate(fieldVal,_monthBeforeDay);
 		bond->setIssueDate(issueDate);
 	}else if (fieldName=="PX_MID"){
 		double cleanPrice = std::stod(fieldVal);
@@ -134,10 +135,10 @@ void BondPriceFileSource::updateMarketObjectField(std::string fieldName, std::st
 		bool isGeneric = (fieldVal=="Y")?true:false;
 		bond->setIsGeneric(isGeneric);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		bond->setTradeDate(tradeDate);
 	}else if (fieldName=="SETTLE_DT"){
-		date accrualStartDate(fieldVal,false);
+		date accrualStartDate(fieldVal,_monthBeforeDay);
 		bond->setSpotDate(accrualStartDate);
 	}
 }
