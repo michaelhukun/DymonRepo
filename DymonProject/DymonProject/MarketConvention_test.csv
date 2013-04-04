@@ -16,4 +16,4 @@ BizDaysAfterExpiryFXOption,2,2,2,2,2
 PayFreqSwapFixed,2,1,2,2,4
 PayFreqSwapFloat,4,2,2,2,4
 ShortEndUseLibor,false,false,false,true,false
-LiborCalendar,GB,GB,GB,GB,MA
+LiborCalendar,GB,GB,GB,SI,MA

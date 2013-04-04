@@ -59,7 +59,8 @@ void Bond::deriveDirtyPrice(){
 		date refStartDate = firstCashFlow.getAccuralStartDate();
 		date refEndDate = firstCashFlow.getAccuralEndDate();
 		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _spotDate, refStartDate, refEndDate, _dayCount);
-		_dirtyPrice = _cleanPrice + _couponRate*_notional*_fractionFirstCouponAccrued;
+		double accruedInterest = _couponRate*_notional*_fractionFirstCouponAccrued;
+		_dirtyPrice = _cleanPrice + accruedInterest;
 	}
 }
 

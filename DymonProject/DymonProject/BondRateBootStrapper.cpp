@@ -12,15 +12,19 @@
 #include "RecordHelper.h"
 #include "Constants.h"
 #include "BondPricer.h"
+#include "marketdata.h"
 
 using namespace utilities;
+using namespace Markets;
 
 AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
 	double discountFactor;
 	if (_bond->getIsBill()){
 		BondPricer pricer(_bond);
-		discountFactor = pricer.getMPV()/_bond->getNotional();
+		double bondSpotDF = MarketData::getInstance()->getSwapCurveMap()->at(_bond->getMarket().getCurrencyEnum()).getValue(_bond->getSpotDate());
+		discountFactor = pricer.getMPV()/_bond->getNotional()*bondSpotDF;
+
 	}else {
 		AbstractNumerical<BondRateBootStrapper>* an = NumericalFactory<BondRateBootStrapper>::getInstance()->getNumerical(this,&BondRateBootStrapper::numericalFunc,_numericAlgo);
 		double previousVal = std::get<1>(_startPoint);
