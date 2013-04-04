@@ -42,8 +42,8 @@ void BondCurveBuilder::buildSection(DiscountCurve* dc){
 	for (auto it=_bondMap.begin(); it != _bondMap.end(); it++ ){
 		Bond* bond = &(it->second);
 		int numOfNights = (int) (*it).first;
-		if (bond->getIsGeneric()==false) 
-			continue;
+		//if (bond->getIsGeneric()==false) 
+		//	continue;
 
 		vector<cashflow> couponLeg = bond->getCouponLeg()->getCashFlowVector();
 		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();

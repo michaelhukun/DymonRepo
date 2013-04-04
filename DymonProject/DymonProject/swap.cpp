@@ -60,7 +60,7 @@ void Swap::insertFloatLegReset(){
 		libor->setTenorNum(cf->getTenorInMonth());
 		libor->setDateUnit(dateUtil::MONTH);
 		libor->setMarket(market);
-		libor->setDayCount(enums::ACT_360);
+		libor->setDayCount(_market.getDayCountCashConvention());
 		libor->setIsOverNight(false);
 		libor->setFixingDate(liborFixingDate);
 		libor->deriveDates();

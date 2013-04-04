@@ -1,5 +1,5 @@
 Market,US,EU,GB,SI,MA
-DayCountCash,thirty_360US,thirty_360US,ACT/365,ACT/365,ACT/365
+DayCountCash,ACT/360,thirty_360US,ACT/365,ACT/365,ACT/365
 DayCountSwapFixed,30/360,30U/360,ACT/365,ACT/365,ACT/365
 DayCountSwapFloat,ACT/360,ACT/360,ACT/365,ACT/365,ACT/365
 DayCountBond,thirty_360US,thirty_360US,thirty_360US,thirty_360US,thirty_360US
@@ -16,4 +16,4 @@ BizDaysAfterExpiryFXOption,2,2,2,2,2
 PayFreqSwapFixed,2,1,2,2,4
 PayFreqSwapFloat,4,2,2,2,4
 ShortEndUseLibor,false,false,false,true,false
-LiborCalendar,GB,GB,GB,SI,MA
+LiborCalendar,GB,GB,GB,GB,MA
