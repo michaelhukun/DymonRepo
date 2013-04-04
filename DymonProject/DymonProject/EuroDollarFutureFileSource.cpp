@@ -20,6 +20,7 @@ void EuroDollarFutureFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("euroDollarFuture.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("euroDollarFuture.enabled",true,"")=="true"?true:false;
+	_monthBeforeDay = cfg->getProperty("euroDollarFuture.monthBeforeDay",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -78,22 +79,22 @@ void EuroDollarFutureFileSource::updateFutureObjectField(std::string fieldName, 
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		euroDollarFuture->setDayCount(dayCount);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		euroDollarFuture->setTradeDate(tradeDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		euroDollarFuture->setMarket(market);
 	}else if (fieldName=="SETTLE_DT"){
-		date spotDate(fieldVal,false);
+		date spotDate(fieldVal,_monthBeforeDay);
 		euroDollarFuture->setSpotDate(spotDate);
 	}else if (fieldName=="INT_RATE_FUT_START_DT"){
-		date accrualStartDate(fieldVal,false);
+		date accrualStartDate(fieldVal,_monthBeforeDay);
 		euroDollarFuture->setStartDate(accrualStartDate);
 	}else if (fieldName=="FUT_DLV_DT_FIRST"){
-		date deliveryDate(fieldVal,false);
+		date deliveryDate(fieldVal,_monthBeforeDay);
 		euroDollarFuture->setDeliveryDate(deliveryDate);
 	}else if (fieldName=="INT_RATE_FUT_END_DT"){
-		date expiryDate(fieldVal,false);
+		date expiryDate(fieldVal,_monthBeforeDay);
 		euroDollarFuture->setExpiryDate(expiryDate);
 	}else if (fieldName=="CONV_ADJ"){
 		euroDollarFuture->setConvAdj(stod(fieldVal)/100);
