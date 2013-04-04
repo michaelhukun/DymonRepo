@@ -94,6 +94,7 @@ namespace instruments {
 		double _quotedYTM;
 		double _quotedGSpread;
 		double _fractionFirstCouponAccrued;
+		double _accruedInterest;
 	};
 
 }
