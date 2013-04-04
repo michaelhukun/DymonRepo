@@ -27,12 +27,12 @@ double SwapPricer::getFloatLegPV() {
 	double mpv=0;
 
 	for(unsigned int i=0; i<cfVector.size(); i++){
-		cashflow* cf = &cfVector.at(i);
-		Libor* libor = (Libor*) cf->getReset();
+		cashflow cf = cfVector.at(i);
+		Libor* libor =  cf.getReset();
 		DepositPricer pricer(libor);
 		pricer.setDiscountCurve(_discountCurve);
 		double forwardRate = pricer.deriveForwardRate();
-		mpv = mpv + forwardRate * cf->getAccuralFactor() * _discountCurve->getDiscountFactor(cf->getPaymentDate());
+		mpv = mpv + forwardRate * cf.getAccuralFactor() * _discountCurve->getDiscountFactor(cf.getPaymentDate());
 	}
 	return mpv;
 }

@@ -10,6 +10,7 @@
 #include "dateUtil.h"
 #include <vector>
 #include "Deposit.h"
+#include "Libor.h"
 
 using namespace utilities;
 using namespace std;
@@ -38,7 +39,7 @@ namespace instruments {
 		enums::DayCountEnum getDayCount(){ return _dayCount; }
 		bool getIsValid();
 		int getTenorInMonth(){ return _tenorInMonth; }
-		AbstractInstrument* getReset(){ return &_reset; }
+		Libor* getReset(){ return &_reset; }
 
 		void setNotional(double notional);
 		void setCouponRate(double couponRate);
@@ -52,7 +53,7 @@ namespace instruments {
 		void setIsValid(bool isValid);
 		void setProjectValue(double projectValue){ _projectValue = projectValue; }
 		void setTenorInMonth(int tenorInMonth){ _tenorInMonth = tenorInMonth; }
-		void setReset(AbstractInstrument reset){ _reset = reset; }
+		void setReset(Libor reset){ _reset = reset; }
 
 		// Methods
 		void deriveAccuralFactor();
@@ -74,7 +75,7 @@ namespace instruments {
 		Market _cashFlowCurr;
 		double _accuralFactor;
 		bool _isValid;
-		AbstractInstrument _reset;
+		Libor _reset;
 	};
 }
 #endif
