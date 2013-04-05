@@ -16,7 +16,6 @@ typedef tuple<date, double> point;
 
 void BondCurveBuilder::init(Configuration* cfg){
 	super::init(cfg);
-	_curveStartDate = dateUtil::dayRollAdjust(dateUtil::getToday(),enums::Following,_market.getCurrencyEnum());
 	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("BondDiscountCurve.interpol",false,"LINEAR"));
 	_numericalAlgo = EnumHelper::getNumericalAlgo(cfg->getProperty("BondDiscountCurve.numerical",false,"BISECTION"));
 	_interpolRateType = EnumHelper::getRateType(cfg->getProperty("BondDiscountCurve.interpol.rate",true,"ZERO"));
@@ -38,12 +37,11 @@ DiscountCurve* BondCurveBuilder::build(Configuration* cfg){
 
 
 void BondCurveBuilder::buildSection(DiscountCurve* dc){	
-	_curvePointer = point(_curveStartDate,1);
 	for (auto it=_bondMap.begin(); it != _bondMap.end(); it++ ){
 		Bond* bond = &(it->second);
 		int numOfNights = (int) (*it).first;
-		//if (bond->getIsGeneric()==false) 
-		//	continue;
+		if (it==_bondMap.begin())
+			_curvePointer = point(bond->getTradeDate(),1);
 
 		vector<cashflow> couponLeg = bond->getCouponLeg()->getCashFlowVector();
 		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();
