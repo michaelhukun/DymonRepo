@@ -3,13 +3,16 @@
 #include <iostream>
 #include "CashFlowLegBuilder.h"
 #include "BondRateBootStrapper.h"
+#include "InterpolatorFactory.h"
 #include "cashflow.h"
 #include "cashflowLeg.h"
 #include "EnumHelper.h"
 #include "dateUtil.h"
 #include "RecordHelper.h"
 #include "Constants.h"
+#include "marketdata.h"
 
+using namespace Markets;
 using namespace utilities;
 typedef AbstractBuilder super;
 typedef tuple<date, double> point;
@@ -40,8 +43,14 @@ void BondCurveBuilder::buildSection(DiscountCurve* dc){
 	for (auto it=_bondMap.begin(); it != _bondMap.end(); it++ ){
 		Bond* bond = &(it->second);
 		int numOfNights = (int) (*it).first;
-		if (it==_bondMap.begin())
+		if (dc->getSize()==0){
 			_curvePointer = point(bond->getTradeDate(),1);
+			date spotDate = bond->getSpotDate();
+			double bondSpotDF = MarketData::getInstance()->getSwapCurveMap()->at(bond->getMarket().getCurrencyEnum()).getValue(spotDate);
+			AbstractInterpolator<date>* lineSection = InterpolatorFactory<date>::getInstance()->getInterpolator(_curvePointer, point(spotDate,bondSpotDF) , _interpolAlgo);
+			dc->insertLineSection(lineSection);
+			_curvePointer = lineSection->getEndPoint();
+		}
 
 		vector<cashflow> couponLeg = bond->getCouponLeg()->getCashFlowVector();
 		date lastPaymentDate = couponLeg[couponLeg.size()-1].getPaymentDate();
