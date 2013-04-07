@@ -42,7 +42,7 @@ double BondPricer::getMPV(){
 		for (unsigned int i=_bond->getNextCouponIndex(); i<couponLegVec.size();i++){
 			cashflow coupon = couponLegVec[i];
 			date paymentDate = coupon.getPaymentDate();
-			double dcf = _discountCurve->getDiscountFactor(paymentDate);
+			double dcf = _discountCurve->getDiscountFactor(_bond->getSpotDate(), paymentDate);
 			double couponAmount = _bond->getCouponRate()*coupon.getNotional();
 			double cashFlowAmt = couponAmount +((i==(couponLegVec.size()-1))?coupon.getNotional():0);
 			MPV = MPV +	cashFlowAmt*dcf;
