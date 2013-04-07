@@ -17,8 +17,8 @@ void TestGenericBond::runTest(){
 	auto map = MarketData::getInstance()->getBondCurveMap(); 
 	for(auto it=map->begin(); it!=map->end(); it++){
 		enums::CurrencyEnum currency = it->first;
-		DiscountCurve* swapCurve =&(it->second);
-		curveTest(currency, swapCurve);
+		DiscountCurve* bondCurve =&(it->second);
+		curveTest(currency, bondCurve);
 	}
 }
 
@@ -30,7 +30,6 @@ void TestGenericBond::curveTest(enums::CurrencyEnum currency, DiscountCurve* dc)
 		AbstractInstrument* instrument = dc->getComponents()->at(i);
 		if (instrument->getInstrumentEnum() == enums::BOND){
 			Bond* bond = static_cast<Bond*>(instrument);
-			if (bond->getIsBill()) continue;
 			BondPricer pricer = BondPricer(bond);
 			pricer.setDiscountCurve(dc);
 			expectedVal = bond->getDirtyPrice();

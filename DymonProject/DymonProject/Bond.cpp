@@ -52,7 +52,7 @@ date Bond::findNextCouponDate(){
 
 void Bond::deriveDirtyPrice(){
 	if (getCouponRate()==0 ){
-		_dirtyPrice = NaN;
+		_dirtyPrice = _cleanPrice;
 	}else{
 		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";
 		cashflow firstCashFlow = _couponLeg.getCashFlowVector()[_nextCouponIndex];
