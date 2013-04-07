@@ -38,6 +38,7 @@ namespace utilities {
 
 		DiscountCurve* _curve;
 		Swap* _swap;
+		AbstractInterpolator<date>* _interpolant;
 
 		std::vector<cashflow> _cashflowVector;
 		int _cashflowStartIndex;

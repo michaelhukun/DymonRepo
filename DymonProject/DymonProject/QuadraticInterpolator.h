@@ -28,8 +28,7 @@ namespace utilities{
 			_algo = enums::QUADRATIC;
 		}
 
-		point interpolate(T xVal){
-			xValInRangeCheck(xVal);
+		point interpolateConverted(Point convertedStartPoint, Point convertedEndPoint, T xVal){
 			return interpolateUnbonded(xVal);
 		}
 

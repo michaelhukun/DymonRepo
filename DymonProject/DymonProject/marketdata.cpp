@@ -9,6 +9,7 @@
 #include "RecordHelper.h"
 #include "Configuration.h"
 #include "ForwardCurveBuilder.h"
+#include "fileUtil.h"
 
 using namespace Markets;
 using namespace utilities;
@@ -44,14 +45,13 @@ void MarketData::buildAll(){
 }
 
 void MarketData::buildSwapDiscountCurve(){
-	bool enabled = Configuration::getInstance()->getProperty("swapCurve.build.enabled",true,"")=="true"?true:false;
-	if (!enabled) return;
+	vector<string> marketVector = FileUtil::split(Configuration::getInstance()->getProperty("swapCurve.build.enabled",true,""), ',');
+	if (marketVector.size()==0) return;
 
 	cout << "\n******** Build Swap Discount Curve ********\n" << endl;
 
-	RecordHelper::DepositRateMap* rateMap = RecordHelper::getInstance()->getDepositRateMap();
-	for (auto it = rateMap->begin(); it!= rateMap->end(); ++it){
-		CurrencyEnum ccyEnum = it->first;
+	for (unsigned int i = 0; i<marketVector.size(); i++ ){
+		CurrencyEnum ccyEnum = EnumHelper::getCcyEnum(marketVector.at(i));
 		SwapCurveBuilder* builder = new SwapCurveBuilder(ccyEnum);
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
 		_SwapDiscountCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(ccyEnum, *curve));
@@ -60,14 +60,12 @@ void MarketData::buildSwapDiscountCurve(){
 }
 
 void MarketData::buildBondDiscountCurve(){
-	bool enabled = Configuration::getInstance()->getProperty("bondCurve.build.enabled",true,"")=="true"?true:false;
-	if (!enabled) return;
+   vector<string> marketVector = FileUtil::split(Configuration::getInstance()->getProperty("bondCurve.build.enabled",true,""), ',');
+	if (marketVector.size()==0) return;
 
 	cout << "\n******** Build Bond Discount Curve ********\n" << endl;
-	RecordHelper::BondRateMap::iterator it;
-	RecordHelper::BondRateMap* rateMap = RecordHelper::getInstance()->getBondRateMap();
-	for (it = rateMap->begin(); it!= rateMap->end(); ++it){
-		CurrencyEnum ccyEnum = it->first;
+	for (unsigned int i = 0; i<marketVector.size(); i++ ){
+		CurrencyEnum ccyEnum = EnumHelper::getCcyEnum(marketVector.at(i));
 		BondCurveBuilder* builder = new BondCurveBuilder(ccyEnum);
 		DiscountCurve* curve = builder->build(Configuration::getInstance());
 		_BondDiscountCurveMap.insert(pair<CurrencyEnum, DiscountCurve>(ccyEnum, *curve));

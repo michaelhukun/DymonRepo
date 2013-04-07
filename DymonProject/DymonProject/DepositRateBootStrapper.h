@@ -8,6 +8,7 @@
 #include "date.h"
 #include "Market.h"
 #include "Deposit.h"
+#include "DiscountCurve.h"
 
 using namespace instruments;
 
@@ -20,10 +21,11 @@ namespace utilities {
 
 		void init(Configuration* cfg);
 
-		DepositRateBootStrapper(point startPoint, date endDate, Deposit* deposit, enums::interpolAlgo interpolAlgo,
+		DepositRateBootStrapper(point startPoint, date endDate, Deposit* deposit, DiscountCurve* curve, enums::interpolAlgo interpolAlgo,
 			enums::NumericAlgo numericAlgo, double spotDateDF):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
 			_deposit = deposit;
 			_spotDateDF = spotDateDF;
+			_curve = curve;
 		};
 				
 		AbstractInterpolator<date>* bootStrap();
@@ -31,7 +33,8 @@ namespace utilities {
 		double numericalFunc(double x);
 
 	private:
-
+		
+		DiscountCurve* _curve;
 		Deposit* _deposit;
 		double _spotDateDF;
 	};

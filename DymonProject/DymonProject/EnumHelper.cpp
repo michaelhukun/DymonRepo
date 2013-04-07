@@ -10,14 +10,22 @@ enums::CurrencyEnum EnumHelper::getCcyEnum(std::string ccyName){
 		return EUR;
 	else if (ccyName == "USD" || ccyName == "US")
 		return USD;
+	else if (ccyName == "GB")
+		return GBP;
 	else if (ccyName == "THB")
 		return THB;
 	else if (ccyName == "KRW")
 		return KRW;
-	else if (ccyName == "SGD")
+	else if (ccyName == "HK")
+		return HKD;
+	else if (ccyName == "CH")
+		return CNY;
+	else if (ccyName == "SGD" || ccyName == "SI" || ccyName == "SG")
 		return SGD;
-	else if (ccyName == "JPY")
+	else if (ccyName == "JPY" || ccyName == "JN")
 		return JPY;
+	else if (ccyName== "MA")
+		return MYR;
 	throw "Market name not foud: "+ccyName;
 }
 
@@ -85,4 +93,16 @@ enums::VolType EnumHelper::getVolType(std::string optionType){
 	else if ( optionType == "BF")
 		return STR;
 	throw "Option type not foud: "+optionType;
+}
+
+enums::RateType EnumHelper::getRateType(std::string rateType){
+	if (rateType == "DF")
+		return DF;
+	else if ( rateType == "SPOT")
+		return SPOT;
+	else if ( rateType == "FWD")
+		return FWD;
+	else if (rateType == "ZERO")
+		return ZERO;
+	throw "Rate type not foud: "+rateType;
 }

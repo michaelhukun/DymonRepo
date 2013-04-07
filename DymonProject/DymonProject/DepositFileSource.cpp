@@ -20,6 +20,7 @@ void DepositFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("depositRate.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("depositRate.enabled",true,"")=="true"?true:false;
+	_monthBeforeDay = cfg->getProperty("depositRate.monthBeforeDay",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -84,16 +85,16 @@ void DepositFileSource::updateDepositObjectField(std::string fieldName, std::str
 	}else if (fieldName=="DAYS_TO_MTY"){
 		deposit->setDaysToMty(stoi(fieldVal));
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		deposit->setTradeDate(tradeDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		deposit->setMarket(market);
 	}else if (fieldName=="SETTLE_DT"){
-		date deliveryDate(fieldVal,false);
+		date deliveryDate(fieldVal,_monthBeforeDay);
 		deposit->setDeliveryDate(deliveryDate);
 	}else if (fieldName=="MATURITY"){
-		date accrualEndDate(fieldVal,false);
+		date accrualEndDate(fieldVal,_monthBeforeDay);
 		deposit->setExpiryDate(accrualEndDate);
 	}
 }

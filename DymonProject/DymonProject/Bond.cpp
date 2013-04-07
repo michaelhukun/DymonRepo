@@ -12,6 +12,7 @@
 #include "Configuration.h"
 #include "BondPricer.h"
 #include <sstream>
+#include <algorithm> 
 
 using namespace instruments;
 using namespace utilities;
@@ -21,12 +22,12 @@ using namespace enums;
 void Bond::generateCouponLeg(){
 	Configuration* cfg = Configuration::getInstance();
 	int buildDirection = std::stoi(cfg->getProperty("BondDiscountCurve.buildCashFlowDirection",false,"-1"));
-	_couponLeg.setCashFlowNumber(_couponFreq==(int)NaN?1:(_tenorInYear*_couponFreq));
+	_couponLeg.setCashFlowNumber(_couponFreq==(int)NaN?1:max(1, _tenorInYear*_couponFreq));
 	CashFlowLegBuilder builder = CashFlowLegBuilder(this);
 	builder.setPaymentNumber(_couponLeg.getCashFlowNumber());
 	builder.setBuildDirection(buildDirection);
-   builder.setPaymentFreq(_couponFreq);
-   builder.setJoinMismatchedEndPoint(true);
+	builder.setPaymentFreq(_couponFreq);
+	builder.setJoinMismatchedEndPoint(true);
 	_couponLeg.setCashFlowVector(*builder.build());
 	_nextCouponIndex = _couponLeg.getCashFlowIndexForAccrualEnd(_nextCouponDate);
 }
@@ -50,15 +51,16 @@ date Bond::findNextCouponDate(){
 }
 
 void Bond::deriveDirtyPrice(){
-   if (_couponRate==NaN ){
+	if (getCouponRate()==0 ){
 		_dirtyPrice = NaN;
 	}else{
 		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";
 		cashflow firstCashFlow = _couponLeg.getCashFlowVector()[_nextCouponIndex];
 		date refStartDate = firstCashFlow.getAccuralStartDate();
 		date refEndDate = firstCashFlow.getAccuralEndDate();
-		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _tradeDate, refStartDate, refEndDate, _market.getDayCountBondConvention());
-		_dirtyPrice = _cleanPrice + _couponRate/_couponFreq*_fractionFirstCouponAccrued;
+		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _spotDate, _prevCouponDate, refEndDate, _dayCount);
+		_accruedInterest = _couponRate*_notional*_fractionFirstCouponAccrued;
+		_dirtyPrice = _cleanPrice + _accruedInterest;
 	}
 }
 
@@ -85,7 +87,7 @@ double Bond::getYieldSpread(DiscountCurve* bc){
 	double yieldByBondCurve;
 	double yieldByQuotedPrice = getYield();
 	if (_securityType=="Bill"){
-		date paymentDate = _couponLeg.getCashFlow(_couponLeg.getSize()-1).getPaymentDate();
+		date paymentDate = _couponLeg.getCashFlow(_couponLeg.getSize()-1)->getPaymentDate();
 		double discountFactor = bc->getDiscountFactor(paymentDate);
 		yieldByBondCurve = pricer.getYieldByDiscountFactor(discountFactor);
 	}else{

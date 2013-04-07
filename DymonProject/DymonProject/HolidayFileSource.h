@@ -20,7 +20,6 @@ namespace DAO {
 		void retrieveRecord();
 		
 	private:
-		std::set<long> buildJDNSet(std::vector<std::string>);
 	};
 
 }

@@ -20,14 +20,14 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v100</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -62,7 +62,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -83,11 +83,16 @@
     <None Include="CcyPair.csv" />
     <None Include="DepositRate.csv" />
     <None Include="DepositRate_test.csv" />
+    <None Include="EuroDollarFuture.csv" />
+    <None Include="EuroDollarFuture_test.csv" />
     <None Include="FXForward.csv" />
     <None Include="FXSkew.csv" />
-    <None Include="holiday.txt" />
+    <None Include="FXSkew_test.csv" />
+    <None Include="Holiday.csv" />
+    <None Include="Holiday_test.csv" />
     <None Include="instance.properties" />
     <None Include="LiborRate.csv" />
+    <None Include="LiborRate_test.csv" />
     <None Include="MarketConvention.csv" />
     <None Include="MarketConvention_test.csv" />
     <None Include="SwapRate.csv" />
@@ -127,6 +132,9 @@
     <ClInclude Include="CubicSplineInterpolator.h" />
     <ClInclude Include="Deposit.h" />
     <ClInclude Include="DepositPricer.h" />
+    <ClInclude Include="EuroDollarFutureBootStrapper.h" />
+    <ClInclude Include="EuroDollarFutureFileSource.h" />
+    <ClInclude Include="EuroDollarFuturePricer.h" />
     <ClInclude Include="ForwardCurveBuilder.h" />
     <ClInclude Include="Future.h" />
     <ClInclude Include="FuturePricer.h" />
@@ -140,6 +148,7 @@
     <ClInclude Include="FXSkewFileSource.h" />
     <ClInclude Include="FXSkewSurface.h" />
     <ClInclude Include="FXSkewSurfaceBuilder.h" />
+    <ClInclude Include="EuroDollarFuture.h" />
     <ClInclude Include="Libor.h" />
     <ClInclude Include="LiborFileSource.h" />
     <ClInclude Include="Market.h" />
@@ -154,6 +163,7 @@
     <ClInclude Include="OptionPricer.h" />
     <ClInclude Include="OvernightRateBootStrapper.h" />
     <ClInclude Include="QuadraticInterpolator.h" />
+    <ClInclude Include="RateConverter.h" />
     <ClInclude Include="Ridder.h" />
     <ClInclude Include="Secant.h" />
     <ClInclude Include="Swap.h" />
@@ -165,6 +175,7 @@
     <ClInclude Include="TestBond.h" />
     <ClInclude Include="TestBuildCashFlowLeg.h" />
     <ClInclude Include="TestDateUtil.h" />
+    <ClInclude Include="TestGenericBond.h" />
     <ClInclude Include="TestGenericSwap.h" />
     <ClInclude Include="TestInterpolator.h" />
     <ClInclude Include="TestManager.h" />
@@ -213,6 +224,10 @@
     <ClCompile Include="ConfigurationFileSource.cpp" />
     <ClCompile Include="Deposit.cpp" />
     <ClCompile Include="DepositPricer.cpp" />
+    <ClCompile Include="EuroDollarFuture.cpp" />
+    <ClCompile Include="EuroDollarFutureBootStrapper.cpp" />
+    <ClCompile Include="EuroDollarFutureFileSource.cpp" />
+    <ClCompile Include="EuroDollarFuturePricer.cpp" />
     <ClCompile Include="ForwardCurveBuilder.cpp" />
     <ClCompile Include="Future.cpp" />
     <ClCompile Include="FuturePricer.cpp" />
@@ -240,6 +255,7 @@
     <ClCompile Include="Newton.h" />
     <ClCompile Include="OptionPricer.cpp" />
     <ClCompile Include="OvernightRateBootStrapper.cpp" />
+    <ClCompile Include="RateConverter.cpp" />
     <ClCompile Include="RecordHelper.cpp" />
     <ClCompile Include="fileUtil.cpp" />
     <ClCompile Include="HolidayFileSource.cpp" />
@@ -254,6 +270,7 @@
     <ClCompile Include="TestBond.cpp" />
     <ClCompile Include="TestBuildCashFlowLeg.cpp" />
     <ClCompile Include="TestDateUtil.cpp" />
+    <ClCompile Include="TestGenericBond.cpp" />
     <ClCompile Include="TestGenericSwap.cpp" />
     <ClCompile Include="TestInterpolator.cpp" />
     <ClCompile Include="TestManager.cpp" />
@@ -276,9 +293,6 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="holiday_test.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

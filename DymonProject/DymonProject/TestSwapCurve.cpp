@@ -19,6 +19,7 @@ using namespace std;
 using namespace Markets;
 
 void TestSwapCurve::init(Configuration* cfg){
+	_interpolAlgo = EnumHelper::getInterpolAlgo(cfg->getProperty("SwapDiscountCurve.interpol",false,"LINEAR"));
 }
 
 void TestSwapCurve::runTest(){
@@ -27,28 +28,16 @@ void TestSwapCurve::runTest(){
 }
 
 void TestSwapCurve::discountCurveTestSuit(){
-	swapRateTest(enums::USD, enums::LINEAR);
-	swapRateTest(enums::USD, enums::LOGLINEAR);
-	BondRateTest(enums::USD, enums::LINEAR);
-	BondRateTest(enums::USD, enums::LOGLINEAR);
+	swapRateTest(enums::USD, _interpolAlgo);
+	swapRateTest(enums::SGD, _interpolAlgo);
 }
 
 void TestSwapCurve::swapRateTest(enums::CurrencyEnum market,enums::interpolAlgo interpolAlgo){
 	cout<<"\n******** Swap Discount Curve Test using interpolation method ["<<interpolAlgo<<"] ********"<<endl;
 
-	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(USD);
-	
-	int fixFreq = 2;
-	int floatFreq = 4;
+	DiscountCurve* yc = MarketData::getInstance()->getSwapDiscountCurve(market);
+	//map<date, double> expectedCurve = _expectedCurveMap.at(
 
-	//auto swapRateMap = RecordHelper::getInstance()->getSwapRateMap()->at(market);
-	//for (map<long, double>::iterator it=swapRateMap.begin(); it != swapRateMap.end(); it++ ){
-	//	date accuralEndDate = date((*it).first);
-	//	Swap swap1(dateUtil::getToday(), accuralEndDate, 1000000, 0.01, yc, fixLegCurr, floatingLegCurr,fixFreq, floatFreq, true,1);
-	//	cashflowLeg* fixLeg=swap1.getCashFlowVectorFix();
-	//	cashflowLeg* floatLeg=swap1.getCashFlowVectorFloat();
-	//	compareResult("Swap Discount Curve", accuralEndDate, swap1.getParRate(fixLeg,floatLeg,yc),(*it).second);
-	//}
 }
 
 
@@ -67,6 +56,15 @@ void TestSwapCurve::BondRateTest(enums::CurrencyEnum market, enums::interpolAlgo
 			compareResult("Bond Discount Curve", accuralEndDate, derivedVal,expectedVal);
 		}
 	}
+}
+
+void TestSwapCurve::constructExpectedCurveMap(){
+	//map<date, double> curveUSD;
+	//curveUSD.insert(std::make_pair(date(2010,2,1),0.99999));
+	//_expectedCurveMap.insert(std::make_pair(USD, curveUSD));
+	//map<date, double> curveSGD;
+	//curveSGD.insert(std::make_pair(date(2010,2,1),0.99999));
+	//_expectedCurveMap.insert(std::make_pair(SGD, curveSGD));
 }
 
 void TestSwapCurve::compareResult(string testName, date accuralEndDate, double derivedVal,  double expectedVal){

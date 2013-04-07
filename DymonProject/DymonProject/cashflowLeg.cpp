@@ -20,11 +20,11 @@ namespace instruments {
 		_couponFreq = couponFreq;
 	}
 
-	cashflow cashflowLeg::getCashFlow(unsigned int index){
+	cashflow* cashflowLeg::getCashFlow(unsigned int index){
 		if (index<0||index>=_cashflowVector.size())
 			throw "Index out of range!";
 
-		return _cashflowVector[index];
+		return &_cashflowVector[index];
 	}
 
 	int cashflowLeg::getFirstValidCashFlowIndex(){

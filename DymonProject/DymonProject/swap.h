@@ -37,14 +37,14 @@ namespace instruments {
 		cashflowLeg* getCashFlowLegFloat() {	return &_floatCashflowLeg; }
 		DiscountCurve* Swap::getDiscountCurve() { return _yc; }
 		int getTenor(){ return _tenorInYear;}
-		double getSwapRate(){ return _swapRate; }
+		double getSwapRate(){ return _rate; }
 		double getDaysToMty(){ return _daysToMty; }
 		enums::DayCountEnum getDayCountFixed(){ return _fixedCashflowLeg.getDayCount(); }
 		enums::DayCountEnum getDayCountFloat(){ return _floatCashflowLeg.getDayCount(); }
 		int getCouponNumberFixed(){ return _fixedCashflowLeg.getCashFlowNumber(); }
 		int getCouponNumberFloat(){ return _floatCashflowLeg.getCashFlowNumber(); }
 
-		void setSwapRate(double swapRate){ _swapRate= swapRate; }
+		void setSwapRate(double swapRate){ _rate= swapRate; }
 		void setDaysToMty(int daysToMty){ _daysToMty = daysToMty; }
 		void setDayCountFixed(enums::DayCountEnum dayCountFixed){ _fixedCashflowLeg.setDayCount(dayCountFixed);}
 		void setDayCountFloat(enums::DayCountEnum dayCountFloat){ _floatCashflowLeg.setDayCount(dayCountFloat);}
@@ -54,10 +54,12 @@ namespace instruments {
 
 
 		// Methods
+		date getMaxSwapAndResetDeliveryDate();
 		void deriveDates();
 		void deriveDayCount();
 		void buildFixedLeg();
 		void buildFloatLeg();
+		void insertFloatLegReset();
 		void printCashflowLegFix();
 		void printCashflowLegFloat();
 		std::string toString(){return "";}
@@ -68,7 +70,6 @@ namespace instruments {
 		cashflowLeg _floatCashflowLeg;
 		DiscountCurve* _yc;
 		int _tenorInYear;
-		double _swapRate;
 		int _daysToMty;
 	};
 

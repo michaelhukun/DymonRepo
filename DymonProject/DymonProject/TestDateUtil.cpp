@@ -5,14 +5,19 @@
 #include <iostream>
 #include <sstream>
 
-	using namespace UnitTest;
+using namespace UnitTest;
 using namespace utilities;
 using namespace std;
 
 typedef AbstractTest super;
 
+void TestDateUtil::init(Configuration* cfg){
+	_isEnabled = cfg->getProperty("UnitTest.DateUtil",true,"")=="true"?true:false;
+	_EPSILON = 0.0000000001;
+}
+
 void TestDateUtil::runTest(){
-	_EPSILON = 0.000001;
+	if(!_isEnabled) return;
 	bizDateAdjustSuit();
 	dayRollAdjustTestSuit();
 	getEndDateTestSuit();
@@ -21,7 +26,7 @@ void TestDateUtil::runTest(){
 }
 
 void TestDateUtil::bizDateAdjustSuit(){
-	cout << "******** BizDateAdjust Test ********" << endl;
+	cout << endl<< "******** BizDateAdjust Test ********" << endl;
 	{
 		date date0(2012,12,19);
 		date date1 = dateUtil::getBizDateOffSet(date0, 4, USD);
@@ -82,38 +87,53 @@ void TestDateUtil::getEndDateTestSuit(){
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, 4, Following,USD,dateUtil::MONTH);
-		date date2(2013,3,1);
+		date date2(2013,2,28);
 		compareResult("GetEndDate-3", date1,date2);}
+	{
+		date date0(2012,3,31);
+		date date1 = dateUtil::getEndDate(date0, 9, Following,USD,dateUtil::MONTH);
+		date date2(2012,12,31);
+		compareResult("GetEndDate-4", date1,date2);}
+	{
+		date date0(2013,3,19);
+		date date1 = dateUtil::getEndDate(date0, 21, Following,USD,dateUtil::MONTH);
+		date date2(2014,12,19);
+		compareResult("GetEndDate-5", date1,date2);}
+	{
+		date date0(2013,3,19);
+		date date1 = dateUtil::getEndDate(date0, 22, Following,USD,dateUtil::MONTH);
+		date date2(2015,1,19);
+		compareResult("GetEndDate-6", date1,date2);}
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, 4, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2013,2,28);
-		compareResult("GetEndDate-4", date1,date2);}
+		compareResult("GetEndDate-7", date1,date2);}
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, -1, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2012,9,28);
-		compareResult("GetEndDate-5", date1,date2);}
+		compareResult("GetEndDate-8", date1,date2);}
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, -10, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2011,12,30);
-		compareResult("GetEndDate-6", date1,date2);}
+		compareResult("GetEndDate-9", date1,date2);}
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, -11, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2011,11,30);
-		compareResult("GetEndDate-7", date1,date2);}
+		compareResult("GetEndDate-10", date1,date2);}
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, -12, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2011,10,31);
-		compareResult("GetEndDate-8", date1,date2);}
+		compareResult("GetEndDate-11", date1,date2);}
 	{
 		date date0(2012,10,31);
 		date date1 = dateUtil::getEndDate(date0, -24, Mfollowing,USD,dateUtil::MONTH);
 		date date2(2010,10,29);
-		compareResult("GetEndDate-9", date1,date2);}
+		compareResult("GetEndDate-12", date1,date2);}
 }
 
 void TestDateUtil::DayCountTestSuit(){

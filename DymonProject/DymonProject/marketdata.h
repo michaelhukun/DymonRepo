@@ -42,6 +42,7 @@ namespace Markets {
 		FXSkewSurface* getFXSkewSurface(std::string ccyPairStr);
 		AbstractCurve<date>* getForwardCurve(std::string ccyPairStr);
 		std::map<enums::CurrencyEnum, DiscountCurve>* getSwapCurveMap(){return &_SwapDiscountCurveMap; }
+		std::map<enums::CurrencyEnum, DiscountCurve>* getBondCurveMap(){return &_BondDiscountCurveMap; }
 
 
 	protected:

@@ -22,13 +22,13 @@ namespace instruments {
 		~FuturePricer(){};
 
 		void init(Configuration* cfg);
-						
+
 		virtual double getMPV(double costOfCarryRate);
 
-      virtual double getMPV();
+		virtual double getMPV();
 
 	private:
-	
+
 		Future* _future;
 	};
 }
