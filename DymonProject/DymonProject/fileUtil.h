@@ -9,7 +9,7 @@
 
 
 namespace utilities {
-	class fileUtil {
+	class FileUtil {
 
 	public:
 

@@ -28,6 +28,7 @@ AbstractInterpolator<date>* OvernightRateBootStrapper::bootStrap(){
 	double accrualFactor = dateUtil::getAccrualFactor(accuralStartDate, accuralEndDate, dayCount);
 	double discountFactor = 1/(1+accrualFactor*rate)*getPreviousDF();
 	ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
+	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), std::get<0>(_startPoint));
 	return ai;
 }
 

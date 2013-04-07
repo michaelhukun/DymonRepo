@@ -63,13 +63,13 @@ bool dateUtil::isBizDay(long JDN){
 }
 
 bool dateUtil::isHoliday(long JDN, enums::CurrencyEnum market){
-	RecordHelper::HolidayMap holidayMap= RecordHelper::getInstance()->getHolidayMap();
-	if (holidayMap.find(market)== holidayMap.end()){
+	auto holidayMap= RecordHelper::getInstance()->getHolidayMap();
+	if (holidayMap->find(market)== holidayMap->end()){
 		cout<< "Market not found in Holiday Map: "+market<<endl;
 		return false;
 	}
 
-	set<long> holidaySet = holidayMap[market];
+	set<long> holidaySet = holidayMap->at(market);
 	if (holidaySet.find(JDN) != holidaySet.end())
 		return true;
 	return false;
@@ -162,7 +162,7 @@ double dateUtil::getAccrualFactor(date startDate,date endDate, enums::DayCountEn
 		//This is the most used day count convention for money market instruments (maturity below one year).
 		accrualFactor = (endDate.getJudianDayNumber()-startDate.getJudianDayNumber())/360.0;
 		//cout<<"inside ACT_360"<<endl;
-		break;
+			break;
 	case enums::ACT_365:
 		//Also called English Money Market basis.
 		//The number 365 is used even in a leap year.
@@ -247,11 +247,14 @@ date dateUtil::dayRollAdjust(date aDate,DayRollEnum aDayRollConvention, enums::C
 date dateUtil::getEndDateMonthIncrement(date startDate, int numMonth){
 	if (numMonth==0) return startDate;
 	short startMonth = startDate.getMonth();
-	short endMonth = (startMonth + numMonth)%12;
-	int yearIncrement = (startMonth + numMonth)/12;
-	yearIncrement = (startMonth + numMonth)<=0?yearIncrement-1:yearIncrement;
-	endMonth = endMonth<=0?endMonth+12:endMonth;
-	short endYear= startDate.getYear()+yearIncrement;	
+	short endMonth = (startMonth + numMonth);
+	bool isEndMonthPow12 = (startMonth + numMonth)%12==0?true:false;
+	endMonth = isEndMonthPow12 ? 12 : (startMonth + numMonth)%12;
+	int yearIncrement = abs((startMonth + numMonth)/12) - (isEndMonthPow12 ? 1 : 0);
+	if (startMonth + numMonth<0)
+		yearIncrement = -abs((startMonth + numMonth)/12) - 1 - (isEndMonthPow12 ? 1 : 0);
+	endMonth = endMonth<=0 ? endMonth+12 : endMonth;
+	short endYear= startDate.getYear()+ yearIncrement;	
 	date endDate(endYear, endMonth, startDate.getDay());
 
 	// Adjust the return day to the end of month if the start date is also end of month
@@ -278,6 +281,8 @@ date dateUtil::getEndDate(date startDate, int increment, enums::DayRollEnum dayR
 	case BIZDAY:
 		endDate = getBizDateOffSet(startDate,increment, market);
 		break;
+	default:
+		throw "DateUnit not implemented!";
 	}
 	endDate = dayRollAdjust(adjustInvalidateDate(endDate,false),dayRoll, market);
 	return endDate;
@@ -347,20 +352,24 @@ double dateUtil::thirty_360(date startDate, date endDate){
 	return (yearFactor+monthFactor+dayFactor)/360.0;
 }
 
-dateUtil::DateUnit dateUtil::getDateUnit(char letterDateUnit){
-	switch(letterDateUnit){
-	case 'BD':
+dateUtil::DateUnit dateUtil::getDateUnit(std::string dateUnit){
+	if (dateUnit == "BD")
 		return BIZDAY;
-	case 'D':
+	else if (dateUnit == "N" || dateUnit == "D")
 		return DAY;
-	case 'N':
-		return DAY;
-	case 'M':
+	else if (dateUnit == "M")
 		return MONTH;
-	case 'W':
+	else if (dateUnit == "W")
 		return WEEK;
-	case 'Y':
+	else if (dateUnit == "Y")
 		return YEAR;
-	}
-	throw "DateUnit not found: "+letterDateUnit;
+	else if (dateUnit == "O/N")
+		return ON;
+	else if (dateUnit == "O/N")
+		return SN;
+	else if (dateUnit == "S/N")
+		return TN;
+	else
+		throw "Date Unit Not Found!";
+
 }

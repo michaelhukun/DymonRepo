@@ -25,6 +25,8 @@ namespace instruments {
 
 		double deriveDepositRate();
 
+		double deriveForwardRate();
+
 	private: 
 		Deposit* _deposit;	
 	};

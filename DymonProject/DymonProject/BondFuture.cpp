@@ -20,7 +20,7 @@ double BondFuture::getImpliedBondPrice(){
 
 double BondFuture::getPVCouponBeforeExpiry(vector<cashflow> couponVector, double costOfCarryRate){
 	double PVCouponBeforeExpiry = 0;	
-	for (int i=_CTDBond->getNextCouponIndex(); i<couponVector.size();i++){
+	for (unsigned int i=_CTDBond->getNextCouponIndex(); i<couponVector.size();i++){
 		cashflow coupon = couponVector[i];
 		if (coupon.getAccuralEndDate()>_expiryDate)
 			continue;

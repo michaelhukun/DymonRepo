@@ -34,6 +34,7 @@ namespace DAO {
 
 		void updateLiborObjectField(std::string fieldName, std::string fieldVal, Libor* libor);
 
+		void deriveTenor(std::string tenorStr, Libor* libor);
 	};
 }
 #endif

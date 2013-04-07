@@ -18,6 +18,8 @@ namespace UnitTest{
 
 		TestDateUtil():AbstractTest(){}
 
+		void init(Configuration* cfg);
+
 		void runTest();
 
 		void dayRollAdjustTestSuit();

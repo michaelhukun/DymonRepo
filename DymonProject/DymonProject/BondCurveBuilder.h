@@ -7,6 +7,7 @@
 #include "cashflow.h"
 #include "cashflowLeg.h"
 #include "DiscountCurve.h"
+#include "bond.h"
 #include <vector>
 
 using namespace instruments;
@@ -45,6 +46,9 @@ namespace utilities{
 		bool _rollAccuralDates;
 		point _curvePointer;
 		date _curveStartDate;
+		enums::DayCountEnum _bondCurveDayCount;
+		RateType _interpolRateType;
+		std::map<long, Bond> _bondMap;
 	};
 }
 #endif

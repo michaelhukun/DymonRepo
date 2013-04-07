@@ -12,7 +12,7 @@ namespace utilities {
 	class dateUtil {
 
 	public:
-		enum DateUnit{BIZDAY,DAY,WEEK,MONTH,YEAR};
+		enum DateUnit{BIZDAY,DAY,WEEK,MONTH,YEAR,ON, SN, TN};
 
 		static long getJudianDayNumber(unsigned short year, unsigned short month, unsigned short day);
 
@@ -37,7 +37,7 @@ namespace utilities {
 		static date dayRollAdjust(date aDate,enums::DayRollEnum aDayRollConvention, enums::CurrencyEnum market);
 		static double getAccrualFactor(date startDate,date endDate, enums::DayCountEnum dayCount);
 		static double getAccrualFactor(date startDate,date endDate, date refStartDate,date refEndDate, enums::DayCountEnum dayCount);
-		static DateUnit getDateUnit(char letterDateUnit);
+		static DateUnit getDateUnit(std::string letterDateUnit);
 		static date getEndDateMonthIncrement(date refDate, int numMonth);
 
 	private:

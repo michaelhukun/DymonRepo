@@ -20,6 +20,7 @@ void LiborFileSource::init(Configuration* cfg){
 	_fileName = cfg->getProperty("liborRate.file",true,"");
 	_persistDir = cfg->getProperty("data.path",false,"");
 	_enabled = cfg->getProperty("liborRate.enabled",true,"")=="true"?true:false;
+	_monthBeforeDay = cfg->getProperty("liborRate.monthBeforeDay",true,"")=="true"?true:false;
 	AbstractFileSource::init(cfg);
 }
 
@@ -34,13 +35,13 @@ void LiborFileSource::retrieveRecord(){
 
 	for (int i=1;i<numOfRows;i++) {
 		Libor* tempLibor = createLiborObject(db, i);
-		tempLibor->deriveAccrualStartDate();
+		tempLibor->deriveDates();
 		insertLiborIntoCache(tempLibor, liborRateMap);
 	}
 }
 
 void LiborFileSource::insertLiborIntoCache(Libor* libor, RecordHelper::DepositRateMap* liborRateMap){	
-	enums::CurrencyEnum market = libor->getMarket().getCurrencyEnum();
+	enums::CurrencyEnum market = libor->getCountry();
 	long accrualEndJDN = libor->getExpiryDate().getJudianDayNumber();
 	if (liborRateMap->find(market) == liborRateMap->end()){
 		auto tempMap = map<long, Deposit>();
@@ -60,7 +61,11 @@ Libor* LiborFileSource::createLiborObject(CSVDatabase db, int row){
 	for (int i=0;i<numOfCols;i++) {
 		String fieldName = db.at(0).at(i);
 		String fieldVal = db.at(row).at(i);
-		updateLiborObjectField(fieldName, fieldVal, tempLibor);
+		try{
+			updateLiborObjectField(fieldName, fieldVal, tempLibor);
+		}catch(...){
+			cout<<"Libor Object Field Error: Name["<<fieldName<<"] Value["<<fieldVal<<"]"<<endl;
+		}
 	}		
 	return tempLibor;
 }
@@ -68,24 +73,40 @@ Libor* LiborFileSource::createLiborObject(CSVDatabase db, int row){
 void LiborFileSource::updateLiborObjectField(std::string fieldName, std::string fieldVal, Libor* libor){
 	if(fieldName=="ID"){
 		libor->setID(fieldVal);
-	}else if (fieldName=="NAME"){
+	}else if (fieldName=="SECURITY_NAME"){
 		libor->setName(fieldVal);
 		if (fieldVal.find("/N")!=std::string::npos) 
 			libor->setIsOverNight(true);
 		else
 			libor->setIsOverNight(false);
-	}else if (fieldName=="SECURITY_TENOR_ONE"){
-		libor->setTenorStr(fieldVal);
+	}else if (fieldName=="INDX_SOURCE_NAME"){
+		string tenorStr = fieldVal.substr(4,fieldVal.length()-4);
+		libor->setTenorStr(tenorStr);
+		deriveTenor(tenorStr, libor);
 	}else if (fieldName=="PX_LAST"){
 		libor->setLiborRate(stod(fieldVal)/100);
 	}else if (fieldName=="DAY_CNT_DES"){
 		enum::DayCountEnum dayCount = EnumHelper::getDayCountEnum(fieldVal);
 		libor->setDayCount(dayCount);
 	}else if (fieldName=="TRADING_DT_REALTIME"){
-		date tradeDate(fieldVal,false);
+		date tradeDate(fieldVal,_monthBeforeDay);
 		libor->setTradeDate(tradeDate);
+		libor->setFixingDate(tradeDate);
 	} else if (fieldName=="COUNTRY"){
 		Market market = Market(EnumHelper::getCcyEnum(fieldVal));
 		libor->setMarket(market);
+	} else if (fieldName=="COUNTRY_LABEL"){
+		libor->setCountry(EnumHelper::getCcyEnum(fieldVal));
+	}
+}
+
+void LiborFileSource::deriveTenor(std::string tenorStr, Libor* libor){
+	if (tenorStr.find("/N")!=std::string::npos) {
+		libor->setDateUnit(dateUtil::getDateUnit(tenorStr));
+	}else{
+		string dateUnit = tenorStr.substr(tenorStr.size()-1,1);
+		string tenorNum = tenorStr.substr(0,tenorStr.size()-1);
+		libor->setDateUnit(dateUtil::getDateUnit(dateUnit));
+		libor->setTenorNum(stoi(tenorNum));
 	}
 }

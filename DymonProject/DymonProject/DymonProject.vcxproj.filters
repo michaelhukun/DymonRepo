@@ -9,10 +9,6 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Source Files\Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Header Files\dymon.bootstrapper">
       <UniqueIdentifier>{6d3f2060-8ea9-41fa-93cf-c82a49674271}</UniqueIdentifier>
     </Filter>
@@ -54,7 +50,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="holiday.txt" />
     <None Include="instance.properties" />
     <None Include="swaption_skew_USD.csv" />
     <None Include="MarketConvention.csv" />
@@ -63,7 +58,6 @@
     <None Include="BondFuturePrice.csv" />
     <None Include="FXSkew.csv" />
     <None Include="FXForward.csv" />
-    <None Include="DepositRate.csv" />
     <None Include="DepositRate_test.csv">
       <Filter>TestData</Filter>
     </None>
@@ -79,6 +73,21 @@
     <None Include="BondRate_test.csv">
       <Filter>TestData</Filter>
     </None>
+    <None Include="EuroDollarFuture.csv" />
+    <None Include="EuroDollarFuture_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="Holiday.csv" />
+    <None Include="Holiday_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="FXSkew_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="LiborRate_test.csv">
+      <Filter>TestData</Filter>
+    </None>
+    <None Include="DepositRate.csv" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -369,6 +378,24 @@
     <ClInclude Include="CcyPairFileSource.h">
       <Filter>Header Files\dymon.persistence</Filter>
     </ClInclude>
+    <ClInclude Include="RateConverter.h">
+      <Filter>Header Files\dymon.util</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroDollarFutureFileSource.h">
+      <Filter>Header Files\dymon.persistence</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroDollarFuture.h">
+      <Filter>Header Files\dymon.instruments</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroDollarFutureBootStrapper.h">
+      <Filter>Header Files\dymon.bootstrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="EuroDollarFuturePricer.h">
+      <Filter>Header Files\dymon.pricer</Filter>
+    </ClInclude>
+    <ClInclude Include="TestGenericBond.h">
+      <Filter>Header Files\dymon.test</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -587,10 +614,23 @@
     <ClCompile Include="TestGenericSwap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="holiday_test.txt">
-      <Filter>TestData</Filter>
-    </Text>
+    <ClCompile Include="RateConverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFutureFileSource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFuture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFutureBootStrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EuroDollarFuturePricer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestGenericBond.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

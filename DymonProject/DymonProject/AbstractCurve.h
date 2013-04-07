@@ -33,6 +33,8 @@ namespace utilities{
 
 		AbstractInterpolator<T>* getSection(int sectionIndex);
 
+		void removeSection(int sectionIndex);
+
 		int getSize();
 
 		void setLineSectionVector(std::vector<AbstractInterpolator<T>*>* lineSectionVector){
@@ -45,12 +47,24 @@ namespace utilities{
 
 		virtual std::string toString(double interval);
 
-      virtual std::string toExcelFriendlyString();
+		virtual std::string toExcelFriendlyString();
 
-	private:
+		// Getters and Setters
+
+		enums::DayCountEnum getDayCount(){ return _dayCount; }
+		enums::RateType getCurveRateType(){ return _curveRateType; }
+		enums::RateType getInterpolRateType(){ return _interpolRateType; }
+
+		void setCurveRateType(enums::RateType curveRateType){ _curveRateType = curveRateType; }
+		void setInterpolRateType(enums::RateType interpolRateType){ _interpolRateType = interpolRateType; }
+		void setDayCount(enums::DayCountEnum dayCount){ _dayCount = dayCount; }
+
+	protected:
 
 		std::vector<AbstractInterpolator<T>*>* _lineSectionVector;
-
+		enums::DayCountEnum _dayCount;
+		enums::RateType _curveRateType;
+		enums::RateType _interpolRateType;
 	};
 
 	template<typename T>
@@ -85,6 +99,11 @@ namespace utilities{
 	template<typename T>
 	AbstractInterpolator<T>* AbstractCurve<T>::getSection(int sectionIndex){
 		return _lineSectionVector->at(sectionIndex);
+	}
+
+	template<typename T>
+	void AbstractCurve<T>::removeSection(int sectionIndex){
+		_lineSectionVector->erase(_lineSectionVector->begin()+sectionIndex);
 	}
 
 	template<typename T>

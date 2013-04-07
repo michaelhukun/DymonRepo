@@ -74,11 +74,15 @@ void MarketFileSource::updateMarketObjectField(std::string fieldName, std::strin
 		market->setBusinessDaysAfterSpotSwap(std::stoi(fieldVal));
 	}else if (fieldName=="BizDaysAfterSpotBond"){
 		market->setBusinessDaysAfterSpotBond(std::stoi(fieldVal));
+	}else if (fieldName=="BizDaysAfterSpotCash"){
+		market->setBusinessDaysAfterSpotCash(std::stoi(fieldVal));
 	}else if (fieldName=="PayFreqSwapFixed"){
 		market->setPayFreqSwapFixed(std::stoi(fieldVal));
 	}else if (fieldName=="PayFreqSwapFloat"){
 		market->setPayFreqSwapFloat(std::stoi(fieldVal));
 	}else if (fieldName=="ShortEndUseLibor"){
 		market->setShortEndUseLibor(fieldVal=="false"?false:true);
+	}else if (fieldName== "LiborCalendar"){
+		market->setLiborCalendar(EnumHelper::getCcyEnum(fieldVal));
 	}
 }

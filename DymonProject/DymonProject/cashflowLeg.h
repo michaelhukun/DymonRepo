@@ -33,7 +33,7 @@ namespace instruments {
 		void setCashFlowNumber(int cashFlowNumber){ _cashFlowNumber = cashFlowNumber; }
 
 		//Methods		
-		cashflow getCashFlow(unsigned int index);
+		cashflow* getCashFlow(unsigned int index);
 		int getFirstValidCashFlowIndex();
 		vector<cashflow> getCashFlowVector();
 		void setCashFlowVector(vector<cashflow> cashflowLeg);

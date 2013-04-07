@@ -22,13 +22,13 @@ namespace utilities {
 			AbstractBootStrapper<date>::init(cfg);
 		}
 
-		BondRateBootStrapper(point startPoint, date endDate, Bond bond, DiscountCurve* curve, enums::interpolAlgo interpolAlgo, 
+		BondRateBootStrapper(point startPoint, date endDate, Bond* bond, DiscountCurve* curve, enums::interpolAlgo interpolAlgo, 
 			enums::NumericAlgo numericAlgo, Market market):AbstractBootStrapper(startPoint, endDate, interpolAlgo, numericAlgo){
-				_couponRate = bond.getCouponRate();
+				_couponRate = bond->getCouponRate();
 				_bond = bond;
 				_curve = curve;
 				_market = market;
-				_dayCount = bond.getDayCount();
+				_dayCount = bond->getDayCount();
 		};
 
 		AbstractInterpolator<date>* bootStrap();
@@ -37,13 +37,12 @@ namespace utilities {
 
 	private:
 
-		Bond _bond;
+		Bond* _bond;
 		DiscountCurve* _curve;
 		double _couponRate;
 		Market _market;
 		enums::DayCountEnum _dayCount;
-
-		double BondRateBootStrapper::getTreasuryBillDiscountFactor();
+		AbstractInterpolator<date>* _interpolant;
 	};
 }
 #endif

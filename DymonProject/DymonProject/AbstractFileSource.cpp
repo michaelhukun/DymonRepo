@@ -66,9 +66,9 @@ map<string, string> AbstractFileSource::readMap(std::string fileName){
 		}
 		string key = keyEqualsValue.substr(0,keyEqualsValue.find('='));
 		string value = keyEqualsValue.substr(keyEqualsValue.find('=')+1);
-		if (value==""||key=="")
+		if (key=="")
 		{
-			cout<<"Property ignored - Key/value pair not complete: "<<keyEqualsValue<<endl;
+			cout<<"Property ignored - Key is not invalid: "<<keyEqualsValue<<endl;
 			continue;
 		}
 		configMap[key]=value;

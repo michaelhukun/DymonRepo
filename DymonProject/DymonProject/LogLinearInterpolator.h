@@ -6,28 +6,27 @@
 namespace utilities{
 
 	template<typename T> class LogLinearInterpolator: public AbstractInterpolator<T>{
-		
-	typedef tuple<T, double> point;
+
+		typedef tuple<T, double> Point;
 
 	public:
 
-		LogLinearInterpolator(point startPoint, point endPoint):
+		LogLinearInterpolator(Point startPoint, Point endPoint):
 		  AbstractInterpolator(startPoint, endPoint){
 			  _slope = NaN;
 			  _algo = enums::LOGLINEAR;
 		  }
 
-		  virtual point interpolate(T xVal){
-			  xValInRangeCheck(xVal);
+		  Point interpolateConverted(Point convertedStartPoint, Point convertedEndPoint, T xVal){
 			  if (_slope == NaN){
-				  double startVal = std::get<1>(_startPoint);
-				  double endVal = std::get<1>(_endPoint);
+				  double startVal = std::get<1>(convertedStartPoint);
+				  double endVal = std::get<1>(convertedEndPoint);
 				  double yDiff = log(endVal) - log(startVal);
-				  double xDiff = std::get<0>(_endPoint) - std::get<0>(_startPoint);
+				  double xDiff = std::get<0>(convertedEndPoint) - std::get<0>(convertedStartPoint);
 				  _slope = yDiff / xDiff;
 			  }
-			  double  yVal = _slope*(xVal - std::get<0>(_startPoint))+ log(std::get<1>(_startPoint));
-			  return point(xVal,exp(yVal));
+			  double  yVal = _slope*(xVal - std::get<0>(convertedStartPoint))+ log(std::get<1>(convertedStartPoint));
+			  return Point(xVal,exp(yVal));
 		  }
 
 	private:
