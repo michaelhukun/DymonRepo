@@ -46,7 +46,12 @@ void BondCurveBuilder::buildSection(DiscountCurve* dc){
 		if (dc->getSize()==0){
 			_curvePointer = point(bond->getTradeDate(),1);
 			date spotDate = bond->getSpotDate();
-			double bondSpotDF = MarketData::getInstance()->getSwapCurveMap()->at(bond->getMarket().getCurrencyEnum()).getValue(spotDate);
+			double bondSpotDF = 1;
+			try{
+				bondSpotDF = MarketData::getInstance()->getSwapCurveMap()->at(bond->getMarket().getCurrencyEnum()).getValue(spotDate);
+			}catch(...){
+				cout<<"<WARNING> Swap curve for market ["<<bond->getMarket().getNameString()<<"] is not found! Bond Spot date discount factor is set to 1."<<endl;
+			}
 			AbstractInterpolator<date>* lineSection = InterpolatorFactory<date>::getInstance()->getInterpolator(_curvePointer, point(spotDate,bondSpotDF) , _interpolAlgo);
 			dc->insertLineSection(lineSection);
 			_curvePointer = lineSection->getEndPoint();

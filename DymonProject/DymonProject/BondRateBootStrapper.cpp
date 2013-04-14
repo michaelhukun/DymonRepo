@@ -19,19 +19,11 @@ using namespace Markets;
 
 AbstractInterpolator<date>* BondRateBootStrapper::bootStrap(){
 	AbstractInterpolator<date>* ai;
-	double discountFactor;
-	if (_bond->getIsBill()){
-		BondPricer pricer(_bond);
-		double bondSpotDF = MarketData::getInstance()->getSwapCurveMap()->at(_bond->getMarket().getCurrencyEnum()).getValue(_bond->getSpotDate());
-		discountFactor = pricer.getMPV()/_bond->getNotional()*bondSpotDF;
-
-	}else {
-		AbstractNumerical<BondRateBootStrapper>* an = NumericalFactory<BondRateBootStrapper>::getInstance()->getNumerical(this,&BondRateBootStrapper::numericalFunc,_numericAlgo);
-		double previousVal = std::get<1>(_startPoint);
-		double lowerBound = 0;//abs(previousVal*(1-_plusMinus/100.0));
-		double upperBound = previousVal*(1+_plusMinus/100.0);
-		discountFactor = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
-	}
+	AbstractNumerical<BondRateBootStrapper>* an = NumericalFactory<BondRateBootStrapper>::getInstance()->getNumerical(this,&BondRateBootStrapper::numericalFunc,_numericAlgo);
+	double previousVal = std::get<1>(_startPoint);
+	double lowerBound = 0;//abs(previousVal*(1-_plusMinus/100.0));
+	double upperBound = previousVal*(1+_plusMinus/100.0);
+	double discountFactor = an->findRoot(lowerBound,upperBound,_tolerance,_iterateCount);
 	date curveStartDate = std::get<0>(_bond->getIsBill()?_startPoint:_curve->getCurveStartPoint());
 	ai = InterpolatorFactory<date>::getInstance()->getInterpolator(_startPoint, point(_endDate,discountFactor) , _interpolAlgo);
 	ai->addCurveConfig(_curve->getCurveRateType(), _curve->getInterpolRateType(), _curve->getDayCount(), curveStartDate);
