@@ -32,17 +32,17 @@ double BondPricer::getMPV(){
 		date accrualEnd = cashFlowAtMaturity->getAccuralEndDate();
 		date refStart = cashFlowAtMaturity->getAccuralStartDate();
 		date refEnd = accrualEnd;
+		date paymentDate = cashFlowAtMaturity->getPaymentDate();
 		//As this is a T-Bill it is quoted in terms of the discount rate.
 		//The actual price of a T Bill is calculated as 100-(days to maturity/360)*Discount rate
 		double accrualFactor = dateUtil::getAccrualFactor(accrualStart, accrualEnd, refStart, refEnd, _bond->getDayCount());
-		double discountFactor = 1-accrualFactor*_bond->getCleanPrice()/100;
-		return discountFactor*100;
+		MPV = (1 - _discountCurve->getValue(paymentDate)/_discountCurve->getValue(accrualStart))/accrualFactor*100;
 	}else{
 		vector<cashflow> couponLegVec = _bond->getCouponLeg()->getCashFlowVector();
 		for (unsigned int i=_bond->getNextCouponIndex(); i<couponLegVec.size();i++){
 			cashflow coupon = couponLegVec[i];
 			date paymentDate = coupon.getPaymentDate();
-			double dcf = _discountCurve->getDiscountFactor(paymentDate);
+			double dcf = _discountCurve->getDiscountFactor(_bond->getSpotDate(), paymentDate);
 			double couponAmount = _bond->getCouponRate()*coupon.getNotional();
 			double cashFlowAmt = couponAmount +((i==(couponLegVec.size()-1))?coupon.getNotional():0);
 			MPV = MPV +	cashFlowAmt*dcf;

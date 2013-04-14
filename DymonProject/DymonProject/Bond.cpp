@@ -52,13 +52,13 @@ date Bond::findNextCouponDate(){
 
 void Bond::deriveDirtyPrice(){
 	if (getCouponRate()==0 ){
-		_dirtyPrice = NaN;
+		_dirtyPrice = _cleanPrice;
 	}else{
 		if (_nextCouponIndex==NaN) throw "Next coupon index not found!";
 		cashflow firstCashFlow = _couponLeg.getCashFlowVector()[_nextCouponIndex];
 		date refStartDate = firstCashFlow.getAccuralStartDate();
 		date refEndDate = firstCashFlow.getAccuralEndDate();
-		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(refStartDate, _spotDate, _prevCouponDate, refEndDate, _dayCount);
+		_fractionFirstCouponAccrued = dateUtil::getAccrualFactor(_prevCouponDate, _spotDate, _prevCouponDate, refEndDate, _dayCount);
 		_accruedInterest = _couponRate*_notional*_fractionFirstCouponAccrued;
 		_dirtyPrice = _cleanPrice + _accruedInterest;
 	}
